@@ -1,0 +1,62 @@
+<div class="widget tag">
+    <h3 class="title">Calendar</h3>
+	<div class="Calendar">
+	  <div id="idCalendarPre">&lt;&lt;</div>
+	  <div id="idCalendarNext">&gt;&gt;</div>
+	  <span id="idCalendarYear">2008</span>年<span id="idCalendarMonth">8</span>月
+	  <table cellspacing="0">
+		<thead>
+		  <tr>
+			<td>日</td>
+			<td>一</td>
+			<td>二</td>
+			<td>三</td>
+			<td>四</td>
+			<td>五</td>
+			<td>六</td>
+		  </tr>
+		</thead>
+		<tbody id="idCalendar">
+		</tbody>
+	  </table>
+	</div>
+</div>
+<script language="JavaScript">
+var cale = new Calendar("idCalendar", {
+	//howiefh
+	/* SelectDay: new Date().setDate(10), */
+	SelectDay: new Date().setDate(this.Date),
+	onSelectDay: function(o){ o.className = "onSelect"; },
+	//howiefh
+    onToday: function(o){ o.className = "onToday"; },
+    onFinish: function(){
+		//howiefh
+        // $("idCalendarYear").innerHTML = this.Year; $("idCalendarMonth").innerHTML = this.Month;
+		$("idCalendarYear").innerHTML = "<a href='<%= config.root %>" + "archives/" + this.Year + "/'>" + this.Year + " "+ "</a>"; 
+		if (this.Month < 10) {
+			$("idCalendarMonth").innerHTML = "<a href='<%= config.root %>" + "archives/" + this.Year + "/" + "0" + this.Month + "/'>" + " " + this.Month + " " + "</a>";
+		} else {
+			$("idCalendarMonth").innerHTML = "<a href='<%= config.root %>" + "archives/" + this.Year + "/" + this.Month + "/'>" + " " + this.Month + " " + "</a>";
+		}
+
+		// var flag = [10,15,20]; 
+		// for(var i = 0, len = flag.length; i < len; i++){ 
+			// this.Days[flag[i]].innerHTML = "<a href='javascript:void(0);' onclick=\"alert('日期是:"+this.Year+"/"+this.Month+"/"+flag[i]+"');return false;\">" + flag[i] + "</a>"; 
+		// } 
+
+		<% site.posts.each(function(post){ %>
+			var postdate = new Date("<%= post.date %>"); 
+			if (postdate.getFullYear() == this.Year && postdate.getMonth()+1 == this.Month) { 
+				var day = postdate.getDate();
+				this.Days[day].innerHTML = "<a href='<%= config.root %><%= post.path %>' title='<%= post.title %>'>" + day + "</a>";
+			} 
+	<% }); %>
+
+		//howiefh
+    }
+});
+
+$("idCalendarPre").onclick = function(){ cale.PreMonth(); }
+$("idCalendarNext").onclick = function(){ cale.NextMonth(); }
+</SCRIPT>
+
