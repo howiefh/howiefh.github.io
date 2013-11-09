@@ -4,6 +4,7 @@ categories: suse
 tags: [suse, pam_mysql]
 ---
 近期项目中需要在SUSE服务器中安装vsftpd，并且需要设置虚拟用户，使用mysql来管理虚拟用户，这就需要安装pam_mysql了。在ubuntu下，安装软件很轻松，但是在SUSE下就不太方便了，最要命的是上网还不太方便。折腾了小半天，终于算是装上了，好了，现在总结一下安装的过程和遇到的问题吧。   
+<!-- more -->
 下载 [pam_mysql-0.7RC1.tar.gz](http://sourceforge.net/projects/pam-mysql/files/pam-mysql/)。 
 ```shell
 tar zxvf pam_mysql-0.7RC1.tar.gz
