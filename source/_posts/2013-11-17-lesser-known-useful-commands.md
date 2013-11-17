@@ -98,6 +98,11 @@ screen -r 4980.pts-0.localhost
 20. id  
 打印真正有效的用户和组的id
 
+21. 在bash和zsh中CTRL-R  
+可以使用快捷键[Ctrl][R]来快速搜索历史输入，在bash中显示的提示符为（reverse-i-search）：  
+在zsh中显示的提示符为bck-i-search：。  
+此时键入你想要搜索的内容，比如ssh，你就会得到第一个匹配的历史输入。如果按[Ctrl][R]快捷键将会继续向前搜索包含ssh的历史输入。当你发现自己想要查找的内容后，按回车键[Enter]结束搜索。如果需要对搜索到的内容进行修改，使用方向键右键来定位修改位置，然后做出需要的修改。   
+
 更具体的解释参看：  
 <http://linux.cn/thread/11925/1/1/>  
 <http://linux.cn/thread/11931/1/1/>  
