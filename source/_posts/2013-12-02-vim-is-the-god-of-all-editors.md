@@ -70,6 +70,11 @@ tags: vim
 | n<cmd>   | 重复执行n次命令			 |
 |----------|-----------------------------|
 ```
+Vim 命令图表：  
+![](/img/vim-shortcuts.png)
+
+![](/img/vim_cheat_sheet_for_programmers_print.png)
+
 ## 配置
 ```
 syntax on                   " 自动语法高亮
@@ -124,3 +129,12 @@ set autochdir               " 自动切换当前目录为当前文件所在的�
 * bash -- 使用命令`set -o vi`
 * Sublime Text -- Vintage
 * Emacs -- evil
+
+现在你所看到的这篇文章即在vim中编写。
+
+![](/img/godvim.png)
+
+![](/img/success_vim.jpg)
+
+by FengHao  
+2013.12.02
