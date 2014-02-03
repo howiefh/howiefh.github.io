@@ -2,12 +2,5 @@
   "name": "hexo",
   "version": "1.1.2",
   "private": true,
-  "engines": {
-    "node": ">= 0.6.0",
-    "npm": ">= 1.1.0"
-  },
-  "dependencies": {
-    "hexo-generator-feed": "0.0.10",
-    "hexo-generator-sitemap": "0.0.6"
-  }
+  "dependencies": {}
 }
