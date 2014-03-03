@@ -26,6 +26,7 @@ collect2: ld returned 1 exit status
 make: *** [master] Error 1
 ```
 
+<!-- more -->
 # 解决
 因为每个c文件中都包含了这个头文件。
 ```
