@@ -32,11 +32,11 @@ addthis:
 fancybox: true
 
 google_analytics: UA-40492061-1
-rss:
+rss: /atom.xml
 
 links:
 - name: 404 page
-  link: http://yibo.iyiyun.com
+  link: http://yibo.iyiyun.com/js/yibo404/key/1
 
 duoshuo: howiefh
 
@@ -44,4 +44,5 @@ about_me:
   title: ABOUT ME
   avatar: /images/okal-eltocat.jpeg
   texts:
-  - 旧博客：<a href="http://hi.baidu.com/idea_star" target="_BLANK">百度空间</a>
+  - Do one thing and do it well!
+  - <a href="http://hi.baidu.com/idea_star" target="_BLANK">百度空间</a>
