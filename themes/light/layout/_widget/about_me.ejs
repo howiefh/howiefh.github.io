@@ -1,0 +1,13 @@
+<% if (theme.about_me){ %>
+<div class="widget about_me">
+  <h3 class="title"><%= theme.about_me.title || __('about_me') %></h3>
+  <ul class="entry">
+    <% if (theme.about_me.avatar){ %>
+    <li><img width="150" title="avatar" src="<%= theme.about_me.avatar %>" /></li>
+    <% } %>
+    <% theme.about_me.texts.forEach(function(item){ %>
+    <li><%- item %></li>
+    <% }); %>
+  </ul>
+</div>
+<% } %>

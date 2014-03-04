@@ -6,10 +6,13 @@ menu:
 
 widgets: 
 - search
+- about_me
 - category
 - tagcloud
 - calendar
 - recent_posts
+- links
+- duoshuo_recent_comments
 
 excerpt_link: Read More
 
@@ -19,7 +22,7 @@ twitter:
   tweet_count: 5
 
 addthis:
-  enable: true
+  enable: false
   pubid:
   facebook: true
   twitter: true
@@ -30,3 +33,15 @@ fancybox: true
 
 google_analytics: UA-40492061-1
 rss:
+
+links:
+- name: 404 page
+  link: http://yibo.iyiyun.com
+
+duoshuo: howiefh
+
+about_me:
+  title: ABOUT ME
+  avatar: /images/okal-eltocat.jpeg
+  texts:
+  - 旧博客：<a href="http://hi.baidu.com/idea_star" target="_BLANK">百度空间</a>

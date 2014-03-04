@@ -1,9 +1,9 @@
-<% if (page.comments){ %>
+<% if (page.comments && theme.duoshuo){ %>
 <section id="comment">
 <!-- Duoshuo Comment BEGIN -->
-	<div class="ds-thread"></div>
+<div class="ds-thread" data-title="<%= item.title %>" data-url="<%- item.permalink %>"></div>
 <script type="text/javascript">
-var duoshuoQuery = {short_name:"howiefh"};
+var duoshuoQuery = {short_name:"<%= theme.duoshuo %>"};
 	(function() {
 		var ds = document.createElement('script');
 		ds.type = 'text/javascript';ds.async = true;
