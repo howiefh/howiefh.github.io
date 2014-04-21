@@ -112,7 +112,7 @@ AndroidManifext.xml文件包含如下信息：
 声明调用该应用所需要的权限：通过为应用程序各组件元素，如<activity.../>元素添加<uses-permission.../>子元素即可声明调用该程序所需要的权限
 
 android权限
-```
+
 | 访问登记属性            | android.permission.ACCESS_CHECKIN_PROPERTIES ，读取或写入登记check-in数据库属性表的权限                          |
 |-------------------|-------------------------------------------------------------------------------------------------|
 | 获取错略位置            | android.permission.ACCESS_COARSE_LOCATION，通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米          |
@@ -215,4 +215,3 @@ android权限
 | 设置桌面壁纸            | android.permission.SET_WALLPAPER，设置桌面壁纸                                                         |
 | 设置壁纸建议            | android.permission.SET_WALLPAPER_HINTS，设置壁纸建议                                                   |
 | 发送永久进程信号        | android.permission.SIGNAL_PERSISTENT_PROCESSES，发送一个永久的进程信号                                      |
-```

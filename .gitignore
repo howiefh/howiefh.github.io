@@ -4,3 +4,7 @@ db.json
 public/
 *.swp
 .deploy/
+*.jpg
+*.png
+themes/jacman/
+*.log

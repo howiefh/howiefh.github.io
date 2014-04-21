@@ -1,5 +1,5 @@
 # Hexo Configuration
-## Docs: http://zespia.tw/hexo/docs/configure.html
+## Docs: http://hexo.io/docs/configuration.html
 ## Source: https://github.com/tommy351/hexo/
 
 # Site
@@ -19,6 +19,7 @@ permalink: :year/:month/:day/:title/
 tag_dir: tags
 archive_dir: archives
 category_dir: categories
+code_dir: downloads/code
 
 # Writing
 new_post_name: :year-:month-:day-:title.md # File name of new posts
@@ -26,10 +27,11 @@ default_layout: post
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
 max_open_file: 100
+multi_thread: true
 filename_case: 0
+render_drafts: false
 highlight:
   enable: true
-  backtick_code_block: true
   line_number: true
   tab_replace:
 
@@ -42,7 +44,7 @@ tag_map:
 ## 2: Enable pagination
 ## 1: Disable pagination
 ## 0: Fully Disable
-archive: 2
+archive: 1
 category: 2
 tag: 2
 
@@ -74,13 +76,39 @@ disqus_shortname:
 plugins:
 - hexo-generator-feed
 - hexo-generator-sitemap
+- hexo-calendar
 ## Themes: https://github.com/tommy351/hexo/wiki/Themes
-theme: light
+# theme: light
+# theme: jacman
+theme: landscape-f
 exclude_generator:
 
+markdown:
+  gfm: true
+  pedantic: false
+  sanitize: false
+  tables: true
+  breaks: true
+  smartLists: true
+  smartypants: true
+
+stylus:
+  compress: false
+
 # Deployment
-## Docs: http://zespia.tw/hexo/docs/deploy.html
+## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: github
-  repository: https://github.com/howiefh/howiefh.github.io
+  repo: https://github.com/howiefh/howiefh.github.io.git
   branch: master
+  message: my blog
+
+# https://github.com/hexojs/hexo-generator-feed
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+
+# https://github.com/hexojs/hexo-generator-sitemap
+sitemap:
+  path: sitemap.xml
