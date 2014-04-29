@@ -7,27 +7,27 @@ categories:
 - hexo
 description: hexo Landscape-F, hexo 优化，hexo 博客，hexo 主题，hexo 七牛，hexo 多说，hexo theme，hexo github，hexo 图片，hexo 返回顶部, hexo 日历, hexo 友情链接, hexo about me, hexo 分享，hexo 彩色标签云, hexo 文章目录, hexo 最近更新, hexo 评论, hexo 技巧，hexo 教程 
 ---
-自从去年装好[Hexo]后就没有更新过，直到最近才把[Hexo]从1.1.3更新到了2.5.2。发现有了不少的变化，插件比过去多了，还有了新的默认主题，[文档]也比过去更详细了。但是默认主题有一些我需要的东西还没有，比如文章目录、返回顶部按钮、多说评论，百度分享等等。在网上找了不少[Hexo主题]，最后还是觉得默认主题比较不错，还有一个[Pacman]感觉也挺好的。于是就在[Landcape]基础上主要参考[Pacman]对默认主题进行了一些优化，这样我的主题[Landcape-F]就诞生了。
+自从去年装好[Hexo]后就没有更新过，直到最近才把[Hexo]从1.1.3更新到了2.5.2。发现有了不少的变化，插件比过去多了，还有了新的默认主题，[文档]也比过去更详细了。但是默认主题有一些我需要的东西还没有，比如文章目录、返回顶部按钮、多说评论，百度分享等等。在网上找了不少[Hexo主题]，最后还是觉得默认主题比较不错，还有一个[Pacman]感觉也挺好的。于是就在[Landscape]基础上主要参考[Pacman]对默认主题进行了一些优化，这样我的主题[Landscape-F]就诞生了。
 
 <!-- more -->
 ## 安装指南
 ### 安装
 
 ```bash
-$ git clone https://github.com/howiefh/hexo-theme-landscape-f.git themes/landcape-f
+$ git clone https://github.com/howiefh/hexo-theme-landscape-f.git themes/landscape-f
 ```
-[Landcape-F]需要安装Hexo 2.4 或以上版本
+[Landscape-F]需要安装Hexo 2.4 或以上版本
 
 ### 启用
 
-修改你的博客根目录下的`_config.yml`配置文件中的`theme`属性，将其设置为`landcape-f`。
+修改你的博客根目录下的`_config.yml`配置文件中的`theme`属性，将其设置为`landscape-f`。
 
 ### 更新
 
 升级前最好先备份原来的`_config.yml` 文件
 
 ```bash
-cd themes/landcape-f
+cd themes/landscape-f
 git pull
 ```
 
@@ -120,7 +120,7 @@ display_updated: true
 
 ### 侧边栏
 
-[Landcape-F]提供了9种小工具。
+[Landscape-F]提供了9种小工具。
 
 - category
 - tag
@@ -183,9 +183,21 @@ display_updated: true
 
 ### 修改滚动条样式
 
-### 其它
+## 其它
+
+### 图床
+
+如果图片很多的话，把图片都放在github感觉不大明智，使用图床就很有必要了，推荐使用[七牛]做图床，访问速度极快，支持日志、防盗链和水印。不光是图片，你甚至可以将生成的静态文件放在[七牛]上。
+标准用户有每月10GB流量+总空间10GB+PUT/DELETE 10万次请求+GET 100万次请求，应该足够了。
+
+### 404页面
+
+我使用的是益云404公益页面<http://yibo.iyiyun.com/Index/web404>。把404.html放在`landscape-f/source`下就可以了。
+
+### hexo文档
 
 在stylus文件中可以使用 hexo-config('title') 获得配置文件的配置
+[tag plugins](http://hexo.io/docs/tag-plugins.html)
 [variables](http://hexo.io/docs/variables.html)
 [Model](http://hexo.io/api/warehouse/classes/Model.html)
 常用方法
@@ -196,7 +208,7 @@ site.posts.toArray()
 ```
 可以在`layout/_widget/tagcloud.ejs`中使用`<%- tagcloud({start_color: '#7dc3de', end_color: '#800080',color: true}) %>`替换原有对应内容,实现彩色的标签云。
 
-### 修改记录
+## 修改记录
 
 - 返回顶部按钮
 
@@ -336,7 +348,8 @@ add languages/
 [Hexo主题]: http://github.com/tommy351/hexo/wiki/Themes
 [Pacman]: https://github.com/A-limon/pacman
 [Fancybox]: http://fancyapps.com/fancybox/
-[Landcape]: https://github.com/hexojs/hexo-theme-landscape
+[Landscape]: https://github.com/hexojs/hexo-theme-landscape
 [文档]: http://hexo.io
-[Landcape-F]: https://github.com/howiefh/hexo-theme-landscape-f
+[Landscape-F]: https://github.com/howiefh/hexo-theme-landscape-f
 [hexo-calendar]: https://github.com/howiefh/hexo-calendar
+[七牛]: https://portal.qiniu.com/signup?code=3llacy35or5ua
