@@ -1,6 +1,8 @@
 title: Ubuntu下重置忘记的MySql root密码
 date: 2013-04-29 18:32:33
-categories: mysql
+categories:
+- database
+- mysql
 tags: [mysql, ubuntu]
 ---
 有时，我们可能会忘记mysql root密码，这时我们就需要重置它。  
