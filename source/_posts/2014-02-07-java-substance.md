@@ -3,8 +3,11 @@ date: 2014-02-07 18:08:42
 categories: java
 tags: java
 ---
-	使用java做界面，并不怎么美观，可以使用substance包来做美化。但是界面中的中文字符会出现乱码的现象，可以通过设置字体来解决这个问题。首先写使用substance外观的代码，然后在要使窗体显示的代码之前调用一个方法
+
+使用java做界面，并不怎么美观，可以使用substance包来做美化。但是界面中的中文字符会出现乱码的现象，可以通过设置字体来解决这个问题。首先写使用substance外观的代码，然后在要使窗体显示的代码之前调用一个方法
+
 <!-- more -->
+
 ```java
 public static void main(String[] args) throws ClassNotFoundException {
 	EventQueue.invokeLater(new Runnable() {
@@ -42,4 +45,4 @@ public static void InitGlobalFont(Font font) {
 	}
 }  
 ```
-	这样，程序界面字体就不会乱码了。
+这样，程序界面字体就不会乱码了。

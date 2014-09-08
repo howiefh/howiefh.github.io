@@ -22,15 +22,13 @@ tags: [ubuntu, 软件]
 	sudo add-apt-repository ppa:marlin-devs/marlin-daily
 	sudo apt-get update
 	sudo apt-get install marlin light-themes-marlinesque
-	安装marlin或handbrake后视频可以预览了
 	```
 - 图形
     - [XnView](http://www.xnview.com/)
     - GIMP
-	- [dia](http://blog.ubuntusoft.com/dia-flowcharts-linux-under-visio.html)
+	- [dia](http://blog.ubuntusoft.com/dia-flowcharts-linux-under-visio.html) (visio 的替代品)
 	```
 	sudo apt-get install dia
-	visio 的替代品
 	```
 - 媒体
     - VLC
@@ -50,7 +48,6 @@ tags: [ubuntu, 软件]
     - VirtualBox
     - AllTray
     - ChmSee
-    - Clipit
 	- [plank docky](http://blog.ubuntusoft.com/plank-lightweight-and-fast-dock.html)
 	```
 	sudo apt-add-repository ppa:ricotz/docky
@@ -66,7 +63,6 @@ tags: [ubuntu, 软件]
 	sudo add-apt-repository ppa:diodon-team/daily
 	sudo apt-get update
 	sudo apt-get install diodon
-	用clipit替代
 	```
 	- [Synapse](http://www.ubuntuhome.com/synapse%E5%88%B0%E6%9D%A5%E2%80%94%E2%80%94%E6%9C%80%E6%96%B0%E6%9C%80%E5%BF%AB%E7%9A%84gnome-do%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88.html)
 	```

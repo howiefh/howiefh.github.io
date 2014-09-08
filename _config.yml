@@ -9,7 +9,7 @@ description: A blog of howiefh.
 author: howiefh
 email: howiefh@gmail.com
 #language: zh-CN
-language: default
+language: 
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
