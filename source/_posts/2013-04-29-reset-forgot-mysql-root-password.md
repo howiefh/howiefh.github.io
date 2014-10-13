@@ -9,7 +9,7 @@ tags: [mysql, ubuntu]
 下面就讲下具体操作:
 
 <!--more-->
-1. 停止mysql进程
+## 停止mysql进程
 ```
 sudo /etc/init.d/mysql stop
 ```
@@ -17,21 +17,21 @@ sudo /etc/init.d/mysql stop
 ```
 sudo service mysql stop
 ```
-2. 用–skip-grant-tables选项启动mysql进程
+## 用–skip-grant-tables选项启动mysql进程
 ```
 sudo /usr/sbin/mysqld --skip-grant-tables --skip-networking &
 ```
-3. 启动mysql客户端
+## 启动mysql客户端
 ```
 mysql -u root
 ```
-4. 刷新MySQL的系统权限相关表，重置密码
+## 刷新MySQL的系统权限相关表，重置密码
 ```
 FLUSH PRIVILEGES;
 USE mysql;
 UPDATE user SET Password = PASSWORD('new_password') WHERE Host = 'localhost' AND User = 'root';
 ```
-5. 刷新MySQL的系统权限相关表，重启mysql进程
+## 刷新MySQL的系统权限相关表，重启mysql进程
 ```
 FLUSH PRIVILEGES;
 exit;

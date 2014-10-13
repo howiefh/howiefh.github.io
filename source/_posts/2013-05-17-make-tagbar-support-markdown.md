@@ -3,7 +3,9 @@ date: 2013-05-17 18:12:11
 categories: vim
 tags: [vim, markdown]
 ---
-### 在vimfiles目录下新建ctags.cnf文件并添加以下内容
+### 编辑ctags.cnf文件
+
+在vimfiles目录下新建ctags.cnf文件并添加以下内容
 ```
 --langdef=markdown
 --langmap=markdown:.mkd
@@ -13,6 +15,7 @@ tags: [vim, markdown]
 ```
 
 ### 在vimrc中添加以下内容
+
 ```
 let g:tagbar_type_markdown = {
 	\ 'ctagstype' : 'markdown',
@@ -27,7 +30,9 @@ let g:tagbar_type_markdown = {
 <!--more-->
 由于用tagbar替换了taglist，原来的txtbrowser不能再生成目录结构了，和上面类似的  
    
-### 向ctags.cnf文件再添加以下内容
+### 编辑ctags.cnf
+
+向ctags.cnf文件再添加以下内容
 ```
 --langdef=txt 
 --langmap=txt:.txt

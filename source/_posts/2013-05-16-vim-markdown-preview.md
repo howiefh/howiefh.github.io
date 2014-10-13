@@ -17,16 +17,14 @@ tags: [vim, markdown, chrome]
    
 这个插件是在[Markdown Preview](https://chrome.google.com/webstore/detail/markdown-preview/jmchmkecamhbiokiopfpnfgbidieafmd)基础上做了部分改进。
    
-改进的部分
-------
+## 改进的部分
    
 - 支持自动加载，这个选项默认是关闭的，可在options中设置。
 - 支持本地、http和https的markdown文件预览。
 - 支持部分css样式，例如Github，TopMarks，Clearness，ClearnessDark。还可以自己添加样式。
 - 新的0.2.1版本已经支持对每个md文件设置样式，这个可以覆盖全局的样式设置
    
-使用方法 
-------
+## 使用方法 
    
 - 从chrome的[webstore](https://chrome.google.com/webstore/detail/markdown-preview-plus/febilkbfcbhebfnokafefeacimjdckgl)安装Markdown Preview Plus插件
 - 打开chrome://extensions/，在设置页中勾选 “允许访问文件网址” 
