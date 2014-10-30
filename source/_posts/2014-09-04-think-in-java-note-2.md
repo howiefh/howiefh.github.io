@@ -261,7 +261,7 @@ interface产生一个完全抽象的类，允许创建者确定方法名、参�
 
 接口可以有域，但这些域被隐式的声明为static 和final 
 
-可以在接口中显示的把方法声明为public，**默认就是public，而且必须是public**。
+可以在接口中显示的把方法声明为public，**默认就是public，而且必须是public，方法不能是static和final的**。
 
 ### 完全解耦
 
