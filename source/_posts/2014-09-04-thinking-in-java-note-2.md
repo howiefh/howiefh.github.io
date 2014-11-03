@@ -1,8 +1,8 @@
 title: Java编程思想笔记二
 date: 2014-09-04 09:40:25
-tags: think in java
+tags: thinking in java
 categories: java
-description: think in java; java编程思想
+description: thinking in java; java编程思想
 ---
 
 ## 访问权限控制

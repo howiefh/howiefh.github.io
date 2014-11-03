@@ -1,8 +1,8 @@
 title: Java编程思想笔记一
 date: 2014-08-27 21:34:52
-tags: think in java
+tags: thinking in java
 categories: java
-description: think in java; java编程思想
+description: thinking in java; java编程思想
 ---
 
 ## 对象导论
@@ -150,6 +150,78 @@ description: think in java; java编程思想
 ### 方法、参数和返回值
 
 方法名和参数列表，合起来称为“方法签名”，唯一标识出某个方法。
+
+关于方法的参数传递，这是一个被争议的话题。
+
+* 先说说参数传递的几个术语：
+    值调用(call by vale):表示方法接收的是调用者传递的值。
+    引用调用(call by reference):表示方法接收的是调用者传递的变量地址。
+
+    一个方法可以修改传递引用所对应的变量值，而不能修改传递值调用所对应的变量值；
+    **JAVA语言总是采用值调用**，也就是说，JAVA方法得到的是所有参数值的一个拷贝，方法不能修改传递给他的任何参数变量的内容。
+
+例如：
+```
+class StringAddress{
+    private String s;
+    public StringAddress(String s){
+        this.s = s;
+    }
+    public String toString(){
+        return super.toString() + " " + s;
+    }
+    public void setS(String s){
+        this.s = s;
+    }
+}
+public class Test{
+    public static void swap(int a, int b){
+        int tmp = a;
+        a = b;
+        b = tmp;
+        System.out.println("a: "+a+" b: "+b);
+    }
+    public static void swap(StringAddress a, StringAddress b){
+        StringAddress tmp = a;
+        a = b;
+        b = tmp;
+        System.out.println("a: "+a+" b: "+b);
+    }
+    public static void change(StringAddress a){
+        a.setS("hi");
+        System.out.println("a: "+a);
+    }
+    public static void main(String[] args) {
+        int x = 1,y=20;
+        StringAddress sax = new StringAddress("hello"),say = new StringAddress("world");
+        swap(x,y);
+        System.out.println("x: "+x+" y: "+y);
+        swap(sax,say);
+        System.out.println("sax: "+sax+" say: "+say);
+        change(sax);
+        System.out.println("sax: "+sax);
+    }
+}/* output: 
+a: 20 b: 1
+x: 1 y: 20
+a: StringAddress@1db9742 world b: StringAddress@106d69c hello
+sax: StringAddress@106d69c hello say: StringAddress@1db9742 world
+a: StringAddress@106d69c hi
+sax: StringAddress@106d69c hi
+*/
+```
+通过以上实例,可以看出基本类型参数传递的是变量值的拷贝，对象参数传递的是对象引用的拷贝,对象引用及其他的拷贝同时引用同一个对象。
+很多程序语言提供两种传递方式:值传递和引用传递(C++和Pascal)。有些程序员认为java语言对对象参数传递也是用的引用调用。实际上是理解错误，这种错误具有一定的普遍性。
+上例中swap方法并没有改变存储在变量sax和say中的对象引用。swap方法的参数a和b被初始化为两个对象引用的拷贝，这个方法交换的是这两个拷贝。在方法结束时，参数变量a和b被丢弃了。原来的变量sax和say仍然引用这个方法调用之前所引用的对象。
+
+这个过程说明：java语言对对象采用的不是引用调用，实际上对象引用进行的是值传递。
+
+最后总结一下在JAVA中，方法参数的使用情况：
+* 一个方法不能修改一个基本数据类型的参数；
+* 一个方法可以改变一个对象参数的状态（属性）；
+* 一个方法不能实现让对象参数引用一个新对象；
+
+C++有值调用和引用调用。引用参数标有&符号。例如，void swap(int& a,int& b)。引用即可以当做变量的一个别名，仅此而已。而Java的引用，如果理解为像指针一样存的是对象地址，传递时都会把它拷贝一份，这样可能会好理解些。
 
 ### 构建一个Java程序
 
@@ -447,5 +519,3 @@ public void name(Long... args){}
 你可以将enum当做任何类来处理，事实上enum确实是类，它具有自己的方法。
 
 TODO 19章
-
-

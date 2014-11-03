@@ -1,8 +1,8 @@
 title: Java编程思想笔记三
 date: 2014-09-08 22:34:23
-tags: think in java
+tags: thinking in java
 categories: java
-description: think in java; java编程思想
+description: thinking in java; java编程思想
 ---
 ## 持有对象
 
@@ -253,6 +253,8 @@ class TestArrays{
 ![Java容器简图](http://fh-1.qiniudn.com/collection.jpg)
 
 点线框表示接口，实线框表示普通的（具体的）类。带有空心箭头的点线表示一个特定的类实现了一个接口，实心箭头表示某各类可以生成箭头所指向的对象。
+
+容器扩展：[第十七章 容器深入研究](http://howiefh.github.io/2014/10/30/thinking-in-java-note-5/)
 
 ## 通过异常处理错误
 
