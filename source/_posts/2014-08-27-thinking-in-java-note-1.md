@@ -518,4 +518,4 @@ public void name(Long... args){}
 
 你可以将enum当做任何类来处理，事实上enum确实是类，它具有自己的方法。
 
-TODO 19章
+[第十九章 枚举类型](http://howiefh.github.io/2014/11/06/thinking-in-java-note-7/#枚举类型)

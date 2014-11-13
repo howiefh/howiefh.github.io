@@ -2,7 +2,7 @@ title: Java编程思想笔记五
 date: 2014-10-30 11:54:53
 tags: thinking in java
 categories: java
-description: thinking in java; java编程思想; 数组
+description: thinking in java; java编程思想; 数组; 容器深入研究
 ---
 ## 数组
 
