@@ -331,169 +331,135 @@ javassist应用于字节码工程。
 
 ### javac处理注解
 
-```
-javac -processor ProcessorClassName1,ProcessorClassName2,...  sourceFiles
-```
-下面例子可以自动产生bean信息类。该程序使用一个注解来标记bean的属性，然后运行某个工具对这个源文件进行解析，分析其注解，然后输出bean信息类的源文件。
-BeanInfoAnnotationProcessor.java 文件
+Java SE 6 引入了一个新的功能，叫做 可插入注解处理（Pluggable Annotation Processing） 框架，它提供了标准化的支持来编写自定义的注解处理器。之所以称为“可插入”，是因为注解处理器可以动态插入到 javac 中，并可以对出现在 Java 源文件中的一组注解进行操作。此框架具有两个部分：一个用于声明注解处理器并与其交互的 API -- 包 javax.annotation.processing -- 和一个用于对 Java 编程语言进行建模的 API -- 包 javax.lang.model。
+
+下面的例子可以提取出一个类中的public方法，构造成一个新的接口。
+InterfaceExtractorProcessor.java 文件
 
 ```
-package sourceAnnotations;
+package annotations;
 
-import java.beans.*;
+import javax.annotation.processing.*;
 import java.io.*;
 import java.util.*;
-import javax.annotation.processing.*;
-import javax.lang.model.*;
-import javax.lang.model.element.*;
 import javax.tools.*;
-import javax.tools.Diagnostic.*;
+import javax.lang.model.*;
+import javax.lang.model.util.*;
+import javax.lang.model.element.*;
 
-@SupportedAnnotationTypes("sourceAnnotations.Property")
-@SupportedSourceVersion(SourceVersion.RELEASE_7)
-public class BeanInfoAnnotationProcessor extends AbstractProcessor
-{
-   @Override
-   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv)
-   {
-      for (TypeElement t : annotations)
-      {
-         Map<String, Property> props = new LinkedHashMap<>();
-         String beanClassName = null;
-         for (Element e : roundEnv.getElementsAnnotatedWith(t))
-         {
-            String mname = e.getSimpleName().toString();
-            String[] prefixes = { "get", "set", "is" };
-            boolean found = false;
-            for (int i = 0; !found && i < prefixes.length; i++)
-               if (mname.startsWith(prefixes[i]))
-               {
-                  found = true;
-                  int start = prefixes[i].length();
-                  String name = Introspector.decapitalize(mname.substring(start));
-                  props.put(name, e.getAnnotation(Property.class));
-               }
+@SupportedAnnotationTypes("annotations.ExtractInterface")
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
+public class InterfaceExtractorProcessor extends AbstractProcessor {
+    @Override
+    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        for (Element e : roundEnv.getElementsAnnotatedWith(ExtractInterface.class)) {
+            Set<ExecutableElement> interfaceMethods = new HashSet<>();
+            ExtractInterface annot = e.getAnnotation(ExtractInterface.class);
+            for(ExecutableElement m : ElementFilter.methodsIn(e.getEnclosedElements())) {
+                if(m.getModifiers().contains(Modifier.PUBLIC) &&
+                        !(m.getModifiers().contains(Modifier.STATIC))
+                        )
+                    interfaceMethods.add(m);
+            }
+            if(interfaceMethods.size() > 0) {
+                try {
+                    JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(
+                            annot.value());
+                    PrintWriter writer = new PrintWriter(sourceFile.openWriter());
+                    writer.println("package " +
+                            processingEnv.getElementUtils().getPackageOf(e).getQualifiedName() +";");
+                    writer.println("public interface " +
+                            annot.value() + " {");
 
-            if (!found) processingEnv.getMessager().printMessage(Kind.ERROR,
-                  "@Property must be applied to getXxx, setXxx, or isXxx method", e);
-            else if (beanClassName == null)
-               beanClassName = ((TypeElement) e.getEnclosingElement()).getQualifiedName()
-                     .toString();
-         }
-         try
-         {
-            if (beanClassName != null) writeBeanInfoFile(beanClassName, props);
-         }
-         catch (IOException e)
-         {
-            e.printStackTrace();
-         }
-      }
-      return true;
-   }
-
-   /**
-    * Writes the source file for the BeanInfo class.
-    * @param beanClassName the name of the bean class
-    * @param props a map of property names and their annotations
-    */
-   private void writeBeanInfoFile(String beanClassName, Map<String, Property> props)
-      throws IOException
-   {
-      JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(
-         beanClassName + "BeanInfo");
-      PrintWriter out = new PrintWriter(sourceFile.openWriter());
-      int i = beanClassName.lastIndexOf(".");
-      if (i > 0)
-      {
-         out.print("package ");
-         out.print(beanClassName.substring(0, i));
-         out.println(";");
-      }
-      out.print("public class ");
-      out.print(beanClassName.substring(i + 1));
-      out.println("BeanInfo extends java.beans.SimpleBeanInfo");
-      out.println("{");
-      out.println("   public java.beans.PropertyDescriptor[] getPropertyDescriptors()");
-      out.println("   {");
-      out.println("      try");
-      out.println("      {");
-      for (Map.Entry<String, Property> e : props.entrySet())
-      {
-         out.print("         java.beans.PropertyDescriptor ");
-         out.print(e.getKey());
-         out.println("Descriptor");
-         out.print("            = new java.beans.PropertyDescriptor(\"");
-         out.print(e.getKey());
-         out.print("\", ");
-         out.print(beanClassName);
-         out.println(".class);");
-         String ed = e.getValue().editor().toString();
-         if (!ed.equals(""))
-         {
-            out.print("         ");
-            out.print(e.getKey());
-            out.print("Descriptor.setPropertyEditorClass(");
-            out.print(ed);
-            out.println(".class);");
-         }
-      }
-      out.println("         return new java.beans.PropertyDescriptor[]");
-      out.print("         {");
-      boolean first = true;
-      for (String p : props.keySet())
-      {
-         if (first) first = false;
-         else out.print(",");
-         out.println();
-         out.print("            ");
-         out.print(p);
-         out.print("Descriptor");
-      }
-      out.println();
-      out.println("         };");
-      out.println("      }");
-      out.println("      catch (java.beans.IntrospectionException e)");
-      out.println("      {");
-      out.println("         e.printStackTrace();");
-      out.println("         return null;");
-      out.println("      }");
-      out.println("   }");
-      out.println("}");
-      out.close();
-   }
-}
+                    for(ExecutableElement m : interfaceMethods) {
+                        writer.print("  public ");
+                        writer.print(m.getReturnType() + " ");
+                        writer.print(m.getSimpleName() + " (");
+                        int i = 0;
+                        
+                        for(VariableElement parm : m.getParameters()) {
+                            writer.print(parm.asType() + " " +
+                                    parm.getSimpleName());
+                            if(++i < m.getParameters().size())
+                                writer.print(", ");
+                        }
+                        writer.println(");");
+                    }
+                    writer.println("}");
+                    writer.close();
+                } catch(IOException ioe) {
+                    throw new RuntimeException(ioe);
+                }
+            }
+        } 
+        return true;
+    }
+} ///:~
 ```
 
-Property.java文件
+ExtractInterface.java文件
 
 ```
-package sourceAnnotations;
+package annotations;
 import java.lang.annotation.*;
 
-@Documented
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
-public @interface Property
-{
-   String editor() default ""; 
-}
+public @interface ExtractInterface {
+  public String value();
+} ///:~
+
+```
+Multiplier.java文件
+
+```
+package annotations;
+@ExtractInterface("IMultiplier")
+public class Multiplier {
+  public int multiply(int x, int y) {
+    int total = 0;
+    for(int i = 0; i < x; i++)
+      total = add(total, y);
+    return total;
+  }
+  private int add(int x, int y) { return x + y; }
+  public static void main(String[] args) {
+    Multiplier m = new Multiplier();
+    System.out.println("11*16 = " + m.multiply(11, 16));
+  }
+} 
 ```
 
-BeanInfoAnnotationProcessor具有唯一的公共方法process，该方法第一个参数是在本轮中要进行处理的注解集，另一个是包含了有关当前处理轮次的信息的RoundEnv引用。
+自定义注解处理器继承 AbstractProcessor（这是 Processor 接口的默认实现），并覆盖 process() 方法。
+
+注解处理器类将使用两个类级别的注解 @SupportedAnnotationTypes 和 @SupportedSourceVersion 来装饰。 SupportedSourceVersion 注解指定注解处理器支持的最新的源版本。SupportedAnnotationTypes 注解指示此特定的注解处理器对哪些注解感兴趣。例如，如果处理器只需处理 Java Persistence API (JPA) 注解，则将使用 @SupportedAnnotationTypes ("javax.persistence.*")。值得注意的一点是，如果将支持的注解类型指定为 @SupportedAnnotationTypes("*")，即使没有任何注解，仍然会调用注解处理器。这允许我们有效利用建模 API 以及 Tree API 来执行通用的源码处理。使用这些 API，可以获得与修改符、字段、方法但等有关的大量有用的信息。
+
+是否调用注解处理器取决于源码中存在哪些注解，哪些处理器配置为可用，哪些注解类型是可用的后处理器进程。注解处理可能发生在多个轮回中。例如，在第一个轮回中，将处理原始输入 Java 源文件；在第二个轮回中，将考虑处理由第一个轮回生成的文件，等等。自定义处理器应覆盖 AbstractProcessor 的 process()。此方法接受两个参数：
+
+* 源文件中找到的一组 TypeElements/ 注解。
+* 封装有关注解处理器当前处理轮回的信息的 RoundEnvironment。
+
+如果处理器声明其支持的注解类型，则 process() 方法返回 true，而不会为这些注解调用其他处理器。否则，process() 方法返回 false 值，并将调用下一个可用的处理器（如果存在的话）。
 
 我们使用下面的调用来创建源文件。
 
 ```
-JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(beanClassName + "BeanInfo");
-PrintWriter out = new PrintWriter(sourceFile.openWriter());
+JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(annot.value());
+PrintWriter writer = new PrintWriter(sourceFile.openWriter());
 ```
 
-先编译
+Java SE 6 的 javac 实用程序提供一个称为 -processor 的选项，来接受要插入到的注解处理器的完全限定名。
+
 ```
-javac sourceAnnotations/BeanInfoAnnotationProcessor.java
+javac -processor ProcessorClassName1,ProcessorClassName2,...  sourceFiles
+```
+
+先编译注解处理器
+```
+javac annotations/InterfaceExtractorProcessor.java
 ```
 然后运行
 ```
-javac -processor sourceAnnotations.BeanInfoAnnotationProcessor chart/ChartBean.java
+javac -processor annotations.InterfaceExtractorProcessor annotations/Multiplier.java
 ```
+接口文件IMultiplier.java已经在当前路径下生成。
