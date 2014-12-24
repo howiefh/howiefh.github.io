@@ -1,7 +1,7 @@
 title: C语言日志系统库
 date: 2014-02-03 17:25:10
-categories: c
-tags: [c, log]
+categories: C
+tags: [C, Log]
 ---
 本文要介绍两个C语言日志系统库:log4c和zlog。主要介绍下载安装，简单配置以及封装使用的步骤。
 # log4c

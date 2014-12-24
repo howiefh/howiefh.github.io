@@ -1,10 +1,10 @@
 title: mongodb笔记(一) 安装启动mongodb
 date: 2014-04-26 22:26:20
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: 数据库， mongodb 安装，mongodb 启动，mongodb install
 ---
 ## Windows下安装

@@ -1,7 +1,7 @@
 title: eclipse小技巧
 date: 2014-02-08 15:51:44
-categories: eclipse
-tags: [eclipse, 软件]
+categories: Eclipse
+tags: [Eclipse, 软件]
 ---
 ## 代码提示
 

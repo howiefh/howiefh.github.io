@@ -1,7 +1,7 @@
 title: 让tagbar支持markdown
 date: 2013-05-17 18:12:11
-categories: vim
-tags: [vim, markdown]
+categories: Vim
+tags: [Vim, Markdown]
 ---
 ### 编辑ctags.cnf文件
 

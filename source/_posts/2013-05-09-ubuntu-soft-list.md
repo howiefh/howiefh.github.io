@@ -1,7 +1,7 @@
 title: Ubuntu软件列表
 date: 2013-05-09 22:36:50
-categories: ubuntu
-tags: [ubuntu, 软件] 
+categories: Ubuntu
+tags: [Ubuntu, 软件] 
 ---
 记录一下我的Ubuntu中安装的软件
 

@@ -1,7 +1,7 @@
 title: gcc编译问题
 date: 2014-02-08 16:31:16
-categories: c
-tags: [c, gcc]
+categories: C
+tags: [C, Gcc]
 ---
 # 问题
 (.rodata+0x0): multiple definition of   

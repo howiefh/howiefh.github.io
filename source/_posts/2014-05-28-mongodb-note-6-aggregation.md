@@ -1,10 +1,10 @@
 title: mongodb笔记(六) 聚合
 date: 2014-05-28 10:11:50
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: mongodb aggregation, mongodb 聚合
 ---
 

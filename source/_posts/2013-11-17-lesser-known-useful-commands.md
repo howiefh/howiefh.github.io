@@ -1,7 +1,7 @@
 title: 鲜为人知的Linux命令
 date: 2013-11-17 17:16:56
-categories: linux 
-tags: linux
+categories: Linux 
+tags: Linux
 ---
 ## sudo !! 命令  
 使用sudo命令执行上一条命令

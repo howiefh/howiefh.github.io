@@ -1,7 +1,7 @@
 title: 解决git在Windows下的乱码问题 
 date: 2014-10-11 20:20:42
-tags: git
-categories: git
+tags: Git
+categories: Git
 description: git 乱码;git encoding 
 ---
 

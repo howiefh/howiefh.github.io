@@ -1,10 +1,10 @@
 title: mongodb笔记(七) 进阶指南
 date: 2014-06-04 09:43:00
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: mongodb advanced topics, mongodb 进阶
 ---
 

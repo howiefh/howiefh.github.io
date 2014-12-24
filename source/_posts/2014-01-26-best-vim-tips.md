@@ -1,7 +1,7 @@
 title: Best of Vim Tips 中文版
 date: 2014-01-26 17:48:52
-categories: vim
-tags: vim
+categories: Vim
+tags: Vim
 ---
 这篇文章出自：<https://groups.google.com/d/msg/vim-cn/XCVyjj7svs4/AVGVRQa6L_cJ>
 

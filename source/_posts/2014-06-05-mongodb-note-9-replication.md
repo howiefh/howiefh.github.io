@@ -1,10 +1,10 @@
 title: mongodb笔记(九) 复制
 date: 2014-06-05 23:13:04
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: mongodb replication, mongodb 复制
 ---
 

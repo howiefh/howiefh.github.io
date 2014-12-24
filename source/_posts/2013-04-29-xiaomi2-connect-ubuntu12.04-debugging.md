@@ -1,7 +1,7 @@
 title: 小米2连接Ubuntu12.04进行调试
 date: 2013-04-29 15:32:38
-categories: ubuntu
-tags: [小米, ubuntu]
+categories: Ubuntu
+tags: [小米, Ubuntu]
 ---
 ## 运行lsusb
 打开终端，在未连接小米的情况下运行lsusb，之后连接小米再运行lsusb，比较两次的输出应该会发现多出这样一行：

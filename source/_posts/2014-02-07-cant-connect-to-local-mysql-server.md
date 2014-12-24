@@ -1,9 +1,9 @@
 title: 连接数据库失败
 date: 2014-02-07 23:02:09
 categories:
-- database
-- mysql
-tags: mysql
+- Database
+- MySQL
+tags: MySQL
 ---
 ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)  
 出现以上问题，搜索后参考下面的一个回答解决

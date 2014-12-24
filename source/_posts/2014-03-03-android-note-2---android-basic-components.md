@@ -1,7 +1,7 @@
 title: Android应用的基本组件介绍
 date: 2014-03-03 20:41:44
-categories: android
-tags: android
+categories: Android
+tags: Android
 ---
 Android应用通常由一个或多个组件组成，而最常用的组件是Activity，另外还包括Service、BroadcastReceiver、ContentProvider、Intent 。
  

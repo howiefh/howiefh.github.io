@@ -1,7 +1,7 @@
 title: 使用substance美化java界面并解决乱码问题
 date: 2014-02-07 18:08:42
-categories: java
-tags: java
+categories: Java
+tags: Java
 ---
 
 使用java做界面，并不怎么美观，可以使用substance包来做美化。但是界面中的中文字符会出现乱码的现象，可以通过设置字体来解决这个问题。首先写使用substance外观的代码，然后在要使窗体显示的代码之前调用一个方法

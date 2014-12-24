@@ -1,7 +1,7 @@
 title: php中require_once的问题
 date: 2014-02-07 22:24:45
-categories: php
-tags: php
+categories: PHP
+tags: PHP
 ---
 先看个例子。目录结构./c.php，./a.php，./demo/b.php。
 

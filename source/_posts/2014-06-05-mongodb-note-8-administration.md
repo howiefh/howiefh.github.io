@@ -1,10 +1,10 @@
 title: mongodb笔记(八) 管理
 date: 2014-06-05 09:20:02
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: mongodb administration, mongodb 管理
 ---
 

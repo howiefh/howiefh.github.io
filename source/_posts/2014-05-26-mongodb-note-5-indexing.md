@@ -1,10 +1,10 @@
 title: mongodb笔记(五) 索引
 date: 2014-05-26 11:48:34
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: mongodb indexing, mongodb 索引
 ---
 

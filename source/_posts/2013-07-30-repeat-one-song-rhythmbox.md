@@ -1,7 +1,7 @@
 title: Rhythmbox单曲循环
 date: 2013-07-30 15:38:39
-categories: ubuntu
-tags: [ubuntu,rhythmbox]
+categories: Ubuntu
+tags: [Ubuntu,Rhythmbox]
 ---
 单曲循环插件——Repeat One Song  
 主页：https://launchpad.net/repeat-one-song

@@ -1,7 +1,7 @@
 title: Java编程思想笔记三
 date: 2014-09-08 22:34:23
-tags: thinking in java
-categories: java
+tags: Thinking in Java
+categories: Java
 description: thinking in java; java编程思想
 ---
 ## 持有对象

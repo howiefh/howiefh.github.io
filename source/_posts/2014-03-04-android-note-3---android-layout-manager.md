@@ -1,7 +1,7 @@
 title: Android布局管理器
 date: 2014-03-04 19:22:01
-categories: android
-tags: android
+categories: Android
+tags: Android
 ---
 ## 线性布局
 线性布局由LinearLayout类来代表，它将容器里面的组件一个挨着一个地排列起来。LinearLayout不仅可以控制各组件横向排列（通过设置android:orientation属性控制），也可以控制各组件纵向排列。

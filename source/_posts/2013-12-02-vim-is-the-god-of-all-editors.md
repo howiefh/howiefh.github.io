@@ -1,7 +1,7 @@
 title: 编辑器之神Vim
 date: 2013-12-02 20:27:18
-categories: vim
-tags: vim
+categories: Vim
+tags: Vim
 ---
 世界上有三种程序员，一种用Emacs，一种用Vi，剩下的是用其它编辑器的。Emacs是神的编辑器，[Vim](http://www.vim.org/)是编辑器之神。选择Vim还是Emacs，编辑器之争到今天也不曾有什么定论，也不可能有什么定论。有人说Emacs是伪装成编辑器的操作系统，这句话并不夸张，Emacs有一个强大的语言Lisp作支撑。Vim是由[Bram Moolenaar](http://www.moolenaar.net)发布的Vi的衍生版本，增加了非常多的新特性，也是最受欢迎的一个版本，现在有些Linux发行版本默认情况下会将Vi直接链接到Vim。相对来讲，Vim的脚本语言弱一些，Vim则更专注于做强大的编辑器。Vim 的设计则更符合UNIX哲学－－“Do one thing and do it well"。
 <!-- more -->

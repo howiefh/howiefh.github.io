@@ -1,7 +1,7 @@
 title: Java编程思想笔记四
 date: 2014-10-17 09:58:25
-tags: thinking in java
-categories: java
+tags: Thinking in Java
+categories: Java
 description: thinking in java; java编程思想
 ---
 

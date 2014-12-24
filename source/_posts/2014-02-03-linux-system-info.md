@@ -1,7 +1,7 @@
 title: Linux系统信息
 date: 2014-02-03 15:59:04
-categories: linux
-tags: linux
+categories: Linux
+tags: Linux
 ---
 ## 查看cpu详细情况    
 

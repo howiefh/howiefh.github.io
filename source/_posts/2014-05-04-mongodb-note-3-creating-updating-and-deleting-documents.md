@@ -1,10 +1,10 @@
 title: mongodb笔记(三) 创建、更新、删除文档
 date: 2014-05-04 11:21:38
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: mongodb 创建，mongodb 删除，mongodb 更新，mongodb 文档
 ---
 ## 插入并保存文档

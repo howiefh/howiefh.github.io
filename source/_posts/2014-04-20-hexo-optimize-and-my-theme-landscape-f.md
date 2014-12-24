@@ -1,10 +1,8 @@
 layout: post
 title: hexo优化及主题Landscape-F
 date: 2014-04-20 21:45:47
-tags:
-- hexo
-categories:
-- hexo
+tags: Hexo
+categories: Hexo
 description: hexo Landscape-F, hexo 优化，hexo 博客，hexo 主题，hexo 七牛，hexo 多说，hexo theme，hexo github，hexo 图片，hexo 返回顶部, hexo 日历, hexo 友情链接, hexo about me, hexo 分享，hexo 彩色标签云, hexo 文章目录, hexo 最近更新, hexo 评论, hexo 技巧，hexo 教程 
 ---
 自从去年装好[Hexo]后就没有更新过，直到最近才把[Hexo]从1.1.3更新到了2.5.2。发现有了不少的变化，插件比过去多了，还有了新的默认主题，[文档]也比过去更详细了。但是默认主题有一些我需要的东西还没有，比如文章目录、返回顶部按钮、多说评论，百度分享等等。在网上找了不少[Hexo主题]，最后还是觉得默认主题比较不错，还有一个[Pacman]感觉也挺好的。于是就在[Landscape]基础上主要参考[Pacman]对默认主题进行了一些优化，这样我的主题[Landscape-F]就诞生了。

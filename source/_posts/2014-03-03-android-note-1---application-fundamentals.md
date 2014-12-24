@@ -1,7 +1,7 @@
 title: Android应用结构分析
 date: 2014-03-03 11:26:29
-categories: android
-tags: android
+categories: Android
+tags: Android
 ---
 ## 创建Android项目命令 
 ```

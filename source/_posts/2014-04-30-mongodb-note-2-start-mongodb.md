@@ -1,10 +1,10 @@
 title: mongodb笔记(二) 入门
 date: 2014-04-30 09:46:04
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: mongodb 入门
 ---
 

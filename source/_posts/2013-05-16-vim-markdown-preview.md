@@ -1,7 +1,7 @@
 title: vim编辑markdown时实现预览
 date: 2013-05-16 23:39:12
-categories: vim
-tags: [vim, markdown, chrome]
+categories: Vim
+tags: [Vim, Markdown, Chrome]
 ---
 现在使用hexo+vim+markdown+github来写博客。但是在用vim编辑markdown文件的时候，感觉缺个实时预览的功能。在不用任何插件的情况下，可以这样来做：首先，`hexo new "your title"`；然后，编辑你的markdown文件，保存；之后`hexo server`，打开<http://localhost:4000/>，之后你可以继续在vim里继续编辑，然后保存，再手动刷新页面来预览结果。
 <!--more-->   

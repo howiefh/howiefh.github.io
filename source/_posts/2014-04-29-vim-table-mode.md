@@ -1,10 +1,8 @@
 layout: post
 title: vim插入表格(Vim Table Mode)
 date: 2014-04-29 17:23:20
-tags:
-- vim
-categories:
-- vim
+tags: Vim
+categories: Vim
 description: vim table mode，vim 表格
 ---
 hexo升级后，对GFM有了更好的支持，现在可以方便地使用GFM的表格了。为了方便在Vim里用markdown写博客，就想找一个好用的vim插件，搜了一下，有不少这类插件，比如[vim-rst-tables],[RST-Tables-CJK],[rst_tables 改进版]等，但是都对 python 有依赖。找了老半天，最后还真找到一个不需要依赖 python 的： [VIM Table Mode]。下面简单介绍一下这个插件。

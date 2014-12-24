@@ -1,10 +1,10 @@
 title: vsftpd 配置虚拟用户
 date: 2014-07-26 11:46:40
 tags: 
-- ftp
-- vsftpd
+- FTP
+- Vsftpd
 categories:
-- ftp
+- FTP
 description: vsftpd 虚拟用户, vsftpd 配置
 ---
 ## 基础

@@ -1,10 +1,10 @@
 title: mongodb笔记(四) 查询
 date: 2014-05-08 21:48:34
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: mongodb querying, mongodb 查询
 ---
 ## find 

@@ -1,7 +1,7 @@
 title: Java编程思想笔记六
 date: 2014-11-04 20:53:54
-tags: thinking in java
-categories: java
+tags: Thinking in Java
+categories: Java
 description: thinking in java; java编程思想; Java I/O系统;
 ---
 ## Java I/O 系统

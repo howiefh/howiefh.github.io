@@ -1,7 +1,7 @@
 title: 搭建git服务器
 date: 2014-10-13 21:01:58
-tags: git
-categories: git
+tags: Git
+categories: Git
 description: 搭建git服务器;set up git server;gitblit;
 ---
 

@@ -1,10 +1,10 @@
 title: mongodb笔记(十) 分片
 date: 2014-06-06 16:45:46
 tags:
-- mongodb
+- MongoDB
 categories:
-- database
-- mongodb
+- Database
+- MongoDB
 description: mongodb sharding, mongodb 分片
 ---
 
