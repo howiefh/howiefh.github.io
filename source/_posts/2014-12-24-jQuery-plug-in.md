@@ -224,7 +224,7 @@ $('input[data-date-format]').datetimepicker({
 
 这类组件比较多，下面列出我搜到的几个还不错的。
 
-### [jQuery File Upload ]
+### [jQuery File Upload]
 
 jQuery File Upload 是一个Jquery图片上传组件，支持多文件上传、取消、删除，上传前缩略图预览、列表显示图片大小，支持上传进度条显示；支持各种动态语言开发的服务器端。
 jQuery File Upload有多个文件选择，拖放上传控件拖放支持，进度条，验证和预览图像，音频和视频 。
