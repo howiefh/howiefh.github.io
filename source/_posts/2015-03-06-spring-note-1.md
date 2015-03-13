@@ -1,7 +1,9 @@
 title: Spring笔记一
 date: 2015-03-06 16:09:20
 tags: Spring
-categories: Spring
+categories: 
+- JavaEE
+- Spring
 description: Spring
 ---
 

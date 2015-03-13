@@ -1,7 +1,9 @@
 title: Hibernate笔记 
 date: 2015-03-05 22:49:08
 tags: Hibernate
-categories: Hibernate
+categories: 
+- JavaEE
+- Hibernate
 description: Hibernate
 ---
 
