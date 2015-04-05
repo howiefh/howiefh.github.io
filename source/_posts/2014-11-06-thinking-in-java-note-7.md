@@ -25,13 +25,13 @@ description: thinking in java; java编程思想; 枚举类型;
 
 ### 向enum中添加新方法
 
-基本上可以将enum看作一个常规的类，也就是说可以向enum添加方法，甚至可以由main方法。
+**基本上可以将enum看作一个常规的类，也就是说可以向enum添加方法，甚至可以由main方法**。
 
-如果打算自己的方法，那么必须在enum实例的最后添加一个分号，而且必须先定义enum实例，实例之前不能有任何方法，否则报错。
+**如果打算添加自己的方法，那么必须在enum实例的最后添加一个分号，而且必须先定义enum实例，实例之前不能有任何方法，否则报错**。
 
 因为我们只能在enum定义的内部使用其构造器创建enum实例，所以enum构造器声明为private并没有什么影响。
 
-此外我们也可以enum的方法
+此外我们也可以覆盖enum的方法
 
 ### switch语句中的enum
 
@@ -39,13 +39,13 @@ description: thinking in java; java编程思想; 枚举类型;
 
 ### values()的神秘之处
 
-enum类都继承自Enum类，但是Enum类中并没有values()方法。values()是由编译器添加的static方法。编译器还添加了一个只有一个参数的valueOf()方法，和一个static初始化语句块。
+enum类都继承自Enum类，但是Enum类中并没有values()方法。**values()是由编译器添加的static方法。编译器还添加了一个只有一个参数的valueOf()方法，和一个static初始化语句块**。
 
 如果将enum实例向上转型为Enum，那么values()方法就不可访问了。不过，在Class中有一个getEnumConstants()方法，所以即便Enum接口中没有values()方法，我们仍然可以通过Class对象取得所有enum实例。
 
 ### 实现，而非继承
 
-所有enum都继承了Enum类，所以enum不能再继承其他类，但是可以实现一个或多个接口。
+**所有enum都继承了Enum类，所以enum不能再继承其他类，但是可以实现一个或多个接口**。
 
 ### 随机选取
 
@@ -55,7 +55,7 @@ enum类都继承自Enum类，但是Enum类中并没有values()方法。values()�
 
 我们希望从enum继承子类，是由于有时我们希望扩展远enum中的元素，有时是因为我们希望使用子类将一个enum中的元素进行分组。
 
-在一个接口的内部，创建实现该接口的枚举，以此将元素进行分组，可以达到将枚举元素分类组织的目的。
+**在一个接口的内部，创建实现该接口的枚举，以此将元素进行分组，可以达到将枚举元素分类组织的目的**。
 
 ```
 public interface Food {
@@ -128,7 +128,7 @@ EnumSet（可能）就是将一个long值作为比特向量，所以EnumSet非�
 
 allOf(Class<E> elementType) 创建一个包含指定元素类型的所有元素的 EnumSet。 
 clone() 返回set的副本
-complementOf(EnumSet<E> s) 创建一个其元素类型与指定 EnumSet 相同的 EnumSet，最初包含指定 set 中所不 包含的此类型的所有元素。 
+complementOf(EnumSet<E> s) 创建一个其元素类型与指定 EnumSet 相同的 EnumSet，最初包含指定 set 中所不包含的此类型的所有元素。 
 copyOf(Collection<E> c) 创建一个从指定 collection 初始化的枚举 set。 
 copyOf(EnumSet<E> s) 创建一个其元素类型与指定 EnumSet 相同的 EnumSet，最初包含相同的元素（如果有的话）。 
 noneOf(Class<E> elementType) 创建一个具有指定元素类型的空 EnumSet。 
@@ -143,11 +143,11 @@ EnumMap速度很快，只能讲enum的实例作为键来调用put()方法，其�
 
 与EnumSet一样，enum实例定义时的次序决定了其在EnumMap中的顺序。
 
-与常量相关的方法相比，EnumMap有一个优点，那EnumMap允许程序员改变值对象，而常量相关的方法再编译期就固定了。
+与常量相关的方法相比，EnumMap有一个优点，那EnumMap允许程序员改变值对象，而常量相关的方法在编译期就固定了。
 
 ### 常量相关的方法
 
-Java允许enum实例编写方法，从而为每个enum实例赋予各自不同的行为。你需要为enum定义一个或多个abstract方法，然后为每个enum实例实现该抽象方法。
+**Java允许enum实例编写方法，从而为每个enum实例赋予各自不同的行为。你需要为enum定义一个或多个abstract方法，然后为每个enum实例实现该抽象方法**。
 
 通过相应的enum实例，我们可以调用其上的方法。这通常也称为表驱动的代码，注意它与命令模式的区别。
 
@@ -172,7 +172,7 @@ Java只支持单路分发。也就是说，如果要执行的操作包含了不�
 
 例如，Number是各种数字的超类，a，b都是Number类对象，执行a.plus(b)时，java的动态绑定机制可以判断调用方法的对象a的确切类型，但是却不知道b的确切类型。
 
-解决问题的办法就是多路分发（在上例中只有两个分发，一般称之为两路分发）。如果想使用两路分发，那么就必须有两个方法调用：第一个方法调用决定第一个未知类型，第二个方法调用决定第二个未知的类型。例如在plus方法中再执行 b.plus(this)
+**解决问题的办法就是多路分发（在上例中只有两个分发，一般称之为两路分发）。如果想使用两路分发，那么就必须有两个方法调用：第一个方法调用决定第一个未知类型，第二个方法调用决定第二个未知的类型。例如在plus方法中再执行 b.plus(this)**
 
 书中举了“石头、剪刀、布”的例子，使用enum、常量相关的方法、EnumMap、二维数组进行多路的分发。
 
@@ -194,7 +194,7 @@ Java SE5内置了三种，定义在java.lang中的注解：
 
 #### 定义注解
 
-包 java.lang.annotation 中包含所有定义自定义注解所需用到的原注解和接口。如接口 java.lang.annotation.Annotation 是所有注解继承的接口,并且是自动继承，不需要定义时指定，类似于所有类都自动继承Object。
+包 java.lang.annotation 中包含所有定义自定义注解所需用到的原注解和接口。**如接口 java.lang.annotation.Annotation 是所有注解继承的接口,并且是自动继承，不需要定义时指定，类似于所有类都自动继承Object**。
 
 ```
 @Target(ElementType.METHOD)
@@ -210,7 +210,7 @@ public class PasswordUtils {
     }
 }
 ```
-定义注解时会需要一些元注解，@Target定义注解应用的地方；@Retention定义注解应用的级别。
+**定义注解时会需要一些元注解，@Target定义注解应用的地方；@Retention定义注解应用的级别**。
 
 注解中，一般都会包含一些元素以表示某些值。当分析处理注解时，程序或工具可以利用这些值。注解的元素看起来就像接口的方法，唯一的区别是你可以为其指定默认值。没有元素的注解称为标记注解。
 
@@ -247,20 +247,20 @@ public class UseCaseTracker {
     }
 }
 ```
-反射方法getDeclaredMethods()与getAnnotation()均属于AnnotationElement接口，Class、Method、Field均实现了该接口。getAnnotation()方法返回指定类型的注解对象。使用反射获取到注解对象之后，类似使用调用方法的方式获取注解的值，如uc.id()等。
+**反射方法getDeclaredMethods()与getAnnotation()均属于AnnotationElement接口，Class、Method、Field均实现了该接口。getAnnotation()方法返回指定类型的注解对象。使用反射获取到注解对象之后，类似使用调用方法的方式获取注解的值，如uc.id()等**。
 
 #### 注解元素
 
-注解元素可用基本类型包括：所有基本类型、String、Class、enum、Annotation以及所有前面这些类型的数组。不允许使用任何包装类型，注解可以嵌套。
+**注解元素可用基本类型包括：所有基本类型、String、Class、enum、Annotation以及所有前面这些类型的数组。不允许使用任何包装类型，注解可以嵌套**。
 
-因为注解是由编译器计算而来的，因此，所有元素值必须是编译期常量。
+**因为注解是由编译器计算而来的，因此，所有元素值必须是编译期常量**。
 
 如果元素值是一个数组，要将它的值用大括号括起来`@Test(array={"a","b"})`，如果只有一个值，也可以省去括号。
 
 #### 默认值限制
 
-注解元素不能有不确定的值，也就是说，元素必须要么具有默认值，要么使用注解时提供元素的值。
-不能以null作为其值。为了绕开这个约束，可以定义一些特殊的值，例如空字符串或负数，以表示某个元素不存在。
+**注解元素不能有不确定的值，也就是说，元素必须要么具有默认值，要么使用注解时提供元素的值**。
+**不能以null作为其值。为了绕开这个约束，可以定义一些特殊的值，例如空字符串或负数，以表示某个元素不存在**。
 
 #### 生成外部文件
 
@@ -290,7 +290,7 @@ public @interface SQLString {
 SQLString中元素constraints的类型就是一个注解。
 
 快捷方式：
-注解中定义了名为value的元素，且在应用该注解时，若该元素是唯一需赋值元素，则无需使用名-值对语法，只需在括号内给出value值即可。
+**注解中定义了名为value的元素，且在应用该注解时，若该元素是唯一需赋值元素，则无需使用名-值对语法，只需在括号内给出value值即可**。
 
 ```
 pubic class Member {
@@ -307,7 +307,7 @@ pubic class Member {
 
 #### 注解不支持继承
 
-由于注解没有继承机制，所以要获得近似多态的行为，使用getDeclaredAnnotation()是唯一的办法（Field类中提供该方法）。
+**由于注解没有继承机制，所以要获得近似多态的行为，使用getDeclaredAnnotations()是唯一的办法（Field类中提供该方法）**。
 
 ### 使用apt处理注解
 
@@ -321,7 +321,7 @@ pubic class Member {
 ### 将观察者模式应用于apt
 
 mirror API提供了对访问者设计模式的支持。
-一个访问者会遍历某个数据结构或一个对象的集合，对其中的每一个对象执行一个操作，该数据结构无需有序，而你对每个对象执行的操作，都是特定于次对象的类型。这就是操作与对象解耦，也就是说，你可以添加新的操作，而无需向类的定义中添加方法。
+一个访问者会遍历某个数据结构或一个对象的集合，对其中的每一个对象执行一个操作，该数据结构无需有序，而你对每个对象执行的操作，都是特定于此对象的类型。这就是操作与对象解耦，也就是说，你可以添加新的操作，而无需向类的定义中添加方法。
 
 ### 基于注解单元测试
 
@@ -432,7 +432,7 @@ public class Multiplier {
 
 自定义注解处理器继承 AbstractProcessor（这是 Processor 接口的默认实现），并覆盖 process() 方法。
 
-注解处理器类将使用两个类级别的注解 @SupportedAnnotationTypes 和 @SupportedSourceVersion 来装饰。 SupportedSourceVersion 注解指定注解处理器支持的最新的源版本。SupportedAnnotationTypes 注解指示此特定的注解处理器对哪些注解感兴趣。例如，如果处理器只需处理 Java Persistence API (JPA) 注解，则将使用 @SupportedAnnotationTypes ("javax.persistence.*")。值得注意的一点是，如果将支持的注解类型指定为 @SupportedAnnotationTypes("*")，即使没有任何注解，仍然会调用注解处理器。这允许我们有效利用建模 API 以及 Tree API 来执行通用的源码处理。使用这些 API，可以获得与修改符、字段、方法但等有关的大量有用的信息。
+注解处理器类将使用两个类级别的注解 @SupportedAnnotationTypes 和 @SupportedSourceVersion 来装饰。 SupportedSourceVersion 注解指定注解处理器支持的最新的源版本。SupportedAnnotationTypes 注解指示此特定的注解处理器对哪些注解感兴趣。例如，如果处理器只需处理 Java Persistence API (JPA) 注解，则将使用 @SupportedAnnotationTypes ("javax.persistence.*")。值得注意的一点是，如果将支持的注解类型指定为 @SupportedAnnotationTypes("*")，即使没有任何注解，仍然会调用注解处理器。这允许我们有效利用建模 API 以及 Tree API 来执行通用的源码处理。使用这些 API，可以获得与修改符、字段、方法等有关的大量有用的信息。
 
 是否调用注解处理器取决于源码中存在哪些注解，哪些处理器配置为可用，哪些注解类型是可用的后处理器进程。注解处理可能发生在多个轮回中。例如，在第一个轮回中，将处理原始输入 Java 源文件；在第二个轮回中，将考虑处理由第一个轮回生成的文件，等等。自定义处理器应覆盖 AbstractProcessor 的 process()。此方法接受两个参数：
 

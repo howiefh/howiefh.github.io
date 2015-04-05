@@ -43,9 +43,9 @@ FancyToy.class;
 类字面常量不仅可以应用于普通的类，也可以应用于接口、数组、以及基本数据类型。另外，对于基本数据类型的包装类，还有一个标准的TYPE。TYPE字段是一个引用，指向对应的基本数据类型的Class对象，和.class是等效的。
 
 当使用.class来创建对Class对象的引用的时候，不会自动初始化该Class对象，为了使用类而做的准备工作实际包含三个步骤：
-1. 加载。由类加载器执行。该步骤将查找字节码，并从字节码中创建class对象。
-2. 链接。验证类中的字节码，为静态域分配存储空间，并且需要的话，将解析这个类创建的对其他类的所有引用。
-3. 初始化。如果该类具有超类，则对其进行初始化，执行静态初始化器和静态初始化模块。
+1. **加载。由类加载器执行。该步骤将查找字节码，并从字节码中创建class对象。**
+2. **链接。验证类中的字节码，为静态域分配存储空间，并且需要的话，将解析这个类创建的对其他类的所有引用。**
+3. **初始化。如果该类具有超类，则对其进行初始化，执行静态初始化器和静态初始化模块。**
 
 * 仅使用.class语法来获得对类的引用不会引发初始化。但是，为了产生Class引用，Class.forName()立即就进行了初始化。
 * 如果一个static final值是“编译期常量”，那么这个值不需要对类进行初始化就可以被读取。但是有例外，如果是通过一个静态方法赋值的，仍需要进行初始化。
@@ -59,7 +59,7 @@ FancyToy.class;
 
 #### 新的转型语法
 
-Java SE5还添加了用于Class引用的转型语法，即cast()方法：
+**Java SE5还添加了用于Class引用的转型语法，即cast()方法**：
 
 ### 类型转换前先做检查
 
@@ -87,7 +87,7 @@ Java SE5还添加了用于Class引用的转型语法，即cast()方法：
 
 Class类和java.lang.reflect类库对反射进行了支持，该类库包含Field、Method、Constructor类。
 
-Constructor的newInstance()方法，Method的invoke()方法，Field的一系列get()和set()方法，Class的getFields()、getMethods()、getConstructors()方法都是常用到的方法。
+**Constructor的newInstance()方法，Method的invoke()方法，Field的一系列get()和set()方法，Class的getFields()、getMethods()、getConstructors()方法都是常用到的方法。**
 
 反射在java中用来支持其它特性，如对象序列化和JavaBean。
 
@@ -98,6 +98,21 @@ Constructor的newInstance()方法，Method的invoke()方法，Field的一系列g
 通过调用静态方法Proxy.newProxyInstance()可以创建动态代理，这个方法需要得到一个类加载器（你通常可以从已经被加载的对象中获取其类加载器，然后传递给它），一个你希望该代理实现的接口列表（不是类或者抽象类），以及InvocationHandle接口的一个实现。
 
 在动态代理上所做的所有调用都会被重定向到单一的调用处理器上，它的工作是揭示调用的类型并确定相应的对策。
+
+```
+public List getList(final List list) {
+    return (List) Proxy.newProxyInstance(DummyProxy.class.getClassLoader(), new Class[] { List.class },
+        new InvocationHandler() {
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                if ("add".equals(method.getName())) {
+                    throw new UnsupportedOperationException();
+                } else {
+                    return method.invoke(list, args);
+                }
+            }
+        });
+} 
+```
 
 ### 空对象
 
@@ -204,7 +219,7 @@ List.cons(42, List.nil());
 //而不是显示的指定类型
 //List.cons(42, List.<Integer>nil());
 ```
-**显示的类型说明**，在点操作符和方法名之间插入尖括号，然后把类型置于尖括号内。
+**显示的类型说明，在点操作符和方法名之间插入尖括号，然后把类型置于尖括号内。**
 * 类.<实际类型参数...>method()
 * 对象.<实际类型参数...>method()
 * this.<实际类型参数...>method()
@@ -224,7 +239,7 @@ class Shelf extends Arraylist<Product>{}
 
 **在泛型代码内部，无法获得任何有关泛型参数类型的信息**
 
-Java泛型是使用擦除来实现的，这意味着当你在使用泛型时，任何具体的类型信息都被擦除了，你唯一知道的就是你在使用一个对象。因此List<String>和List<Integer>在**运行时**事实上是相同的类型。
+**Java泛型是使用擦除来实现的，这意味着当你在使用泛型时，任何具体的类型信息都被擦除了，你唯一知道的就是你在使用一个对象**。因此List<String>和List<Integer>在**运行时**事实上是相同的类型。
 
 C++中的模板
 ```
@@ -268,7 +283,7 @@ public class Manipulation {
     } 
 } ///:~
 ```
-上面的代码没有通过编译，就是由于擦除，会将T替换为Object，这样就没法调用f()方法了。可以使用边界来解决这个问题。
+**上面的代码没有通过编译，就是由于擦除，会将T替换为Object，这样就没法调用f()方法了。可以使用边界来解决这个问题**。
 ```
 class Manipulator<T extends HasF> { 
     private T obj; 
@@ -276,7 +291,7 @@ class Manipulator<T extends HasF> {
     public void manipulate() { obj.f(); } 
 } 
 ```
-泛型类型参数将擦除到它的第一个边界（他可能有多个边界，只能有一个类做边界，而且必须是第一个边界）。类型参数的擦除，编译器实际上会把类型参数替换为它的擦除，就像上面的例子，T擦除到了HasF，就好像在类的声明中用HasF替换了T一样。
+**泛型类型参数将擦除到它的第一个边界（他可能有多个边界，只能有一个类做边界，而且必须是第一个边界）。类型参数的擦除，编译器实际上会把类型参数替换为它的擦除，就像上面的例子，T擦除到了HasF，就好像在类的声明中用HasF替换了T一样**。
 
 只有当你希望使用的类型参数比某个具体类型（以及它的所有子类型）更加“泛化”时--也就是说，当你希望代码能够跨多个类工作时，使用泛型才是有帮助的。
 
@@ -286,7 +301,7 @@ class Manipulator<T extends HasF> {
 
 #### 擦除的问题
 
-泛型不能用于显式地引用运行时类型的操作之中，例如转型、instanceof操作和new表达式。因为类型信息会丢失，必须时刻提醒自己，只是看起来像拥有有关参数的类型信息而已。
+**泛型不能用于显式地引用运行时类型的操作之中，例如转型、instanceof操作和new表达式。因为类型信息会丢失，必须时刻提醒自己，只是看起来像拥有有关参数的类型信息而已**。
 
 在整个类的各个地方，类型T都在被替换，无论何时，必须时刻提醒自己“它只是个Object”。
 
@@ -315,11 +330,11 @@ public class GenericHolder<T>{
     }
 }
 ```
-上面代码实现了非泛型和泛型版本的相似的两个类通过`javap -c` 命令反编译可以发现字节码是相同的，就是说在运行时使用泛型的代码和普通代码没有什么区别。泛型中的所有动作都发生在边界处--对传递进来的值进行额外的编译期检查，并插入对传递出去的值的转型。这有助于澄清对擦除的混淆，记住，“边界就是发生动作的地方”。
+上面代码实现了非泛型和泛型版本的相似的两个类通过`javap -c` 命令反编译可以发现字节码是相同的，就是说在运行时使用泛型的代码和普通代码没有什么区别。**泛型中的所有动作都发生在边界处--对传递进来的值进行额外的编译期检查，并插入对传递出去的值的转型。这有助于澄清对擦除的混淆，记住，“边界就是发生动作的地方”**。
 
 ### 擦除的补偿
 
-Java泛型在instanceof、创建类型实例，创建数组、转型时都会有问题。有时必须通过引入类型标签（即你的类型的Class对象）进行补偿。使用动态的isInstance()方法，而不是instanceof。
+**Java泛型在instanceof、创建类型实例，创建数组、转型时都会有问题。有时必须通过引入类型标签（即你的类型的Class对象）进行补偿。使用动态的isInstance()方法，而不是instanceof**。
 
 #### 创建类型实例
 
@@ -338,12 +353,12 @@ class ClassAsFactory<T>{
 ```
 但是对于没有默认构造器的类，上述方法不能奏效了。可以使用显示的工厂。
 ```
-interface FactoryI<T>{
+interface Factory<T>{
     T create();
 }
 class Foo2<T>{
     private T x;
-    public <F extends FactoryI<T>> Foo2(F factory){
+    public <F extends Factory<T>> Foo2(F factory){
         x = factory.create();
     }
 }
@@ -414,7 +429,7 @@ Apple是下界，这样你就知道向其中添加Apple或Apple的子类型是�
 
 无界通配符`<?>`看起来意味着“任何事物”，因此使用无界通配符好像等价于使用原生类型。
 
-List实际上表示“持有任何Object类型的原生List”，而List<?>表示“具有某种特定类型的非原生List，只是我们不知道那种类型是什么。”
+**List实际上表示“持有任何Object类型的原生List”，而List<?>表示“具有某种特定类型的非原生List，只是我们不知道那种类型是什么。”**
 
 **捕获转换**
 
@@ -452,13 +467,13 @@ Double
 
 #### 任何基本类型都不能作为类型参数
 
-解决之道是自动包装机制。但是自动包装机制不能作用于数组。
+解决之道是自动包装机制。但是**自动包装机制不能作用于数组**。
 
-类泛型无法在静态方法中工作。
+**类泛型无法在静态方法中工作**。
 
 #### 实现参数化接口
 
-一个类不能同时实现同一个泛型接口的两种辩题，由于擦除的原因，这两个变体会变成相同的接口。
+**一个类不能同时实现同一个泛型接口的两种变体，由于擦除的原因，这两个变体会变成相同的接口**。
 ```
 interface Payable<T>{}
 class Employee implements Payable<Employee> {}
@@ -481,7 +496,11 @@ List<Widget> lw = (List<Widget>)List.class.cast(in.readObject());
 
 #### 重载
 
-由于擦除的原因，重载方法将产生相同的类型签名。
+```
+void f(List<T> v);
+void f(List<W> v);
+```
+**由于擦除的原因，重载方法将产生相同的类型签名**。
 
 #### 基类劫持了接口
 
@@ -495,7 +514,7 @@ class Cat extends ComparablePet implements Comparable<Cat>{
   public int compareTo(Cat arg) { return 0; }
 } ///:~
 ```
-如果基类已经确定了泛型参数，那么导出类不能再指定其它泛型参数。但是指定相同的泛型参数是可以的，但是直接继承就可以了。
+如果基类已经确定了泛型参数，那么导出类不能再指定其它泛型参数。但是指定相同的泛型参数是可以的，不过直接继承就可以了。
 
 ### 自限定类型
 
@@ -566,7 +585,7 @@ java.util.Collections中提供来一组便利工具，可以解决类型检查�
 
 ### 异常
 
-由于擦除的原因，将泛型应用于异常是非常受限的。catch语句不能捕获泛型类型的异常，泛型类也不能直接或间接继承自Throwable。但是，类型参数可能会在一个方法的throws子句中用到。
+**由于擦除的原因，将泛型应用于异常是非常受限的。catch语句不能捕获泛型类型的异常，泛型类也不能直接或间接继承自Throwable。但是，类型参数可能会在一个方法的throws子句中用到**。
 ```
 interface Processor<T,E extends Exception>{
     void process(List<T> resultCollector) throws E;

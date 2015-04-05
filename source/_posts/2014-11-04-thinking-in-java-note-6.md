@@ -76,7 +76,7 @@ ByteArrayInputStream    | 允许内存中的一个缓冲区作为 InputStream �
 StringBufferInputStream | 将一个 String 转换成 InputStream  一个 String（字串）。                | 基础的实施方案实际采用一个 StringBuffer（字串缓冲）／作为一个数据源使用。通过将其同一个 FilterInputStream 对象连接，可提供一个有用的接口
 FileInputStream         | 用于从文件读取信息                                                     | 代表文件名的一个 String，或者一个 File 或 FileDescriptor 对象 ／作为一个数据源使用。通过将其同一个 FilterInputStream 对象连接，可提供一个有用的接口
 PipedInputStream        | 产生为相关的 PipedOutputStream 写的数据。实现了“管道化”的概念        | PipedOutputStream／作为一个数据源使用。通过将其同一个 FilterInputStream 对象连接，可提供一个有用的接口
-SequenceInputStream     | 将两个或更多的 InputStream 对象转换成单个 InputStream 使用             | 两个InputStream 对象或者一个 Enumeration，用于 InputStream 对象的一个容器／作为一个数据源使用。通过将其同一个
+SequenceInputStream     | 将两个或更多的 InputStream 对象转换成单个 InputStream 使用             | 两个InputStream 对象或者一个 Enumeration，用于 InputStream 对象的一个容器／作为一个数据源使用。通过将其同一个FilterInputStream 对象连接，可提供一个有用的接口
 FilterInputStream       | 抽象类，作为装饰器的接口，装饰器为其他InputStream 类提供了有用的功能。 |
 
 #### OutputStream类型
@@ -169,7 +169,7 @@ PushBackInputStream   | PushBackReader
 
 ### 自我独立的类：RandomAccessFile
 
-RandomAccessFile 适用于由大小已知的记录组成的文件，所以我们能用 seek()从一条记录移至另一条，然后读取或修改那些记录。
+**RandomAccessFile 适用于由大小已知的记录组成的文件，所以我们能用 seek()从一条记录移至另一条，然后读取或修改那些记录**。
 
 RandomAccessFile 类似 DataInputStream 和 DataOutputStream 的联合使用。其中，getFilePointer()用于了解当前在文件的什么地方，seek()用于移至文件内的一个新地点，length() 用于判断文件的最大长度。此外，构建器要求使用另一个变量（与 C 的 fopen()完全一样），指出是读（"r"），还是读写（"rw" ）。
 
@@ -200,7 +200,7 @@ BufferedInputStream 确实允许我们标记一个位置（使用 mark()，它�
 	while(in.available() != 0) 
 		System.out.print((char)in.readByte()); 
 	{% endcodeblock %}
-	可以使用available()方法查看还有多少可供存取的字符。必须为ByteArrayInputStream提供字节数组。available()的工作方式会随着所读取的媒介类型的不同而有所不同，字面意思就是“在没有阻塞的情况下所能读取的字节数”。
+	**可以使用available()方法查看还有多少可供存取的字符。必须为ByteArrayInputStream提供字节数组。available()的工作方式会随着所读取的媒介类型的不同而有所不同，字面意思就是“在没有阻塞的情况下所能读取的字节数”**。
 * 基本的文件输出
 	{% codeblock %}
 	BufferedReader in = new BufferedReader(new FileReader(filename));
@@ -350,7 +350,7 @@ public static void main(String[] args) throws IOException {
 }
 ```
 
-当`FileChannel.read()`返回-1时（一个分界符，源于Unix和C），表示已经到达了输入的末尾。每次`read()`操作之后，就会将数据输入到缓冲器中，`flip()`则是准备缓冲器以便它的信息可以由`write()`提取。`write()`操作之后，信息仍在缓冲器中，接着`clear()`操作则对所有的内部指针重新安排，以便缓冲器在另一个`read()`操作期间能够做好接收数据的准备。
+**当`FileChannel.read()`返回-1时（一个分界符，源于Unix和C），表示已经到达了输入的末尾。每次`read()`操作之后，就会将数据输入到缓冲器中，`flip()`则是准备缓冲器以便它的信息可以由`write()`提取。`write()`操作之后，信息仍在缓冲器中，接着`clear()`操作则对所有的内部指针重新安排，以便缓冲器在另一个`read()`操作期间能够做好接收数据的准备**。
 
 特殊方法`transferTo()`和`transferFrom()`允许将一个通道和另一个通道直接相连。
 
@@ -368,7 +368,7 @@ in.transferTo(0, in.size(), out);
 
 缓冲器容纳的是普通的字节，为了把它们转换成字符，要么在输入它们的时候对其进行编码（这样，它们输出时才具有意义，否则会有乱码），要么在将其从缓冲器输出时对它们进行解码。java.nio.charset.Charset类提供了把数据编码成多种不同类型的字符集的工具
 
-缓存器的`rewind()`方法：返回到数据开始部分
+**缓存器的`rewind()`方法：返回到数据开始部分**
 `System.getProperty(“file.encoding”)`发现默认字符集，产生代表字符集名称的字符串。
 
 #### 获取基本类型
@@ -381,7 +381,7 @@ in.transferTo(0, in.size(), out);
 
 #### 视图缓冲器
 
-视图缓冲器（view buffer）可以让我们通过某个特定的基本数据类型的视窗查看其底层的`ByteBuffer`。`ByteBuffer`依然是实际存储数据的地方，“支持”着前面的视图，因此，对视图的任何修改都会映射成为对`ByteBuffer`中数据的修改。视图还允许从`ByteBuffer`一次一个地（与`ByteBuffer`所支持的方式相同）或者成批地（放入数组中）读取基本类型值。
+视图缓冲器（view buffer）可以让我们通过某个特定的基本数据类型的视窗查看其底层的`ByteBuffer`。`ByteBuffer`依然是实际存储数据的地方，“支持”着前面的视图，因此，**对视图的任何修改都会映射成为对`ByteBuffer`中数据的修改**。视图还允许从`ByteBuffer`一次一个地（与`ByteBuffer`所支持的方式相同）或者成批地（放入数组中）读取基本类型值。
 
 ```
 ByteBuffer bb = ByteBuffer.allocate(BSIZE);
@@ -465,14 +465,14 @@ MappedByteBuffer由ByteBuffer继承而来，因此它具有ByteBuffer的所有�
 
 **性能**
 
-尽管“映射写”似乎要用到FileOutputStream，但是映射文件中的所有输出必须使用RandomAccessFile。
+**尽管“映射写”似乎要用到FileOutputStream，但是映射文件中的所有输出必须使用RandomAccessFile**。
 即使建立映射文件的花费很大，但是整体受益比起I/O流来说还是很显著的。
 
 #### 文件加锁
 
 文件锁对其他的操作系统进程是可见的，因为Java的文件加锁直接映射到了本地操作系统的加锁工具。
 
-通过对FileChannel调用tryLock()或lock()，就可以获得整个文件的FileLock。（SocketChannel、DatagramChannel和ServerSocketChannel不需要加锁，因为它们是从单进程实体继承而来，我们通常不再两个进程之间共享网络socket）。tryLock()是非阻塞式的，它设法获得锁，但是如果不能获得（当其他一些进程已经持有相同的锁，并且不共享时），它将直接从方法调用返回。lock()则是阻塞式的，它要阻塞进程直至锁可以获得，或调用lock()的线程中断，或调用lock()的通道关闭。使用FileLock.release()可以释放锁。
+**通过对FileChannel调用tryLock()或lock()，就可以获得整个文件的FileLock。（SocketChannel、DatagramChannel和ServerSocketChannel不需要加锁，因为它们是从单进程实体继承而来，我们通常不再两个进程之间共享网络socket）。tryLock()是非阻塞式的，它设法获得锁，但是如果不能获得（当其他一些进程已经持有相同的锁，并且不共享时），它将直接从方法调用返回。lock()则是阻塞式的，它要阻塞进程直至锁可以获得，或调用lock()的线程中断，或调用lock()的通道关闭。使用FileLock.release()可以释放锁**。
 
 ```
 tryLock(long position, long size, boolean shared)
@@ -598,7 +598,7 @@ jar [选项] 说明[详情单] 输入文件
 
 如果需要一个更严格的持久性机制，可以考虑像Hibernate之类的工具。对象序列化加入到语言中是为了支持两种主要特性，一是Java的远程方法调用（Remote Method Invocation，RMI）；二是Java Beans，后者由 Java 1.1 引入。使用一个 Bean 时，它的状态信息通常在设计期间配置好。
 
-对象实现了Serializable接口，序列化对象就会很简单。首先要创建某些 OutputStream 对象，然后将其封装到 ObjectOutputStream 对象内。此时，只需调用 writeObject() 即可完成对象的序列化，并将其发送给 OutputStream。相反的过程是将一个InputStream 封装到 ObjectInputStream 内，然后调用 readObject()。和往常一样，我们最后获得的是指向一个上溯造型 Object 的句柄，所以必须下溯造型，以便能够直接设置。
+**对象实现了Serializable接口，序列化对象就会很简单。首先要创建某些 OutputStream 对象，然后将其封装到 ObjectOutputStream 对象内。此时，只需调用 writeObject() 即可完成对象的序列化，并将其发送给 OutputStream。相反的过程是将一个InputStream 封装到 ObjectInputStream 内，然后调用 readObject()。和往常一样，我们最后获得的是指向一个上溯造型 Object 的句柄，所以必须下溯造型，以便能够直接设置**。
 
 对象序列化特别“聪明”的一个地方是它不仅保存了对象的“全景图”，而且能追踪对象内包含的所有句柄并保存那些对象；接着又能对每个对象内包含的句柄进行追踪；以此类推。我们有时将这种情况称为“对象网”
 
@@ -610,7 +610,7 @@ jar [选项] 说明[详情单] 输入文件
 
 通过实现 Externalizable 接口，用它代替 Serializable 接口，便可控制序列化的具体过程。这个 Externalizable 接口扩展了 Serializable，并增添了两个方法：writeExternal()和 readExternal() 。在序列化和重新装配的过程中，会自动调用这两个方法，以便我们执行一些特殊操作。
 
-与恢复一个 Serializable（可序列化）对象不同。在后者的情况下，对象完全以它保存下来的二进制位为基础恢复，不存在构建器调用。而对一个 Externalizable 对象，所有普通的默认构建行为都会发生（包括在字段定义时的初始化），而且会调用 readExternal()。必须注意这一事实——特别注意所有默认的构建行为都会进行——否则很难在自己的 Externalizable 对象中产生正确的行为。所以默认构造器得是public的，否则会抛出异常。
+**与恢复一个 Serializable（可序列化）对象不同。在后者的情况下，对象完全以它保存下来的二进制位为基础恢复，不存在构建器调用。而对一个 Externalizable 对象，所有普通的默认构建行为都会发生（包括在字段定义时的初始化），而且会调用 readExternal()。必须注意这一事实——特别注意所有默认的构建行为都会进行——否则很难在自己的 Externalizable 对象中产生正确的行为。所以默认构造器得是public的，否则会抛出异常**。
 
 为了让一切正常运作起来，千万不可仅在 writeExternal()方法执行期间写入对象的重要数据（没有默认的行为可用来为一个 Externalizable 对象写入所有成员对象）的，而是必须在 readExternal()方法中也恢复那些数据。
 
@@ -626,11 +626,11 @@ jar [选项] 说明[详情单] 输入文件
 private void writeObject(ObjectOutputStream stream) throws IOException;
 private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException
 ```
-从设计的角度出发，情况变得有些扑朔迷离。首先，大家可能认为这些方法不属于基础类或者 Serializable接口的一部分，它们应该在自己的接口中得到定义。但请注意它们被定义成“private”，这意味着它们只能由这个类的其他成员调用。然而，我们实际并不从这个类的其他成员中调用它们，而是由ObjectOutputStream 和 ObjectInputStream 的 writeObject() 及 readObject()方法来调用我们对象的writeObject() 和 readObject()方法。
+**从设计的角度出发，情况变得有些扑朔迷离。首先，大家可能认为这些方法不属于基础类或者 Serializable接口的一部分，它们应该在自己的接口中得到定义。但请注意它们被定义成“private”，这意味着它们只能由这个类的其他成员调用。然而，我们实际并不从这个类的其他成员中调用它们，而是由ObjectOutputStream 和 ObjectInputStream 的 writeObject() 及 readObject()方法来调用我们对象的writeObject() 和 readObject()方法**。
 
 我们调用 ObjectOutputStream.writeObject()的时候，我们传递给它的 Serializable 对象似乎会被检查是否实现了自己的 writeObject() 。若答案是肯定的是，便会跳过常规的序列化过程，并调用writeObject() 。readObject()也同样。
 
-在我们的 writeObject() 内部，可以调用 defaultWriteObject()，从而决定执行默认的writeObject()。准备通过默认机制写入对象的非 transient 部分，那么必须调用 defaultWriteObject()，令其作为writeObject() 中的第一个操作；并调用 defaultReadObject()，令其作为 readObject()的第一个操作。
+**在我们的 writeObject() 内部，可以调用 defaultWriteObject()，从而决定执行默认的writeObject()。准备通过默认机制写入对象的非 transient 部分，那么必须调用 defaultWriteObject()，令其作为writeObject() 中的第一个操作；并调用 defaultReadObject()，令其作为 readObject()的第一个操作**。
 
 #### 使用持久性
 
@@ -644,7 +644,7 @@ private void readObject(ObjectInputStream stream) throws IOException, ClassNotFo
 
 ### XML
 
-书中提到了javax.xml.*类库，XOM类库。此外还有dom4j。
+书中提到了`javax.xml.*`类库，XOM类库。此外还有dom4j。
 
 ### Preferences
 
