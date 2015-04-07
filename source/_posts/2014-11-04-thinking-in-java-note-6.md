@@ -600,6 +600,8 @@ jar [选项] 说明[详情单] 输入文件
 
 **对象实现了Serializable接口，序列化对象就会很简单。首先要创建某些 OutputStream 对象，然后将其封装到 ObjectOutputStream 对象内。此时，只需调用 writeObject() 即可完成对象的序列化，并将其发送给 OutputStream。相反的过程是将一个InputStream 封装到 ObjectInputStream 内，然后调用 readObject()。和往常一样，我们最后获得的是指向一个上溯造型 Object 的句柄，所以必须下溯造型，以便能够直接设置**。
 
+每个类都持有一个特定的serialVersionUID，如果待序列化的对象和目标对象的serialVersionUID不同，那么在反序列化时就会抛出InvalidClassException异常。
+
 对象序列化特别“聪明”的一个地方是它不仅保存了对象的“全景图”，而且能追踪对象内包含的所有句柄并保存那些对象；接着又能对每个对象内包含的句柄进行追踪；以此类推。我们有时将这种情况称为“对象网”
 
 #### 寻找类
@@ -617,6 +619,8 @@ jar [选项] 说明[详情单] 输入文件
 **transient（临时）关键字**
 
 即使那种信息在对象中具有“private”（私有）属性，但一旦经序列化处理，人们就可以通过读取一个文件，或者拦截网络传输得到它。为解决这个问题，可以用transient（临时）逐个字段地关闭序列化
+
+static 代表类成员，也不会被序列化
 
 **Externalizable 的替代方法**
 
