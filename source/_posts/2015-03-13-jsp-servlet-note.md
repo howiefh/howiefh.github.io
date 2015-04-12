@@ -58,7 +58,7 @@ jsp页面会编译成Servlet类，每个Servlet在容器中只有一个实例：
 * session：设定这个jsp页面是否需要http session
 * buffer：指定输出缓存区大小，jsp内部对象：out用于缓存jsp页面对客户端浏览器的输出。默认值为8kb，可以设置为none，也可设为其它值，单位kb。
 * autoFlush：当缓存即将溢出时，是否需要强制输出缓存区的内容。设置为true时为正常输出；如果设置为false，则会在溢出时产生异常。
-* info：设置jsp程序的信息，课调用getServletInfo()方法获取该值，因为jsp页面实质就是Servlet。
+* info：设置jsp程序的信息，可调用getServletInfo()方法获取该值，因为jsp页面实质就是Servlet。
 * errorPage：指定错误处理页面。如果本页面产生异常或错误，而该jsp页面没有对应处理代码，将会自动调用指定的页面。实质是jsp的异常处理机制，jsp脚本不要求强制处理异常，即使是受检查的。
 * isErrorPage：设置本jsp页面是否为错误处理程序，如果该页面已经是错误处理页面，则无需errorPage属性。
 * contentType：用于设定生成网页的文件格式和编码字符集，即MIME类型和页面字符集类型，默认MIME类型是text/html，默认的字符集类型为ISO-8859-1。
@@ -74,7 +74,7 @@ include指令会将包含的页面加入到本页面，融合成一个页面，�
 <%@include file="relativeUrlSpec"%>
 ```
 
-注意，静态include会将包含页面的编译指令也包含进来，如果两个页面的编译指令冲突，那么页面就会出错。
+**注意，静态include会将包含页面的编译指令也包含进来，如果两个页面的编译指令冲突，那么页面就会出错**。
 
 ## jsp7个动作指令
 
@@ -106,28 +106,28 @@ jsp1.1
 
 第二种用于转发时添加额外的请求参数。
 
-执行forward指令时，用户请求的地址依然没有发生改变，但页面内容却完全变为被forward目标页的内容。
+**执行forward指令时，用户请求的地址依然没有发生改变，但页面内容却完全变为被forward目标页的内容**。
 
 执行forward指令时，客户端请求参数不会丢失。
 
-实际上forward并没有重新向新页面发送请求，它只是完全采用了新页面来对用户生成响应--请求依然是一次，所以请求参数、属性没丢失。
+**实际上forward并没有重新向新页面发送请求，它只是完全采用了新页面来对用户生成响应--请求依然是一次，所以请求参数、属性没丢失**。
 
 ### include指令
 
-动态include指令，也用于包含某个页面，它不会导入include页面的编译指令，仅仅将被导入页面的body内容插入本页面。
+**动态include指令，也用于包含某个页面，它不会导入include页面的编译指令，仅仅将被导入页面的body内容插入本页面**。
 
 语法
 
 ```
-<jsp:forward page="{relativeURL|<%=expression%>}" flush="true"/>
+<jsp:include page="{relativeURL|<%=expression%>}" flush="true"/>
 //或
-<jsp:forward page="{relativeURL|<%=expression%>}" flush="true">
+<jsp:include page="{relativeURL|<%=expression%>}" flush="true">
 <jsp:param name="name" value="value"/>
-</jsp:forward>
+</jsp:include>
 ```
 编译为servlet后，只是使用一个include方法来插入目标页面内容，而不是将目标页面完全融入本页面中。
 
-静态导入和动态导入的三点区别：
+**静态导入和动态导入的三点区别**：
 
 * 静态导入是将导入页面的代码完全融入，两个页面融合成一个整体servlet；而动态导入则在servlet中使用include方法来引入被导入页面的内容。
 * 静态导入时被导入页面的编译指令会起作用；而动态导入时被导入页面的编译指令则失去作用，只是插入被导入页面的body内容。
@@ -191,32 +191,32 @@ name属性确定需要输出的JavaBean的实例名，property属性确定需要
 
 jsp页面对应的Servlet的`_jspService()`方法来创建内置对象。
 
-* application：javax.servlet.ServletContext的实例，该实例代表JSP所属的Web应用本身，可用于JSP页面，或者Servlet之间交换信息。常用的方法有getAttribute(String attName)、setAttribute(String attName , String attValue)和getInitParameter(String paramName)等。
+* application：javax.servlet.ServletContext的实例，**该实例代表JSP所属的Web应用本身，可用于JSP页面，或者Servlet之间交换信息**。常用的方法有getAttribute(String attName)、setAttribute(String attName , String attValue)和getInitParameter(String paramName)等。
 * config：javax.servlet.ServletConfig的实例，该实例代表该JSP的配置信息。常用的方法有getInitParameter(String paramName)和getInitParameternames()等方法。事实上，JSP页面通常无须配置，也就不存在配置信息。因此，该对象更多地在Servlet中有效。
-* exception：java.lang.Throwable的实例，该实例代表其他页面中的异常和错误。只有当页面是错误处理页面，即编译指令page的isErrorPage属性为true时，该对象才可以使用。常用的方法有getMessage()和printStackTrace()等。
+* exception：java.lang.Throwable的实例，该实例代表其他页面中的异常和错误。**只有当页面是错误处理页面，即编译指令page的isErrorPage属性为true时，该对象才可以使用**。常用的方法有getMessage()和printStackTrace()等。
 * out：javax.servlet.jsp.JspWriter的实例，该实例代表JSP页面的输出流，用于输出内容，形成HTML页面。
 * page：代表该页面本身，通常没有太大用处。也就是Servlet中的this，其类型就是生成的Servlet类，能用page的地方就可用this。
 * pageContext：javax.servlet.jsp.PageContext的实例，该对象代表该JSP页面上下文，使用该对象可以访问页面中的共享数据。常用的方法有getServletContext()和getServletConfig()等。
-* request：javax.servlet.http:HttpServletRequest的实例，该对象封装了一次请求，客户端的请求参数都被封装在该对象里。这是一个常用的对象，获取客户端请求参数必须使用该对象。常用的方法有getParameter(String paramName)、getParameterValues(String paramName)、setAttribute(String atttName,Object attrValue)、getAttribute(String attrName)和setCharacterEncoding(String env)等。
+* request：javax.servlet.http.HttpServletRequest的实例，该对象封装了一次请求，客户端的请求参数都被封装在该对象里。这是一个常用的对象，获取客户端请求参数必须使用该对象。常用的方法有getParameter(String paramName)、getParameterValues(String paramName)、setAttribute(String atttName,Object attrValue)、getAttribute(String attrName)和setCharacterEncoding(String env)等。
 * response：javax.servlet.http.HttpServletResponse的实例，代表服务器对客户端的响应。通常很少使用该对象直接响应，而是使用out对象，除非需要生成非字符响应。而response对象常用于重定向，常用的方法有getOutputStream()、sendRedirect(java.lang.String location)等。
 * session：javax.servlet.http.HttpSession的实例，该对象代表一次会话。当客户端浏览器与站点建立连接时，会话开始；当客户端关闭浏览器时，会话结束。常用的方法有：getAttribute(String attrName)、setAttribute(String attrName, Object attrValue)等。
 
 request、response是`_jspService()`方法的形参，其它都是其局部变量。
 
-由于jsp内置对象都是在`_jspService()`方法中完成初始化的，因此只能在jsp脚本、jsp输出表达式中使用这些内置变量。千万不要在jsp声明中使用它们。
+**由于jsp内置对象都是在`_jspService()`方法中完成初始化的，因此只能在jsp脚本、jsp输出表达式中使用这些内置变量。千万不要在jsp声明中使用它们**。
 
 ### application
 
-对于每次客户端请求而言，Web服务器大致需要完成如下几个步骤：
+对于每次客户端请求而言，**Web服务器大致需要完成如下几个步骤**：
 
-* 启动单独的线程。
-* 使用I/O流读取用户的请求数据。
-* 从请求数据中解析参数。
-* 处理用户请求。
-* 生成响应数据。
-* 使用IO流向客户端发送请求数据。
+1. 启动单独的线程。
+2. 使用I/O流读取用户的请求数据。
+3. 从请求数据中解析参数。
+4. 处理用户请求。
+5. 生成响应数据。
+6. 使用IO流向客户端发送请求数据。
 
-在上面6个步骤中，第1、2和6步是通用的，可以由Web服务器来完成，但第3、4和5步则存在差异：因为不同请求里包含的请求参数不同，处理用户请求的方式也不同，所生成的响应自然也不同。Web服务器会调用Servlet的`_jspService()`方法来完成第3、4和5步，当我们编写JSP页面时，页面里的静态内容、JSP脚本都会转换成`_jspService()`方法的执行代码，这些执行代码负责完成解析参数、处理请求、生成响应等业务功能，而Web服务器则负责完成多线程、网络通信等底层功能。
+在上面6个步骤中，第1、2和6步是通用的，可以由Web服务器来完成，但第3、4和5步则存在差异：因为不同请求里包含的请求参数不同，处理用户请求的方式也不同，所生成的响应自然也不同。Web服务器会调用Servlet的`_jspService()`方法来完成第3、4和5步，**当我们编写JSP页面时，页面里的静态内容、JSP脚本都会转换成`_jspService()`方法的执行代码，这些执行代码负责完成解析参数、处理请求、生成响应等业务功能，而Web服务器则负责完成多线程、网络通信等底层功能**。
 
 为了解决JSP、Servlet之间如何交换数据的问题，几乎所有Web服务器（包括Java、ASP、PHP、Ruby等）都会提供4个类似Map的结构，分别是application、session、request、page，并允许JSP、Servlet将数据放入这4个类似Map的结构中，并允许从这4个Map结构中取出数据。这4个Map结构的区别是范围不同。
 
@@ -233,9 +233,9 @@ application对象通常有如下两个作用：
 1. 让多个jsp、servlet共享数据
 
     application通过setAttribute(String attrName,Object value)方法将一个值设置成application的attrName属性，该属性的值对整个Web应用有效，因此该Web应用的每个JSP页面或Servlet都可以访问该属性，访问属性的方法为getAttribute(String attrName)。
-    由于在Servlet中并没有application内置对象，所以可以通过`ServletContext sc = getServletConfig().getServletContext()`显式获取了该Web应用的ServletContext实例，每个Web应用只有一个ServletContext实例，在JSP页面中可通过application内置对象访问该实例，而Servlet中则必须通过代码获取。
+    **由于在Servlet中并没有application内置对象，所以可以通过`ServletContext sc = getServletConfig().getServletContext()`显式获取了该Web应用的ServletContext实例**，每个Web应用只有一个ServletContext实例，在JSP页面中可通过application内置对象访问该实例，而Servlet中则必须通过代码获取。
     编译Servlet时可能由于没有添加环境出现异常，如果安装了Java EE 6 SDK，只需将Java EE 6 SDK路径的javaee.jar文件添加到CLASSPATH环境变量中；如果没有安装Java EE SDK，可以将Tomcat 7的lib路径下的jsp-api.jar、servlet-api.jar两个文件添加到CLASSPATH环境变量中。
-    虽然使用application（即ServletContext实例）可以方便多个JSP、Servlet共享数据，但不要仅为了JSP、Servlet共享数据就将数据放入application中！由于application代表整个Web应用，所以通常只应该把Web应用的状态数据放入application里。
+    **虽然使用application（即ServletContext实例）可以方便多个JSP、Servlet共享数据，但不要仅为了JSP、Servlet共享数据就将数据放入application中！由于application代表整个Web应用，所以通常只应该把Web应用的状态数据放入application里**。
 
 2. 获得Web应用配置参数
 
@@ -363,9 +363,9 @@ request对象是获取请求参数的重要途径。除此之外，request可代
 
     对于开发人员来说，请求头和请求参数都是由用户发送到服务器的数据，区别在于请求头通常由浏览器自动添加，因此一次请求总是包含若干请求头；而请求参数则通常需要开发人员控制添加，让客户端发送请求参数通常分两种情况。
 
-    GET方式的请求：直接在浏览器地址栏输入访问地址所发送的请求或提交表单发送请求时，该表单对应的form元素没有设置method属性，或设置method属性为get，这几种请求都是GET方式的请求。GET方式的请求会将请求参数的名和值转换成字符串，并附加在原URL之后，因此可以在地址栏中看到请求参数名和值。且GET请求传送的数据量较小，一般不能大于2KB。
+    **GET方式的请求：直接在浏览器地址栏输入访问地址所发送的请求或提交表单发送请求时，该表单对应的form元素没有设置method属性，或设置method属性为get，这几种请求都是GET方式的请求。GET方式的请求会将请求参数的名和值转换成字符串，并附加在原URL之后，因此可以在地址栏中看到请求参数名和值。且GET请求传送的数据量较小，一般不能大于2KB**。
 
-    POST方式的请求：这种方式通常使用提交表单（由form HTML元素表示）的方式来发送，且需要设置form元素的method属性为post。POST方式传送的数据量较大，通常认为POST请求参数的大小不受限制，但往往取决于服务器的限制，POST请求传输的数据量总比GET传输的数据量大。而且POST方式发送的请求参数以及对应的值放在HTML HEADER中传输，用户不能在地址栏里看到请求参数值，安全性相对较高。
+    **POST方式的请求：这种方式通常使用提交表单（由form HTML元素表示）的方式来发送，且需要设置form元素的method属性为post。POST方式传送的数据量较大，通常认为POST请求参数的大小不受限制，但往往取决于服务器的限制，POST请求传输的数据量总比GET传输的数据量大。而且POST方式发送的请求参数以及对应的值放在HTML HEADER中传输，用户不能在地址栏里看到请求参数值，安全性相对较高**。
 
     对比上面两种请求方式，由此可见我们通常应该采用POST方式发送请求。
 
@@ -472,13 +472,13 @@ response代表服务器对客户端的响应。大部分时候，程序无须使
 
     forward和redirect对比
 
-    执行redirect后生成第二次请求，而forward依然是上一次请求。
+    **执行redirect后生成第二次请求，而forward依然是上一次请求。
     redirect的目标页面不能访问原请求的请求参数，因为是第二次请求了，所有原请求的请求参数、request范围的属性全部丢失。forward的目标页面可以访问原请求的请求参数，因为依然是同一次请求，所有原请求的请求参数、request范围的属性全部存在。
-    地址栏改为重定向的目标URL。相当于在浏览器地址栏里输入新的URL后按回车键。而forward地址栏里请求的URL不会改变 
+    地址栏改为重定向的目标URL。相当于在浏览器地址栏里输入新的URL后按回车键。而forward地址栏里请求的URL不会改变**
 
 3. 增加Cookie
 
-    Cookie与session的不同之处在于：session会随浏览器的关闭而失效，但Cookie会一直存放在客户端机器上，除非超出Cookie的生命期限。
+    **Cookie与session的不同之处在于：session会随浏览器的关闭而失效，但Cookie会一直存放在客户端机器上，除非超出Cookie的生命期限**。
 
     增加Cookie也是使用response内置对象完成的，response对象提供了如下方法。
     void addCookie(Cookie cookie)：增加Cookie。
@@ -505,7 +505,7 @@ response代表服务器对客户端的响应。大部分时候，程序无须使
 
 ### session
 
-session对象也是一个非常常用的对象，这个对象代表一次用户会话。一次用户会话的含义是：从客户端浏览器连接服务器开始，到客户端浏览器与服务器断开为止，这个过程就是一次会话。
+**session对象也是一个非常常用的对象，这个对象代表一次用户会话。一次用户会话的含义是：从客户端浏览器连接服务器开始，到客户端浏览器与服务器断开为止，这个过程就是一次会话**。
 
 session通常用于跟踪用户的会话信息，如判断用户是否登录系统，或者在购物车应用中，用于跟踪用户购买的商品等。
 
@@ -514,7 +514,7 @@ session对象是HttpSession的实例，HttpSession有如下两个常用的方法
 setAttribute(String attName，Object attValue)：设置session范围内attName属性的值为attValue。
 getAttribute(String attName)：返回session范围内attName属性的值。
 
-关于session还有一点需要指出，session机制通常用于保存客户端的状态信息，这些状态信息需要保存到Web服务器的硬盘上，所以要求session里的属性值必须是可序列化的，否则将会引发不可序列化的异常。
+关于session还有一点需要指出，**session机制通常用于保存客户端的状态信息，这些状态信息需要保存到Web服务器的硬盘上，所以要求session里的属性值必须是可序列化的，否则将会引发不可序列化的异常**。
 
 session的属性值可以是任何可序列化的Java对象。
 
@@ -549,7 +549,7 @@ Servlet和JSP的区别在于：
 * Servlet中没有内置对象，原来JSP中的内置对象都必须由程序显式创建。
 * 对于静态的HTML标签，Servlet都必须使用页面输出流逐行输出。
 
-普通Servlet类里的service()方法的作用，完全等同于JSP生成Servlet类的`_jspService()`方法。因此原JSP页面的JSP脚本、静态HTML内容，在普通Servlet里都应该转换成service()方法的代码或输出语句；原JSP声明中的内容，对应为在Servlet中定义的成员变量或成员方法。
+**普通Servlet类里的service()方法的作用，完全等同于JSP生成Servlet类的`_jspService()`方法。因此原JSP页面的JSP脚本、静态HTML内容，在普通Servlet里都应该转换成service()方法的代码或输出语句；原JSP声明中的内容，对应为在Servlet中定义的成员变量或成员方法**。
 
 ### servlet的配置
 
@@ -611,7 +611,7 @@ urlPatterns/value | 否       | 这两个属性的作用完全相同。都指定
 * 客户端第一次请求某个Servlet时，系统创建该Servlet的实例：大部分的Servlet都是这种Servlet。
 * Web应用启动时立即创建Servlet实例，即load-on-startup Servlet。
 
-每个Servlet的运行都遵循如下生命周期。
+**每个Servlet的运行都遵循如下生命周期**。
 
 1. 创建Servlet实例。
 2. Web容器调用Servlet的init方法，对Servlet进行初始化。
@@ -1506,7 +1506,7 @@ request.setAttribute("a" , a);%>
 ```
 <tags:iterator bgColor="#99dd99" cellColor="#9999cc" title="迭代器标签" bean="a" /> 
 ```
-tags表明该标签使用/WEB-INF/tags路径下的Tag File来处理标签；而iterator是标签名，即使用WEB-INF/tags路径下的iterator.tag文件负责处理该标签。
+tags表明该标签使用/WEB-INF/tags路径下的Tag File来处理标签；**而iterator是标签名，即使用WEB-INF/tags路径下的iterator.tag文件负责处理该标签**。
 
 Tag File是自定义标签的简化。事实上，就如同JSP文件会编译成Servlet一样，Tag File也会编译成标签处理类，自定义标签的后台依然由标签处理类完成，而这个过程由容器完成。打开Tomcat的work\Catalina\localhost\jsp2\org\apache\jsp\tag\web路径，即可看到iterator_tag.java、iterator_tag.class两个文件，这两个文件就是Tag File所对应的标签处理类。
 
