@@ -57,3 +57,7 @@ Show line numbers前面打钩
 ## eclipse版本号
 
 安装目录下.eclipseproduct中有
+
+## 添加依赖项目
+
+一个项目可能依赖于另一个项目，在eclipse中可以这样设置：在工程上，按右键，弹出菜单中选择Properties，选择侧边栏的 Java Build Path，选择Projects选项卡，点Add添加一个依赖的工程。如果运行时发现抛出找不到类之类的异常，打开工程的Properties设置窗口，侧边栏选择Deployment Assembly，添加依赖的工程，并且这个工程所依赖的jar包也要加进来。
