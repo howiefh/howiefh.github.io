@@ -60,6 +60,7 @@ widgets:
 
 # Miscellaneous
 google_analytics:
+baidu_tongji:
 favicon: /favicon.ico
 twitter:
 google_plus:
@@ -105,6 +106,7 @@ display_updated: true
 - **sidebar** - 侧边栏样式. 可以选择 `left`, `right`, `bottom` or `false` 进行设置.
 - **widgets** - 侧边栏显示的小工具
 - **google_analytics** - Google Analytics ID
+- **baidu_tongji** - 百度统计ID
 - **favicon** - Favicon 路径 
 - **twitter** - Twiiter ID
 - **google_plus** - Google+ ID

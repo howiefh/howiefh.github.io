@@ -1,6 +1,6 @@
 # Hexo Configuration
 ## Docs: http://hexo.io/docs/configuration.html
-## Source: https://github.com/tommy351/hexo/
+## Source: https://github.com/hexojs/hexo/
 
 # Site
 title: 净土
@@ -8,31 +8,42 @@ subtitle: 乐不在外而在心，心以为乐，则是境皆乐；心以为苦�
 description: A blog of howiefh.
 author: howiefh
 email: howiefh@gmail.com
-#language: zh-CN
-language: 
+# language: zh-CN
+language: default
+timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://howiefh.github.io
 root: /
 permalink: :year/:month/:day/:title/
+permalink_defaults:
+
+# Directory
+source_dir: source
+public_dir: public
 tag_dir: tags
 archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
 
 # Writing
 new_post_name: :year-:month-:day-:title.md # File name of new posts
 default_layout: post
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
+external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
 post_asset_folder: false
 relative_link: false
+future: true
 highlight:
   enable: true
   line_number: true
+  auto_detect: true
   tab_replace:
 
 # Category & Tag
@@ -40,7 +51,36 @@ default_category: uncategorized
 category_map:
 tag_map:
 
-# Archives
+# Date / Time format
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Pagination
+## Set per_page to 0 to disable pagination
+per_page: 10
+pagination_dir: page
+
+# Extensions
+## Plugins: http://hexo.io/plugins/
+## Themes: http://hexo.io/themes/
+theme: landscape-f
+exclude_generator:
+
+# Deployment
+## Docs: http://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  repo: https://github.com/howiefh/howiefh.github.io.git
+  branch: master
+  message: Site updated {{ now("YYYY-MM-DD HH:mm:ss") }}
+
+# Disqus
+disqus_shortname:
+
+# pagination
 ## 2: Enable pagination
 ## 1: Disable pagination
 ## 0: Fully Disable
@@ -48,42 +88,33 @@ archive: 1
 category: 2
 tag: 2
 
-# Server
-## Hexo uses Connect as a server
-## You can customize the logger format as defined in
-## http://www.senchalabs.org/connect/logger.html
-port: 4000
-logger: false
-logger_format:
+# https://github.com/hexojs/hexo-generator-archive
+archive_generator:
+  per_page: 0
+  yearly: true
+  monthly: true
 
-# Date / Time format
-## Hexo uses Moment.js to parse and display date
-## You can customize the date format as defined in
-## http://momentjs.com/docs/#/displaying/format/
-date_format: MMM D YYYY
-time_format: H:mm:ss
+# https://github.com/hexojs/hexo-generator-tag
+tag_generator:
+  per_page: 10
 
-# Pagination
-## Set per_page to 0 to disable pagination
-per_page: 10
-pagination_dir: page
+# https://github.com/hexojs/hexo-generator-category
+category_generator:
+  per_page: 10
 
-# Disqus
-disqus_shortname:
+# https://github.com/hexojs/hexo-generator-index
+index_generator:
+  per_page: 10
 
-# Extensions
-## Plugins: https://github.com/tommy351/hexo/wiki/Plugins
-plugins:
-- hexo-generator-feed
-- hexo-generator-sitemap
-- hexo-calendar
-## Themes: https://github.com/tommy351/hexo/wiki/Themes
-# theme: light
-# theme: jacman
-theme: landscape-f
-exclude_generator:
+# https://github.com/hexojs/hexo-server
+# log default false
+server:
+  port: 4000
+  log: true
+  ip: 0.0.0.0
 
-markdown:
+# https://github.com/hexojs/hexo-renderer-marked
+marked:
   gfm: true
   pedantic: false
   sanitize: false
@@ -92,16 +123,10 @@ markdown:
   smartLists: true
   smartypants: true
 
+# https://github.com/hexojs/hexo-renderer-stylus
+# compress default false
 stylus:
-  compress: false
-
-# Deployment
-## Docs: http://hexo.io/docs/deployment.html
-deploy:
-  type: github
-  repo: https://github.com/howiefh/howiefh.github.io.git
-  branch: master
-  message: my blog
+  compress: true
 
 # https://github.com/hexojs/hexo-generator-feed
 feed:

@@ -3,7 +3,7 @@ node_modules
 db.json
 public/
 *.swp
-.deploy/
+.deploy_git/
 *.jpg
 *.png
 themes/jacman/

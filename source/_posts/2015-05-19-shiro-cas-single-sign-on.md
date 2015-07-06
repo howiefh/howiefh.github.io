@@ -231,7 +231,7 @@ keytool -genkey -keystore "D:\localhost.keystore" -alias localhost -keyalg RSA
 [Unknown]: xi'an
 该单位的双字母国家/地区代码是什么?
 [Unknown]: cn
-CN=localhost, OU=sishuok.com, O=sishuok.com, L=beijing, ST=beijing, C=cn 是否正确
+CN=localhost, OU=xa, O=xa, L=xi'an, ST=xi'an, C=cn 是否正确
 ?
 [否]: y
 输入 <localhost> 的密钥口令
@@ -658,25 +658,19 @@ CAS最基本的协议过程：
 
 如上图： CAS Client 与受保护的客户端应用部署在一起，以 Filter 方式保护 Web 应用的受保护资源，过滤从客户端过来的每一个 Web 请求，同时， CAS Client 会分析 HTTP 请求中是否包含请求 Service Ticket( ST 上图中的 Ticket) ，如果没有，则说明该用户是没有经过认证的；于是 CAS Client 会重定向用户请求到 CAS Server （ Step 2 ），并传递 Service （要访问的目的资源地址）。 Step 3 是用户认证过程，如果用户提供了正确的 Credentials ， CAS Server 随机产生一个相当长度、唯一、不可伪造的 Service Ticket ，并缓存以待将来验证，并且重定向用户到 Service 所在地址（附带刚才产生的 Service Ticket ） , 并为客户端浏览器设置一个 Ticket Granted Cookie （ TGC ） ； CAS Client 在拿到 Service 和新产生的 Ticket 过后，在 Step 5 和 Step6 中与 CAS Server 进行身份核实，以确保 Service Ticket 的合法性。
 
-在该协议中，所有与 CAS Server 的交互均采用 SSL 协议，以确保 ST 和 TGC 的安全性。协议工作过程中会有 2 次重定向 的过程。但是 CAS Client 与 CAS Server 之间进行 Ticket 验证的过程对于用户是透明的（使用 HttpsURLConnection ）。
+在该协议中，所有与 CAS Server 的交互均采用 SSL 协议，以确保 ST 和 TGC 的安全性。协议工作过程中会有两次重定向的过程。但是 CAS Client 与 CAS Server 之间进行 Ticket 验证的过程对于用户是透明的（使用 HttpsURLConnection ）。
 
-### 概念相关
+### 相关概念
 
-TGT、ST、PGT、PGTIOU、PT，其中CAS1.0协议中就有的票据，PGT、PGTIOU、PT是CAS2.0协议中有的票据。
+TGT、ST、PGT、PGTIOU、PT，其中TGT、ST是CAS1.0协议中就有的票据，PGT、PGTIOU、PT是CAS2.0协议中有的票据。
 
-CAS为用户签发的登录票据，拥有了CAS成功登录过。CAS认证成功后，TGT对象，放入自己的缓存，CAS生成的cookie，则TGT ，如果有的话，则说明用户之前登录过，如果没有，则用户需要重新登录。
+CAS为用户签发登录票据，CAS认证成功后，将TGT对象放入自己的缓存，CAS生成cookie即TGC，自后登录时如果有TGC的话，则说明用户之前登录过，如果没有，则用户需要重新登录。
 
 * TGC （Ticket-granting cookie）：存放用户身份认证凭证的cookie，在浏览器和CAS Server用来明确用户身份的凭证。
-* ST（Service Ticket）：ST是CAS获取ST。用户向CAS会以此cookie值为key查询缓存中有无TGT，则用此CAS验证，验证通过后，允许用户访问资源。
-* PGT（Proxy Granting Ticket） ： Proxy Service的代理凭据。用户通过CAS生成一个PGT对象，缓存在
-* PGTIOU（全称 Proxy Granting Ticket I Owe You）： PGTIOU是CAS的serviceValidate接口验证ST成功后，CAS会生成验证ST成功的xml消息，返回给Proxy Service，xml消息中含有PGTIOU，proxy service收到Xml消息后，会从中解析出PGTIOU的值，然后以其为key，在map中找出PGT的值，赋值给代表用户信息的Assertion对象的pgtId，同时在map中将其删除。
-* PT（Proxy Ticket）：PT是用户访问Target Service（back-end service）的票据。如果用户访问的是一个Web应用，则Web应用会要求浏览器提供ST，浏览器就会用cookie去CAS获取ST，而是通过访问proxy service的接口，凭借proxy service的PGT去获取一个PT，然后才能访问到此应用。
-
-TGT、ST、PGT、PT之间关系
-
-1. ST是CAS上认证成功后，TGT，用TGT对象，然后把ST的值redirect到客户应用。
-2. PGT是ST签发的。用户凭借ST去访问Proxy service，Proxy service去CAS），如果ST验证成功，则TGT对象。
-3. PT是PGT签发的。Proxy service代理back-end service去CAS根据传来的pgt参数，获取到PGT对象，然后调用其grantServiceTicket方法，生成一个PT对象。
+* ST（Service Ticket）：CAS服务器通过浏览器分发给客户端服务器的票据。一个特定服务只能有一个唯一的ST。
+* PGT（Proxy Granting Ticket）：由 CAS Server 颁发给拥有 ST 凭证的服务， PGT 绑定一个用户的特定服务，使其拥有向 CAS Server 申请，获得 PT 的能力。
+* PGTIOU（全称 Proxy Granting Ticket I Owe You）：作用是将通过凭证校验时的应答信息由 CAS Server 返回给 CAS Client ，同时，与该 PGTIOU 对应的 PGT 将通过回调链接传给 Web 应用。 Web 应用负责维护 PGTIOU 与 PGT 之间映射关系的内容表。PGTIOU是CAS的serviceValidate接口验证ST成功后，CAS会生成验证ST成功的xml消息，返回给Proxy Service，xml消息中含有PGTIOU，proxy service收到Xml消息后，会从中解析出PGTIOU的值，然后以其为key，在map中找出PGT的值，赋值给代表用户信息的Assertion对象的pgtId，同时在map中将其删除。
+* PT（Proxy Ticket）：是应用程序代理用户身份对目标程序进行访问的凭证；
 
 CAS 基本流程图（没有使用PROXY代理）
 
@@ -692,6 +686,8 @@ CAS 基本流程图（使用PROXY代理）
 
 [【SSO单点系列】（6）：CAS4.0 单点流程序列图（中文版）以及相关术语解释（TGT、ST、PGT、PT、PGTIOU）](http://www.cnblogs.com/vhua/p/cas_6.html)
 [CAS实现SSO单点登录原理](http://www.coin163.com/java/cas/cas.html)
+
+代码:[github](https://github.com/howiefh/framework/tree/shiro-cas-sso)
 
 [Jasig CAS]:https://github.com/Jasig/cas/releases
 [shiro-cas]:http://shiro.apache.org/cas.html

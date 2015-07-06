@@ -2118,7 +2118,6 @@ util Schema元素
 Spring的表达式语言与Java注解结合，以便开发人员可以撰写和指向他们的配置，而不需要单独的XML文件写入，使得Spring开发者在不需要XML的情况下对应用进行配置。
 
 ### 使用Expression接口进行表达式求值
- 
 
 ```
 public class SpELTest {
@@ -2162,7 +2161,6 @@ public class SpELTest {
 2. 解析表达式：使用ExpressionParser的parseExpression来解析相应的表达式为Expression对象。
 3. 构造上下文：准备比如变量定义等等表达式需要的上下文数据。
 4. 求值：通过Expression接口的getValue方法根据上下文获得表达式值。
-
 
 接下来让我们看下SpEL的主要接口吧：
 
@@ -2237,28 +2235,37 @@ Elivis运算 表达式1?:表达式2 null? :false或true?:false
     * 访问root对象属性
     * 安全访问
     * 给root对象属性赋值
-对象方法调用
-Bean引用
+* 对象方法调用
+* Bean引用
 
 类类型表达式
+
 使用"T(Type)"来表示java.lang.Class实例，"Type"必须是类全限定名（java.lang包除外）。使用类类型表达式还可以进行访问类静态方法及类静态字段。
-实例 示例
-java.lang包类访问 T(String)
-其他包的类访问 T(foo.bar.spel.SpELTest)
-类静态字段访问 T(Integer).MAX_VALUE
-类静态方法调用 T(Integer).parseInt('1')
+
+实例              | 示例
+---               | ---
+java.lang包类访问 | T(String)
+其他包的类访问    | T(foo.bar.spel.SpELTest)
+类静态字段访问    | T(Integer).MAX_VALUE
+类静态方法调用    | T(Integer).parseInt('1')
 
 类实例化表达式
-实例 示例
-java.lang包类的实例化 new String('hello')
-其他包的类实例化 new java.util.Date()
+
+实例                  | 示例
+---                   | ---
+java.lang包类的实例化 | new String('hello')
+其他包的类实例化      | new java.util.Date()
 
 instanceof
-实例 示例
-Java内使用同义 'hello' instanceof T(String)
+
+实例           | 示例
+---            | ---
+Java内使用同义 | 'hello' instanceof T(String)
 
 变量定义与引用
+
 变量定义通过EvaluationContext接口的setVariable(variableName, value)方法定义；在表达式中使用“#variableName”引用；除了引用自定义变量，SpEL还允许引用根对象及当前上下文对象，使用 “#root”引用根对象，使用“#this”引用当前上下文对象。“#this”引用当前上下文对象，此处“#this”即根对象。
+
 ```
 @Test
 publicvoid testVariableExpression() { 
@@ -2280,6 +2287,7 @@ publicvoid testVariableExpression() {
 ```
 
 自定义函数
+
 目前只支持类静态方法注册为自定义函数；SpEL使用StandardEvaluationContext的registerFunction方法进行注册自定义函数，其实完全可以使用setVariable代替，两者其实本质是一样的。
 ```
 @Test
@@ -2296,6 +2304,7 @@ publicvoid testFunctionExpression()throws SecurityException, NoSuchMethodExcepti
 ```
 
 赋值表达式
+
 SpEL即允许给自定义变量赋值，也允许给跟对象赋值，直接使用“#variableName=value”即可赋值：
 ```
 @Test
@@ -2316,6 +2325,7 @@ publicvoid testAssignExpression() {
 ```
 
 对象属性存取及安全导航表达式
+
 对象属性获取非常简单，即使用如“a.property.property”这种点缀式获取，SpEL对于属性名首字母是不区分大小写的。
 
 给对象属性赋值可以采用赋值表达式或Expression接口的setValue方法赋值，而且也可以采用点缀方式赋值。
@@ -2344,6 +2354,7 @@ Assert.assertEquals(5, result5);
 ```
 
 对象方法调用
+
 对象方法调用更简单，跟Java语法一样；如“'helo'.substring(2,4)”将返回“lo”。对于根对象可以直接调用方法。
 
 ```
@@ -2359,6 +2370,7 @@ Assert.assertEquals(date.getYear(), result2);
 ```
 
 Bean引用
+
 SpEL支持使用“@”符号来引用Bean，在引用Bean时需要使用BeanResolver接口实现来查找Bean，Spring提供BeanFactoryResolver实现。
 
 在示例中首先初始化了一个IoC容器，ClassPathXmlApplicationContext 实现默认会把“System.getProperties()”注册为“systemProperties”Bean，因此使用 “@systemProperties”来引用该Bean。
@@ -2386,6 +2398,7 @@ publicvoid testBeanExpression() {
 * 集合选择
 
 内联List
+
 从Spring3.0.4开始支持内联List，使用{表达式，……}定义内联List。如“{1,2,3}”将返回一个整型的ArrayList，而“{}”将返回空的List，对于字面量表达式列表，SpEL会使用java.util.Collections.unmodifiableList方法将列表设置为不可修改。
 
 ```
@@ -2409,6 +2422,7 @@ int[][][] result3 = parser.parseExpression("new int[2][2][2]").getValue(int[][][
 ```
 
 集合，字典元素访问
+
 SpEL目前支持所有集合类型和字典类型的元素访问，使用“集合[索引]”访问集合元素，使用“map[key]”访问字典元素。
 集合元素访问是通过Iterator遍历来定位元素位置的。
 ```
@@ -2435,6 +2449,7 @@ Assert.assertEquals(1, result3);
 ```
 
 列表，字典，数组元素修改
+
 可以使用赋值表达式或Expression接口的setValue方法修改。对数组修改直接对“#array[index]”赋值即可修改元素值，同理适用于集合和字典类型。
 ```
 // ===============修改数组元素值 ===============
@@ -2464,6 +2479,7 @@ Assert.assertEquals(2, result3);
 ```
 
 集合投影
+
 在SQL中投影指从表中选择出列，而在SpEL指根据集合中的元素中通过选择来构造另一个集合，该集合和原集合具有相同数量的元素；SpEL使用“（list|map）.![投影表达式]”来进行投影运算：
 ```
 Collection<Integer> collection =new ArrayList<Integer>();
@@ -2489,6 +2505,7 @@ Assert.assertEquals(2, result2.size());
 SpEL投影运算还支持Map投影，但Map投影最终只能得到List结果，如上所示，对于投影表达式中的“#this”将是Map.Entry，所以可以使用“value”来获取值，使用“key”来获取键。
 
 集合选择
+
 在SQL中指使用select进行选择行数据，而在SpEL指根据原集合通过条件表达式选择出满足条件的元素并构造为新的集合，SpEL使用“(list|map).?[选择表达式]”，其中选择表达式结果必须是boolean类型，如果true则选择的元素将添加到新集合中，false将不添加到新集合中。
 ```
 Collection<Integer> collection =new ArrayList<Integer>();
@@ -2516,4 +2533,4 @@ Assert.assertEquals(new Integer(3), result3.iterator().next());
  
 #### 表达式模板
 
-模板表达式就是由字面量与一个或多个表达式块组成。每个表达式块由“前缀+表达式+后缀”形式组成，如“${1+2}”即表达式块。在前边我们已经介绍了使用ParserContext接口实现来定义表达式是否是模板及前缀和后缀定义。在此就不多介绍了，如“Error ${#v0} ${#v1}”表达式表示由字面量“Error ”、模板表达式“#v0”、模板表达式“#v1”组成，其中v0和v1表示自定义变量，需要在上下文定义。
+模板表达式就是由字面量与一个或多个表达式块组成。每个表达式块由“前缀+表达式+后缀”形式组成，如“${1+2}”即表达式块。在前边我们已经介绍了使用ParserContext接口实现来定义表达式是否是模板及前缀和后缀定义。在此就不多介绍了，如“Error ${井v0} ${井v1}”(把`井`换位`#`)表达式表示由字面量“Error ”、模板表达式“#v0”、模板表达式“#v1”组成，其中v0和v1表示自定义变量，需要在上下文定义。
