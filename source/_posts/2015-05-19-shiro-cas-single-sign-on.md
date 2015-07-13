@@ -32,6 +32,7 @@ Tomcat默认没有开启HTTPS协议，所以这里直接用了HTTP协议访问�
 客户端需要添加对[shiro-cas]和cas-client-core这两个包的依赖。这里主要讲跟CAS相关的配置。
 
 之后配置web.xml
+
 ```
 <!-- 用于单点退出，该过滤器用于实现单点登出功能，可选配置。-->
 <listener>
@@ -49,6 +50,7 @@ Tomcat默认没有开启HTTPS协议，所以这里直接用了HTTP协议访问�
 ```
 
 自定义Realm：
+
 ```
 public class MyCasRealm extends CasRealm {
 
@@ -70,6 +72,7 @@ public class MyCasRealm extends CasRealm {
 ```
 
 配置
+
 ```
 <bean id="casRealm" class="package.for.your.MyCasRealm">
     <property name="userService" ref="userService"/>
@@ -81,11 +84,13 @@ public class MyCasRealm extends CasRealm {
     <!--该地址为cas server地址 -->
     <property name="casServerUrlPrefix" value="${shiro.casServer.url}"/>
     <!-- 该地址为是当前应用 CAS 服务 URL，即用于接收并处理登录成功后的 Ticket 的，
-    必须和loginUrl中的service参数保持一致，否则服务器会判断service不匹配-->  
+    必须和loginUrl中的service参数保持一致，否则服务器会判断service不匹配-->
     <property name="casService" value="${shiro.client.cas}"/>
 </bean>
 ```
+
 配置CAS过滤器
+
 ```
 <bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
     <property name="failureUrl" value="/casFailure.jsp"/>
@@ -110,6 +115,7 @@ public class MyCasRealm extends CasRealm {
     </property>
 </bean>
 ```
+
 上面登录url我的配置的是`http://localhost:8080/cas-server/login?service=http://localhost:8080/cas-client/cas`，service参数是之后服务将会跳转的地址。
 
 `/cas=cas`：即/cas 地址是服务器端回调地址，使用 CasFilter 获取 Ticket 进行登录。
@@ -117,6 +123,7 @@ public class MyCasRealm extends CasRealm {
 之后通过eclipse部署，访问http://localhost:8080/cas-client 即可测试。为了看到单点登录的效果，可以直接复制一份webapps中的client为client2，只需要修改上述配置中的地址即可。如果用户已经登录，那么访问http://localhost:8080/cas-client2发现不会再跳转到登录页面了，用户已经是登录状态了。
 
 还需要注意一个问题，就是cas server默认是开启单点登出的但是这里却没有这样的效果，APP1登出了，但是APP2仍能访问，如果查看浏览器的cookie的话，会发现有两个sessionid，一个是JSESSIONID，容器原生的，另一个是shiro中配置的:
+
 ```
 <!-- 会话Cookie模板 -->
 <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
@@ -126,6 +133,7 @@ SingleSignOutFilter发现是logoutRequest请求后，原来SingleSignOutHandler�
     <property name="httpOnly" value="true"/>
     <property name="maxAge" value="-1"/>
 ```
+
 如果我们把sid改为JSESSIONID会怎么样，答案是如果改为JSESSIONID会导致重定向循环，原因是当登录时，shiro发现浏览器发出的请求中的JSESSIONID没有或已经过期，于是生成一个JSESSIONID给浏览器，同时链接被重定向到服务器进行认证，认证成功后返回到客户端服务器的cas service url，并且带有一个ticket参数。因为有SingleSignOutFilter，当发现这是一个tocken请求时，SingleSignOutHandler会调用request.getSession()获取的是原生Session，如果没有原生session的话，又会创建并将JSESSIONID保存到浏览器cookie中，当客户端服务器向cas服务器验证ticket之后，客户端服务器重定向到之前的页面，这时shiro发现JSESSIONID是SingleSignOutHandler中生成的，在自己维护的session中查不到，又会重新生成新的session，然后login，然后又会重定向到cas服务器认证，然后再重定向到客户端服务器的cas service url，不同的是SingleSignOutHandler中这次调用session.getSession(true)不会新创建一个了，之后就如此循环。如果使用sid又会导致当单点登出时候，如果有a、b两个客户端服务器，从a登出，会跳转到cas服务器登出，cas服务器会对所有通过它认证的service调用销毁session的方法，但是b的shiro的session还没有被销毁，于是再访问b还是能访问，单点登出就有问题了
 
 之所以这样是因为我设置shiro的session管理器为DefaultWebSessionManager，这个管理器直接抛弃了容器的session管理器，自己来维护session，所以就会出现上述描述的问题了。如果我们不做设置，那么shiro将使用默认的session管理器ServletContainerSessionManager：Web 环境，其直接使用 Servlet 容器的会话。这样单点登出就可以正常使用了。
@@ -133,6 +141,7 @@ SingleSignOutFilter发现是logoutRequest请求后，原来SingleSignOutHandler�
 此外如果我们非要使用DefaultWebSessionManager的话，我们就要重写一个SingleSignOutFilter、SingleSignOutHandler和SessionMappingStorage了。
 
 如果没有使用Spring框架，则可以参考如下配置web.xml
+
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -148,48 +157,48 @@ SingleSignOutFilter发现是logoutRequest请求后，原来SingleSignOutHandler�
 	<!-- ======================== 单点登录开始 ======================== -->
 	<!-- 说明：这种客户端的配置方式是不需要Spring支持的 -->
 	<!-- 参考资料：http://blog.csdn.net/yaoweijq/article/details/6003187 -->
-	<listener>  
-      <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>   
-	</listener>  
-	<filter>  
-	<filter-name>CAS Single Sign Out Filter</filter-name>   
-	    <filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>   
-	</filter>  
-	<filter-mapping>  
-	    <filter-name>CAS Single Sign Out Filter</filter-name>   
-	    <url-pattern>/*</url-pattern>   
-	</filter-mapping>  
-	<filter>  
-	    <filter-name>CAS Authentication Filter</filter-name>   
-	    <filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>   
-	    <init-param>  
-	        <param-name>casServerLoginUrl</param-name>   
-	        <param-value>https://localhost:8443/cas-server/login</param-value>   
-	    </init-param>  
-	    <init-param>  
-	        <param-name>serverName</param-name>   
-	        <param-value>https://localhost:8443</param-value>   
+	<listener>
+      <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+	</listener>
+	<filter>
+	<filter-name>CAS Single Sign Out Filter</filter-name>
+	    <filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>CAS Single Sign Out Filter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+	    <filter-name>CAS Authentication Filter</filter-name>
+	    <filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
+	    <init-param>
+	        <param-name>casServerLoginUrl</param-name>
+	        <param-value>https://localhost:8443/cas-server/login</param-value>
 	    </init-param>
-	</filter> 
-	<filter-mapping>  
-	    <filter-name>CAS Authentication Filter</filter-name>  
-	    <url-pattern>/*</url-pattern>  
-	</filter-mapping>  
-	<filter>  
-	    <filter-name>CAS Validation Filter</filter-name>   
-	    <filter-class>org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter</filter-class>   
-	    <init-param>  
-	        <param-name>casServerUrlPrefix</param-name>   
-	        <param-value>https://localhost:8443/cas-server</param-value>   
-	    </init-param>  
-	    <init-param>  
-	        <param-name>serverName</param-name>   
-	        <param-value>https://localhost:8443</param-value>   
+	    <init-param>
+	        <param-name>serverName</param-name>
+	        <param-value>https://localhost:8443</param-value>
 	    </init-param>
-	</filter>  
-	<filter-mapping>  
-	    <filter-name>CAS Validation Filter</filter-name>   
-	    <url-pattern>/*</url-pattern>   
+	</filter>
+	<filter-mapping>
+	    <filter-name>CAS Authentication Filter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+	    <filter-name>CAS Validation Filter</filter-name>
+	    <filter-class>org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter</filter-class>
+	    <init-param>
+	        <param-name>casServerUrlPrefix</param-name>
+	        <param-value>https://localhost:8443/cas-server</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>serverName</param-name>
+	        <param-value>https://localhost:8443</param-value>
+	    </init-param>
+	</filter>
+	<filter-mapping>
+	    <filter-name>CAS Validation Filter</filter-name>
+	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
 		<!-- 该过滤器使得开发者可以通过org.jasig.cas.client.util.AssertionHolder来获取用户的登录名。 比如AssertionHolder.getAssertion().getPrincipal().getName()。 -->
  	<filter>
@@ -201,7 +210,7 @@ SingleSignOutFilter发现是logoutRequest请求后，原来SingleSignOutHandler�
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<!-- ======================== 单点登录结束 ======================== -->
-	
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
@@ -241,12 +250,14 @@ CN=localhost, OU=xa, O=xa, L=xi'an, ST=xi'an, C=cn 是否正确
 需要注意的是 "您的名字与姓氏是什么?"这个地方不能随便填的，如果运行过程中提示“Caused by: java.security.cert.CertificateException: No name matching localhost found”那么就是因为这里设置错了，当然除了localhost也可以写其他的，如helloworld.com，但是需要能解析出来，可以直接在hosts中加`127.0.0.1 helloworld.com`
 
 然后，由于Tomcat默认没有开HTTPS，所以我们需要在server.xml文件中找到8443出现的地方。然后修改如下
+
 ```
 <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
     maxThreads="150" scheme="https" secure="true"
     clientAuth="false" sslProtocol="TLS"
     keystoreFile="D:\localhost.keystore" keystorePass="123456"/>
 ```
+
 keystorePass 就是生成 keystore 时设置的密码。
 
 如果出现下面的问题，修改server.xml中的protocol为`org.apache.coyote.http11.Http11Protocol`
@@ -261,6 +272,7 @@ keytool -export -alias localhost -file D:\localhost.cer -keystore D:\localhost.k
 cd D:\jdk1.7.0_21\jre\lib\security
 keytool -import -alias localhost -file D:\localhost.cer -noprompt -trustcacerts -storetype jks -keystore cacerts -storepass 123456
 ```
+
 如果导入失败，可以先把 security 目录下的 cacerts 删掉
 
 搞定证书之后，我们需要将之前client中配置的地址修改一下。然后还可以添加ssl过滤器。
@@ -272,6 +284,7 @@ Caused by: sun.security.validator.ValidatorException: PKIX path building failed:
 ### 单点登出重定向
 
 客户端中配置logout过滤器
+
 ```
 <bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
     <property name="redirectUrl" value="${shiro.logout.url}"/>
@@ -307,17 +320,18 @@ cas-server-support-jdbc提供了org.jasig.cas.adaptors.jdbc.QueryDatabaseAuthent
 </bean>
 
 <!-- 数据源 -->
-<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
-     <property name="driverClassName" value="${dataSource.driver}"></property>  
-     <property name="url" value="${dataSource.url}"/>  
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+     <property name="driverClassName" value="${dataSource.driver}"></property>
+     <property name="url" value="${dataSource.url}"/>
      <property name="username" value="${dataSource.username}"/>
      <property name="password" value="${dataSource.password}"/>
- </bean>  
+ </bean>
  <!-- MD5加密 -->
 <bean id="MD5PasswordEncoder" class="org.jasig.cas.authentication.handler.DefaultPasswordEncoder">
     <constructor-arg value="MD5"/>
-</bean>  
-``` 
+</bean>
+```
+
 加密算法可以自定义。
 
 ### 添加验证码
@@ -360,13 +374,14 @@ web.xml添加如下配置
 在login-webflow.xml中找到viewLoginForm，在binder节点下面添加`<binding property="captcha" />`，对应我们页面提交的验证码参数
 
 然后我们还要实现一个UsernamePasswordCaptchaCredential 类，继承UsernamePasswordCredential 在其中添加了captcha字段和相应setter和getter方法。
+
 ```
 public class UsernamePasswordCaptchaCredential extends UsernamePasswordCredential {
 	private static final long serialVersionUID = -2988130322912201986L;
     @NotNull
     @Size(min=1,message = "required.captcha")
     private String captcha;
-    
+
     //set、get方法
 }
 ```
@@ -380,6 +395,7 @@ public class UsernamePasswordCaptchaCredential extends UsernamePasswordCredentia
 ```
 
 再添加如下配置
+
 ```
 <!-- 添加一个 validatorCaptcha 校验验证码的操作 -->
 <action-state id="validatorCaptcha">
@@ -389,7 +405,7 @@ public class UsernamePasswordCaptchaCredential extends UsernamePasswordCredentia
 </action-state>
 ```
 
-我们在配置中添加了一个 validatorCaptcha 的操作，同时可以看到 expression 是 authenticationViaFormAction.validatorCaptcha(...)，所以我们需要在  authenticationViaFormAction 中添加一个校验验证码的方法 validatorCaptcha()。authenticationViaFormAction 这个bean是配置在 cas-servlet.xml 中的： 
+我们在配置中添加了一个 validatorCaptcha 的操作，同时可以看到 expression 是 authenticationViaFormAction.validatorCaptcha(...)，所以我们需要在  authenticationViaFormAction 中添加一个校验验证码的方法 validatorCaptcha()。authenticationViaFormAction 这个bean是配置在 cas-servlet.xml 中的：
 
 ```
 <bean id="authenticationViaFormAction" class="org.jasig.cas.web.flow.AuthenticationViaFormAction"
@@ -405,29 +421,29 @@ public class MyAuthenticationViaFormAction extends AuthenticationViaFormAction{
 
     public final String validatorCaptcha(final RequestContext context, final Credential credential,
             final MessageContext messageContext){
-        
-            final HttpServletRequest request = WebUtils.getHttpServletRequest(context);  
-            HttpSession session = request.getSession();  
-            String captcha = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);  
-            session.removeAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);  
-            
-            UsernamePasswordCaptchaCredential upc = (UsernamePasswordCaptchaCredential)credential;  
-            String submitAuthcodeCaptcha =upc.getCaptcha(); 
-            
-            
+
+            final HttpServletRequest request = WebUtils.getHttpServletRequest(context);
+            HttpSession session = request.getSession();
+            String captcha = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+            session.removeAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+
+            UsernamePasswordCaptchaCredential upc = (UsernamePasswordCaptchaCredential)credential;
+            String submitAuthcodeCaptcha =upc.getCaptcha();
+
+
             if(!StringUtils.hasText(submitAuthcodeCaptcha) || !StringUtils.hasText(submitAuthcodeCaptcha)){
-                messageContext.addMessage(new MessageBuilder().code("required.captcha").build()); 
-                return "error";    
-            }  
-            if(submitAuthcodeCaptcha.equals(captcha)){    
-                return "success";  
-            }  
+                messageContext.addMessage(new MessageBuilder().code("required.captcha").build());
+                return "error";
+            }
+            if(submitAuthcodeCaptcha.equals(captcha)){
+                return "success";
+            }
             messageContext.addMessage(new MessageBuilder().code("error.authentication.captcha.bad").build());
-            return "error";    
+            return "error";
     }
 }
 ```
- 
+
 这边有抛出两个异常，这两个异常信息 required.captcha、error.authentication.captcha.bad 需要在 messages_zh_CN.properties 文件下添加
 
 ```
@@ -447,6 +463,7 @@ error.authentication.captcha.bad=您输入的验证码有误。
         <img alt="${captchaHolder }" src="captcha.jpg" onclick="this.src='captcha.jpg?'+Math.random();">
 </section>
 ```
+
 以上添加验证码参考<http://www.cnblogs.com/vhua/p/cas_3.html>
 
 ### 添加记住密码
@@ -463,6 +480,7 @@ rememberMeDuration=1209600
 spring-configuration文件夹下找到 ticketExpirationPolicies.xml 和 ticketGrantingTicketCookieGenerator.xml 需要在这两个配置文件中定义长期有效的session
 
 在 ticketExpirationPolicies.xml文件中更新如下配置
+
 ```
 <bean id="standardSessionTGTExpirationPolicy"
       class="org.jasig.cas.ticket.support.TicketGrantingTicketExpirationPolicy"
@@ -484,6 +502,7 @@ spring-configuration文件夹下找到 ticketExpirationPolicies.xml 和 ticketGr
 ```
 
 更新ticketGrantingTicketCookieGenerator.xml
+
 ```
 <bean id="ticketGrantingTicketCookieGenerator" class="org.jasig.cas.web.support.CookieRetrievingCookieGenerator"
       p:cookieSecure="true"
@@ -494,6 +513,7 @@ spring-configuration文件夹下找到 ticketExpirationPolicies.xml 和 ticketGr
 ```
 
 在 deployerConfigContext.xml 中找到 PolicyBasedAuthenticationManager 使其包含RememberMeAuthenticationMetaDataPopulator组件
+
 ```
 <property name="authenticationMetaDataPopulators">
 	<list>
@@ -508,9 +528,11 @@ spring-configuration文件夹下找到 ticketExpirationPolicies.xml 和 ticketGr
 和添加验证码类似的，我们还需要修改login-webflow.xml
 
 找到credential 的声明修改如下
+
 ```
 <var name="credential" class="org.jasig.cas.authentication.RememberMeUsernamePasswordCredential" />
 ```
+
 由于之前已经实现了验证码，所以这里不需要修改了，只需让 UsernamePasswordCaptchaCredential继承RememberMeUsernamePasswordCredential即可
 
 找到viewLoginForm 在binder节点下添加`<binding property="rememberMe" />`
@@ -560,7 +582,7 @@ public class ValidUserQueryDBAuthenticationHandler extends AbstractJdbcUsernameP
             if (Boolean.TRUE.equals(values.get(this.lockedFieldName))) {
                 throw new AccountLockedException(username + "  has been locked.");
             }
-            
+
             final String digestedPassword = digestEncodedPassword(transformedCredential.getPassword(), values);
             if (!values.get(this.passwordFieldName).equals(digestedPassword)) {
                 throw new FailedLoginException("Password does not match value on record.");
@@ -593,7 +615,7 @@ public class ValidUserQueryDBAuthenticationHandler extends AbstractJdbcUsernameP
             final String longAsStr = values.get(this.numberOfIterationsFieldName).toString();
             numOfIterations = Long.valueOf(longAsStr);
         }
-        
+
         hashService.setHashIterations(numOfIterations.intValue());
         if (!values.containsKey(this.saltFieldName)) {
             throw new RuntimeException("Specified field name for salt does not exist in the results");
@@ -617,8 +639,8 @@ public class ValidUserQueryDBAuthenticationHandler extends AbstractJdbcUsernameP
 ```
 <bean id="primaryAuthenticationHandler" class="io.github.howiefh.cas.authentication.ValidUserQueryDBAuthenticationHandler">
     <constructor-arg ref="dataSource" index="0"></constructor-arg>
-    <constructor-arg value="${auth.sql}" index="1"></constructor-arg> 
-    <constructor-arg value="MD5" index="2"></constructor-arg> 
+    <constructor-arg value="${auth.sql}" index="1"></constructor-arg>
+    <constructor-arg value="MD5" index="2"></constructor-arg>
 </bean>
 ```
 

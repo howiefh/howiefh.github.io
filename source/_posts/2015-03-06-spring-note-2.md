@@ -1,7 +1,7 @@
-title: Spring笔记二 
+title: Spring笔记二
 date: 2015-03-06 16:09:20
 tags: Spring
-categories: 
+categories:
 - JavaEE
 - Spring
 description: Spring
@@ -30,99 +30,99 @@ Bean后处理器必须实现 BeanPostProcessor 接口，它包含两个方法：
 
 Axe.java :
 ```
-public interface Axe {  
-    public String chop();  
-}  
+public interface Axe {
+    public String chop();
+}
 ```
 SteelAxe.java :
 ```
-public class SteelAxe implements Axe {  
-    @Override  
-    public String chop() {  
-        return "钢斧砍柴真快";  
-    }  
-    public SteelAxe() {  
-        System.out.println("Spring实例化依赖Bean:SteelAxe实例...");  
-    }  
-}  
+public class SteelAxe implements Axe {
+    @Override
+    public String chop() {
+        return "钢斧砍柴真快";
+    }
+    public SteelAxe() {
+        System.out.println("Spring实例化依赖Bean:SteelAxe实例...");
+    }
+}
 ```
 Person.java :
 ```
-public interface Person {  
-    public void useAxe();  
-}  
+public interface Person {
+    public void useAxe();
+}
 ```
 Chinese.java :
 ```
-public class Chinese implements Person,InitializingBean{  
-    private Axe axe;  
-    private String name;  
-    public void setAxe(Axe axe) {  
-        System.out.println("Spring执行依赖关系注入,setAxe...");  
-        this.axe = axe;  
-    }  
-    public void setName(String name) {  
-        System.out.println("Spring执行依赖关系注入,setName...");  
-        this.name = name;  
-    }  
-    public Chinese() {  
-        System.out.println("Spring实例化主调Bean:Chinese实例...");  
-    }  
-    @Override  
-    public void useAxe() {  
-        System.out.println(name+axe.chop());  
-    }  
-    @Override  
-    public void afterPropertiesSet() throws Exception {  
-        System.out.println("正在执行初始化方法afterPropertiesSet...");  
-    }  
-    public void init(){  
-        System.out.println("正在执行初始化方法init...");  
-    }  
-}  
+public class Chinese implements Person,InitializingBean{
+    private Axe axe;
+    private String name;
+    public void setAxe(Axe axe) {
+        System.out.println("Spring执行依赖关系注入,setAxe...");
+        this.axe = axe;
+    }
+    public void setName(String name) {
+        System.out.println("Spring执行依赖关系注入,setName...");
+        this.name = name;
+    }
+    public Chinese() {
+        System.out.println("Spring实例化主调Bean:Chinese实例...");
+    }
+    @Override
+    public void useAxe() {
+        System.out.println(name+axe.chop());
+    }
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("正在执行初始化方法afterPropertiesSet...");
+    }
+    public void init(){
+        System.out.println("正在执行初始化方法init...");
+    }
+}
 ```
 FirstBeanPostProcessor.java :
 ```
-public class FirstBeanPostProcessor implements BeanPostProcessor {  
-    @Override  
-    public Object postProcessBeforeInitialization(Object bean, String beanName)  
-            throws BeansException {  
-        System.out.println("Bean后处理器在初始化之前对"+beanName+"进行增强处理...");  
-        return bean;  
-    }  
-    @Override  
-    public Object postProcessAfterInitialization(Object bean, String beanName)  
-            throws BeansException {  
-        System.out.println("Bean后处理器在初始化之后对"+beanName+"进行增强处理...");  
-        if(bean instanceof Chinese){  
-            Chinese c=(Chinese)bean;  
-            c.setName("中国人");  
-        }  
-        return bean;  
-    }  
-}  
+public class FirstBeanPostProcessor implements BeanPostProcessor {
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName)
+            throws BeansException {
+        System.out.println("Bean后处理器在初始化之前对"+beanName+"进行增强处理...");
+        return bean;
+    }
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName)
+            throws BeansException {
+        System.out.println("Bean后处理器在初始化之后对"+beanName+"进行增强处理...");
+        if(bean instanceof Chinese){
+            Chinese c=(Chinese)bean;
+            c.setName("中国人");
+        }
+        return bean;
+    }
+}
 ```
 bean.xml核心配置：
 ```
-<bean id="chinese" class="com.bean.Chinese" init-method="init">  
-   <property name="axe" ref="steelAxe"/>  
-   <property name="name" value="依赖注入的值"/>  
-</bean>  
-   
-<bean id="steelAxe" class="com.bean.SteelAxe"/>  
-<bean id="beanPostProcessor" class="com.bean.FirstBeanPostProcessor"/>  
+<bean id="chinese" class="com.bean.Chinese" init-method="init">
+   <property name="axe" ref="steelAxe"/>
+   <property name="name" value="依赖注入的值"/>
+</bean>
+
+<bean id="steelAxe" class="com.bean.SteelAxe"/>
+<bean id="beanPostProcessor" class="com.bean.FirstBeanPostProcessor"/>
 ```
 
 Test.java :
 
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        p.useAxe();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        p.useAxe();
+    }
+}
 ```
 
 容器中一旦注册了Bean后处理器，Bean后处理器就会自动启动，在容器中每个Bean创建时自动工作。从上面程序的运行结果可以看出，Bean后处理器两个方法的回调时机如下所示：
@@ -131,18 +131,18 @@ public class Test {
 
 采用ApplicationContext作为Spring容器时，无须手动注册BeanPostProcessor。但是如果采用BeanFactory作为Spring容器时，就必须手动注册BeanPostProcess，如下：
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ClassPathResource resource=new ClassPathResource("bean.xml");  
-        XmlBeanFactory factory=new XmlBeanFactory(resource);  
-        BeanPostProcessor bpp=(FirstBeanPostProcessor) factory.getBean("beanPostProcessor");  
-        factory.addBeanPostProcessor(bpp);  //注册BeanPostProcessor实例  
-        System.out.println("程序已经实例化BeanFactory...");  
-        Person p=(Person) factory.getBean("chinese");  
-        System.out.println("程序中已经完成了chinese bean的实例化...");  
-        p.useAxe();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ClassPathResource resource=new ClassPathResource("bean.xml");
+        XmlBeanFactory factory=new XmlBeanFactory(resource);
+        BeanPostProcessor bpp=(FirstBeanPostProcessor) factory.getBean("beanPostProcessor");
+        factory.addBeanPostProcessor(bpp);  //注册BeanPostProcessor实例
+        System.out.println("程序已经实例化BeanFactory...");
+        Person p=(Person) factory.getBean("chinese");
+        System.out.println("程序中已经完成了chinese bean的实例化...");
+        p.useAxe();
+    }
+}
 ```
 
 下面是Spring提供的两个常用的后处理器：
@@ -162,34 +162,34 @@ void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws 
 
 FirstBeanFactoryPostProcessor.java :
 ```
-public class FirstBeanFactoryPostProcessor implements BeanFactoryPostProcessor {  
-    @Override  
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)  
-            throws BeansException {  
-        System.out.println("程序对Spring所做的BeanFactory的初始化没有改变...");  
-        System.out.println("Spring容器是:"+beanFactory);  
-    }  
-}  
+public class FirstBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
+            throws BeansException {
+        System.out.println("程序对Spring所做的BeanFactory的初始化没有改变...");
+        System.out.println("Spring容器是:"+beanFactory);
+    }
+}
 ```
 bean.xml核心配置：
 ```
-<bean id="chinese" class="com.bean.Chinese">  
-   <property name="axe" ref="steelAxe"/>  
-</bean>  
-   
-<bean id="steelAxe" class="com.bean.SteelAxe"/>  
-<bean id="beanFactoryPostProcessor" class="com.bean.FirstBeanFactoryPostProcessor"/>  
+<bean id="chinese" class="com.bean.Chinese">
+   <property name="axe" ref="steelAxe"/>
+</bean>
+
+<bean id="steelAxe" class="com.bean.SteelAxe"/>
+<bean id="beanFactoryPostProcessor" class="com.bean.FirstBeanFactoryPostProcessor"/>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        p.useAxe();  
-    }  
-  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        p.useAxe();
+    }
+
+}
 ```
 
 程序会自动搜索容器中实现了BeanFactoryPostProcessor接口的类，并将它注册成容器后处理器。
@@ -209,27 +209,27 @@ Spring已经提供了如下几个常用的容器后处理器：
 Spring提供了PropertyPlaceholderConfigurer，它是一个容器后处理器，负责读取Properties属性文件里的属性值，并将这些属性值设置成Spring配置文件的元数据。
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns="http://www.springframework.org/schema/beans"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.springframework.org/schema/beans"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
     <!--如果采用基于XML Schema的配置文件则可以简化下面配置-->
-    <bean class="com.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
-        <property name="locations">  
+    <bean class="com.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
             <list>
                 <value>dbconn.properties</value>
                 <!-- 如果有多个属性文件，依次在下面列出来 -->
             </list>
         </property>
-    </bean>  
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" >  
+    </bean>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" >
         <property name="driverClass" value="${jdbc.driverClassName}" />
         <property name="jdbcUrl" value="${jdbc.url}" />
         <property name="user" value="${jdbc.username}" />
         <property name="password" value="${jdbc.password}" />
     </bean>
-</beans>  
+</beans>
 ```
 
 dbconn.properties:
@@ -252,22 +252,22 @@ jdbc.password=123456
 Spring提供了PropertyOverrideConfigurer，负责读取Properties属性文件里的属性值，并将这些属性值直接覆盖Spring配置文件的元数据。即允许XML配置文件中有默认的配置信息。可以认为Spring配置文件是XML配置文件和属性文件的总和。
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns="http://www.springframework.org/schema/beans"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.springframework.org/schema/beans"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
     <!--如果采用基于XML Schema的配置文件则可以简化下面配置-->
-    <bean class="com.springframework.beans.factory.config.PropertyOverrideConfigurer">  
-        <property name="locations">  
+    <bean class="com.springframework.beans.factory.config.PropertyOverrideConfigurer">
+        <property name="locations">
             <list>
                 <value>dbconn.properties</value>
                 <!-- 如果有多个属性文件，依次在下面列出来 -->
             </list>
         </property>
-    </bean>  
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" />  
-</beans>  
+    </bean>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" />
+</beans>
 ```
 
 dbconn.properties:
@@ -304,67 +304,67 @@ Annotation名称 | 说明
 
 SteelAxe.java :
 ```
-@Component  
-public class SteelAxe implements Axe {  
-    @Override  
-    public String chop() {  
-        return "钢斧砍柴真快";  
-    }  
-}  
+@Component
+public class SteelAxe implements Axe {
+    @Override
+    public String chop() {
+        return "钢斧砍柴真快";
+    }
+}
 ```
 StoneAxe.java :
 ```
-@Component  
-public class StoneAxe implements Axe {  
-    @Override  
-    public String chop() {  
-        return "石斧砍柴真慢";  
-    }  
-}  
+@Component
+public class StoneAxe implements Axe {
+    @Override
+    public String chop() {
+        return "石斧砍柴真慢";
+    }
+}
 ```
 Chinese.java :
 ```
-@Component  
-public class Chinese implements Person {  
-    private Axe axe;  
-    public void setAxe(Axe axe) {  
-        this.axe = axe;  
-    }  
-    @Override  
-    public void useAxe() {  
-        System.out.println(axe.chop());  
-    }  
-}  
+@Component
+public class Chinese implements Person {
+    private Axe axe;
+    public void setAxe(Axe axe) {
+        this.axe = axe;
+    }
+    @Override
+    public void useAxe() {
+        System.out.println(axe.chop());
+    }
+}
 ```
 bean.xml :
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns="http://www.springframework.org/schema/beans"  
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-        xmlns:context="http://www.springframework.org/schema/context"  
-        xmlns:tx="http://www.springframework.org/schema/tx"  
-        xsi:schemaLocation="http://www.springframework.org/schema/beans   
-        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
-                http://www.springframework.org/schema/context   
-                http://www.springframework.org/schema/context/spring-context-2.5.xsd  
-                http://www.springframework.org/schema/tx   
-                http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">  
-  <context:component-scan base-package="com.bean"/>  
-</beans>  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+  <context:component-scan base-package="com.bean"/>
+</beans>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        System.out.println(Arrays.toString(ctx.getBeanDefinitionNames()));  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        System.out.println(Arrays.toString(ctx.getBeanDefinitionNames()));
+    }
+}
 ```
 运行Test.java，控制台输出：
 ```
-[ steelAxe, stoneAxe, chinese, 
-org.springframework.context.annotation.internalCommonAnnotationProcessor, 
+[ steelAxe, stoneAxe, chinese,
+org.springframework.context.annotation.internalCommonAnnotationProcessor,
 org.springframework.context.annotation.internalAutowiredAnnotationProcessor,
 org.springframework.context.annotation.internalRequiredAnnotationProcessor ]
 ```
@@ -372,10 +372,10 @@ org.springframework.context.annotation.internalRequiredAnnotationProcessor ]
 
 当然，Spring也允许在使用@Component标注时指定Bean实例的名称：
 ```
-@Component("axe")  
-public class SteelAxe implements Axe{  
-   //codes here  
-}  
+@Component("axe")
+public class SteelAxe implements Axe{
+   //codes here
+}
 ```
 在默认情况下，Spring会自动搜索所有以@Component、@Controller、@Service和@Repository标注的Java类，并将它们当成Spring Bean来处理。
 
@@ -392,10 +392,10 @@ Spring内建支持如下4种过滤器：
 
 例如下面的配置文件指定所有以Chinese结尾的类，以Axe结尾的类都将被当成Spring Bean处理。
 ```
-<context:component-scan base-package="org.crazyit.app.service">  
-  <context:include-filter type="regex" expression=".*Chinese"/>  
-  <context:include-filter type="regex" expression=".*Axe"/>  
-</context:component-scan>  
+<context:component-scan base-package="org.crazyit.app.service">
+  <context:include-filter type="regex" expression=".*Chinese"/>
+  <context:include-filter type="regex" expression=".*Axe"/>
+</context:component-scan>
 ```
 ### 指定Bean的作用域
 
@@ -404,11 +404,11 @@ Spring内建支持如下4种过滤器：
 当我们采用零配置方式来管理Bean实例时，可以使用@Scope Annotation，只要在该Annotation中提供作用域的名称即可。例如：
 
 ```
-@Scope("prototype")  
-@Component("axe")  
-public class SteelAxe implements Axe{  
-   //codes here  
-}  
+@Scope("prototype")
+@Component("axe")
+public class SteelAxe implements Axe{
+   //codes here
+}
 ```
 
 ### 使用@Resource配置依赖
@@ -417,33 +417,33 @@ public class SteelAxe implements Axe{
 
 @Resource有一个name属性，默认情况下，Spring将这个值解释为需要被注入的Bean实例的名字。换句话说，使用@Resource与`<property.../>`元素的ref属性有相同的效果。
 ```
-@Component  
-public class Chinese implements Person {  
-    private Axe axe;  
-    @Resource(name="stoneAxe")  
-    public void setAxe(Axe axe) {  
-        this.axe = axe;  
-    }  
-    @Override  
-    public void useAxe() {  
-        System.out.println(axe.chop());  
-    }  
-}  
+@Component
+public class Chinese implements Person {
+    private Axe axe;
+    @Resource(name="stoneAxe")
+    public void setAxe(Axe axe) {
+        this.axe = axe;
+    }
+    @Override
+    public void useAxe() {
+        System.out.println(axe.chop());
+    }
+}
 ```
 上面的@Resource Annotation指定将stoneAxe注入该setAxe( )方法，也就是将容器中的stoneAxe Bean作为setAxe方法的参数传入。
 
 @Resource不仅可以修饰setter方法，也可以直接修饰Field，使用@Resource时还可以省略name属性。使用@Resource修饰Field时连setter方法都可以不要：
 
 ```
-@Component  
-public class Chinese implements Person {  
-    @Resource(name="stoneAxe")  
-    private Axe axe;  
-    @Override  
-    public void useAxe() {  
-        System.out.println(axe.chop());  
-    }  
-}  
+@Component
+public class Chinese implements Person {
+    @Resource(name="stoneAxe")
+    private Axe axe;
+    @Override
+    public void useAxe() {
+        System.out.println(axe.chop());
+    }
+}
 ```
 
 1. 当使用@Resource修饰setter方法时，如果省略name属性，例如@Resource标注setName( )方法，则Spring默认注入容器中名为name的组件。
@@ -455,22 +455,22 @@ public class Chinese implements Person {
 
 @PostConstruct和@PreDestroy大致相当于`<bean.../>`元素的 init-method 属性和 destroy-method 属性指定的方法：
 ```
-@Component  
-public class Chinese implements Person {  
-    @Resource(name="steelAxe")  
-    private Axe axe;  
-    @Override  
-    public void useAxe() {  
-        System.out.println(axe.chop());  
-    }  
-    @PostConstruct  
-    public void init(){  
-        System.out.println("正在执行初始化的init方法...");  
-    }  
-    @PreDestroy  
-    public void close(){  
-        System.out.println("正在执行销毁之前的close方法...");  
-    }  
+@Component
+public class Chinese implements Person {
+    @Resource(name="steelAxe")
+    private Axe axe;
+    @Override
+    public void useAxe() {
+        System.out.println(axe.chop());
+    }
+    @PostConstruct
+    public void init(){
+        System.out.println("正在执行初始化的init方法...");
+    }
+    @PreDestroy
+    public void close(){
+        System.out.println("正在执行销毁之前的close方法...");
+    }
 }
 ```
 
@@ -479,19 +479,19 @@ public class Chinese implements Person {
 @DependsOn用于强制初始化其他Bean。可以修饰Bean类或方法，使用该Annotation时可以指定一个字符串数组作为参数，每个数组元素对应于一个强制初始化的Bean。
 
 ```
-@DependsOn({"steelAxe","abc"})  
-@Component  
-public class Chinese implements Person{  
-   //codes here  
-}  
+@DependsOn({"steelAxe","abc"})
+@Component
+public class Chinese implements Person{
+   //codes here
+}
 ```
 @Lazy用于指定该Bean是否取消预初始化。主要用于修饰Spring Bean类，用于指定该Bean的预初始化行为，使用该Annotation时可以指定一个boolean型的value属性，该属性决定是否要预初始化该Bean。
 ```
-@Lazy(true)  
-@Component  
-public class Chinese implements Person{  
-   //codes here  
-}  
+@Lazy(true)
+@Component
+public class Chinese implements Person{
+   //codes here
+}
 ```
 
 ### 自动装配和精确装配
@@ -798,16 +798,16 @@ java -jar aspectj-[version].jar
 
 我们在D盘下写一个Hello.java :
 ```
-public class Hello{  
-    public static void main(String[] args){  
-        Hello h=new Hello();  
-        h.sayHello();  
-    }  
-  
-    public void sayHello(){  
-        System.out.println("Hello AspectJ !");  
-    }  
-}  
+public class Hello{
+    public static void main(String[] args){
+        Hello h=new Hello();
+        h.sayHello();
+    }
+
+    public void sayHello(){
+        System.out.println("Hello AspectJ !");
+    }
+}
 ```
 编译运行：
 ```
@@ -816,16 +816,16 @@ java Hello
 ```
 
 假设现在客户需要在执行sayHello()方法之前启动事务，方法结束之后关闭事务，在传统的编程模式下，我们必须手动修改sayHello()方法。但是如果采用面向切面编程的思想，则可以无须修改sayHello( )方法，也可以达到同样的效果。这里我们使用AspectJ框架帮我们做到这一点。我们在D盘下写一个TransactionAspect.java：
-  
+
 ```
-public aspect TransactionAspect{  
-    //指定执行Hello.sayHello()方法时执行下面的代码块  
-    void around():call(void Hello.sayHello()){  
-        System.out.println("开启事务");  
-        proceed();//回调原来的sayHello()方法  
-        System.out.println("结束事务");  
-    }  
-}  
+public aspect TransactionAspect{
+    //指定执行Hello.sayHello()方法时执行下面的代码块
+    void around():call(void Hello.sayHello()){
+        System.out.println("开启事务");
+        proceed();//回调原来的sayHello()方法
+        System.out.println("结束事务");
+    }
+}
 ```
 
 上面的java文件不是使用class、interface或enum，而是使用 aspect，aspect是AspectJ才能识别的关键字。
@@ -840,15 +840,15 @@ java Hello
 
 有了AOP，我们完全可以不对Hello.java类进行任何修改，同时又可以满足客户的需求。上面的程序只是在控制台打印输出语句模拟事务的开启和关闭，在实际工作中可以用实际的操作代码来代替打印语句，这就可以满足客户的要求了。
 如果客户再次提出新需求，需要在sayHello( )方法后增加记录日志的功能，那也很简单，我们再写一个 LogAspect.java :
-  
+
 ```
-public aspect LogAspect{  
-    pointcut logPointcut()  
-        :execution(void Hello.sayHello());  
-    after():logPointcut(){  
-        System.out.println("记录日志功能...");  
-    }  
-}  
+public aspect LogAspect{
+    pointcut logPointcut()
+        :execution(void Hello.sayHello());
+    after():logPointcut(){
+        System.out.println("记录日志功能...");
+    }
+}
 ```
 
 ```
@@ -859,57 +859,57 @@ java Hello
 实际上，AspectJ允许同时为多个方法添加新功能，只要我们定义Pointcut时指定匹配更多的方法即可。如如下片段：
 
 ```
-pointcut xxxPointcut()  
-   :execution(void H*.say*());  
+pointcut xxxPointcut()
+   :execution(void H*.say*());
 ```
 上面程序中的xxxPointcut将可以匹配所有以H开头的类中、所有以say开头的方法，但该方法返回的必须是void。如果想匹配任意的返回值类型：
 
 ```
-pointcut xxxPointcut  
-   :execution(* H*.say*());  
+pointcut xxxPointcut
+   :execution(* H*.say*());
 ```
 
 修改：
 
 Hello.java :
-  
+
 ```
-public class Hello{  
-    public static void main(String[] args){  
-        Hello h=new Hello();  
-        h.sayHello();  
-        h.sayGoodbye();  
-    }  
-    public void sayHello(){  
-        System.out.println("Hello AspectJ !");  
-    }  
-    public void sayGoodbye(){  
-        System.out.println("Goodbye Java !");  
-    }  
-}  
+public class Hello{
+    public static void main(String[] args){
+        Hello h=new Hello();
+        h.sayHello();
+        h.sayGoodbye();
+    }
+    public void sayHello(){
+        System.out.println("Hello AspectJ !");
+    }
+    public void sayGoodbye(){
+        System.out.println("Goodbye Java !");
+    }
+}
 ```
 LogAspect.java :
-  
+
 ```
-public aspect LogAspect{  
-    pointcut logPointcut()  
-        :execution(void Hello.say*());  
-    after():logPointcut(){  
-        System.out.println("记录日志功能...");  
-    }  
-}  
+public aspect LogAspect{
+    pointcut logPointcut()
+        :execution(void Hello.say*());
+    after():logPointcut(){
+        System.out.println("记录日志功能...");
+    }
+}
 ```
 TransactionAspect.java :
-  
+
 ```
-public aspect TransactionAspect{  
-    //指定执行Hello.sayHello()方法时执行下面的代码块  
-    void around():call(void Hello.say*()){  
-        System.out.println("开启事务");  
-        proceed();//回调原来的sayHello()方法  
-        System.out.println("结束事务");  
-    }  
-}  
+public aspect TransactionAspect{
+    //指定执行Hello.sayHello()方法时执行下面的代码块
+    void around():call(void Hello.say*()){
+        System.out.println("开启事务");
+        proceed();//回调原来的sayHello()方法
+        System.out.println("结束事务");
+    }
+}
 ```
 
 ### AOP 的基本概念
@@ -936,8 +936,8 @@ AOP框架并不与特定的代码耦合，AOP框架能处理程序执行中特�
 3. 增强处理（Advice）：AOP框架在特定的切入点执行的增强处理。处理有around，before，after等类型。
 4. 切入点（Pointcut）：可以插入增强处理的连接点。简而言之，当某个连接点满足指定要求时，该连接点将被添加增强处理，该连接点也就变成了切入点。例如如下代码：
 ```
-pointcut xxxPointcut()  
-   :execution(void H*.say*())  
+pointcut xxxPointcut()
+   :execution(void H*.say*())
 ```
 
 每个方法被调用都只是连接点，但如果该方法属于H开头的类，且方法名义say开头，那么该方法的调用执行将变成切入点。如何使用表达式来定义切入点是AOP的核心，Spring默认使用AspectJ切入点语法：
@@ -988,7 +988,7 @@ AspectJ 允许使用Annotation定义切面、切入点和增强处理，而 Spri
 为了启用Spring对@AspectJ切面配置的支持，并保证Spring容器中的目标Bean被一个或多个切面自动增强，必须在配置文件中加如下代码：
 
 ```
-<aop:aspectj-autoproxy/>  
+<aop:aspectj-autoproxy/>
 ```
 如果不打算使用Spring的XML Schema配置方式，则应该在Spring配置文件中增加如下片段来启用@AspectJ支持
 
@@ -1013,66 +1013,66 @@ public class LogAspect {
 
 Person.java:
 ```
-public interface Person {  
-    public String sayHello(String name);  
-    public void eat(String food);  
-}  
+public interface Person {
+    public String sayHello(String name);
+    public void eat(String food);
+}
 ```
 Chinese.java:
 ```
-@Component  
-public class Chinese implements Person {  
-    @Override  
-    public void eat(String food) {  
-        System.out.println("我正在吃:"+food);  
-    }  
-    @Override  
-    public String sayHello(String name) {  
-        return name+"Hello,Spring AOP";  
-    }  
-}  
+@Component
+public class Chinese implements Person {
+    @Override
+    public void eat(String food) {
+        System.out.println("我正在吃:"+food);
+    }
+    @Override
+    public String sayHello(String name) {
+        return name+"Hello,Spring AOP";
+    }
+}
 ```
 BeforeAdviceTest.java :
 ```
-@Aspect  
-public class BeforeAdviceTest {  
-    @Before("execution(* com.bean.*.*(..))")  
-    public void authority(){  
-        System.out.println("模拟执行权限检查");  
-    }  
-}  
+@Aspect
+public class BeforeAdviceTest {
+    @Before("execution(* com.bean.*.*(..))")
+    public void authority(){
+        System.out.println("模拟执行权限检查");
+    }
+}
 ```
 bean.xml :
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns="http://www.springframework.org/schema/beans"  
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-        xmlns:context="http://www.springframework.org/schema/context"  
-        xmlns:aop="http://www.springframework.org/schema/aop"  
-        xmlns:tx="http://www.springframework.org/schema/tx"  
-        xsi:schemaLocation="http://www.springframework.org/schema/beans   
-                http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
-                http://www.springframework.org/schema/context   
-                http://www.springframework.org/schema/context/spring-context-3.0.xsd  
-                http://www.springframework.org/schema/aop  
-                http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">  
-    <context:component-scan base-package="com.bean">  
-        <context:include-filter type="annotation"   
-                 expression="org.aspectj.lang.annotation.Aspect"/>  
-    </context:component-scan>  
-    <aop:aspectj-autoproxy/>  
-</beans>  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+    <context:component-scan base-package="com.bean">
+        <context:include-filter type="annotation"
+                 expression="org.aspectj.lang.annotation.Aspect"/>
+    </context:component-scan>
+    <aop:aspectj-autoproxy/>
+</beans>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        System.out.println(p.sayHello("张三"));  
-        p.eat("西瓜");  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        System.out.println(p.sayHello("张三"));
+        p.eat("西瓜");
+    }
+}
 ```
 
 #### 定义AfterReturning增强处理
@@ -1085,25 +1085,25 @@ AfterReturning 增强处理将在目标方法正常完成后被织入。
 AfterReturningAdviceTest.java :
 
 ```
-@Aspect  
-public class AfterReturningAdviceTest {  
-    @AfterReturning(returning="rvt",pointcut="execution(* com.bean.*.*(..))")  
-    public void log(Object rvt){  
-        System.out.println("获取目标方法返回值："+rvt);  
-        System.out.println("模拟记录日志的功能...");  
-    }  
-}  
+@Aspect
+public class AfterReturningAdviceTest {
+    @AfterReturning(returning="rvt",pointcut="execution(* com.bean.*.*(..))")
+    public void log(Object rvt){
+        System.out.println("获取目标方法返回值："+rvt);
+        System.out.println("模拟记录日志的功能...");
+    }
+}
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        System.out.println(p.sayHello("张三"));  
-        p.eat("西瓜");  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        System.out.println(p.sayHello("张三"));
+        p.eat("西瓜");
+    }
+}
 ```
 
 #### 定义AfterThrowing增强处理
@@ -1115,46 +1115,46 @@ public class Test {
 
 Chinese.java :
 ```
-@Component  
-public class Chinese implements Person {  
-    @Override  
-    public void divide() {  
-        int a=5/0;  
-        System.out.println("divide执行完成！");  
-    }  
-    @Override  
-    public String sayHello(String name) {  
-        try {  
-            System.out.println("sayHello方法开始被执行...");  
-            new FileInputStream("a.txt");  
-        } catch (FileNotFoundException e) {  
-            System.out.println("目标类的异常处理"+e.getMessage());  
-        }  
-        return name+" Hello,Spring AOP";  
-    }  
-}  
+@Component
+public class Chinese implements Person {
+    @Override
+    public void divide() {
+        int a=5/0;
+        System.out.println("divide执行完成！");
+    }
+    @Override
+    public String sayHello(String name) {
+        try {
+            System.out.println("sayHello方法开始被执行...");
+            new FileInputStream("a.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println("目标类的异常处理"+e.getMessage());
+        }
+        return name+" Hello,Spring AOP";
+    }
+}
 ```
 AfterThrowingAdviceTest.java :
 ```
-@Aspect  
-public class AfterThrowingAdviceTest {  
-    @AfterThrowing(throwing="ex",pointcut="execution(* com.bean.*.*(..))")  
-    public void doRecoveryActions(Throwable ex){  
-        System.out.println("目标方法中抛出的异常:"+ex);  
-        System.out.println("模拟抛出异常后的增强处理...");  
-    }  
-}  
+@Aspect
+public class AfterThrowingAdviceTest {
+    @AfterThrowing(throwing="ex",pointcut="execution(* com.bean.*.*(..))")
+    public void doRecoveryActions(Throwable ex){
+        System.out.println("目标方法中抛出的异常:"+ex);
+        System.out.println("模拟抛出异常后的增强处理...");
+    }
+}
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        System.out.println(p.sayHello("张三"));  
-        p.divide();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        System.out.println(p.sayHello("张三"));
+        p.divide();
+    }
+}
 ```
 
 上面程序中的sayHello方法和divide两个方法都会抛出异常，但sayHello方法中的异常将由该方法显式捕捉，所以Spring AOP不会处理该异常；而divide方法将抛出ArithmeticException异常，且该异常没有被任何程序所处理，故Spring AOP会对该异常进行处理。
@@ -1172,44 +1172,44 @@ catch捕捉 意味着完全处理该异常，如果catch块中没有重新抛出
 
 Chinese.java :
 ```
-@Component  
-public class Chinese implements Person {  
-    @Override  
-    public void divide() {  
-        int a=5/0;  
-        System.out.println("divide执行完成！");  
-    }  
-    @Override  
-    public String sayHello(String name) {  
-        try {  
-            System.out.println("sayHello方法开始被执行...");  
-            new FileInputStream("a.txt");  
-        } catch (FileNotFoundException e) {  
-            System.out.println("目标类的异常处理"+e.getMessage());  
-        }  
-        return name+" Hello,Spring AOP";  
-    }  
-}  
+@Component
+public class Chinese implements Person {
+    @Override
+    public void divide() {
+        int a=5/0;
+        System.out.println("divide执行完成！");
+    }
+    @Override
+    public String sayHello(String name) {
+        try {
+            System.out.println("sayHello方法开始被执行...");
+            new FileInputStream("a.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println("目标类的异常处理"+e.getMessage());
+        }
+        return name+" Hello,Spring AOP";
+    }
+}
 ```
 AfterAdviceTest.java :
 ```
-@Aspect  
-public class AfterAdviceTest {  
-    @After("execution(* com.bean.*.*(..))")  
-    public void realease(){  
-        System.out.println("模拟方法结束后的释放资源...");  
-    }  
-}  
+@Aspect
+public class AfterAdviceTest {
+    @After("execution(* com.bean.*.*(..))")
+    public void realease(){
+        System.out.println("模拟方法结束后的释放资源...");
+    }
+}
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        System.out.println(p.sayHello("张三"));  
-        p.divide();  
-    }  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        System.out.println(p.sayHello("张三"));
+        p.divide();
+    }
 }
 ```
 
@@ -1229,53 +1229,53 @@ public class Test {
 
 Chinese.java :
 ```
-@Component  
-public class Chinese implements Person {  
-    @Override  
-    public void divide() {  
-        int a=5/0;  
-        System.out.println("divide执行完成！");  
-    }  
-    @Override  
-    public String sayHello(String name) {  
-        System.out.println("sayHello方法被调用...");  
-        return name+" Hello,Spring AOP";  
-    }  
-    @Override  
-    public void eat(String food) {  
-        System.out.println("我正在吃:"+food);  
-    }  
-}  
+@Component
+public class Chinese implements Person {
+    @Override
+    public void divide() {
+        int a=5/0;
+        System.out.println("divide执行完成！");
+    }
+    @Override
+    public String sayHello(String name) {
+        System.out.println("sayHello方法被调用...");
+        return name+" Hello,Spring AOP";
+    }
+    @Override
+    public void eat(String food) {
+        System.out.println("我正在吃:"+food);
+    }
+}
 ```
 AroundAdviceTest.java :
 ```
-@Aspect  
-public class AroundAdviceTest {  
-    @Around("execution(* com.bean.*.*(..))")  
-    public Object processTx(ProceedingJoinPoint jp) throws Throwable{  
-        System.out.println("执行目标方法之前，模拟开始事务...");  
-        Object rvt=jp.proceed(new String[]{"被改变的参数"});  
-        System.out.println("执行目标方法之后，模拟结束事务...");  
-        return rvt+"新增的内容";  
-    }  
-}  
+@Aspect
+public class AroundAdviceTest {
+    @Around("execution(* com.bean.*.*(..))")
+    public Object processTx(ProceedingJoinPoint jp) throws Throwable{
+        System.out.println("执行目标方法之前，模拟开始事务...");
+        Object rvt=jp.proceed(new String[]{"被改变的参数"});
+        System.out.println("执行目标方法之后，模拟结束事务...");
+        return rvt+"新增的内容";
+    }
+}
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        System.out.println(p.sayHello("张三"));  
-        p.eat("西瓜");  
-        p.divide();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        System.out.println(p.sayHello("张三"));
+        p.eat("西瓜");
+        p.divide();
+    }
+}
 ```
 
 如果proceed方法参数数组的维度大于需要增强处理的方法，程序会抛出异常。
 
-#### 访问目标方法 
+#### 访问目标方法
 
 最简单的做法就是定义增强处理方法时将第一个参数定义为JoinPoint 类型，当该增强处理方法被调用时，该JoinPoint参数就代表了织入增强处理的连接点。JoinPoint里包含了如下几个常用的方法：
 
@@ -1286,70 +1286,70 @@ public class Test {
 
 Chinese.java :
 ```
-@Component  
-public class Chinese implements Person {  
-    @Override  
-    public String sayHello(String name) {  
-        System.out.println("sayHello方法被调用...");  
-        return name+" Hello,Spring AOP";  
-    }  
-    @Override  
-    public void eat(String food) {  
-        System.out.println("我正在吃:"+food);  
-    }  
-}  
+@Component
+public class Chinese implements Person {
+    @Override
+    public String sayHello(String name) {
+        System.out.println("sayHello方法被调用...");
+        return name+" Hello,Spring AOP";
+    }
+    @Override
+    public void eat(String food) {
+        System.out.println("我正在吃:"+food);
+    }
+}
 ```
 FourAdviceTest.java :
 ```
-@Aspect  
-public class FourAdviceTest {  
-    @Around("execution(* com.bean.*.*(..))")  
-    public Object processTx(ProceedingJoinPoint jp) throws Throwable{  
+@Aspect
+public class FourAdviceTest {
+    @Around("execution(* com.bean.*.*(..))")
+    public Object processTx(ProceedingJoinPoint jp) throws Throwable{
         System.out.println("Around增强:执行目标方法之前，模拟开始事务...");
-        Object[] args=jp.getArgs();  
+        Object[] args=jp.getArgs();
         if(args!=null && args.length>0 && args[0].getClass()==String.class){
-            args[0]="被改变的参数";  
-        }  
-        Object rvt=jp.proceed(args);  
+            args[0]="被改变的参数";
+        }
+        Object rvt=jp.proceed(args);
         System.out.println("Around增强:执行目标方法之后，模拟结束事务...");
-        return rvt+" 新增的内容";  
-    }  
-    @Before("execution(* com.bean.*.*(..))")  
-    public void authority(JoinPoint jp){  
-        System.out.println("Before增强:模拟执行权限检查...");  
-        System.out.println("Before增强:被织入增强处理的目标方法为："+ jp.getSignature().getName());  
-        System.out.println("Before增强：目标方法的参数为："+Arrays.toString(jp.getArgs()));  
-        System.out.println("Before增强:被织入增强处理的目标对象为："+jp.getTarget());  
-    }  
-      
-    @AfterReturning(returning="rvt",pointcut="execution(* com.bean.*.*(..))")  
-    public void log(JoinPoint jp,Object rvt){  
+        return rvt+" 新增的内容";
+    }
+    @Before("execution(* com.bean.*.*(..))")
+    public void authority(JoinPoint jp){
+        System.out.println("Before增强:模拟执行权限检查...");
+        System.out.println("Before增强:被织入增强处理的目标方法为："+ jp.getSignature().getName());
+        System.out.println("Before增强：目标方法的参数为："+Arrays.toString(jp.getArgs()));
+        System.out.println("Before增强:被织入增强处理的目标对象为："+jp.getTarget());
+    }
+
+    @AfterReturning(returning="rvt",pointcut="execution(* com.bean.*.*(..))")
+    public void log(JoinPoint jp,Object rvt){
         System.out.println("AfterReturning增强：获取目标方法返回值："+rvt);
-        System.out.println("AfterReturning增强：模拟记录日志功能...");  
-        System.out.println("AfterReturning增强：被织入增强处理的目标方法为:"+ jp.getSignature().getName());  
-        System.out.println("AfterReturning增强：目标方法的参数为："+ Arrays.toString(jp.getArgs()));  
-        System.out.println("AfterReturning增强:被织入增强处理的目标对象为："+ jp.getTarget());  
-    }  
-      
-    @After("execution(* com.bean.*.*(..))")  
-    public void release(JoinPoint jp){  
-        System.out.println("After增强：模拟方法结束后的释放资源...");  
-        System.out.println("After增强：被织入增强处理的目标方法为："+ jp.getSignature().getName());  
-        System.out.println("After增强：目标方法的参数为："+ Arrays.toString(jp.getArgs()));  
-        System.out.println("After增强: 被织入增强处理的目标对象为："+ jp.getTarget());  
-    }  
-}  
+        System.out.println("AfterReturning增强：模拟记录日志功能...");
+        System.out.println("AfterReturning增强：被织入增强处理的目标方法为:"+ jp.getSignature().getName());
+        System.out.println("AfterReturning增强：目标方法的参数为："+ Arrays.toString(jp.getArgs()));
+        System.out.println("AfterReturning增强:被织入增强处理的目标对象为："+ jp.getTarget());
+    }
+
+    @After("execution(* com.bean.*.*(..))")
+    public void release(JoinPoint jp){
+        System.out.println("After增强：模拟方法结束后的释放资源...");
+        System.out.println("After增强：被织入增强处理的目标方法为："+ jp.getSignature().getName());
+        System.out.println("After增强：目标方法的参数为："+ Arrays.toString(jp.getArgs()));
+        System.out.println("After增强: 被织入增强处理的目标对象为："+ jp.getTarget());
+    }
+}
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        System.out.println(p.sayHello("张三"));  
-        p.eat("西瓜");  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        System.out.println(p.sayHello("张三"));
+        p.eat("西瓜");
+    }
+}
 ```
 Before、Around、AfterReturning、After增强处理的优先级从低到高的顺序：Before、Around、AfterReturning、After
 
@@ -1364,53 +1364,53 @@ Spring AOP 采用和 AspectJ 一样的优先顺序来织入增强处理：在进
 
 Chinese.java :
 ```
-@Component  
-public class Chinese implements Person {  
-    @Override  
-    public void eat(String food) {  
-        System.out.println("我正在吃:"+food);  
-    }  
-}  
+@Component
+public class Chinese implements Person {
+    @Override
+    public void eat(String food) {
+        System.out.println("我正在吃:"+food);
+    }
+}
 ```
 AspectFirst.java :
 ```
-@Aspect  
-@Order(5)  
-public class AspectFirst {  
-    @Before("execution(* com.bean.*.*(..))")  
-    public void aspectFirstStart(){  
-        System.out.println("@Before增强处理：我是AspectFirst切面，我的优先级为5");  
-    }  
-    @After("execution(* com.bean.*.*(..))")  
-    public void aspectFirstEnd(){  
-        System.out.println("@After增强处理：我是AspectFirst切面，我的优先级为5");  
-    }  
-}  
+@Aspect
+@Order(5)
+public class AspectFirst {
+    @Before("execution(* com.bean.*.*(..))")
+    public void aspectFirstStart(){
+        System.out.println("@Before增强处理：我是AspectFirst切面，我的优先级为5");
+    }
+    @After("execution(* com.bean.*.*(..))")
+    public void aspectFirstEnd(){
+        System.out.println("@After增强处理：我是AspectFirst切面，我的优先级为5");
+    }
+}
 ```
 AspectSecond.java :
 ```
-@Aspect  
-@Order(1)  
-public class AspectSecond {  
-    @Before("execution(* com.bean.*.*(..))")  
-    public void aspectSecondStart(){  
-        System.out.println("@Before增强处理：我是AspectSecond切面，我的优先级为1");  
-    }  
-    @After("execution(* com.bean.*.*(..))")  
-    public void aspectSecondEnd(){  
-        System.out.println("@After增强处理：我是AspectSecond切面，我的优先级为1");  
-    }  
-}  
+@Aspect
+@Order(1)
+public class AspectSecond {
+    @Before("execution(* com.bean.*.*(..))")
+    public void aspectSecondStart(){
+        System.out.println("@Before增强处理：我是AspectSecond切面，我的优先级为1");
+    }
+    @After("execution(* com.bean.*.*(..))")
+    public void aspectSecondEnd(){
+        System.out.println("@After增强处理：我是AspectSecond切面，我的优先级为1");
+    }
+}
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        p.eat("西瓜");  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        p.eat("西瓜");
+    }
+}
 ```
 
 同一个切面类里的两个相同类型的增强处理在同一个连接点被织入时，Spring AOP将以随机顺序来织入这两个增强处理，没有办法指定它们的织入顺序。如果确实需要保证它们以固有的顺序被织入，则可考虑将多个增强处理压缩成一个，或者将不同增强处理重构到不同切面类中，通过在切面类级别上进行排序。
@@ -1431,10 +1431,10 @@ Spring AOP 只支持以Spring Bean的方法执行组作为连接点，所以可�
 
 下面的代码片段定义了一个切入点，anyOldTransfer，这个切入点将匹配任何名为transfer的方法的执行：
 ```
-//使用@Pointcut注解时指定切入点表达式  
-@Pointcut("execution(* transfer(..))")  
-//使用一个返回值为void，方法体为空的方法来命名切入点  
-private void anyOldTransfer(){}  
+//使用@Pointcut注解时指定切入点表达式
+@Pointcut("execution(* transfer(..))")
+//使用一个返回值为void，方法体为空的方法来命名切入点
+private void anyOldTransfer(){}
 ```
 
 切入点表达式，也就是组成@Pointcut注解的值，是正规的AspectJ5切入点表达式。如果想要更多了解AspectJ的切入点语法，参见AspectJ编程指南。
@@ -1443,34 +1443,34 @@ private void anyOldTransfer(){}
 
 如果需要使用本切面类中的切入点，则可在使用@Pointcut时，指定value属性值为已有的切入点，如下所示：
 ```
-@AfterReturning(pointcut="myPointcut()",returning="retVal")  
-public void writeLog(String msg,Object retVal){  
-   ...  
-}  
+@AfterReturning(pointcut="myPointcut()",returning="retVal")
+public void writeLog(String msg,Object retVal){
+   ...
+}
 ```
 可以看出，指定切入点时非常像调用Java方法的语法------只是该方法代表一个切入点，其实质是为该增强处理定义一个切入点表达式。
 
 如果需要使用其他切面类中的切入点，则其他切面类中的切入点不能使用private修饰。如下程序的切面类中仅定义了一个切入点：
 
 ```
-@Aspect  
-public class SystemArchitecture{  
-   @Pointcut("execution(* org.crazyit.app.service.impl.Chin*.say*(..))")  
-   public void myPointcut(){  
-   }  
-}  
+@Aspect
+public class SystemArchitecture{
+   @Pointcut("execution(* org.crazyit.app.service.impl.Chin*.say*(..))")
+   public void myPointcut(){
+   }
+}
 ```
 下面的切面类中将直接使用上面定义的myPointcut切入点：
 ```
-@Aspect  
-public class LogAspect {  
-    @AfterReturning(pointcut="SystemArchitecture.myPointcut()&& args(msg)",returning="retVal")  
-    public void writeLog(String msg,Object retVal){  
-        System.out.println(msg);  
-        System.out.println(retVal);  
-        System.out.println("模拟记录日志...");  
-    }  
-}  
+@Aspect
+public class LogAspect {
+    @AfterReturning(pointcut="SystemArchitecture.myPointcut()&& args(msg)",returning="retVal")
+    public void writeLog(String msg,Object retVal){
+        System.out.println(msg);
+        System.out.println(retVal);
+        System.out.println("模拟记录日志...");
+    }
+}
 ```
 
 #### 切入点指示符
@@ -1609,19 +1609,19 @@ pointcut("execution(* com.abc.service.*.*(..) && args(name))")
     <!-- 注意这里可以使用order属性为Aspect指定优先级 -->
     <aop:aspect id="firstAspect" ref="adviceTest" order="2">
         <!-- @Before切点 -->
-        <aop:before pointcut="execution(* com.abc.service.*.*(..))" 
+        <aop:before pointcut="execution(* com.abc.service.*.*(..))"
                 method="permissionCheck"/>
         <!-- @After切点 -->
-        <aop:after pointcut="execution(* com.abc.service.*.*(..))" 
+        <aop:after pointcut="execution(* com.abc.service.*.*(..))"
                 method="releaseResource"/>
         <!-- @AfterReturning切点 -->
-        <aop:after-returning pointcut="execution(* com.abc.service.*.*(..))" 
+        <aop:after-returning pointcut="execution(* com.abc.service.*.*(..))"
                 method="log"/>
         <!-- @AfterThrowing切点 -->
-        <aop:after-throwing pointcut="execution(* com.abc.service.*.*(..))" 
+        <aop:after-throwing pointcut="execution(* com.abc.service.*.*(..))"
                 method="handleException"/>
         <!-- @Around切点（多个切点提示符使用and、or或者not连接） -->
-        <aop:around pointcut="execution(* com.abc.service.*.*(..)) and args(name,time,..)" 
+        <aop:around pointcut="execution(* com.abc.service.*.*(..)) and args(name,time,..)"
                 method="process"/>
     </aop:aspect>
 </aop:config>
@@ -1659,17 +1659,17 @@ public class AfterThrowingAdviceTest {
 与前面的切面类完全类似，该Java类就是一个普通的Java类。下面的配置文件将负责配置该Bean实例，并将该Bean转换成切面Bean：
 
 ```
-<bean id="afterThrowingAdviceTest" 
+<bean id="afterThrowingAdviceTest"
     class="com.abc.advice.AfterThrowingAdviceTest" />
 <aop:config>
     <!-- 这个切点将可以被多个<aop:aspect../>使用 -->
-    <aop:pointcut id="myPointcut" 
+    <aop:pointcut id="myPointcut"
         expression="execution(* com.abc.service.*.*(..))" />
     <!-- 这个aspect由上面的Bean afterThrowingAdviceTest转化而来 -->
     <aop:aspect id="aspect1" ref="afterThrowingAdviceTest">
         <!-- 定义一个AfterThrowing增强处理，指定切入点以切面Bean中
             的doRecoverryAction作为增强处理方法 -->
-        <aop:after-throwing pointcut-ref="myPointcut" 
+        <aop:after-throwing pointcut-ref="myPointcut"
             method="doRecoveryAction" throwing="th" />
     </aop:aspect>
 </aop:config>
@@ -1691,14 +1691,14 @@ JavaEE应用的传统事务有两种策略：全局事务和局部事务。
 Spring事务策略是通过PlatformTransactionManager接口实现的，该接口是Spring事务策略的核心。该接口的源代码如下：
 
 ```
-public interface PlatformTransactionManager {  
-   //平台无关的获得事务的方法  
-   TransactionStatus getTransaction(TransactionDefinition definition) throws TransactionException;  
-   //平台无关的事务提交方法  
-   void commit(TransactionStatus status) throws TransactionException;  
-   //平台无关的事务回滚方法  
-   void rollback(TransactionStatus status) throws TransactionException;  
-}  
+public interface PlatformTransactionManager {
+   //平台无关的获得事务的方法
+   TransactionStatus getTransaction(TransactionDefinition definition) throws TransactionException;
+   //平台无关的事务提交方法
+   void commit(TransactionStatus status) throws TransactionException;
+   //平台无关的事务回滚方法
+   void rollback(TransactionStatus status) throws TransactionException;
+}
 ```
 PlatformTransactionManager是一个与任何事务策略分离的接口，随着底层不同事务策略的切换，应用必须采用不同的实现类。PlatformTransactionManager接口没有与任何事务资源捆绑在一起，它可以适应于任何的事务策略，结合Spring的IoC容器，可以向PlatformTransactionManager注入相关的平台特性。
 
@@ -1714,78 +1714,79 @@ TransactionDefinition接口定义了一个事务规则，该接口必须指定�
 * 只读状态	只读事务不修改任何数据。在某些情况下，例如使用Hibernate时，只读事务是非常有用的优化。TransactionStatus代表事务本身，它提供了简单的控制事务执行和查询事务状态的方法，这些方法在所有的事务API中都是相同的：
 
 ```
-public interface TransactionStatus extends SavepointManager {  
-    boolean isNewTransaction();  
-    boolean hasSavepoint();  
-    void setRollbackOnly();  
-    boolean isRollbackOnly();  
-    boolean isCompleted();  
-}  
-public interface SavepointManager {  
-    Object createSavepoint() throws TransactionException;  
-    void rollbackToSavepoint(Object savepoint) throws TransactionException;  
-    void releaseSavepoint(Object savepoint) throws TransactionException;  
-}  
+public interface TransactionStatus extends SavepointManager {
+    boolean isNewTransaction();
+    boolean hasSavepoint();
+    void setRollbackOnly();
+    boolean isRollbackOnly();
+    boolean isCompleted();
+}
+public interface SavepointManager {
+    Object createSavepoint() throws TransactionException;
+    void rollbackToSavepoint(Object savepoint) throws TransactionException;
+    void releaseSavepoint(Object savepoint) throws TransactionException;
+}
 ```
 Spring具体的事务管理由PlatformTransactionManager的不同实现类来完成。在Spring容器中配置PlatformTransactionManager Bean时，必须针对不同环境提供不同的实现类。
 譬如针对 JDBC数据源 的局部事务策略的配置文件如下：
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns="http://www.springframework.org/schema/beans"  
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-        xmlns:context="http://www.springframework.org/schema/context"  
-        xmlns:tx="http://www.springframework.org/schema/tx"  
-        xsi:schemaLocation="http://www.springframework.org/schema/beans   
-        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
-                http://www.springframework.org/schema/context   
-                http://www.springframework.org/schema/context/spring-context-2.5.xsd  
-                http://www.springframework.org/schema/tx   
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                http://www.springframework.org/schema/tx
                 http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-    <!-- 定义数据源Bean，使用C3P0数据源实现 -->  
+    <!-- 定义数据源Bean，使用C3P0数据源实现 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="oracle.jdbc.driver.OracleDriver"/> 
-        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/>  
-        <property name="user" value="scott"/>  
-        <property name="password" value="tiger"/>  
-        <property name="maxPoolSize" value="40"/>  
-        <property name="minPoolSize" value="1"/>  
-        <property name="initialPoolSize" value="1"/>  
-        <property name="maxIdleTime" value="20"/>  
-    </bean>  
+        <property name="driverClass" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+        <property name="user" value="scott"/>
+        <property name="password" value="tiger"/>
+        <property name="maxPoolSize" value="40"/>
+        <property name="minPoolSize" value="1"/>
+        <property name="initialPoolSize" value="1"/>
+        <property name="maxIdleTime" value="20"/>
+    </bean>
     <!-- 配置JDBC数据源的局部事务管理器，使用DataSourceTransactionManager类 -->
-    <!-- 该类实现PlatformTransactionManager接口，是针对采用数据源连接的特定实现 -->  
-    <bean id="transactionManager"   
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-        <property name="dataSource" ref="dataSource"/>  
-    </bean>  
-</beans>  
+    <!-- 该类实现PlatformTransactionManager接口，是针对采用数据源连接的特定实现 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+</beans>
 ```
 针对 Hibernate 的局部事务策略的配置文件如下：
 ```
-<!-- 定义Hibernate的SessionFactory -->  
-<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">  
-    <property name="dataSource" ref="dataSource"/>  
-    <property name="mappingResources">  
-        <list>  
-            <value>xxx/Xxx.hbm.xml</value>  
-        </list>  
-    </property>  
-    <property name="hibernateProperties">  
-        <props>  
-            <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>  
-            <prop key="hibernate.hbm2ddl.auto">update</prop>  
-        </props>  
-    </property>  
-</bean>  
-<!-- 配置Hibernate的局部事务管理器，使用HibernateTransactionManager类 -->  
-<!-- 该类实现PlatformTransactionManager接口，是针对采用Hibernate的特定实现 -->  
-<bean id="transactionManager"   
-        class="org.springframework.orm.hibernate3.HibernateTransactionManager">  
-    <property name="sessionFactory" ref="sessionFactory"/>  
-</bean>  
-```      
+<!-- 定义Hibernate的SessionFactory -->
+<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="mappingResources">
+        <list>
+            <value>xxx/Xxx.hbm.xml</value>
+        </list>
+    </property>
+    <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop>
+        </props>
+    </property>
+</bean>
+<!-- 配置Hibernate的局部事务管理器，使用HibernateTransactionManager类 -->
+<!-- 该类实现PlatformTransactionManager接口，是针对采用Hibernate的特定实现 -->
+<bean id="transactionManager"
+        class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+```
 
 从上面的配置文件可以看出，当采用Spring事务管理策略时，应用程序无须与具体的事务策略耦合。Spring提供了两种事务管理方式：
+
 1. 编程式事务管理：即使利用Spring编程式事务时，程序也可直接获取容器中的transactionManager Bean，该Bean总是PlatformTransactionManager的实例，所以可以通过该接口提供的3个方法来开始、提交事务和回滚事务。
 2. 声明式事务管理：无须在Java程序中书写任何的事务操作代码，而是通过在XML文件中为业务组件配置事务代理，AOP为事务代理所织入的增强处理也由Spring提供：在目标方法执行之前，织入开始事务；在目标方法执行之后，织入结束事务。
 
@@ -1807,80 +1808,80 @@ TransactionProxyFactoryBean创建事务代理时，需要了解当前事务所�
 
 NewsDao.java :
 ```
-public interface NewsDao {  
-    public void insert(Integer id,String title,String content);  
-}  
+public interface NewsDao {
+    public void insert(Integer id,String title,String content);
+}
 ```
 NewsDaoImpl.java :
 ```
-public class NewsDaoImpl implements NewsDao{  
-    private DataSource ds;  
-    public void setDs(DataSource ds) {  
-        this.ds = ds;  
-    }  
-    @Override  
-    public void insert(Integer id, String title, String content) {  
-        JdbcTemplate jt=new JdbcTemplate(ds);  
-        jt.update("insert into news values(?,?,?)",new Object[]{id,title,content});  
-        jt.update("insert into news values(?,?,?)",new Object[]{id,title,content});  
-    }  
-}  
+public class NewsDaoImpl implements NewsDao{
+    private DataSource ds;
+    public void setDs(DataSource ds) {
+        this.ds = ds;
+    }
+    @Override
+    public void insert(Integer id, String title, String content) {
+        JdbcTemplate jt=new JdbcTemplate(ds);
+        jt.update("insert into news values(?,?,?)",new Object[]{id,title,content});
+        jt.update("insert into news values(?,?,?)",new Object[]{id,title,content});
+    }
+}
 ```
 bean.xml :
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns="http://www.springframework.org/schema/beans"  
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-        xmlns:context="http://www.springframework.org/schema/context"  
-        xmlns:tx="http://www.springframework.org/schema/tx"  
-        xsi:schemaLocation="http://www.springframework.org/schema/beans   
-        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
-                http://www.springframework.org/schema/context   
-                http://www.springframework.org/schema/context/spring-context-2.5.xsd  
-                http://www.springframework.org/schema/tx   
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                http://www.springframework.org/schema/tx
                 http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-    <!-- 定义数据源Bean -->  
+    <!-- 定义数据源Bean -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/>  
-        <property name="user" value="scott"/>  
-        <property name="password" value="tiger"/>  
-        <property name="maxPoolSize" value="40"/>  
-        <property name="minPoolSize" value="1"/>  
-        <property name="initialPoolSize" value="1"/>  
-        <property name="maxIdleTime" value="20"/>  
-    </bean>  
-    <!-- 配置一个业务逻辑Bean -->  
-    <bean id="newsDao" class="com.bean.NewsDaoImpl">  
-        <property name="ds" ref="dataSource"/>  
-    </bean>  
-    <!-- 配置JDBC数据源的局部事务管理器 -->  
-    <bean id="transactionManager"   
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-        <property name="dataSource" ref="dataSource"/>  
-    </bean>  
-    <!-- 为业务逻辑Bean配置事务代理 -->  
-    <bean id="newsDaoTrans"   
-          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">  
-          <property name="transactionManager" ref="transactionManager"/>  
-          <property name="target" ref="newsDao"/>  
-          <property name="transactionAttributes">  
-            <props>  
-                <prop key="*">PROPAGATION_REQUIRED</prop>  
-            </props>  
-          </property>  
-    </bean>  
-</beans>  
+        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+        <property name="user" value="scott"/>
+        <property name="password" value="tiger"/>
+        <property name="maxPoolSize" value="40"/>
+        <property name="minPoolSize" value="1"/>
+        <property name="initialPoolSize" value="1"/>
+        <property name="maxIdleTime" value="20"/>
+    </bean>
+    <!-- 配置一个业务逻辑Bean -->
+    <bean id="newsDao" class="com.bean.NewsDaoImpl">
+        <property name="ds" ref="dataSource"/>
+    </bean>
+    <!-- 配置JDBC数据源的局部事务管理器 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 为业务逻辑Bean配置事务代理 -->
+    <bean id="newsDaoTrans"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+          <property name="transactionManager" ref="transactionManager"/>
+          <property name="target" ref="newsDao"/>
+          <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+          </property>
+    </bean>
+</beans>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        NewsDao dao=(NewsDao) ctx.getBean("newsDaoTrans");  
-        dao.insert(1,"夺冠","绿衫军夺冠");  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        NewsDao dao=(NewsDao) ctx.getBean("newsDaoTrans");
+        dao.insert(1,"夺冠","绿衫军夺冠");
+    }
+}
 ```
 
 可以知道，插入数据失败。上面程序中违反主键约束，该行代码将引发异常。
@@ -1905,65 +1906,65 @@ Spring 2.x 的XML Schema方式提供了更简洁的事务配置策略，Spring2.
 
 bean.xml :
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns="http://www.springframework.org/schema/beans"  
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-        xmlns:context="http://www.springframework.org/schema/context"  
-        xmlns:aop="http://www.springframework.org/schema/aop"  
-        xmlns:tx="http://www.springframework.org/schema/tx"  
-        xsi:schemaLocation="http://www.springframework.org/schema/beans   
-        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
-                http://www.springframework.org/schema/context   
-                http://www.springframework.org/schema/context/spring-context-2.5.xsd  
-                http://www.springframework.org/schema/tx   
-                http://www.springframework.org/schema/tx/spring-tx-2.5.xsd  
-                http://www.springframework.org/schema/aop   
-                http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">  
-    <!-- 定义数据源Bean -->  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+    <!-- 定义数据源Bean -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="oracle.jdbc.driver.OracleDriver"/>  
-        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/>  
-        <property name="user" value="scott"/>  
-        <property name="password" value="tiger"/>  
-        <property name="maxPoolSize" value="40"/>  
-        <property name="minPoolSize" value="1"/>  
-        <property name="initialPoolSize" value="1"/>  
-        <property name="maxIdleTime" value="20"/>  
-    </bean>  
-    <!-- 配置一个业务逻辑Bean -->  
-    <bean id="newsDao" class="com.bean.NewsDaoImpl">  
-        <property name="ds" ref="dataSource"/>  
-    </bean>  
-    <!-- 配置JDBC数据源的局部事务管理器 -->  
-    <bean id="transactionManager"   
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-        <property name="dataSource" ref="dataSource"/>  
-    </bean>  
-    <!-- 配置事务增强处理Bean，指定事务管理器 -->  
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">  
-        <tx:attributes>  
-            <!-- 所有以'get'开头的方法是只读的 -->  
-            <tx:method name="get*" read-only="true"/>  
-            <!-- 其他方法使用默认的事务处理 -->  
-            <tx:method name="*"/>  
-        </tx:attributes>  
-    </tx:advice>  
-    <!-- AOP配置的元素 -->  
-    <aop:config>  
-        <aop:pointcut id="myPointcut" expression="execution(* com.bean.*.*(..))"/>  
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut"/>  
-    </aop:config>  
-</beans>  
+        <property name="driverClass" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+        <property name="user" value="scott"/>
+        <property name="password" value="tiger"/>
+        <property name="maxPoolSize" value="40"/>
+        <property name="minPoolSize" value="1"/>
+        <property name="initialPoolSize" value="1"/>
+        <property name="maxIdleTime" value="20"/>
+    </bean>
+    <!-- 配置一个业务逻辑Bean -->
+    <bean id="newsDao" class="com.bean.NewsDaoImpl">
+        <property name="ds" ref="dataSource"/>
+    </bean>
+    <!-- 配置JDBC数据源的局部事务管理器 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 配置事务增强处理Bean，指定事务管理器 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- 所有以'get'开头的方法是只读的 -->
+            <tx:method name="get*" read-only="true"/>
+            <!-- 其他方法使用默认的事务处理 -->
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    <!-- AOP配置的元素 -->
+    <aop:config>
+        <aop:pointcut id="myPointcut" expression="execution(* com.bean.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut"/>
+    </aop:config>
+</beans>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        NewsDao dao=(NewsDao) ctx.getBean("newsDao");  
-        dao.insert(1,"夺冠","绿衫军夺冠");  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        NewsDao dao=(NewsDao) ctx.getBean("newsDao");
+        dao.insert(1,"夺冠","绿衫军夺冠");
+    }
+}
 ```
 
 可见，事务已经自动启动了。两条记录是一个事务，第二条记录插入失败，导致第一条记录也被回滚。
@@ -1997,26 +1998,26 @@ Spring 还允许将事务配置放在Java类中定义，这需要借助于@Trans
 * timeout	指定事务的超时时长。 例如：
 
 ```
-public class NewsDaoImpl implements NewsDao{  
-    private DataSource ds;  
-    public void setDs(DataSource ds) {  
-        this.ds = ds;  
-    }  
-    @Transactional(propagation=Propagation.REQUIRED)//这里  
-public void insert(Integer id, String title, String content) {  
-        JdbcTemplate jt=new JdbcTemplate(ds);  
-        jt.update("insert into news values(?,?,?)",new Object[]{id,title,content});  
-        jt.update("insert into news values(?,?,?)",new Object[]{id,title,content});  
-    }  
-}  
+public class NewsDaoImpl implements NewsDao{
+    private DataSource ds;
+    public void setDs(DataSource ds) {
+        this.ds = ds;
+    }
+    @Transactional(propagation=Propagation.REQUIRED)//这里
+public void insert(Integer id, String title, String content) {
+        JdbcTemplate jt=new JdbcTemplate(ds);
+        jt.update("insert into news values(?,?,?)",new Object[]{id,title,content});
+        jt.update("insert into news values(?,?,?)",new Object[]{id,title,content});
+    }
+}
 ```
 仅仅使用这个Annotation修饰还不够，还需要让Spring根据Annotation来配置事务代理，所以还需要在Spring配置文件中增加如下配置片段：
 ```
-<bean id="transactionManager"   
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-        <property name="dataSource" ref="dataSource"/>  
-    </bean>  
-<tx:annotation-driven transaction-manager="transactionManager"/>  
+<bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+<tx:annotation-driven transaction-manager="transactionManager"/>
 ```
 
 ## Spring整合Struts2
@@ -2030,82 +2031,82 @@ Spring提供了一个ContextLoaderListener，该监听器类实现了ServletCont
 Spring根据指定配置文件创建WebApplicationContext对象，并将其保存在Web应用的ServletContext中。如果要获得Spring容器对象，可以通过如下代码：
 
 ```
-WebApplicationContext ctx=  WebApplicationContextUtils.getWebApplicationContext(servletContext);  
+WebApplicationContext ctx=  WebApplicationContextUtils.getWebApplicationContext(servletContext);
 ```
 
 web.xml :
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<web-app version="2.4"   
-    xmlns="http://java.sun.com/xml/ns/j2ee"   
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   
-    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">  
-  <context-param>  
-    <param-name>contextConfigLocation</param-name>  
-    <param-value>classpath:beans.xml</param-value>  
-  </context-param>  
-  <listener>  
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
-  </listener>  
-  <filter>  
-    <filter-name>struts2</filter-name>  
-    <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>  
-  </filter>  
-  <filter-mapping>  
-    <filter-name>struts2</filter-name>  
-    <url-pattern>/*</url-pattern>  
-  </filter-mapping>  
-</web-app>  
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+    xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:beans.xml</param-value>
+  </context-param>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <filter>
+    <filter-name>struts2</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>struts2</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-app>
 ```
 index.jsp :
 ```
-<body>  
-<a href="test">点击我</a>  
-</body>  
+<body>
+<a href="test">点击我</a>
+</body>
 ```
 ok.jsp :
 ```
-<body>  
-操作成功，已获得Spring容器实例,控制台已经输出了容器对象...  
-</body>  
+<body>
+操作成功，已获得Spring容器实例,控制台已经输出了容器对象...
+</body>
 ```
 struts.xml :
 ```
-<?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE struts PUBLIC  
-    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"  
-    "http://struts.apache.org/dtds/struts-2.1.7.dtd">  
-<struts>  
-    <package name="demo" extends="struts-default">  
-        <action name="test" class="com.action.TestAction">  
-            <result>/ok.jsp</result>  
-        </action>  
-    </package>  
-</struts>  
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+    <package name="demo" extends="struts-default">
+        <action name="test" class="com.action.TestAction">
+            <result>/ok.jsp</result>
+        </action>
+    </package>
+</struts>
 ```
 TestAction.java :
 ```
-public class TestAction extends ActionSupport {  
-    @Override  
-    public String execute() throws Exception {  
-        ServletContext servletContext=ServletActionContext.getServletContext();  
-        WebApplicationContext ctx=  
-            WebApplicationContextUtils.getWebApplicationContext(servletContext);  
-        System.out.println(ctx);  
-        return "success";  
-    }  
-}  
+public class TestAction extends ActionSupport {
+    @Override
+    public String execute() throws Exception {
+        ServletContext servletContext=ServletActionContext.getServletContext();
+        WebApplicationContext ctx=
+            WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        System.out.println(ctx);
+        return "success";
+    }
+}
 ```
 
 如果将Spring的配置文件放在WEB-INF目录下：
 
 则修改web.xml的<param-value>的值为：
 ```
-<context-param>  
-  <param-name>contextConfigLocation</param-name>  
-  <param-value>/WEB-INF/beans.xml</param-value>  
-</context-param>  
+<context-param>
+  <param-name>contextConfigLocation</param-name>
+  <param-value>/WEB-INF/beans.xml</param-value>
+</context-param>
 ```
 
 ### MVC框架与Spring整合的思考
@@ -2131,97 +2132,97 @@ public class TestAction extends ActionSupport {
 
 ### 让Spring容器管理控制器
 
-web.xml如前所示。 
+web.xml如前所示。
 index.jsp :
 ```
-<body>  
-<form action="add" method="post">  
-部门名称:<input type="text" name="dname"><br>  
-部门地址:<input type="text" name="loc"><br>  
-<input type="submit" value="提交">  
-</form>  
-</body>  
+<body>
+<form action="add" method="post">
+部门名称:<input type="text" name="dname"><br>
+部门地址:<input type="text" name="loc"><br>
+<input type="submit" value="提交">
+</form>
+</body>
 ```
 ok.jsp :
 ```
-<body>  
-部门信息添加成功...  
-</body>  
+<body>
+部门信息添加成功...
+</body>
 ```
 Dept.java :
 ```
-public class Dept {  
-    private String dname;  
-    private String loc;  
+public class Dept {
+    private String dname;
+    private String loc;
     //setter .. getter
-}  
+}
 ```
 DeptDAO.java :
 ```
-public interface DeptDAO {  
-    public void save(Dept dept);  
-}  
+public interface DeptDAO {
+    public void save(Dept dept);
+}
 ```
 DeptDAOImpl.java :
 ```
-public class DeptDAOImpl implements DeptDAO {  
-    @Override  
-    public void save(Dept dept) {  
-        System.out.println("将Dept对象保存进数据库");  
-    }  
-}  
+public class DeptDAOImpl implements DeptDAO {
+    @Override
+    public void save(Dept dept) {
+        System.out.println("将Dept对象保存进数据库");
+    }
+}
 ```
 AddDeptAction.java :
 ```
-public class AddDeptAction extends ActionSupport {  
-    private String dname;  
-    private String loc;  
-    private DeptDAO deptDao;  
-    public String execute(){  
-        Dept dept=new Dept();  
-        dept.setDname(dname);  
-        dept.setLoc(loc);  
-        deptDao.save(dept);  
-        return "success";  
-    }  
+public class AddDeptAction extends ActionSupport {
+    private String dname;
+    private String loc;
+    private DeptDAO deptDao;
+    public String execute(){
+        Dept dept=new Dept();
+        dept.setDname(dname);
+        dept.setLoc(loc);
+        deptDao.save(dept);
+        return "success";
+    }
     //setter ... getter
-}  
+}
 ```
 struts.xml :
 ```
-<?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE struts PUBLIC  
-    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"  
-    "http://struts.apache.org/dtds/struts-2.1.7.dtd">  
-<struts>  
-    <package name="demo" extends="struts-default">  
-        <action name="add" class="addDeptAction">  
-            <result>/ok.jsp</result>  
-        </action>  
-    </package>  
-</struts>  
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+    <package name="demo" extends="struts-default">
+        <action name="add" class="addDeptAction">
+            <result>/ok.jsp</result>
+        </action>
+    </package>
+</struts>
 ```
 beans.xml :
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns="http://www.springframework.org/schema/beans"  
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-        xmlns:context="http://www.springframework.org/schema/context"  
-        xmlns:aop="http://www.springframework.org/schema/aop"  
-        xmlns:tx="http://www.springframework.org/schema/tx"  
-        xsi:schemaLocation="http://www.springframework.org/schema/beans   
-                http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
-                http://www.springframework.org/schema/context   
-                http://www.springframework.org/schema/context/spring-context-2.5.xsd  
-                http://www.springframework.org/schema/tx  
-                http://www.springframework.org/schema/tx/spring-tx-2.5.xsd  
-                http://www.springframework.org/schema/aop  
-                http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">  
-    <bean id="addDeptAction" class="com.action.AddDeptAction" scope="prototype">  
-        <property name="deptDao" ref="dao"/>  
-    </bean>  
-    <bean id="dao" class="com.dao.DeptDAOImpl"/>  
-</beans>  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+    <bean id="addDeptAction" class="com.action.AddDeptAction" scope="prototype">
+        <property name="deptDao" ref="dao"/>
+    </bean>
+    <bean id="dao" class="com.dao.DeptDAOImpl"/>
+</beans>
 ```
 
 ## Spring整合Hibernate
@@ -2241,21 +2242,21 @@ Spring提供了一系列的抽象类，这些抽象类将被作为应用中DAO�
 在实际开发中，我们直接以配置文件来管理SessionFactory实例。
 
 ```
-<!-- 定义Hibernate的SessionFactory -->  
-<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">  
-    <property name="dataSource" ref="dataSource"/>  
-    <property name="mappingResources">  
-        <list>  
-            <value>xxx/Xxx.hbm.xml</value>  
-        </list>  
-    </property>  
-    <property name="hibernateProperties">  
-        <props>  
-            <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>  
-            <prop key="hibernate.hbm2ddl.auto">update</prop>  
-        </props>  
-    </property>  
-</bean>  
+<!-- 定义Hibernate的SessionFactory -->
+<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="mappingResources">
+        <list>
+            <value>xxx/Xxx.hbm.xml</value>
+        </list>
+    </property>
+    <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop>
+        </props>
+    </property>
+</bean>
 ```
 
 ### 使用HibernateTemplate
@@ -2299,63 +2300,63 @@ setMaxResults(int maxResults)：设置分页的大小
 弥补HibernateTemplate灵活性不足。HibernateTemplate还提供一种更加灵活的方式来操作数据库，通过这种方式可以完全使用Hibernate的操作方式。这种灵活方式主要是通过如下两个方法完成的：
 
 ```
-Object execute(HibernateCallback action)  
-List executeFind(HibernateCallback action)  
+Object execute(HibernateCallback action)
+List executeFind(HibernateCallback action)
 ```
 
-HibernateCallback是个接口，该接口包含一个方法doInHibernate(org.hibernate.Session session)，该方法只有一个参数Session。 
+HibernateCallback是个接口，该接口包含一个方法doInHibernate(org.hibernate.Session session)，该方法只有一个参数Session。
 
-在doInHibernate方法内可访问Session，该Session对象是绑定到该线程的Session实例。在该方法内的持久层操作，与不使用Spring时的持久化操作完全相同。这保证了对于复杂的持久化层访问，依然可以使用Hibernate的访问方式。 
+在doInHibernate方法内可访问Session，该Session对象是绑定到该线程的Session实例。在该方法内的持久层操作，与不使用Spring时的持久化操作完全相同。这保证了对于复杂的持久化层访问，依然可以使用Hibernate的访问方式。
 
 ```
-/**        
-使用hql进行分页查询        
-@param hql 需要查询的hql语句        
-@param offset 第一条记录索引        
-@param pageSize 当前需要显示的记录数        
-@return 当前页的所有记录   */            
-public List findByPage(final String hql, final int offset, final int pageSize){   
-        //通过一个HibernateCallback对象来执行查询           
-        List list = getHibernateTemplate().executeFind(   
-                new HibernateCallback(){//实现HibernateCallback接口必须实现的方法   
-                    public Object doInHibernate(Session session)throws HibernateException, SQLException{//执行Hibernate分页查询   
-                        List result = session.createQuery(hql)   
-                        .setFirstResult(offset)   
-                        .setMaxResults(pageSize)   
-                        .list();   
-                        return result;   
-                        }   
-                    });   
-        return list;          
-}          
+/**
+使用hql进行分页查询
+@param hql 需要查询的hql语句
+@param offset 第一条记录索引
+@param pageSize 当前需要显示的记录数
+@return 当前页的所有记录   */
+public List findByPage(final String hql, final int offset, final int pageSize){
+        //通过一个HibernateCallback对象来执行查询
+        List list = getHibernateTemplate().executeFind(
+                new HibernateCallback(){//实现HibernateCallback接口必须实现的方法
+                    public Object doInHibernate(Session session)throws HibernateException, SQLException{//执行Hibernate分页查询
+                        List result = session.createQuery(hql)
+                        .setFirstResult(offset)
+                        .setMaxResults(pageSize)
+                        .list();
+                        return result;
+                        }
+                    });
+        return list;
+}
 ```
 注意：Spring提供的XxxTemplate和XxxCallBack互为补充，XxxTemplate对通用操作进行封装，而XxxCallBack解决了封装后灵活性不足的缺陷。
 
 ### 实现DAO组件
 
-为了实现DAO组件，Spring提供了大量的XxxDaoSupport类，这些DAO支持类对于实现DAO组件有很大的帮助，因为这些DAO支持类完成了大量基础性工作。 
+为了实现DAO组件，Spring提供了大量的XxxDaoSupport类，这些DAO支持类对于实现DAO组件有很大的帮助，因为这些DAO支持类完成了大量基础性工作。
 
-Spring为Hibernate的DAO提供工具类：HibernateDaoSupport。该类主要提供如下两个方法来简化DAO的实现： 
+Spring为Hibernate的DAO提供工具类：HibernateDaoSupport。该类主要提供如下两个方法来简化DAO的实现：
 
-* public final HibernateTemplate getHibernateTemplate() 
-* public final void setSessionFactory(SessionFactory sessionFactory) 
+* public final HibernateTemplate getHibernateTemplate()
+* public final void setSessionFactory(SessionFactory sessionFactory)
 
-在继承HibernateDaoSupport的DAO实现里，程序无须理会Hibernate的Session管理，Spring会根据实际的操作，采用“每次事务打开一次session”的策略，自动提高数据库访问的性能。 
+在继承HibernateDaoSupport的DAO实现里，程序无须理会Hibernate的Session管理，Spring会根据实际的操作，采用“每次事务打开一次session”的策略，自动提高数据库访问的性能。
 
 ```
-public class MyHibernateDaoSupport extends HibernateDaoSupport implements IMyHibernateDaoSupport {  
-      
-    public void testDao(){  
-        List list = getHibernateTemplate().find("from NewsInf");  
-        System.out.println("list.size()="+list.size());  
-    }  
-}  
+public class MyHibernateDaoSupport extends HibernateDaoSupport implements IMyHibernateDaoSupport {
+
+    public void testDao(){
+        List list = getHibernateTemplate().find("from NewsInf");
+        System.out.println("list.size()="+list.size());
+    }
+}
 ```
 
 ```
 <bean id="myHibernateDaoSupport" class="com.dao.impl.MyHibernateDaoSupport">
         <property name="hibernateTemplate" ref="hibernateTemplate"></property>
-</bean>  
+</bean>
 ```
 ### 使用IoC容器组装各种组件
 
@@ -2393,7 +2394,7 @@ public class MyHibernateDaoSupport extends HibernateDaoSupport implements IMyHib
  <property name="maxIdleTime" value="20"/>
     </bean>
     <!-- 定义Hibernate的SessionFactory Bean -->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3. 
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.
     LocalSessionFactoryBean">
         <!-- 依赖注入数据源，注入的正是上文中定义的dataSource -->
         <property name="dataSource" ref="dataSource"/>
@@ -2409,7 +2410,7 @@ public class MyHibernateDaoSupport extends HibernateDaoSupport implements IMyHib
         <property name="hibernateProperties">
              <props>
                 <!-- 指定Hibernate的连接方言 -->
-                <prop key="hibernate.dialect">org.hibernate.dialect. 
+                <prop key="hibernate.dialect">org.hibernate.dialect.
                 MySQLDialect</prop>
                 <!-- 指定启动应用时，是否根据Hibernate映射文件创建数据表 -->
                   <prop key="hibernate.hbm2ddl.auto">update</prop>
@@ -2443,7 +2444,7 @@ public class MyHibernateDaoSupport extends HibernateDaoSupport implements IMyHib
 
 ### 使用声明式事务
 
-* 针对不同的事务策略配置对应的事务管理器 
+* 针对不同的事务策略配置对应的事务管理器
     {% codeblock %}
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
     <property name="dataSource" ref="dataSource"/>
@@ -2458,7 +2459,7 @@ public class MyHibernateDaoSupport extends HibernateDaoSupport implements IMyHib
             <tx:method name="save*"/>
         </tx:attributes>
     </tx:advice>
-    
+
     <aop:config>
         <aop:pointcut
                 expression="execution(* org.flyne.service.impl.*.*(..))"
