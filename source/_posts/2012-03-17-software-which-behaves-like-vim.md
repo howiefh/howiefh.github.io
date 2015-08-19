@@ -15,6 +15,8 @@ description: vim-like, vim plugins, vim 插件
 
 还有可以在Word，Outlook和SQL Server Management Studio中使用的ViEmu。
 
+<!-- more -->
+
 ### VsVim（免费）
 
 地址：https://github.com/jaredpar/VsVim/

@@ -10,7 +10,8 @@ tags: [C, Log]
 
 <!-- more -->
 ## 编译安装log4c
-```shell
+
+```
 cd ~
 tar -zxvf log4c-1.2.4.tar.gz
 cd log4c-1.2.4
@@ -22,15 +23,16 @@ sudo make install
 
 ## 配置log4c的lib所在目录
 安装完之后为了让你的程序能找到log4c动态库
-```shell
+
+```
 $ sudo vi /etc/ld.so.conf
 /usr/local/lib
 $ sudo ldconfig
 ```
 
 ## 配置文件及封装
-假定在~/logtest中   
-创建~/logtest/log4crc   
+假定在~/logtest中，创建~/logtest/log4crc
+
 输入配置：
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -38,46 +40,46 @@ $ sudo ldconfig
 
 <log4c version="1.2.4">
 
-        <config>
-                <bufsize>0</bufsize>
-                <debug level="2"/>
-                <nocleanup>0</nocleanup>
-				<reread>1</reread>
-        </config>
+    <config>
+        <bufsize>0</bufsize>
+        <debug level="2"/>
+        <nocleanup>0</nocleanup>
+        <reread>1</reread>
+    </config>
 
-        <!-- root category ========================================= -->
-        <category name="root" priority="notice"/>
-		<category name="mycat" priority="debug" appender="stdout"/>
-		<category name="file" priority="debug" appender="logfile"/>
+    <!-- root category -->
+    <category name="root" priority="notice"/>
+    <category name="mycat" priority="debug" appender="stdout"/>
+    <category name="file" priority="debug" appender="logfile"/>
 
-        <!-- default appenders ===================================== -->
-        <appender name="stdout" type="stream" layout="basic"/>
-        <appender name="logfile" type="rollingfile" layout="dated" rollingpolicy="RollingPolicy"/>
-        <appender name="stderr" type="stream" layout="dated"/>
-        <appender name="syslog" type="syslog" layout="basic"/>
+    <!-- default appenders -->
+    <appender name="stdout" type="stream" layout="basic"/>
+    <appender name="logfile" type="rollingfile" layout="dated" rollingpolicy="RollingPolicy"/>
+    <appender name="stderr" type="stream" layout="dated"/>
+    <appender name="syslog" type="syslog" layout="basic"/>
 
-        <!-- default layouts ======================================= -->
-        <layout name="basic" type="basic"/>
-        <layout name="dated" type="dated"/>
-		
-         <!--sizewin表示达到最大值后新建日志文件  值由maxsize设定，单位Bytes     maxnum为最大文件数目 maxsize=5mb -->  
-		<rollingpolicy name="RollingPolicy" type="sizewin" maxsize="5000000" maxnum="32767" />
+    <!-- default layouts -->
+    <layout name="basic" type="basic"/>
+    <layout name="dated" type="dated"/>
+
+    <!--sizewin表示达到最大值后新建日志文件  值由maxsize设定，单位Bytes     maxnum为最大文件数目 maxsize=5mb -->
+    <rollingpolicy name="RollingPolicy" type="sizewin" maxsize="5000000" maxnum="32767" />
 </log4c>
 ```
-详细一点的配置文件讲解：
-<http://xueqi.iteye.com/blog/1570013>  
+详细一点的配置文件讲解：<http://xueqi.iteye.com/blog/1570013>
+
 对log4c 进行封装
 ```c
 // ===  FILE  ======================================================================
 //         Name:  log.h
 //  Description:  LOG_DEBUG 记录debug日志
-//				  LOG_ERROR 记录error日志
-//				  LOG_FATAL 记录fatal日志
-//				  LOG_INFO 记录info日志
-//				  LOG_NOTICE 记录notice日志
-//				  LOG_WARN 记录warn日志
-//				  LOG_TRACE 记录trace日志
-// =====================================================================================
+//                LOG_ERROR 记录error日志
+//                LOG_FATAL 记录fatal日志
+//                LOG_INFO 记录info日志
+//                LOG_NOTICE 记录notice日志
+//                LOG_WARN 记录warn日志
+//                LOG_TRACE 记录trace日志
+// =================================================================================
 #ifndef __LOG_H_
 #define __LOG_H_
 
@@ -104,8 +106,8 @@ extern "C"
 #define LOG_PRI_TRACE 		LOG4C_PRIORITY_TRACE
 
 extern int log_init(const char *category);
-extern void log_message(int priority , 
-		const char *file, int line, const char *fun, 
+extern void log_message(int priority ,
+		const char *file, int line, const char *fun,
 		const char *fmt , ...);
 extern int log_fini();
 
@@ -129,15 +131,14 @@ extern int log_fini();
 log.c:
 ```c
 // ===  FILE  ======================================================================
-//         Name:  log.c 
+//         Name:  log.c
 //  Description:  log_init 初始化logger
-//				  log_fini 关闭打开的资源
-//			      log_message 记录日志信息
-// =====================================================================================
+//                log_fini 关闭打开的资源
+//                log_message 记录日志信息
+// =================================================================================
 #include <log4c.h>
 #include <assert.h>
 #include "log.h"
-
 
 static log4c_category_t *log_category = NULL;
 
@@ -165,22 +166,22 @@ int log_init(const char *category)
 //  @param fun [in]: 函数
 //  @param fmt [in]: 格式化参数
 // =====================================================================================
-void log_message(int priority , 
-			const char *file, int line, const char *fun, 
+void log_message(int priority ,
+			const char *file, int line, const char *fun,
 			const char *fmt , ...)
 {
-	char new_fmt[2048];
-	const char * head_fmt = "[file:%s, line:%d, function:%s]"; 
-	va_list ap;
-	int n;
-	
-	assert(log_category != NULL);
-	n = sprintf(new_fmt, head_fmt , file , line , fun);
-	strcat(new_fmt + n , fmt);
+    char new_fmt[2048];
+    const char * head_fmt = "[file:%s, line:%d, function:%s]";
+    va_list ap;
+    int n;
 
-	va_start(ap , fmt);
-	log4c_category_vlog(log_category , priority, new_fmt , ap);
-	va_end(ap);
+    assert(log_category != NULL);
+    n = sprintf(new_fmt, head_fmt , file , line , fun);
+    strcat(new_fmt + n , fmt);
+
+    va_start(ap , fmt);
+    log4c_category_vlog(log_category , priority, new_fmt , ap);
+    va_end(ap);
 }
 
 // ===  FUNCTION  ======================================================================
@@ -200,23 +201,25 @@ int log_fini()
 
 int main(void)
 {
-	log_init("file");
-	while (1) {
-		LOG_ERROR("error");
-		LOG_WARN("warn");
-		LOG_NOTICE("notice");
-		LOG_DEBUG("debug");
-		LOG_INFO("info");
-		LOG_FATAL("fatal");
-		LOG_TRACE("trace");
-	}
-	log_fini();
-	return 0;
+    log_init("file");
+    while (1)
+    {
+        LOG_ERROR("error");
+        LOG_WARN("warn");
+        LOG_NOTICE("notice");
+        LOG_DEBUG("debug");
+        LOG_INFO("info");
+        LOG_FATAL("fatal");
+        LOG_TRACE("trace");
+    }
+    log_fini();
+    return 0;
 }
 ```
 
 ## 编译执行
-```shell
+
+```
 gcc test-log.c log.c -o test-log -llog4c
 ./test-log
 ```
@@ -226,30 +229,31 @@ gcc test-log.c log.c -o test-log -llog4c
 下载源码<https://github.com/HardySimpson/zlog/releases>，解压 （假定位置是~/zlog）
 
 ## 编译安装zlog
-```shell
+
+```
 cd ~
 tar -zxvf zlog-latest-stable.tar.gz
 cd zlog-latest-stable/
-make 
+make
 sudo make install
 ```
 
 ## 配置zlog的lib所在目录
 安装完之后为了让你的程序能找到zlog动态库
-```shell
+
+```
 $ sudo vi /etc/ld.so.conf
 /usr/local/lib
 $ sudo ldconfig
 ```
 
 ## 配置文件及封装
-假定在~/logtest中   
-创建~/logtest/log.conf
+假定在~/logtest中，创建~/logtest/log.conf
 输入配置：
 ```ini
 [rules]
 my_cat.NOTICE   "./log/log", 5MB ~ "./log/back/log-%d(%Y%m%d %H%M).#2s.log"
-my_cat.DEBUG	>stdout;
+my_cat.DEBUG    >stdout;
 ```
 对zlog 进行封装
 ```c
@@ -273,16 +277,16 @@ extern "C"
 extern zlog_category_t * log_category;
 // ===  FUNCTION  ======================================================================
 //         Name:  log_init
-//  Description:  ¿?¿?¿?¿?¿?"log.conf"¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?,¿?¿?¿?¿?category¿?¿?¿?logger
-//  @param category [in]: ¿?¿?
+//  Description:  从配置文件"log.conf"中读取配置信息到内存,使用分类category初始化logger
+//  @param category [in]: 分类
 // =====================================================================================
 extern int log_init(const char *category);
 // ===  FUNCTION  ======================================================================
 //         Name:  log_fini
-//  Description:  ¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+//  Description:  清理所有申请的内存，关闭它们打开的文件
 // =====================================================================================
 extern void log_fini();
-//¿?¿?¿?
+//宏定义
 #define LOG_FATAL(fmt,args...) 		\
 	zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
 	__func__, sizeof(__func__)-1, __LINE__, \
@@ -313,16 +317,16 @@ extern void log_fini();
 log.c:
 ```c
 // ===  FILE  ======================================================================
-//         Name:  log.c 
+//         Name:  log.c
 //  Description:  log_init 初始化logger
-//				  log_fini 关闭打开的资源
-//				  LOG_DEBUG 记录debug日志
-//				  LOG_ERROR 记录error日志
-//				  LOG_FATAL 记录fatal日志
-//				  LOG_INFO 记录info日志
-//				  LOG_NOTICE 记录notice日志
-//				  LOG_WARN 记录warn日志
-// =====================================================================================
+//                log_fini 关闭打开的资源
+//                LOG_DEBUG 记录debug日志
+//                LOG_ERROR 记录error日志
+//                LOG_FATAL 记录fatal日志
+//                LOG_INFO 记录info日志
+//                LOG_NOTICE 记录notice日志
+//                LOG_WARN 记录warn日志
+// =================================================================================
 #include <zlog.h>
 #include <assert.h>
 #include "log.h"
@@ -336,18 +340,19 @@ zlog_category_t * log_category = NULL;
 // =====================================================================================
 int log_init(const char *category)
 {
-	//初始化.配置文件名是固定的log.conf
+    //初始化.配置文件名是固定的log.conf
     if (zlog_init("log.conf") == 1)
     {
         return -1;
     }
-	//找到分类,在配置文件中的category
+    //找到分类,在配置文件中的category
     log_category = zlog_get_category(category);
-	if (!log_category) {
-		printf("get cat fail\n");
-		zlog_fini();
-		return -2;
-	}
+    if (!log_category)
+    {
+        printf("get cat fail\n");
+        zlog_fini();
+        return -2;
+    }
     return 0 ;
 }
 
@@ -357,7 +362,7 @@ int log_init(const char *category)
 // =====================================================================================
 void log_fini()
 {
-	zlog_fini();
+    zlog_fini();
 }
 ```
 测试代码：
@@ -368,22 +373,23 @@ void log_fini()
 
 int main()
 {
-	log_init("my_cat");
-	while (1) {
-		LOG_ERROR("error");
-		LOG_WARN("warn");
-		LOG_NOTICE("notice");
-		LOG_DEBUG("debug");
-		LOG_INFO("info");
-		LOG_FATAL("fatal");
-	}
-	log_fini();
-	return 0;
+    log_init("my_cat");
+    while (1) {
+        LOG_ERROR("error");
+        LOG_WARN("warn");
+        LOG_NOTICE("notice");
+        LOG_DEBUG("debug");
+        LOG_INFO("info");
+        LOG_FATAL("fatal");
+    }
+    log_fini();
+    return 0;
 }
 ```
 
 ## 编译执行
-```shell
+
+```
 gcc test-log.c log.c -o test-log -lzlog
 ./test-log
 ```

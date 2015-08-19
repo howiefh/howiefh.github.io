@@ -1,7 +1,7 @@
 title: Spring笔记一
 date: 2015-03-06 16:09:20
 tags: Spring
-categories: 
+categories:
 - JavaEE
 - Spring
 description: Spring
@@ -28,44 +28,44 @@ Java应用（从applets的小范围到全套n层服务端企业应用）是一�
 下面是Person接口，该接口定义了一个Person规范。
 
 ```
-public interface Person {  
-    //定义使用斧子的方法  
-    public void useAxe();  
-}  
+public interface Person {
+    //定义使用斧子的方法
+    public void useAxe();
+}
 ```
 
 Axe接口：
 
 ```
-public interface Axe {  
-    //Axe接口里面有个砍的方法  
-    public String chop();  
-}  
+public interface Axe {
+    //Axe接口里面有个砍的方法
+    public String chop();
+}
 ```
 
 Person的实现类。
 
 ```
-public class Chinese implements Person {  
-    private Axe axe;  
-    private String name;  
+public class Chinese implements Person {
+    private Axe axe;
+    private String name;
 
-    // 设值注入所需的setter方法  
-    public void setAxe(Axe axe) {  
-        this.axe = axe;  
-    }  
+    // 设值注入所需的setter方法
+    public void setAxe(Axe axe) {
+        this.axe = axe;
+    }
 
-    public void setName(String name) {  
-        this.name = name;  
-    }  
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    // 实现Person接口的userAxe方法  
-    public void useAxe() {  
-        // 调用axe的chop方法，表明Person对象依赖于Axe对象  
-        System.out.println("我是"+name+"用"+axe.chop());  
-    }  
+    // 实现Person接口的userAxe方法
+    public void useAxe() {
+        // 调用axe的chop方法，表明Person对象依赖于Axe对象
+        System.out.println("我是"+name+"用"+axe.chop());
+    }
 
-}  
+}
 ```
 
 上面的代码实现了Person接口的userAxe()方法，实现该方法时调用了axe的的chop()方法，这就是典型的依赖关系。
@@ -74,11 +74,11 @@ public class Chinese implements Person {
 Axe的实现类：StoneAxe类
 
 ```
-public class StoneAxe implements Axe{  
-    public String chop() {  
-        return "石斧砍柴好慢啊!!!";  
-    }  
-}  
+public class StoneAxe implements Axe{
+    public String chop() {
+        return "石斧砍柴好慢啊!!!";
+    }
+}
 ```
 
 直到这里，程序依然不知道Chinese类和Axe实例耦合，Spring也不知道！实际上，Spring需要使用XML配置文件来指定实例之间的依赖关系。
@@ -86,20 +86,20 @@ Spring采用了XML文件作为配置文件。
 对于本应用的XML配置文件如下：
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns="http://www.springframework.org/schema/beans"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
-    <!-- 配置Chinese实例，其实现类是Chinese -->  
-    <bean id="chinese" class="com.spring.service.impl.Chinese">  
-        <!-- 将StoneAxe注入给axe属性 -->  
-        <property name="axe" ref="stoneAxe" />  
-        <property name="name" value="孙悟空"/>  
-    </bean>  
-    <!-- 配置stoneAxe实例 -->  
-    <bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />  
-</beans>  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.springframework.org/schema/beans"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <!-- 配置Chinese实例，其实现类是Chinese -->
+    <bean id="chinese" class="com.spring.service.impl.Chinese">
+        <!-- 将StoneAxe注入给axe属性 -->
+        <property name="axe" ref="stoneAxe" />
+        <property name="name" value="孙悟空"/>
+    </bean>
+    <!-- 配置stoneAxe实例 -->
+    <bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />
+</beans>
 ```
 
 在配置文件中，Spring配置Bean实例通常会指定两个属性：
@@ -115,15 +115,15 @@ Spring会自动接管每个`<bean…/>`定义里的`<property …/>`元素定义
 测试程序：
 
 ```
-public class BeanTest {  
-    public static void main(String[] args) {  
-        //创建Spring容器  
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");  
-        //获取Chinese实例  
-        Person person = ctx.getBean("chinese",Person.class);  
-        person.useAxe();  
-    }  
-}  
+public class BeanTest {
+    public static void main(String[] args) {
+        //创建Spring容器
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+        //获取Chinese实例
+        Person person = ctx.getBean("chinese",Person.class);
+        person.useAxe();
+    }
+}
 ```
 
 Bean与Bean之间的依赖关系有Spring管理，Spring采用setter方法为目标Be阿玛尼注入所依赖的Bean，这种方式被称之为设值注入。
@@ -142,19 +142,19 @@ Spring IoC容器有如下3个基本要点：
 Japanese类：
 
 ```
-public class Chinese implements Person{  
-    private Axe axe;  
-    //默认构造器  
-    public Chinese(){  
+public class Chinese implements Person{
+    private Axe axe;
+    //默认构造器
+    public Chinese(){
 
-    }  
-    //构造注入所需的带参数构造器  
-    public Chinese(Axe axe){  
-    this.axe = axe;  
-    }  
-    public void useAxe() {  
-        System.out.println(axe.chop());  
-    }  
+    }
+    //构造注入所需的带参数构造器
+    public Chinese(Axe axe){
+    this.axe = axe;
+    }
+    public void useAxe() {
+        System.out.println(axe.chop());
+    }
 }
 ```
 
@@ -163,19 +163,19 @@ public class Chinese implements Person{
 构造注入的配置文件需要做一些修改。为了使用构造注入，使用`<constructor-arg…/>`元素来指定构造器的参数。如下
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns="http://www.springframework.org/schema/beans"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
-    <!-- 配置Chinese实例 -->  
-    <bean id="chinese" class="com.spring.service.impl.Chinese">  
-        <!-- 使用构造注入，为Japanese实例注入SteelAxe实例-->  
-        <constructor-arg ref="stoneAxe"/>  
-    </bean>  
-    <!-- 配置stoneAxe实例 -->  
-    <bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />  
-</beans>  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.springframework.org/schema/beans"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <!-- 配置Chinese实例 -->
+    <bean id="chinese" class="com.spring.service.impl.Chinese">
+        <!-- 使用构造注入，为Japanese实例注入SteelAxe实例-->
+        <constructor-arg ref="stoneAxe"/>
+    </bean>
+    <!-- 配置stoneAxe实例 -->
+    <bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />
+</beans>
 ```
 
 上面的配置文件使用`<contructor-arg…/>`元素指定了一个构造器参数，该参数类型是Axe，这指定Spring调用Chinese类里带一个Axe参数的构造器来创建chinese实例，因为使用了有参数的构造器创建实例，所以当Bean实例被创建完成后，该Bean的依赖关系也就已经设置完成。
@@ -187,6 +187,7 @@ Spring支持两种依赖注入方式，这两种依赖注入方式并没有好�
 1. 与传统的JavaBean的写法更相似，程序开发人员更加容易理解，接受。通过setter方法设定依赖关系显得更加直观、自然。
 2. 对于复杂的依赖关系，如果采用构造注入，会导致构造器过于臃肿，难以阅读。Spring在创建Bean实例时，需要同时实例化其依赖的全部实例，因此导致性能下降。而设值注入，则可以避免这些问题。
 3. 尤其是在某些属性可选的情况下，多参数的构造器更加笨重。
+
 但是构造器也有如下优势：
 1. 构造注入可以再构造器中决定依赖关系的注入顺序，优先依赖的优先注入。
 2. 对于依赖关系无须变化的Bean，构造注入更有用处。因为没有setter方法，所有的依赖关系全部在构造器中设定，因此，无须担心后续的代码对依赖关系产生破坏。
@@ -202,7 +203,7 @@ Spring容器负责创建Bean实例，所以需要知道每个Bean的实现类，
 
 ## Spring容器
 
-Spring容器最基本的接口就是BeanFactor。BeanFactory负责配置、创建、管理Bean，他有一个子接口：ApplicationContext，因此也称之为Spring上下文。Spring容器负责管理Bean与Bean之间的依赖关系。
+Spring容器最基本的接口就是BeanFactory。BeanFactory负责配置、创建、管理Bean，他有一个子接口：ApplicationContext，因此也称之为Spring上下文。Spring容器负责管理Bean与Bean之间的依赖关系。
 
 BeanFactory接口包含以下几个基本方法：
 * `Boolean containBean(String name)`:判断Spring容器是否包含id为name的Bean实例。
@@ -220,17 +221,17 @@ XML配置文件通常使用Resource对象传入。Resource接口是Spring提供�
 对于Java EE应用而言，可在启动Web应用时自动加载ApplicationContext实例，接受Spring管理的Bean无须知道ApplicationContext的存在。一般使用如下方式实例化BeanFactory
 
 ```
-//搜索当前文件路径下的bean.xml文件创建Resource对象  
-InputStreamSource isr = new FileSystemResource("bean.xml");  
-//以Resource对象作为参数创建BeanFactory实例  
+//搜索当前文件路径下的bean.xml文件创建Resource对象
+InputStreamSource isr = new FileSystemResource("bean.xml");
+//以Resource对象作为参数创建BeanFactory实例
 XmlBeanFactory factory = new XmlBeanFactory((Resource) isr);
 ```
-//搜索当前文件路径下的bean.xml文件创建Resource对象  
 
 或
+
 ```
-ClassPathResource res = new ClassPathResource("bean.xml");  
-//以Resource对象作为参数创建BeanFactory实例  
+ClassPathResource res = new ClassPathResource("bean.xml");
+//以Resource对象作为参数创建BeanFactory实例
 XmlBeanFactory factory = new XmlBeanFactory(res);
 ```
 但是如果应用里面有多个属性配置文件，则应该采用BeanFactory的子接口ApplicationContext来创建BeanFactory的实例。ApplicationContext通常使用如下两个实现类：
@@ -240,10 +241,10 @@ XmlBeanFactory factory = new XmlBeanFactory(res);
 如果需要同时加载多个XML配置文件，采用如下方式：
 
 ```
-//搜索CLASSPATH路径，以classpath路径下的bean.xml、service.xml文件创建applicationContext  
-ApplicationContext ctx = new ClassPathXmlApplicationContext(new String[]{"bean.xml","service.xml"});  
+//搜索CLASSPATH路径，以classpath路径下的bean.xml、service.xml文件创建applicationContext
+ApplicationContext ctx = new ClassPathXmlApplicationContext(new String[]{"bean.xml","service.xml"});
 
-//以指定路径下的bean.xml、service.xml文件创建applicationContext  
+//以指定路径下的bean.xml、service.xml文件创建applicationContext
 ApplicationContext ctx1 = new FileSystemXmlApplicationContext(new String[]{"bean.xml","service.xml"});
 ```
 
@@ -265,28 +266,28 @@ ApplicationContext允许以声明式方式操作容器，无须手动创建它�
 
 ApplicationContext接口继承MessageSource接口，因此具备国际化功能。MessageSource接口中定义了三个方法用于国际化功能。
 
-* `String getMessage(Stringcode,Object[] args,Locale loc);`
-* `StringgetMessage(String code,Object[] args,String default,Locale loc);`
-* `StringgetMessage(MessageSourceResolvable resolvable,Local loc);`
+* `String getMessage(String code,Object[] args,Locale loc);`
+* `String getMessage(String code,Object[] args,String default,Locale loc);`
+* `String getMessage(MessageSourceResolvable resolvable,Local loc);`
 
 ApplicationContext正是通过这三个方法来实现国际化的。当程序创建ApplicationContext容器时，Spring会自动查找在配置文件中名为messageSource的bean实例，一旦找到这个Bean实例，上述三个方法的调用被委托给该MessageSource Bean。如果没有该Bean，ApplicationContext会查找其父定义中的messagesource Bean，如果找到，它会作为messageSource Bean使用。但是如果无法找到messageSource，系统将会创建一个空的staticMessageSource Bean，该Bean的能接受上述三个方法的调用。
 
 在Spring中配置messagesourceBean时通常使用ResourceBundleMessageSource.如下：
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns="http://www.springframework.org/schema/beans"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
-<bean id="messsageSource" class="org.springframework.context.support.ResourceBundleMessageSource">  
-<property name="basenames">  
-<list>  
-    <value>messagevalue>  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.springframework.org/schema/beans"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<bean id="messsageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+<property name="basenames">
+<list>
+    <value>message</value>
     <!--如果有多个资源文件，全部列在此处-->
-</list>  
-</property>  
-</bean>  
-</beans>  
+</list>
+</property>
+</bean>
+</beans>
 ```
 
 message.properties:
@@ -319,24 +320,24 @@ Spring的事件框架有如下两个重要成员：
 2. ApplicationListener：监听器，可由容器中的任何监听器Bean担任。
 
 Spring的事件机制需要事件源、事件和事件监听器组成。只是此处的事件是ApplicationContext，且事件必须由java程序显示触发。下图简单示范了ApplicationContext的事件流程。
-                                    
+
 下面实例展示了Spring容器的事件机制。
 1. 定义一个ApplicationEvent类，其对象就是Spring容器事件。
-        
+
     {% codeblock %}
-    public class EmailEvent extends ApplicationEvent {  
-        private static final long serialVersionUID = 1L;  
-        private String address;  
-        private String text;  
-        // 定义一个带参的构造函数  
-        public EmailEvent(Object source) {  
-            super(source);  
-        }  
-        public EmailEvent(Object source, String address, String text) {  
-            super(source);  
-            this.address = address;  
-            this.text = text;  
-        }  
+    public class EmailEvent extends ApplicationEvent {
+        private static final long serialVersionUID = 1L;
+        private String address;
+        private String text;
+        // 定义一个带参的构造函数
+        public EmailEvent(Object source) {
+            super(source);
+        }
+        public EmailEvent(Object source, String address, String text) {
+            super(source);
+            this.address = address;
+            this.text = text;
+        }
         //address、text的setter和getter方法
     }
     {% endcodeblock %}
@@ -347,49 +348,49 @@ Spring的事件机制需要事件源、事件和事件监听器组成。只是�
 2. 编写该容器的监听器类。
 
     {% codeblock %}
-    public class EmailNotifier implements ApplicationListener{  
-        //该方法会在容器发生事件时触发  
-        public void onApplicationEvent(ApplicationEvent event) {  
-            if(event instanceof EmailEvent){  
-                //只处理EmailEvent，发送email通知  
-                EmailEvent emailEvent = (EmailEvent) event;  
-                System.out.println("需要发送邮件的接收地址为:"+emailEvent.getAddress());  
-                    
-                System.out.println("需要发送邮件的邮件正文是:"+emailEvent.getText());  
+    public class EmailNotifier implements ApplicationListener{
+        //该方法会在容器发生事件时触发
+        public void onApplicationEvent(ApplicationEvent event) {
+            if(event instanceof EmailEvent){
+                //只处理EmailEvent，发送email通知
+                EmailEvent emailEvent = (EmailEvent) event;
+                System.out.println("需要发送邮件的接收地址为:"+emailEvent.getAddress());
+
+                System.out.println("需要发送邮件的邮件正文是:"+emailEvent.getText());
             } else {
-                //容器内置事件不作任何处理  
-                System.out.println("容器本身的事件:"+event);  
-            }  
-        }  
-    }  
+                //容器内置事件不作任何处理
+                System.out.println("容器本身的事件:"+event);
+            }
+        }
+    }
     {% endcodeblock %}
 
 3. 将监听器类配置在容器中。
 
-    在为Spring容器注册监听器时，我们只需在Spring配置文件中配置一个实现了ApplicationListener的Bean即可，Spring容器会把这个Bean当做容器事件的监听器。 
+    在为Spring容器注册监听器时，我们只需在Spring配置文件中配置一个实现了ApplicationListener的Bean即可，Spring容器会把这个Bean当做容器事件的监听器。
     {% codeblock %}
-    <?xml version="1.0" encoding="UTF-8"?>  
-    <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-    xmlns="http://www.springframework.org/schema/beans"  
-    xsi:schemaLocation="http://www.springframework.org/schema/beans  
-    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
-    <!-- 配置监听器 -->  
-    <bean class="com.app.listener.EmailNotifier"/>  
-    </beans>  
+    <?xml version="1.0" encoding="UTF-8"?>
+    <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <!-- 配置监听器 -->
+    <bean class="com.app.listener.EmailNotifier"/>
+    </beans>
     {% endcodeblock %}
 
 通过上面的3个步骤就可以实现Spring容器的事件了。当系统创建Spring容器，加载Spring容器时会自动触发容器事件，容器事件监听器可以监听到这些事件。同时我们也可以调用ApplicationContext的pulishEvent()方法来主动触发容器事件。
 
 ```
-public class SpringTest {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");  
-        //创建一个ApplicationEvent对象  
-        EmailEvent emailEvent = new EmailEvent("hello","spring_test@163.com","this is a test");  
-        //主动触发容器事件  
-        ctx.publishEvent(emailEvent);  
-    }  
-}  
+public class SpringTest {
+    public static void main(String[] args) {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+        //创建一个ApplicationEvent对象
+        EmailEvent emailEvent = new EmailEvent("hello","spring_test@163.com","this is a test");
+        //主动触发容器事件
+        ctx.publishEvent(emailEvent);
+    }
+}
 ```
 
 如果Bean想发布事件，则Bean必须获得其容器的引用。如果程序中没有直接获取容器的引用，则应该让Bean实现ApplicationContextAware或BeanFactoryAware接口，从而获得容器的引用。
@@ -408,25 +409,25 @@ public class SpringTest {
 
 实现BeanFactoryAware接口的Bean，拥有访问的BeanFactory容器的能力，实现BeanFactoryAware接口的Bean实例将会拥有对容器的访问能力。BeanFactoryAware接口仅有如下一个方法：
 
-SetBeanFactory(BeanFactory beanFactory)：该方法有一个参数beanFactory，该参数指向创建它的BeanFactory。
+setBeanFactory(BeanFactory beanFactory)：该方法有一个参数beanFactory，该参数指向创建它的BeanFactory。
 
 该方法将由Spring调动，当Spring调用该方法时会将Spring容器作为参数传入该方法。
 
 ```
-public class Chinese implements ApplicationContextAware{  
-    //将BeanFactory容器以成员变量保存  
-    private ApplicationContext ctx;  
-    /** 
-    * 实现ApplicationContextAware接口实现的方法 
-    */  
-    public void setApplicationContext(ApplicationContext cyx)  throws BeansException {  
+public class Chinese implements ApplicationContextAware{
+    //将BeanFactory容器以成员变量保存
+    private ApplicationContext ctx;
+    /**
+     * 实现ApplicationContextAware接口实现的方法
+     */
+    public void setApplicationContext(ApplicationContext cyx)  throws BeansException {
         this.ctx = ctx;
-    }  
-    //获取ApplicationContext的测试方法  
-    public ApplicationContext getContext(){  
-        return ctx;  
-    }  
-}  
+    }
+    //获取ApplicationContext的测试方法
+    public ApplicationContext getContext(){
+        return ctx;
+    }
+}
 ```
 
 上面的Chinese类实现了ApplicationContext接口，并实现了该接口提供的setApplicationContextAware()方法，这就使得该Bean实例可以直接访问到创建她的Spring容器。
@@ -435,15 +436,15 @@ public class Chinese implements ApplicationContextAware{
 该程序先通过实例化的方法来获取ApplicationContext，然后通过chinese Bean来获得BeanFactory，并将两者进行比较。
 
 ```
-public class ChineseTest {  
-    public static void main(String[] args) {  
+public class ChineseTest {
+    public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
-        Chinese c = ctx.getBean("chinese",Chinese.class);  
-        System.out.println(c.getContext());  
-        System.out.println(c.getContext()==ctx);  
+        Chinese c = ctx.getBean("chinese",Chinese.class);
+        System.out.println(c.getContext());
+        System.out.println(c.getContext()==ctx);
 
-    }  
-}  
+    }
+}
 //结果如下：
 true
 ```
@@ -467,33 +468,33 @@ beans元素可以有以下属性，bean元素可以有没有default-前缀的属
 
 `<beans…/>`元素是Spring配置文件的根元素，`<bean…/>`元素师`<beans../>`元素的子元素，`<beans…/>`元素可以包含多个`<bean…/>`子元素，每个`<bean…/>`元素可以定义一个Bean实例，每一个Bean对应Spring容器里的一个Java实例定义Bean时通常需要指定两个属性。
 
-* id：确定该Bean的唯一标识符，容器对Bean管理、访问、以及该Bean的依赖关系，都通过该属性完成。Bean的id属性在Spring容器中是唯一的。    
+* id：确定该Bean的唯一标识符，容器对Bean管理、访问、以及该Bean的依赖关系，都通过该属性完成。Bean的id属性在Spring容器中是唯一的。
 * class：指定该Bean的具体实现类。注意这里不能是接口。通常情况下，Spring会直接使用new关键字创建该Bean的实例，因此，这里必须提供Bean实现类的类名。
 
 下面是定义一个Bean的简单配置
 ```
-<!-- 定义第一个Bean实例：bean1 -->  
-<bean id="bean1" class="com.Bean1" />  
-<!-- 定义第二个Bean实例：bean2 -->  
-<bean id="bean2" class="com.Bean2" />  
+<!-- 定义第一个Bean实例：bean1 -->
+<bean id="bean1" class="com.Bean1" />
+<!-- 定义第二个Bean实例：bean2 -->
+<bean id="bean2" class="com.Bean2" />
 ```
 
 当我们在配置文件中通过`<bean id=”xxx” class=”x.xxxClass”/>`方法配置一个Bean时，这样就需要该Bean实现类中必须有一个无参构造器。故Spring底层相当于调用了如下代码：
 ```
-xxx = new x.xxxClass()  
+xxx = new x.xxxClass()
 ```
 
 如果在配置文件中通过构造注入来创建Bean：
 ```
-<bean id="bean1" class="com.Bean1">  
-    <constructor-arg value="chenssy"/>  
-    <constructor-arg value="35-354"/>  
-</bean>  
+<bean id="bean1" class="com.Bean1">
+    <constructor-arg value="chenssy"/>
+    <constructor-arg value="35-354"/>
+</bean>
 ```
 
 则Spring相当于调用如下代码：
 ```
-Bean bean = new com.Test("chenssy","35-354");  
+Bean bean = new com.Test("chenssy","35-354");
 ```
 除了可以为`<bean…/>`元素指定一个id属性外，还可以为`<bean…/>`元素指定name属性，用于为Bean实例指定别名。如果需要为Bean实例指定多个别名，可以在name属性中使用逗号、冒号或者空格来分隔多个别名，后面通过任一别名即可访问该Bean实例。但是在一些特殊的情况下，程序无法在定义Bean时就指定所有的别名，而是在其他地方为一个已经存在的Bean实例指定别名，则可以使用`<alias…/>`元素来完成，该元素有如下两个属性：
 * name：该属性指定一个Bean实例的标识名，表示将会为该Bean指定别名。
@@ -501,13 +502,13 @@ Bean bean = new com.Test("chenssy","35-354");
 如：
 
 ```
-<alias name=”bean1” alias=”name1”/>  
-<alias name=”bean2” alias=”name2”/>  
+<alias name=”bean1” alias=”name1”/>
+<alias name=”bean2” alias=”name2”/>
 ```
 在默认情况下，当Spring创建ApplicationContext容器时，Spring会自动预初始化容器中所有的singleton实例，如果我们想让Spring容器预初始化某个singleton Bean，则可以为该`<bean…/>`元素增加lazy-init属性，该属性用于指定该Bean实例的预初始化，如果设置为true，则Spring不会预初始化该Bean实例。
 
 ```
-<bean id=”person” class=”com.Person” lazy-init=”true”/>  
+<bean id=”person” class=”com.Person” lazy-init=”true”/>
 ```
 
 ### 容器中Bean的作用域
@@ -520,28 +521,28 @@ Bean bean = new com.Test("chenssy","35-354");
 * session：对于每次HTTPSession，使用session定义的Bean都将产生一个新的实例时，即每次HTTP Session都将产生不同的Bean实例。同HTTP一样，只有在WEB应用才会有效。
 * global session：每个全局的HTTPSession对应一个Bean实例。仅在portlet Context的时候才有效。
 
-比较常用的singleton和prototype。如果一个Bean实例被设置为singleton，那么每次请求该Bean时都会获得相同的实例。容器负责跟踪Bean实例的状态，负责维护Bean实例的生命周期行为。如果一个Bean实例被设置为prototype，那么每次请求该id的Bean，Spring都会创建一个新的Bean实例返回给程序，在这种情况下，Spring容器仅仅使用new关键字创建Bean实例，一旦创建成功，容器将不会再跟踪实例，也不会维护Bean实例的状态。Spring默认使用singleton作用域。prototype作用域Bean的创建、销毁代价会比较大。除非必要，否则尽量避免将Bean的作用域设置为prototype。
+比较常用的singleton和prototype。如果一个Bean实例被设置为singleton，那么每次请求该Bean时都会获得相同的实例。容器负责跟踪Bean实例的状态，负责维护Bean实例的生命周期行为。如果一个Bean实例被设置为prototype，那么每次请求该id的Bean，Spring都会创建一个新的Bean实例返回给程序，在这种情况下，Spring容器仅仅使用new关键字创建Bean实例，一旦创建成功，容器将不会再跟踪实例，也不会维护Bean实例的状态。**Spring默认使用singleton作用域**。prototype作用域Bean的创建、销毁代价会比较大。除非必要，否则尽量避免将Bean的作用域设置为prototype。
 
-设置Bean的作用域是通过scope属性来指定。可以接受Singleton、prototype、request、session、global session 5个值。
+设置Bean的作用域是通过scope属性来指定。可以接受singleton、prototype、request、session、global session 5个值。
 ```
-<!-- 配置一个singleton Bean实例：默认 -->  
-<bean id="bean1" class="com.Bean1" />  
-<!-- 配置一个prototype Bean实例 -->  
-<bean id="bean2" class="com.Bean2" scope="prototype"/>  
+<!-- 配置一个singleton Bean实例：默认 -->
+<bean id="bean1" class="com.Bean1" />
+<!-- 配置一个prototype Bean实例 -->
+<bean id="bean2" class="com.Bean2" scope="prototype"/>
 ```
 
 测试代码：
 ```
-public class SpringTest {  
+public class SpringTest {
 
-    public static void main(String[] args) {  
+    public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
-        //判断两次请求singleton作用域的Bean实例是否相等  
-        System.out.println(ctx.getBean("bean1")==ctx.getBean("bean1"));  
-        //判断两次请求prototype作用域的Bean实例是否相等  
-        System.out.println(ctx.getBean("bean2")==ctx.getBean("bean2"));  
-    }  
-}  
+        //判断两次请求singleton作用域的Bean实例是否相等
+        System.out.println(ctx.getBean("bean1")==ctx.getBean("bean1"));
+        //判断两次请求prototype作用域的Bean实例是否相等
+        System.out.println(ctx.getBean("bean2")==ctx.getBean("bean2"));
+    }
+}
 //程序运行结果如下
 true
 false
@@ -551,28 +552,28 @@ request和session作用域只在web应用中才会有效，并且必须在Web应
 因此我们可以采用两种配置方式：采用Listener配置或者采用Filter配置，在web.xml中。
 Listener配置：
 ```
-<listener>  
-<listener-class>  
-org.springframework.web.context.request.RequestContextListener  
-</listener-class>  
-</listener>  
+<listener>
+<listener-class>
+org.springframework.web.context.request.RequestContextListener
+</listener-class>
+</listener>
 ```
 Filter配置
 ```
-<filter>  
-<filter-name>requestContextFilter</filter-name>  
-<filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>  
-</filter>  
-<filter-mapping>  
-<filter-name>requestContextFilter</filter-name>  
-<url-pattern>/*</url-pattern>  
-</filter-mapping>  
+<filter>
+<filter-name>requestContextFilter</filter-name>
+<filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>
+</filter>
+<filter-mapping>
+<filter-name>requestContextFilter</filter-name>
+<url-pattern>/*</url-pattern>
+</filter-mapping>
 ```
 
 一旦在web.xml中增加上面两种配置中的一种，程序就可以在Spring配置文件中使用request或者session作用域了。如下：
 ```
-<!-- 指定使用request作用域 -->  
-<bean id="p" class="com.app.Person" scope="request"/>  
+<!-- 指定使用request作用域 -->
+<bean id="p" class="com.app.Person" scope="request"/>
 ```
 
 上面的配置文件配置了一个实现类Person的Bean，指定它的作用域为request。这样Spring容器会为每次的HttP请求生成一个Person的实例，当该请求响应结束时，该实例也会被注销。
@@ -597,49 +598,49 @@ ApplicationContext实例化过程比BeanFactory实例化过程的时间和内存
 Spring可以为任何java对象注入任何类型的属性，只要改java对象为该属性提供了对应的setter方法即可。
 
 ```
-<bean id="person" class="lee.Person">  
-<!-- Property配置需要依赖注入的属性 -->  
-<property name="name" value="chenming" />  
-<property name="age" value="22" />  
-</bean>  
+<bean id="person" class="lee.Person">
+<!-- Property配置需要依赖注入的属性 -->
+<property name="name" value="chenming" />
+<property name="age" value="22" />
+</bean>
 ```
 
 Spring会为`<bean…/>`元素创建一个java对象，一个这样的java对象对应一个Bean实例，对于如上代码，Spring会采用如下形式来创建Java实例。
 
 ```
-//获取lee.Person类的Class对象  
-Class  personClass = Class.forName("lee.Person");  
-//创建lee.Person类的默认实例  
-Object personBean = personBean.newInStance();  
+//获取lee.Person类的Class对象
+Class  personClass = Class.forName("lee.Person");
+//创建lee.Person类的默认实例
+Object personBean = personBean.newInStance();
 ```
 
 创建该实例后，Spring就会遍历该`<bean../>`元素的所有`<property…/>`子元素。`<bean…/>`元素每包含一个`<property…/>`子元素，Spring就会为该Bean实例调用一次setter方法。类似于下面程序：
 
 ```
-//获取name属性的setter方法  
-String setName = "set"+"Name";  
-//获取lee.Person类里面的Set()Name方法  
-java.lang.reflect.Method setMethod = personClass.getMethod(setName, aVal.getClass());  
-//调用Bean实例的SetName()方法  
-setMethod.invoke(personBean, aVal);  
+//获取name属性的setter方法
+String setName = "set"+"Name";
+//获取lee.Person类里面的Set()Name方法
+java.lang.reflect.Method setMethod = personClass.getMethod(setName, aVal.getClass());
+//调用Bean实例的SetName()方法
+setMethod.invoke(personBean, aVal);
 ```
 
 对于使用`<constructor-arg…/>`元素来指定构造器注入，Spring不会采用默认的构造器来创建Bean实例，而是使用特定的构造器来创建该Bean实例。
 ```
-<bean id="person" class="lee.Person">  
-<constructor-arg index="0" value="aVal" />  
-<constructor-arg index="1" value="bVal" />  
-</bean>  
+<bean id="person" class="lee.Person">
+<constructor-arg index="0" value="aVal" />
+<constructor-arg index="1" value="bVal" />
+</bean>
 ```
 
 针对上面的代码，Spring会采用类似如下的代码来创建Bean实例：
 ```
-//获取lee.Person类的class对象  
-Class  personClass = Class.forName("lee.Person");  
-//获取第一个参数是aVal类型，第二个参数是bVal类型的构造器  
-Constructor personCtr = personClass.getConstructor(aVal.getClass(),bVal.getClass());  
-//以指定构造器创建Bean实例  
-Object bean = personCtr.newInstance(aVal,bVal);  
+//获取lee.Person类的class对象
+Class  personClass = Class.forName("lee.Person");
+//获取第一个参数是aVal类型，第二个参数是bVal类型的构造器
+Constructor personCtr = personClass.getConstructor(aVal.getClass(),bVal.getClass());
+//以指定构造器创建Bean实例
+Object bean = personCtr.newInstance(aVal,bVal);
 ```
 
 上面的程序只是一个实例，实际上Spring还需要根据`<property…/>`元素、`<contructor-arg../>`元素所使用value属性，ref属性等来判断需要注入的到底是什么数据类型，并要对这些值进行合适的类型转换，所以Spring的实际处理过程会更加复杂。
@@ -654,21 +655,21 @@ Java实例的属性值可以有很多种数据类型、基本类型值、字符�
 
 value属性用于指定字符串类型、基本类型的属性值。Spring使用XML解析器来解析出这些数据，然后利用java.beans.PropertyEdior完成类型转换：从java.lang.String类型转换为所需的参数值类型。如果目标类型是基本数据类型，通常都是可以正确转换。
 ```
-public class ValueTest {  
-//定义一个String型属性  
-private String name;  
-//定义一个int型属性  
-private int age;  
+public class ValueTest {
+//定义一个String型属性
+private String name;
+//定义一个int型属性
+private int age;
 // name 、age的getter和setter方法
-}  
+}
 ```
 上面实例只是演示了注入普通属性值。在Spring配置文件中使用value属性来为这两个属性指定属性值。
 
 ```
-<bean id="text" class="com.spring.service.impl.ValueTest">  
-<property name="age" value="1" />  
-<property name="name" value="chenssy" />  
-</bean>  
+<bean id="text" class="com.spring.service.impl.ValueTest">
+<property name="age" value="1" />
+<property name="name" value="chenssy" />
+</bean>
 ```
 
 ### 配置合作者
@@ -676,22 +677,22 @@ private int age;
 如果我们需要为Bean设置属性值是另一个Bean实例时，这个时候需要使用ref属性。
 
 ```
-<bean id="steelAxe" class="com.spring.service.impl.SteelAce"></bean>  
-<bean id="chinese" class="com.spring.service.impl.Chinese" >  
-<property name="axe" ref="steelAxe" />  
-</bean>  
+<bean id="steelAxe" class="com.spring.service.impl.SteelAce"></bean>
+<bean id="chinese" class="com.spring.service.impl.Chinese" >
+<property name="axe" ref="steelAxe" />
+</bean>
 ```
 
 早期Spring版本使用ref元素，ref元素可以指定如下两个属性。
 bean:引用不在同一份XML配置文件中的其他Bean实例的id属性值。
 local：引用同一份XML配置文件中的其他Bean实例的id属性值。
 ```
-<bean id="steelAxe" class="com.spring.service.impl.SteelAce"></bean>  
-<bean id="chinese" class="com.spring.service.impl.Chinese" >  
-<property name="axe">  
-<ref local="steelAxe"/>  
-</property>  
-</bean>  
+<bean id="steelAxe" class="com.spring.service.impl.SteelAce"></bean>
+<bean id="chinese" class="com.spring.service.impl.Chinese" >
+<property name="axe">
+<ref local="steelAxe"/>
+</property>
+</bean>
 ```
 
 ### 使用自动装配注入合作者bean
@@ -713,44 +714,44 @@ Spring的自动装配机制可以通过`<bean.../>`元素的default-autowire属�
 byName规则是指通过名字注入依赖关系，假如Bean A的实现类里面包含setB()方法，而Spring的配置文件恰好包含一个id为b的Bean，则Spring容器就会将b实例注入Bean A中。如果容器中没有名字匹配的Bean，Spring则不会做任何事情。
 
 ```
-<bean id="chinese" class="com.spring.service.impl.Chinese" autowire="byName" />  
-<bean id="gundog" class="com.spring.service.impl.Gundog">  
-<property name="name" value="wangwang" />  
-</bean>  
+<bean id="chinese" class="com.spring.service.impl.Chinese" autowire="byName" />
+<bean id="gundog" class="com.spring.service.impl.Gundog">
+<property name="name" value="wangwang" />
+</bean>
 ```
 上面的配置文件指定了byName规则。则com.app.service.impl.Chinese类中提供如下的依赖注入方法：
 ```
-/** 
-* 依赖关系必须的setter方法，因为需要通过名字自动装配 
-* 所以setter方法必须提供set+Bean名，Bean名的首字母大写 
-* @param dog 设置的dog值 
-*/  
-public void setGundog(Dog dog){  
-    this.dog = dog;  
-}  
+/**
+* 依赖关系必须的setter方法，因为需要通过名字自动装配
+* 所以setter方法必须提供set+Bean名，Bean名的首字母大写
+* @param dog 设置的dog值
+*/
+public void setGundog(Dog dog){
+    this.dog = dog;
+}
 ```
 
 #### byType规则
 
 byType规则是根据类型匹配注入依赖关系。假如A实例有setB(B b)方法，而Spring配置文件中恰好有一个类型B的Bean实例，容器为A注入类型匹配的Bean实例。如果容器中存在多个B的实例，则会抛出异常，如果没有B实例，则不会发生任何事情。
 ```
-<bean id="chinese" class="com.spring.service.impl.Chinese" autowire="byType" />  
-<bean id="gundog" class="com.spring.service.impl.Gundog">  
-<property name="name" value="wangwang" />  
-</bean>  
+<bean id="chinese" class="com.spring.service.impl.Chinese" autowire="byType" />
+<bean id="gundog" class="com.spring.service.impl.Gundog">
+<property name="name" value="wangwang" />
+</bean>
 ```
 
 针对上面的配置文件Chinese类有如下方法。
 ```
-/**  
-* 依赖关系必须的setter方法  
-* 因为使用按类型自动装配，setter方法的参数类型与容器的Bean的类型相同  
-* 程序中的Gundog实现了Dog接口  
-* @param dog传入的dog对象  
-*/  
-public void setDog(Dog dog){  
-    this.dog = dog;  
-}  
+/**
+* 依赖关系必须的setter方法
+* 因为使用按类型自动装配，setter方法的参数类型与容器的Bean的类型相同
+* 程序中的Gundog实现了Dog接口
+* @param dog传入的dog对象
+*/
+public void setDog(Dog dog){
+    this.dog = dog;
+}
 ```
 
 当一个Bean即使用自动装配依赖，又使用ref显示依赖时，则显示指定的依赖就会覆盖自动装配。
@@ -763,14 +764,14 @@ public void setDog(Dog dog){
 
 ```
 <bean id="chinese" class="com.spring.service.impl.Chinese" autowire="byName">
-<property name="axe">  
-<!--   
-属性值为嵌套Bean，嵌套Bean不能由Spring容器直接访问，  
-所以嵌套Bean是不需要id属性  
--->  
-<bean class="com.spring.service.impl.SteelAce" />  
-</property>  
-</bean>  
+<property name="axe">
+<!--
+属性值为嵌套Bean，嵌套Bean不能由Spring容器直接访问，
+所以嵌套Bean是不需要id属性
+-->
+<bean class="com.spring.service.impl.SteelAce" />
+</property>
+</bean>
 ```
 
 采用上面的配置可以保证嵌套Bean不能被容器访问，因此不用担心其他程序修改嵌套bean。但是嵌套Bean限制了Bean的访问，提高了程序的内聚性。
@@ -780,78 +781,78 @@ public void setDog(Dog dog){
 `<list.../>`、`<set.../>`、`<map.../>`和`<props.../>`元素分别用来设置类型list、set、map和Properties的集合属性值。
 先看下面java类：
 ```
-public class Chinese implements Person{  
+public class Chinese implements Person{
 
-//下面是一系列的集合属性  
-private List<String> schools;  
-private Map scores;  
-private Map<String, Axe> phaseAxes;  
-private Properties health;  
-private Set axe;  
-private String[] books;  
+//下面是一系列的集合属性
+private List<String> schools;
+private Map scores;
+private Map<String, Axe> phaseAxes;
+private Properties health;
+private Set axe;
+private String[] books;
 //setter 和getter方法
 }
 ```
 上面的java代码中有数组、list、set、，map、Properties。下面是针对上面的配置文件。
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns="http://www.springframework.org/schema/beans"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
-<!-- 定义一个普通的Axe Bean -->  
-<bean id="steelAxe" class="com.spring.service.impl.SteelAxe" />  
-<bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.springframework.org/schema/beans"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!-- 定义一个普通的Axe Bean -->
+<bean id="steelAxe" class="com.spring.service.impl.SteelAxe" />
+<bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />
 
-<!--定义Chinese Bean -->  
-<bean id="chinese" class="com.spring.service.impl.Chinese">  
-<property name="schools">  
-<list>  
-    <value>小学</value>  
-    <value>中学</value>  
-    <value>大学</value>  
-</list>  
-</property>  
+<!--定义Chinese Bean -->
+<bean id="chinese" class="com.spring.service.impl.Chinese">
+<property name="schools">
+<list>
+    <value>小学</value>
+    <value>中学</value>
+    <value>大学</value>
+</list>
+</property>
 
-<property name="scores">  
-<map>  
-    <entry key="语文" value="88" />  
-    <entry key="数学" value="87" />  
-    <entry key="外语" value="88" />  
-</map>  
-</property>  
+<property name="scores">
+<map>
+    <entry key="语文" value="88" />
+    <entry key="数学" value="87" />
+    <entry key="外语" value="88" />
+</map>
+</property>
 
-<property name="phaseAxes">  
-<map>  
-    <entry key="原始社会" value-ref="stoneAxe" />  
-    <entry key="农业社会" value-ref="steelAxe" />  
-</map>  
-</property>  
+<property name="phaseAxes">
+<map>
+    <entry key="原始社会" value-ref="stoneAxe" />
+    <entry key="农业社会" value-ref="steelAxe" />
+</map>
+</property>
 
-<property name="health">  
-<props>  
-    <prop key="血压">正常</prop>  
-    <prop key="身高">175</prop>  
-</props>  
-</property>  
+<property name="health">
+<props>
+    <prop key="血压">正常</prop>
+    <prop key="身高">175</prop>
+</props>
+</property>
 
-<property name="axe">  
-<set>  
-    <value>普通字符串</value>  
-    <bean class="com.spring.service.impl.SteelAxe"></bean>  
-    <ref local="stoneAxe"/>  
-</set>  
-</property>  
+<property name="axe">
+<set>
+    <value>普通字符串</value>
+    <bean class="com.spring.service.impl.SteelAxe"></bean>
+    <ref local="stoneAxe"/>
+</set>
+</property>
 
-<property name="books">  
-<list>  
-    <value>java 编程思想</value>  
-    <value>思考致富</value>  
-    <value>将才</value>  
-</list>  
-</property>  
-</bean>  
-</beans>  
+<property name="books">
+<list>
+    <value>java 编程思想</value>
+    <value>思考致富</value>
+    <value>将才</value>
+</list>
+</property>
+</bean>
+</beans>
 ```
 
 从上面的配置文件中可以看出，Spring对list属性和数组属性的处理是一样的。
@@ -876,22 +877,22 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 当在配置文件中为Bean属性指定值时，还可以使用组合属性名的方式。例如我们使用如foo.bar.name的属性名，这表明为Bean实例的foo属性的bar属性的name属性指定值。
 
 ```
-public class Person {  
-    private String name;  
+public class Person {
+    private String name;
     //getter .. setter
-}  
-public class ExampleBean {  
-    private Person person=new Person();  
-    public Person getPerson() {  
-        return person;  
-    }  
-}  
+}
+public class ExampleBean {
+    private Person person=new Person();
+    public Person getPerson() {
+        return person;
+    }
+}
 ```
 bean.xml核心配置：
 ```
-<bean id="exampleBean" class="com.bean.ExampleBean">  
-        <property name="person.name" value="孙悟空"/>  
-</bean>  
+<bean id="exampleBean" class="com.bean.ExampleBean">
+        <property name="person.name" value="孙悟空"/>
+</bean>
 ```
 除了最后一个属性外，其他属性不能为null，否则引发异常
 
@@ -915,10 +916,10 @@ Spring容器对Bean没有特殊要求，甚至不要求该Bean像标准的JavaBe
 * 写法不同：传统的JavaBean作为值对象，要求每个属性都提供getter和setter方法；但Spring的Bean只需为接受设值注入的属性提供setter方法。
 * 生命周期不同：传统的JavaBean作为值对象传递，不接受任何容器管理其生命周期；但Spring中的Bean由Spring管理其生命周期行为。
 
-## Spring 3.0提供的Java配置管理 
+## Spring 3.0提供的Java配置管理
 
 Spring允许开发者使用Java类进行配置管理。
- 
+
 假如有如下Person实现类：
 ```
 public class Chinese implements Person {
@@ -1012,7 +1013,7 @@ ApplicationContext ctx = new
 * @Scope：用于修饰一个方法，指定该方法对应的Bean的生命域。
 * @Lazy：用于修饰一个方法，指定该方法对应的Bean的是否需要延迟初始化。
 * @DependOn：用于修饰一个方法，指定在初始化该方法对应的Bean之前初始化指定Bean。
- 
+
 1. 如果以XML配置为主，就需要让XML配置能加载Java类配置。这并不难，只要在XML配置中增加如下代码即可：
     {% codeblock %}
     <?xml version="1.0" encoding="GBK"?>
@@ -1055,62 +1056,62 @@ BeanFactory将使用无参数构造器来创建Bean实例，该实例是个默�
 
 Axe.java :
 ```
-public interface Axe {  
-    public String chop();  
-}  
+public interface Axe {
+    public String chop();
+}
 ```
 Person.java :
 ```
-public interface Person {  
-    public void useAxe();  
-}  
+public interface Person {
+    public void useAxe();
+}
 ```
 SteelAxe.java :
 ```
-public class SteelAxe implements Axe {  
-    @Override  
-    public String chop() {  
-        return "钢斧砍柴真快";  
-    }  
-    public SteelAxe() {  
-        System.out.println("Spring实例化依赖Bean:SteelAxe实例...");  
-    }  
-}  
+public class SteelAxe implements Axe {
+    @Override
+    public String chop() {
+        return "钢斧砍柴真快";
+    }
+    public SteelAxe() {
+        System.out.println("Spring实例化依赖Bean:SteelAxe实例...");
+    }
+}
 ```
 Chinese.java :
 ```
-public class Chinese implements Person{  
-    @Override  
-    public void useAxe() {  
-        System.out.println(axe.chop());  
-    }  
-    private Axe axe;  
-    public void setAxe(Axe axe) {  
-        System.out.println("Spring执行依赖关系注入");  
-        this.axe = axe;  
-    }  
-    public Chinese() {  
-        System.out.println("Spring实例化主调Bean:Chinese实例...");  
-    }  
-}  
+public class Chinese implements Person{
+    @Override
+    public void useAxe() {
+        System.out.println(axe.chop());
+    }
+    private Axe axe;
+    public void setAxe(Axe axe) {
+        System.out.println("Spring执行依赖关系注入");
+        this.axe = axe;
+    }
+    public Chinese() {
+        System.out.println("Spring实例化主调Bean:Chinese实例...");
+    }
+}
 ```
 bean.xml核心配置 :
 ```
-<bean id="chinese" class="com.bean.Chinese">  
-    <property name="axe" ref="steelAxe"/>  
-</bean>  
-    
-<bean id="steelAxe" class="com.bean.SteelAxe"/>  
+<bean id="chinese" class="com.bean.Chinese">
+    <property name="axe" ref="steelAxe"/>
+</bean>
+
+<bean id="steelAxe" class="com.bean.SteelAxe"/>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person person=(Person) ctx.getBean("chinese");  
-        person.useAxe();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person person=(Person) ctx.getBean("chinese");
+        person.useAxe();
+    }
+}
 //控制台输出：
 Spring实例化主调Bean:Chinese实例...
 Spring实例化依赖Bean:SteelAxe实例...
@@ -1128,73 +1129,73 @@ Spring执行依赖关系注入
 
 Being.java :
 ```
-public interface Being {  
-    public void testBeing();  
-}  
+public interface Being {
+    public void testBeing();
+}
 ```
 Dog.java :
 ```
-public class Dog implements Being {  
-    private String msg;  
-    public void setMsg(String msg) {  
-        this.msg = msg;  
-    }  
-    @Override  
-    public void testBeing() {  
-        System.out.println(msg+",狗爱啃骨头");  
-    }  
-}  
+public class Dog implements Being {
+    private String msg;
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+    @Override
+    public void testBeing() {
+        System.out.println(msg+",狗爱啃骨头");
+    }
+}
 ```
 Cat.java :
 ```
-public class Cat implements Being {  
-    private String msg;  
-    public void setMsg(String msg) {  
-        this.msg = msg;  
-    }  
-    @Override  
-    public void testBeing() {  
-        System.out.println(msg+",猫爱吃老鼠");  
-    }  
-}  
+public class Cat implements Being {
+    private String msg;
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+    @Override
+    public void testBeing() {
+        System.out.println(msg+",猫爱吃老鼠");
+    }
+}
 ```
 BeingFactory.java :
-  
+
 ```
-public class BeingFactory {  
-    public static Being getBeing(String arg){  
-        if(arg.equalsIgnoreCase("dog")){  
-            return new Dog();  
-        }else{  
-            return new Cat();  
-        }  
-    }  
-}  
+public class BeingFactory {
+    public static Being getBeing(String arg){
+        if(arg.equalsIgnoreCase("dog")){
+            return new Dog();
+        }else{
+            return new Cat();
+        }
+    }
+}
 ```
 bean.xml核心配置：
 ```
-<bean id="dog" class="com.bean.BeingFactory" factory-method="getBeing">  
-    <constructor-arg value="dog"/>  
-    <property name="msg" value="我是狗"/>  
-</bean>  
-    
-<bean id="cat" class="com.bean.BeingFactory" factory-method="getBeing">  
-    <constructor-arg value="cat"/>  
-    <property name="msg" value="我是猫"/>  
-</bean>  
+<bean id="dog" class="com.bean.BeingFactory" factory-method="getBeing">
+    <constructor-arg value="dog"/>
+    <property name="msg" value="我是狗"/>
+</bean>
+
+<bean id="cat" class="com.bean.BeingFactory" factory-method="getBeing">
+    <constructor-arg value="cat"/>
+    <property name="msg" value="我是猫"/>
+</bean>
 ```
 从上面的核心配置可以看出，cat和dog两个Bean配置的class属性和factory-method属性完全相同，这是因为这两个实例都是由同一个工厂类的同一个静态方法生产得到的。配置这两个Bean实例指定了工厂的静态方法的实参值不同，配置静态方法的实参值使用`<constructor-arg.../>`元素。
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Being b1=(Being) ctx.getBean("dog");  
-        b1.testBeing();  
-        Being b2=(Being) ctx.getBean("cat");  
-        b2.testBeing();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Being b1=(Being) ctx.getBean("dog");
+        b1.testBeing();
+        Being b2=(Being) ctx.getBean("cat");
+        b2.testBeing();
+    }
+}
 ```
 
 使用静态工厂方法创建Bean实例时，class属性也必须指定，但此时class属性并不是Bean实例的实现类，而是静态工厂类。除此之外，还需要使用factory-method属性来指定工厂的静态方法名。
@@ -1203,72 +1204,72 @@ public class Test {
 
 Person.java :
 ```
-public interface Person {  
-    public String sayHello(String name);  
-    public String sayGoodBye(String name);  
-}  
+public interface Person {
+    public String sayHello(String name);
+    public String sayGoodBye(String name);
+}
 ```
 Chinese.java :
 ```
-public class Chinese implements Person {  
-    @Override  
-    public String sayGoodBye(String name) {  
-        return name+",再见！";  
-    }  
-    @Override  
-    public String sayHello(String name) {  
-        return name+",你好";  
-    }  
-}  
+public class Chinese implements Person {
+    @Override
+    public String sayGoodBye(String name) {
+        return name+",再见！";
+    }
+    @Override
+    public String sayHello(String name) {
+        return name+",你好";
+    }
+}
 ```
 American.java :
 ```
-public class American implements Person {  
-    @Override  
-    public String sayGoodBye(String name) {  
-        return name+",Good Bye !";  
-    }  
-  
-    @Override  
-    public String sayHello(String name) {  
-        return name+",Hello !";  
-    }  
-}  
+public class American implements Person {
+    @Override
+    public String sayGoodBye(String name) {
+        return name+",Good Bye !";
+    }
+
+    @Override
+    public String sayHello(String name) {
+        return name+",Hello !";
+    }
+}
 ```
 PersonFactory.java :
 ```
-public class PersonFactory {  
-    public Person getPerson(String ethnic){  
-        if(ethnic.equalsIgnoreCase("chin")){  
-            return new Chinese();  
-        }else{  
-            return new American();  
-        }  
-    }  
-}  
+public class PersonFactory {
+    public Person getPerson(String ethnic){
+        if(ethnic.equalsIgnoreCase("chin")){
+            return new Chinese();
+        }else{
+            return new American();
+        }
+    }
+}
 ```
 bean.xml核心配置 :
 ```
-<bean id="personFactory" class="com.bean.PersonFactory"/>  
-<bean id="chinese" factory-bean="personFactory" factory-method="getPerson"> 
-    <constructor-arg value="chin"/>  
-</bean>  
-   
+<bean id="personFactory" class="com.bean.PersonFactory"/>
+<bean id="chinese" factory-bean="personFactory" factory-method="getPerson">
+    <constructor-arg value="chin"/>
+</bean>
+
 <bean id="american" factory-bean="personFactory" factory-method="getPerson">
-    <constructor-arg value="ame"/>  
-</bean>  
+    <constructor-arg value="ame"/>
+</bean>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p1=(Person) ctx.getBean("chinese");  
-        System.out.println(p1.sayGoodBye("tom")+p1.sayHello("tom"));  
-        Person p2=(Person) ctx.getBean("american");  
-        System.out.println(p2.sayGoodBye("tom")+p2.sayHello("tom"));  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p1=(Person) ctx.getBean("chinese");
+        System.out.println(p1.sayGoodBye("tom")+p1.sayHello("tom"));
+        Person p2=(Person) ctx.getBean("american");
+        System.out.println(p2.sayGoodBye("tom")+p2.sayHello("tom"));
+    }
+}
 ```
 实例工厂方法与静态工厂方法的区别。
 
@@ -1283,18 +1284,18 @@ public class Test {
 当某个Bean将作为其他Bean的模板使用时，该Bean通常不需要实例化，而ApplicationContext默认预初始化所有的singleton Bean。为了阻止Bean模板被预初始化，可以指定abstract=“true”将该模板Bean设置为抽象Bean，Spring容器会忽略所有的抽象Bean定义，预初始化时不初始化抽象Bean。
 
 ```
-<bean id="chineseTemplate" class="com.bean.Chinese" abstract="true">  
-   <property name="axe" ref="steelAxe"/>  
-</bean>  
-<bean id="steelAxe" class="com.bean.SteelAxe"/>  
+<bean id="chineseTemplate" class="com.bean.Chinese" abstract="true">
+   <property name="axe" ref="steelAxe"/>
+</bean>
+<bean id="steelAxe" class="com.bean.SteelAxe"/>
 ```
 这样配置以后，当程序采用ApplicationContext作为Spring容器时，程序实例化ApplicationContext容器时会默认实例化所有的singleton Bean，但不会初始化abstract  Bean。
 抽象Bean是一个模板，容器会忽略抽象Bean的定义，不会实例化抽象Bean。抽象Bean因为无须实例化，因此可以没有class属性。
 ```
-<bean id="chineseTemplate" abstract="true">  
-   <property name="axe" ref="steelAxe"/>  
-</bean>  
-<bean id="steelAxe" class="com.bean.SteelAxe"/>  
+<bean id="chineseTemplate" abstract="true">
+   <property name="axe" ref="steelAxe"/>
+</bean>
+<bean id="steelAxe" class="com.bean.SteelAxe"/>
 ```
 抽象Bean不能实例化，因此既不能通过getBean显式地获得抽象Bean实例，也不能将抽象Bean注入成其他Bean的依赖属性。无论何时，只要企图实例化抽象Bean，都将导致错误。
 
@@ -1310,76 +1311,76 @@ public class Test {
 
 Axe.java :
 ```
-public interface Axe {  
-    public String chop();  
-}  
+public interface Axe {
+    public String chop();
+}
 ```
 SteelAxe.java :
 ```
-public class SteelAxe implements Axe {  
-    @Override  
-    public String chop() {  
-        return "钢斧砍柴真快";  
-    }  
-    public SteelAxe() {  
-        System.out.println("Spring实例化依赖bean:SteelAxe实例...");  
-    }  
-}  
+public class SteelAxe implements Axe {
+    @Override
+    public String chop() {
+        return "钢斧砍柴真快";
+    }
+    public SteelAxe() {
+        System.out.println("Spring实例化依赖bean:SteelAxe实例...");
+    }
+}
 ```
 StoneAxe.java :
 ```
-public class StoneAxe implements Axe {  
-    @Override  
-    public String chop() {  
-        return "石斧砍柴真慢";  
-    }  
-    public StoneAxe() {  
-        System.out.println("Spring实例化依赖bean:StoneAxe实例...");  
-    }  
-}  
+public class StoneAxe implements Axe {
+    @Override
+    public String chop() {
+        return "石斧砍柴真慢";
+    }
+    public StoneAxe() {
+        System.out.println("Spring实例化依赖bean:StoneAxe实例...");
+    }
+}
 ```
 Person.java :
 ```
-public interface Person {  
-    public void useAxe();  
-}  
+public interface Person {
+    public void useAxe();
+}
 ```
 Chinese.java :
 ```
-public class Chinese implements Person{  
-    private Axe axe;  
-    public void setAxe(Axe axe) {  
-        System.out.println("Spring执行依赖关系注入...");  
-        this.axe = axe;  
-    }  
-    public Chinese() {  
-        System.out.println("Spring实例化主调bean:Chinese实例...");  
-    }  
-    @Override  
-    public void useAxe() {  
-        System.out.println(axe.chop());  
-    }  
-}  
+public class Chinese implements Person{
+    private Axe axe;
+    public void setAxe(Axe axe) {
+        System.out.println("Spring执行依赖关系注入...");
+        this.axe = axe;
+    }
+    public Chinese() {
+        System.out.println("Spring实例化主调bean:Chinese实例...");
+    }
+    @Override
+    public void useAxe() {
+        System.out.println(axe.chop());
+    }
+}
 ```
 bean.xml核心配置：
 ```
-<bean id="steelAxe" class="com.bean.SteelAxe"/>  
-<bean id="stoneAxe" class="com.bean.StoneAxe"/>  
-  
-<bean id="chineseTemplate" class="com.bean.Chinese" abstract="true">  
-   <property name="axe" ref="steelAxe"/>  
-</bean>  
-<bean id="chinese" parent="chineseTemplate"/>  
+<bean id="steelAxe" class="com.bean.SteelAxe"/>
+<bean id="stoneAxe" class="com.bean.StoneAxe"/>
+
+<bean id="chineseTemplate" class="com.bean.Chinese" abstract="true">
+   <property name="axe" ref="steelAxe"/>
+</bean>
+<bean id="chinese" parent="chineseTemplate"/>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        p.useAxe();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        p.useAxe();
+    }
+}
 //控制台输出：
 Spring实例化依赖bean：SteelAxe实例...
 Spring实例化依赖bean：StoneAxe实例...
@@ -1390,15 +1391,15 @@ Spring执行依赖关系注入...
 
 子Bean从父Bean继承了实现类，依赖关系等配置信息。实际上，子Bean也可以覆盖父Bean的配置信息：
 ```
-<bean id="steelAxe" class="com.bean.SteelAxe"/>  
-<bean id="stoneAxe" class="com.bean.StoneAxe"/>  
-  
-<bean id="chineseTemplate" class="com.bean.Chinese" abstract="true">  
-   <property name="axe" ref="steelAxe"/>  
-</bean>  
-<bean id="chinese" parent="chineseTemplate">  
-   <property name="axe" ref="stoneAxe"/>  
-</bean>  
+<bean id="steelAxe" class="com.bean.SteelAxe"/>
+<bean id="stoneAxe" class="com.bean.StoneAxe"/>
+
+<bean id="chineseTemplate" class="com.bean.Chinese" abstract="true">
+   <property name="axe" ref="steelAxe"/>
+</bean>
+<bean id="chinese" parent="chineseTemplate">
+   <property name="axe" ref="stoneAxe"/>
+</bean>
 ```
 控制台输出：
 ```
@@ -1429,64 +1430,64 @@ FactoryBean接口提供如下三个方法：
 
 Person.java :
 ```
-public interface Person {  
-    public String sayHello(String name);  
-    public String sayGoodBye(String name);  
-}  
+public interface Person {
+    public String sayHello(String name);
+    public String sayGoodBye(String name);
+}
 ```
 Chinese.java :
 ```
-public class Chinese implements Person{  
-    @Override  
-    public String sayGoodBye(String name) {  
-        return "再见,"+name;  
-    }  
-    @Override  
-    public String sayHello(String name) {  
-        return "你好,"+name;  
-    }  
-}  
+public class Chinese implements Person{
+    @Override
+    public String sayGoodBye(String name) {
+        return "再见,"+name;
+    }
+    @Override
+    public String sayHello(String name) {
+        return "你好,"+name;
+    }
+}
 ```
 PersonFactory.java :
 ```
-public class PersonFactory implements FactoryBean {  
-    private Person p;  
-    //返回工厂Bean所生产的产品  
-    public Person getObject(){  
-        if(p==null){  
-            p=new Chinese();  
-        }  
-        return p;  
-    }  
-    //获取工厂Bean所生产的产品的类型  
-    public Class<?> getObjectType() {  
-        return Chinese.class;  
-    }  
-    //返回该工厂Bean所生产的产品是否为单例  
-    public boolean isSingleton() {  
-        return true;  
-    }  
-}  
+public class PersonFactory implements FactoryBean {
+    private Person p;
+    //返回工厂Bean所生产的产品
+    public Person getObject(){
+        if(p==null){
+            p=new Chinese();
+        }
+        return p;
+    }
+    //获取工厂Bean所生产的产品的类型
+    public Class<?> getObjectType() {
+        return Chinese.class;
+    }
+    //返回该工厂Bean所生产的产品是否为单例
+    public boolean isSingleton() {
+        return true;
+    }
+}
 ```
 bean.xml核心配置：
 ```
-<bean id="chinese" class="com.bean.PersonFactory"/>  
+<bean id="chinese" class="com.bean.PersonFactory"/>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        //直接请求FactoryBean时，系统将返回该FactoryBean的产品  
-        Person p1=(Person) ctx.getBean("chinese");//1  
-        System.out.println(p1.sayHello("汤姆"));  
-        System.out.println(p1.sayGoodBye("汤姆"));  
-        //再次获取该FactoryBean的产品  
-        Person p2=(Person) ctx.getBean("chinese");//2  
-        System.out.println(p1==p2);  
-        System.out.println(ctx.getBean("&chinese"));//3  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        //直接请求FactoryBean时，系统将返回该FactoryBean的产品
+        Person p1=(Person) ctx.getBean("chinese");//1
+        System.out.println(p1.sayHello("汤姆"));
+        System.out.println(p1.sayGoodBye("汤姆"));
+        //再次获取该FactoryBean的产品
+        Person p2=(Person) ctx.getBean("chinese");//2
+        System.out.println(p1==p2);
+        System.out.println(ctx.getBean("&chinese"));//3
+    }
+}
 ///控制台输出：
 你好，汤姆
 再见，汤姆
@@ -1514,30 +1515,30 @@ BeanNameAware接口提供的一个方法：setBeanName(String name)，该方法�
 
 Chinese.java :
 ```
-public class Chinese implements BeanNameAware{  
-    private String beanName;  
-    @Override  
-    public void setBeanName(String name) {  
-        this.beanName=name;  
-    }  
-    public void getBeanId(){  
-        System.out.println("Chinese实现类，部署该Bean时指定的id为："+beanName);  
-    }  
-}  
+public class Chinese implements BeanNameAware{
+    private String beanName;
+    @Override
+    public void setBeanName(String name) {
+        this.beanName=name;
+    }
+    public void getBeanId(){
+        System.out.println("Chinese实现类，部署该Bean时指定的id为："+beanName);
+    }
+}
 ```
 bean.xml 核心配置：
 ```
-<bean id="chinese" class="com.bean.Chinese"/>  
+<bean id="chinese" class="com.bean.Chinese"/>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Chinese c=(Chinese) ctx.getBean("chinese");  
-        c.getBeanId();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Chinese c=(Chinese) ctx.getBean("chinese");
+        c.getBeanId();
+    }
+}
 ///控制台输出：
 Chinese实现类，部署该Bean时指定的id为:chinese
 ```
@@ -1555,10 +1556,10 @@ Spring默认有个规则：总是先初始化主调Bean，然后再初始化依�
 为了让指定Bean在目标Bean之前初始化，可以使用 depends-on 属性，该属性可以在初始化主调Bean之前，强制初始化一个或多个Bean。
 
 ```
-<bean id="beanOne" class="ExampleBean" depends-on="manager">  
-    <property name="manager" ref="manager"/>  
-</bean>  
-<bean id="manager" class="ManagerBean"/>  
+<bean id="beanOne" class="ExampleBean" depends-on="manager">
+    <property name="manager" ref="manager"/>
+</bean>
+<bean id="manager" class="ManagerBean"/>
 ```
 
 ## 容器中Bean的生命周期
@@ -1578,69 +1579,69 @@ Spring提供两种方式在Bean全部属性设置成功后执行特定行为：
 
 Axe.java :
 ```
-public interface Axe {  
-    public String chop();  
-}  
+public interface Axe {
+    public String chop();
+}
 ```
 Person.java :
 ```
-public interface Person {  
-    public void useAxe();  
-}  
+public interface Person {
+    public void useAxe();
+}
 ```
 SteelAxe.java :
 ```
-public class SteelAxe implements Axe {  
-    @Override  
-    public String chop() {  
-        return "钢斧砍柴真快";  
-    }  
-    public SteelAxe() {  
-        System.out.println("Spring实例化依赖bean:SteelAxe实例...");  
-    }  
-}  
+public class SteelAxe implements Axe {
+    @Override
+    public String chop() {
+        return "钢斧砍柴真快";
+    }
+    public SteelAxe() {
+        System.out.println("Spring实例化依赖bean:SteelAxe实例...");
+    }
+}
 ```
 Chinese.java :
 ```
-public class Chinese implements Person,InitializingBean {  
-    private Axe axe;  
-    public Chinese() {  
-        System.out.println("Spring实例化主调Bean:Chinese实例...");  
-    }  
-    public void setAxe(Axe axe) {  
-        System.out.println("Spring执行依赖关系注入...");  
-        this.axe = axe;  
-    }  
-    @Override  
-    public void useAxe() {  
-        System.out.println(axe.chop());  
-    }  
-    public void init(){  
-        System.out.println("正在执行初始化方法init...");  
-    }  
-    @Override  
-    public void afterPropertiesSet() throws Exception {  
-        System.out.println("正在执行初始化方法afterPropertiesSet...");  
-    }  
-}  
+public class Chinese implements Person,InitializingBean {
+    private Axe axe;
+    public Chinese() {
+        System.out.println("Spring实例化主调Bean:Chinese实例...");
+    }
+    public void setAxe(Axe axe) {
+        System.out.println("Spring执行依赖关系注入...");
+        this.axe = axe;
+    }
+    @Override
+    public void useAxe() {
+        System.out.println(axe.chop());
+    }
+    public void init(){
+        System.out.println("正在执行初始化方法init...");
+    }
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("正在执行初始化方法afterPropertiesSet...");
+    }
+}
 ```
 bean.xml 核心配置：
 ```
-<bean id="chinese" class="com.bean.Chinese" init-method="init">  
-    <property name="axe" ref="steelAxe"></property>  
-</bean>  
-    
-<bean id="steelAxe" class="com.bean.SteelAxe"/>  
+<bean id="chinese" class="com.bean.Chinese" init-method="init">
+    <property name="axe" ref="steelAxe"></property>
+</bean>
+
+<bean id="steelAxe" class="com.bean.SteelAxe"/>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        p.useAxe();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        p.useAxe();
+    }
+}
 ```
 
 从运行结果可以看出：依赖注入完成之后，程序先调用afterPropertiesSet方法，再调用init-method属性所指定的方法进行初始化。
@@ -1655,70 +1656,70 @@ public class Test {
 
 Axe.java :
 ```
-public interface Axe {  
-    public String chop();  
-}  
+public interface Axe {
+    public String chop();
+}
 ```
 Person.java :
 ```
-public interface Person {  
-    public void useAxe();  
-}  
+public interface Person {
+    public void useAxe();
+}
 ```
 SteelAxe.java :
 ```
-public class SteelAxe implements Axe {  
-    @Override  
-    public String chop() {  
-        return "钢斧砍柴真快";  
-    }  
-    public SteelAxe() {  
-        System.out.println("Spring实例化依赖Bean:SteelAxe实例...");  
-    }  
-}  
+public class SteelAxe implements Axe {
+    @Override
+    public String chop() {
+        return "钢斧砍柴真快";
+    }
+    public SteelAxe() {
+        System.out.println("Spring实例化依赖Bean:SteelAxe实例...");
+    }
+}
 ```
 Chinese.java :
 ```
-public class Chinese implements Person,DisposableBean {  
-    private Axe axe;  
-    public Chinese() {  
-        System.out.println("Spring实例化主调Bean:Chinese实例...");  
-    }  
-    public void setAxe(Axe axe) {  
-        System.out.println("Spring执行依赖关系注入...");  
-        this.axe = axe;  
-    }  
-    @Override  
-    public void useAxe() {  
-        System.out.println(axe.chop());  
-    }  
-    public void close(){  
-        System.out.println("正在执行销毁之前的方法close...");  
-    }  
-    @Override  
-    public void destroy() throws Exception {  
-        System.out.println("正在执行销毁之前的方法destroy...");  
-    }  
-}  
+public class Chinese implements Person,DisposableBean {
+    private Axe axe;
+    public Chinese() {
+        System.out.println("Spring实例化主调Bean:Chinese实例...");
+    }
+    public void setAxe(Axe axe) {
+        System.out.println("Spring执行依赖关系注入...");
+        this.axe = axe;
+    }
+    @Override
+    public void useAxe() {
+        System.out.println(axe.chop());
+    }
+    public void close(){
+        System.out.println("正在执行销毁之前的方法close...");
+    }
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("正在执行销毁之前的方法destroy...");
+    }
+}
 ```
 bean.xml核心配置：
 ```
-<bean id="chinese" class="com.bean.Chinese" destroy-method="close">  
-   <property name="axe" ref="steelAxe"></property>  
-</bean>  
-   
-<bean id="steelAxe" class="com.bean.SteelAxe"/>  
+<bean id="chinese" class="com.bean.Chinese" destroy-method="close">
+   <property name="axe" ref="steelAxe"></property>
+</bean>
+
+<bean id="steelAxe" class="com.bean.SteelAxe"/>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        AbstractApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        p.useAxe();  
-        ctx.registerShutdownHook();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        AbstractApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        p.useAxe();
+        ctx.registerShutdownHook();
+    }
+}
 ```
 
 singleton 作用域的Bean通常会随容器的关闭而销毁，但问题是：ApplicationContext容器在什么时候关闭呢？在基于web的ApplicationContext实现中，系统已经提供了相应的代码保证关闭web应用时恰当地关闭Spring容器。
@@ -1751,61 +1752,61 @@ singleton 作用域的Bean通常会随容器的关闭而销毁，但问题是：
 
 Axe.java :
 ```
-public interface Axe {  
-    public String chop();  
-}  
+public interface Axe {
+    public String chop();
+}
 ```
 SteelAxe.java :
 ```
-public class SteelAxe implements Axe {  
-    @Override  
-    public String chop() {  
-        return "钢斧砍柴真快";  
-    }  
-    public SteelAxe() {  
-        System.out.println("Spring实例化依赖Bean:SteelAxe实例...");  
-    }  
-}  
+public class SteelAxe implements Axe {
+    @Override
+    public String chop() {
+        return "钢斧砍柴真快";
+    }
+    public SteelAxe() {
+        System.out.println("Spring实例化依赖Bean:SteelAxe实例...");
+    }
+}
 ```
 Person.java :
 ```
-public interface Person {  
-    public void useAxe();  
-}  
+public interface Person {
+    public void useAxe();
+}
 ```
 Chinese.java :
 ```
-public abstract class Chinese implements Person{  
-    public Chinese() {  
-        System.out.println("Spring实例化主调Bean:Chinese实例...");  
-    }  
-    //singleton Bean里增加一个抽象方法  
-    //方法的返回值类型是被依赖的Bean  
-    public abstract Axe getAxe();  
-    @Override  
-    public void useAxe() {  
-        System.out.println("正在使用"+getAxe()+"砍柴!");  
-        System.out.println(getAxe().chop());  
-    }  
-}  
+public abstract class Chinese implements Person{
+    public Chinese() {
+        System.out.println("Spring实例化主调Bean:Chinese实例...");
+    }
+    //singleton Bean里增加一个抽象方法
+    //方法的返回值类型是被依赖的Bean
+    public abstract Axe getAxe();
+    @Override
+    public void useAxe() {
+        System.out.println("正在使用"+getAxe()+"砍柴!");
+        System.out.println(getAxe().chop());
+    }
+}
 ```
 bean.xml核心配置：
 ```
-<bean id="chinese" class="com.bean.Chinese">  
-   <lookup-method name="getAxe" bean="steelAxe"/>  
-</bean>  
-<bean id="steelAxe" class="com.bean.SteelAxe" scope="prototype"/>  
+<bean id="chinese" class="com.bean.Chinese">
+   <lookup-method name="getAxe" bean="steelAxe"/>
+</bean>
+<bean id="steelAxe" class="com.bean.SteelAxe" scope="prototype"/>
 ```
 Test.java :
 ```
-public class Test {  
-    public static void main(String[] args) {  
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");  
-        Person p=(Person) ctx.getBean("chinese");  
-        p.useAxe();  
-        p.useAxe();  
-    }  
-}  
+public class Test {
+    public static void main(String[] args) {
+        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+        Person p=(Person) ctx.getBean("chinese");
+        p.useAxe();
+        p.useAxe();
+    }
+}
 ```
 
 我们在singleton Bean里新增一个抽象方法，该方法的返回值类型是被依赖的Bean，该方法是一个抽象方法，其实现由Spring完成。问题是：Spring怎么知道如何实现该方法呢？为了让Spring知道如何实现该方法，我们需要在配置文件中使用`<lookup-method.../>`元素来配置这个方法。
@@ -1819,18 +1820,19 @@ public class Test {
 
 组件与组件之间的耦合，采用依赖注入管理，但是普通的javabean属性值，应直接在代码里设置。
 
-在spring配置文件中使用xml元素进行配置,实际上是让spring执行相应的java代码  
-例如:  
+在spring配置文件中使用xml元素进行配置,实际上是让spring执行相应的java代码
+例如:
 
-1. 使用<bean>元素,就是让spring执行无参数构造函数  
-2. 使用<property> 就是让spring执行setter方法  
+1. 使用<bean>元素，就是让spring执行无参数构造函数
+2. 使用<property> 就是让spring执行setter方法
 
-但是java程序还有可能还有其他语句,调用getting,调用普通方法,访问类或者对象的file,spring也为这种语句提供利配置的语法  
-  
-1. 调用getter方法:使用 PropertyPathFactoryBean  
-2. 访问类或对象的Field值,使用FieldRetrievingFactoryBean  
-3. 调用普通方法:使用MethodInvokingFactoryBean  
-由此可见,spring可以然我们不写java代码就可以实现java编程,只要使用合适XML 语法进行配置,spring就可通过反射执行任意的底层java代码.  
+但是java程序还有可能还有其他语句,调用getting,调用普通方法,访问类或者对象的file,spring也为这种语句提供利配置的语法
+
+1. 调用getter方法：使用 PropertyPathFactoryBean
+2. 访问类或对象的Field值，使用FieldRetrievingFactoryBean
+3. 调用普通方法，使用MethodInvokingFactoryBean
+
+由此可见，spring可以然我们不写java代码就可以实现java编程，只要使用合适XML 语法进行配置，spring就可通过反射执行任意的底层java代码。
 
 ### 注入其他Bean的属性值
 
@@ -1849,18 +1851,18 @@ public class Test {
 <!--如下将会将person的属性son的属性age传入son1实例的age属性-->
 <bean id="son1" class="com.bean.Son">
     <property name="age">
-        <!--以下是访问bean属性的简单方式,这样可以将person这个bean的age属性赋值给son1这个bean的age属性-->           
+        <!--以下是访问bean属性的简单方式,这样可以将person这个bean的age属性赋值给son1这个bean的age属性-->
         <bean id="person.son.age" class="org.springframework.beans.factory.config.PropertyPathFactoryBean"/>
     </property>
 </bean>
-    
+
 <!-- 以下将会获得结果son,它将是person bean的son的数值-->
 <bean id="son2" class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
     <property name="targetBeanName" value="person"/>
     <property name="propertyPath" value="son"/>
 </bean>
-    
-<!-- 以下将会获得结果16,它将是person bean的son的age属性-->
+
+<!-- 以下将会获得结果11,它将是person bean的son的age属性-->
 <bean id="theAge1" class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
     <property name="targetBeanName" value="person"/>
     <property name="propertyPath" value="son.age"/>
@@ -1901,27 +1903,27 @@ public static void main(String[] args) throws Exception {
 FieldRetrievingFactoryBean获得目标Bean的Field值后，得到的值可注入给其他Bean，也可直接定义成新的Bean。
 
 ```
-<!-- 将指定的类的静态Field设置成bean的属性值 -->  
-<bean id="son" class="com.bean.Son">  
-    <property name="age">  
-    <!-- id指定了哪个Field的值 将会被设置给id="son"的bean -->  
-    <bean id="java.sql.Connection.TRANSACTION_SERIALIZABLE"   
-            class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">  
-    </property>  
-</bean>  
-    
-<!-- 将其他bean的Field定义成一个bean -->  
-<bean id="theAge1" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">    
-    <!-- targetClass 设置Field所在的类,targetObject,当目标对象时使用(代替targetClass) -->  
-    <property name="targetClass" value="java.sql.Connection" />  
-    <!-- targetField指定目标类的目标Field -->  
-    <property name="targetField" value="TRANSACTION_SERIALIZABLE" />  
-</bean>  
-    
-<!-- 将静态Field定义成一个bean的简单写法 -->  
-<bean id="theAge2" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">    
-    <property name="staticField" value="java.sql.Connection.TRANSACTION_SERIALIZABLE" />  
-</bean>  
+<!-- 将指定的类的静态Field设置成bean的属性值 -->
+<bean id="son" class="com.bean.Son">
+    <property name="age">
+    <!-- id指定了哪个Field的值 将会被设置给id="son"的bean -->
+    <bean id="java.sql.Connection.TRANSACTION_SERIALIZABLE"
+            class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+    </property>
+</bean>
+
+<!-- 将其他bean的Field定义成一个bean -->
+<bean id="theAge1" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+    <!-- targetClass 设置Field所在的类,targetObject,当目标对象时使用(代替targetClass) -->
+    <property name="targetClass" value="java.sql.Connection" />
+    <!-- targetField指定目标类的目标Field -->
+    <property name="targetField" value="TRANSACTION_SERIALIZABLE" />
+</bean>
+
+<!-- 将静态Field定义成一个bean的简单写法 -->
+<bean id="theAge2" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+    <property name="staticField" value="java.sql.Connection.TRANSACTION_SERIALIZABLE" />
+</bean>
 ```
 
 测试代码：
@@ -1947,42 +1949,42 @@ public static void main(String[] args) throws Exception {
 通过MethodInvokingFactoryBean工厂Bean，可获得指定方法的返回值并将其注入到指定Bean实例的指定属性，也可以直接定义成Bean实例。
 
 ```
-<!-- 提供方法的bean -->  
-<bean id="valueGenerator" class="com.util.valueGenerator" />  
-<!-- 将一个bean的方法 返回值 注入 新bean的 age属性 -->  
-<bean id="son1" class="com.bean.Son">  
-    <property name="age">  
-    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
-        <property name="targetObject" ref="valueGenerator" />  
-        <property name="targetMethod" value="getValue" />  
-    </bean>  
-    </property>    
-</bean>  
-<!-- 上面 是调用非静态类对象的getValue()这种无参方法 -->  
-    
-<!-- 调用静态类的静态方法,静态方法的返回值直接 定义成bean -->  
-<bean id="sysProps" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
-    <property name="targetClass" value="java.lang.System" />  
-    <property name="targetMethod" value="getProperties" />  
-</bean>  
-<!-- 调用无参 静态类的静态方法 创建bean name="staticMethod",value=静态类.静态方法-->  
-<bean id="myBean" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
+<!-- 提供方法的bean -->
+<bean id="valueGenerator" class="com.util.valueGenerator" />
+<!-- 将一个bean的方法 返回值 注入 新bean的 age属性 -->
+<bean id="son1" class="com.bean.Son">
+    <property name="age">
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="valueGenerator" />
+        <property name="targetMethod" value="getValue" />
+    </bean>
+    </property>
+</bean>
+<!-- 上面 是调用非静态类对象的getValue()这种无参方法 -->
+
+<!-- 调用静态类的静态方法,静态方法的返回值直接 定义成bean -->
+<bean id="sysProps" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetClass" value="java.lang.System" />
+    <property name="targetMethod" value="getProperties" />
+</bean>
+<!-- 调用无参 静态类的静态方法 创建bean name="staticMethod",value=静态类.静态方法-->
+<bean id="myBean" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
     <property name="staticMethod" value="xxx.MyStaticClass.myStaticMethod" />
-</bean>  
-    
-<!-- 有参数的方法调用,返回值 配置成一个bean -->  
-<bean id="javaVersion" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
-    <!-- 目标bean,确定调用哪个bean的方法 -->  
-    <property name="targetObject" ref="sysProps" />  
-    <!-- 确定目标方法,确定调用bean的哪个方法 -->  
-    <property name="targetMethod" value="getProperty" />  
-    <!-- 确定调用目标方法的参数 相当于调用getProperty方法,传递参数"java.version" -->  
-    <property name="arguments">  
-    <list>  
-        <value>java.version</value>  
-    </list>  
-    </property>     
-</bean> 
+</bean>
+
+<!-- 有参数的方法调用,返回值 配置成一个bean -->
+<bean id="javaVersion" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <!-- 目标bean,确定调用哪个bean的方法 -->
+    <property name="targetObject" ref="sysProps" />
+    <!-- 确定目标方法,确定调用bean的哪个方法 -->
+    <property name="targetMethod" value="getProperty" />
+    <!-- 确定调用目标方法的参数 相当于调用getProperty方法,传递参数"java.version" -->
+    <property name="arguments">
+    <list>
+        <value>java.version</value>
+    </list>
+    </property>
+</bean>
 ```
 ValueGenrator类
 ```
@@ -2014,77 +2016,77 @@ public static void main(String[] args) throws Exception {
 
 ## 基于xml schema 的简化配置方式
 
-### 使用p名称空间配置属性 
+### 使用p名称空间配置属性
 
 使用p命名空间可以简化原来property 的配置
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns="http://www.springframework.org/schema/beans"  
-xmlns:p="http://www.springframework.org/schema/p"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
-    <!-- 配置Chinese实例 -->  
-    <bean id="chinese" class="com.spring.service.impl.Chinese" p:age="29" p:age-ref="stoneAxe"/>  
-    <!-- 配置stoneAxe实例 -->  
-    <bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />  
-</beans>  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.springframework.org/schema/beans"
+xmlns:p="http://www.springframework.org/schema/p"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <!-- 配置Chinese实例 -->
+    <bean id="chinese" class="com.spring.service.impl.Chinese" p:age="29" p:age-ref="stoneAxe"/>
+    <!-- 配置stoneAxe实例 -->
+    <bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />
+</beans>
 ```
 首先，需要导入p名字空间，通过在axe后添加"-ref"指定该值不是一个具体的值，而是对另外一个Bean的引用。
 
-### 使用util Schema 
+### 使用util Schema
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>  
-<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-xmlns="http://www.springframework.org/schema/beans"  
-xmlns:p="http://www.springframework.org/schema/p"  
-xmlns:util="http://www.springframework.org/schema/util"  
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.springframework.org/schema/beans"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:util="http://www.springframework.org/schema/util"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/util
 http://www.springframework.org/schema/util/spring-util-3.0.xsd
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
-    <!-- 配置Chinese实例 -->  
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <!-- 配置Chinese实例 -->
     <bean id="chinese" class="com.spring.service.impl.Chinese"
     p:age-ref="chin.age"
     p:age-ref="stoneAxe"
     p:schools-ref="chin.schools"
     p:axes-ref="chin.axes"
-    p:scores-ref="chin.scores" />  
-    <!-- 配置stoneAxe实例 -->  
-    <bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />  
-    <bean id="steelAxe" class="com.spring.service.impl.SteelAxe" />  
+    p:scores-ref="chin.scores" />
+    <!-- 配置stoneAxe实例 -->
+    <bean id="stoneAxe" class="com.spring.service.impl.StoneAxe" />
+    <bean id="steelAxe" class="com.spring.service.impl.SteelAxe" />
 
-    <!-- 将指定类的静态Field暴露出来 -->  
-    <util:constant id="chin.age" static-field="java.sql.Connection.TRANSACTION_SERIALIZABLE"/>  
-    
-    <!-- 将指定bean的属性 暴露出来 -->  
-    <util:property-path id="test" path="chinese.age"/>  
-    
-    <!-- 加载指定资源文件 -->  
-    <util:properties id="confTest" location="classpath:message_zh_CN.properties"/>  
-    
-    <!-- 定义一个list -->  
-    <util:list id="chin.schools" list-class="java.util.LinkedList">  
-            <value>小学</value>  
-            <value>中学</value>  
-            <value>大学</value>  
-    </util:list>  
-    
-    <!-- 定义一个set对象 -->  
-    <util:set id="chin.axes" set-class="java.util.HashSet">  
-            <value>字符串斧子</value>  
-            <bean class="com.spring.service.impl.SteelAxe"/>  
-            <ref local="stoneAxe"/>  
-    </util:set>  
-    
-    <!-- 定一个 map对象 -->  
-    <util:map id="chin.scores" map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Double">  
-            <entry key="数学" value="89"/>  
-            <entry key="英语" value="89"/>  
-            <entry key="语文" value="89"/>  
-    </util:map>  
+    <!-- 将指定类的静态Field暴露出来 -->
+    <util:constant id="chin.age" static-field="java.sql.Connection.TRANSACTION_SERIALIZABLE"/>
+
+    <!-- 将指定bean的属性 暴露出来 -->
+    <util:property-path id="test" path="chinese.age"/>
+
+    <!-- 加载指定资源文件 -->
+    <util:properties id="confTest" location="classpath:message_zh_CN.properties"/>
+
+    <!-- 定义一个list -->
+    <util:list id="chin.schools" list-class="java.util.LinkedList">
+            <value>小学</value>
+            <value>中学</value>
+            <value>大学</value>
+    </util:list>
+
+    <!-- 定义一个set对象 -->
+    <util:set id="chin.axes" set-class="java.util.HashSet">
+            <value>字符串斧子</value>
+            <bean class="com.spring.service.impl.SteelAxe"/>
+            <ref local="stoneAxe"/>
+    </util:set>
+
+    <!-- 定一个 map对象 -->
+    <util:map id="chin.scores" map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Double">
+            <entry key="数学" value="89"/>
+            <entry key="英语" value="89"/>
+            <entry key="语文" value="89"/>
+    </util:map>
 </beans>
 ```
 
@@ -2093,10 +2095,10 @@ util Schema元素
 * constant：该标签用于将指定类的静态Field暴露成一个Bean实例。使用该标签时可制定如下两个属性。
     * id：该属性指定将静态Field定义成名为id的Bean实例
     * static-field：该属性指定将哪个类、哪个静态Field暴露出来。
-* property-path：该标签用于将指定Bean实例的指定属性暴露成一个Bean实例，使用该标签时可指定如下两个属性  
+* property-path：该标签用于将指定Bean实例的指定属性暴露成一个Bean实例，使用该标签时可指定如下两个属性
     * id：该属性指定将属性定义成名为id的Bean实例
     * path：该属性指定将哪个Bean实例、哪个属性（支持复合属性）暴露出来。
-* list 该标签用于定义一个List Bean，支持使用value、ref、bean等标签来定义List集合元素，使用该标签支持如下三个属性，  
+* list 该标签用于定义一个List Bean，支持使用value、ref、bean等标签来定义List集合元素，使用该标签支持如下三个属性，
     * id：该属性指定定义一个名为id的List实例
     * list-class：该属性指定Spring使用哪个List实现类来创建Bean实例
     * scope：指定该List实例的作用域
@@ -2122,37 +2124,36 @@ Spring的表达式语言与Java注解结合，以便开发人员可以撰写和�
 ```
 public class SpELTest {
     @Test
-       @Test  
-    public void test2() {  
-        ExpressionParser parser=new SpelExpressionParser();  
-        Expression exp=parser.parseExpression("'Hello World'");  
-        System.out.println("Hello World的结果"+exp.getValue());  
-          
-        exp=parser.parseExpression("'Hello World'.concat('!')");  
-        System.out.println("concat后的结果"+exp.getValue());  
-          
-        exp=parser.parseExpression("'Hello World'.bytes");  
-        System.out.println("调用getBytes方法后的结果"+exp.getValue());  
-          
-        exp=parser.parseExpression("'Hello World'.bytes.length");  
-        System.out.println("方法返回值后的属性的结果"+exp.getValue());  
-          
-        exp=parser.parseExpression("new String('Hello World').toUpperCase()");  
-        exp=parser.parseExpression("age");  
-        Chinese c=act.getBean("chinese",Chinese.class);  
-        System.out.println("以Chinese为root,age的表达式的值是:"+exp.getValue(c, Integer.class));  
-        exp=parser.parseExpression("age==15");  
-        StandardEvaluationContext ctx=new StandardEvaluationContext();  
-        ctx.setRootObject(c);  
-        System.out.println(exp.getValue(ctx, Boolean.class));  
-          
-        List<Boolean> list=new ArrayList<Boolean>();  
-        list.add(true);  
-        EvaluationContext ctx2=new StandardEvaluationContext();  
-        ctx2.setVariable("list",list);  
-          
-        parser.parseExpression("#list[0]").setValue(ctx2, "false");  
-        System.out.println("List集合中的第一个元素:"+list.get(0)); 
+    public void test2() {
+        ExpressionParser parser=new SpelExpressionParser();
+        Expression exp=parser.parseExpression("'Hello World'");
+        System.out.println("Hello World的结果"+exp.getValue());
+
+        exp=parser.parseExpression("'Hello World'.concat('!')");
+        System.out.println("concat后的结果"+exp.getValue());
+
+        exp=parser.parseExpression("'Hello World'.bytes");
+        System.out.println("调用getBytes方法后的结果"+exp.getValue());
+
+        exp=parser.parseExpression("'Hello World'.bytes.length");
+        System.out.println("方法返回值后的属性的结果"+exp.getValue());
+
+        exp=parser.parseExpression("new String('Hello World').toUpperCase()");
+        exp=parser.parseExpression("age");
+        Chinese c=act.getBean("chinese",Chinese.class);
+        System.out.println("以Chinese为root,age的表达式的值是:"+exp.getValue(c, Integer.class));
+        exp=parser.parseExpression("age==15");
+        StandardEvaluationContext ctx=new StandardEvaluationContext();
+        ctx.setRootObject(c);
+        System.out.println(exp.getValue(ctx, Boolean.class));
+
+        List<Boolean> list=new ArrayList<Boolean>();
+        list.add(true);
+        EvaluationContext ctx2=new StandardEvaluationContext();
+        ctx2.setVariable("list",list);
+
+        parser.parseExpression("#list[0]").setValue(ctx2, "false");
+        System.out.println("List集合中的第一个元素:"+list.get(0));
     }
 }
 ```
@@ -2268,21 +2269,21 @@ Java内使用同义 | 'hello' instanceof T(String)
 
 ```
 @Test
-publicvoid testVariableExpression() { 
-   ExpressionParser parser =new SpelExpressionParser(); 
-   EvaluationContext context =new StandardEvaluationContext(); 
-   context.setVariable("variable","hello"); 
+publicvoid testVariableExpression() {
+   ExpressionParser parser =new SpelExpressionParser();
+   EvaluationContext context =new StandardEvaluationContext();
+   context.setVariable("variable","hello");
    context.setVariable("variable","world");
-   
-   String result1 = parser.parseExpression("#variable").getValue(context, String.class); 
-   Assert.assertEquals("world", result1); 
-  
-   context =new StandardEvaluationContext("hello"); 
-   String result2 = parser.parseExpression("#root").getValue(context, String.class); 
+
+   String result1 = parser.parseExpression("#variable").getValue(context, String.class);
+   Assert.assertEquals("world", result1);
+
+   context =new StandardEvaluationContext("hello");
+   String result2 = parser.parseExpression("#root").getValue(context, String.class);
    Assert.assertEquals("hello", result2);
-   
-   String result3 = parser.parseExpression("#this").getValue(context, String.class); 
-   Assert.assertEquals("hello", result3); 
+
+   String result3 = parser.parseExpression("#this").getValue(context, String.class);
+   Assert.assertEquals("hello", result3);
 }
 ```
 
@@ -2316,7 +2317,7 @@ publicvoid testAssignExpression() {
     Assert.assertEquals("aaaaa", result1);
     String result2 = parser.parseExpression("#this='aaaa'").getValue(context, String.class);
     Assert.assertEquals("aaaa", result2);
-    
+
     // 2.给自定义变量赋值
     context.setVariable("#variable","variable");
     String result3 = parser.parseExpression("#variable=#root").getValue(context, String.class);
@@ -2341,8 +2342,8 @@ Assert.assertEquals(date.getYear(), result1);
 int result2 = parser.parseExpression("year").getValue(context,int.class);
 Assert.assertEquals(date.getYear(), result2);
 // ===============安全访问 ===============
-context.setRootObject(null); 
-Object result3 = parser.parseExpression("#root?.year").getValue(context, Object.class); 
+context.setRootObject(null);
+Object result3 = parser.parseExpression("#root?.year").getValue(context, Object.class);
 Assert.assertEquals(null, result3);
 // ===============给root对象属性赋值 ===============
 context.setRootObject(date);
@@ -2364,8 +2365,8 @@ String result1 = parser.parseExpression("'hello'.substring(3)").getValue(String.
 Assert.assertEquals("lo", result1);
 // ===============调用上下文root对象方法 ===============
 Date date =new Date();
-StandardEvaluationContext context =new StandardEvaluationContext(date); 
-int result2 = parser.parseExpression("getYear()").getValue(context,int.class); 
+StandardEvaluationContext context =new StandardEvaluationContext(date);
+int result2 = parser.parseExpression("getYear()").getValue(context,int.class);
 Assert.assertEquals(date.getYear(), result2);
 ```
 
@@ -2376,18 +2377,18 @@ SpEL支持使用“@”符号来引用Bean，在引用Bean时需要使用BeanRes
 在示例中首先初始化了一个IoC容器，ClassPathXmlApplicationContext 实现默认会把“System.getProperties()”注册为“systemProperties”Bean，因此使用 “@systemProperties”来引用该Bean。
 
 ```
-@Test 
-publicvoid testBeanExpression() { 
-   ClassPathXmlApplicationContext ctx =new ClassPathXmlApplicationContext(); 
-    ctx.refresh(); 
-   ExpressionParser parser =new SpelExpressionParser(); 
-   StandardEvaluationContext context =new StandardEvaluationContext(); 
-   context.setBeanResolver(new BeanFactoryResolver(ctx)); 
-   Properties result1 = parser.parseExpression("@systemProperties").getValue(context, Properties.class); 
-    Assert.assertEquals(System.getProperties(), result1); 
+@Test
+publicvoid testBeanExpression() {
+   ClassPathXmlApplicationContext ctx =new ClassPathXmlApplicationContext();
+    ctx.refresh();
+   ExpressionParser parser =new SpelExpressionParser();
+   StandardEvaluationContext context =new StandardEvaluationContext();
+   context.setBeanResolver(new BeanFactoryResolver(ctx));
+   Properties result1 = parser.parseExpression("@systemProperties").getValue(context, Properties.class);
+    Assert.assertEquals(System.getProperties(), result1);
 }
 ```
- 
+
 #### 集合相关表达式
 
 * 内联List
@@ -2402,7 +2403,7 @@ publicvoid testBeanExpression() {
 从Spring3.0.4开始支持内联List，使用{表达式，……}定义内联List。如“{1,2,3}”将返回一个整型的ArrayList，而“{}”将返回空的List，对于字面量表达式列表，SpEL会使用java.util.Collections.unmodifiableList方法将列表设置为不可修改。
 
 ```
-//将返回不可修改的空List 
+//将返回不可修改的空List
 List<Integer> result2 = parser.parseExpression("{}").getValue(List.class);
 //对于列表中只要有一个不是字面量表达式，将只返回原始List，不会进行不可修改处理
 String expression3 = "{ {1 + 2,2 + 4}, {3, 4 + 4} }";
@@ -2414,7 +2415,7 @@ Assert.assertEquals(2, result3.size());
 内联Array
 
 ```
-//声明一维数组并初始化值 
+//声明一维数组并初始化值
 int[] result2 = parser.parseExpression("new int[]{1,2}").getValue(int[].class);
 Assert.assertEquals(result2[0], 1);
 //定义多维数组但不初始化（定义多维数组不能初始化）
@@ -2495,12 +2496,12 @@ Assert.assertEquals(new Integer(5), result1.iterator().next());
 Map<String, Integer> map =new HashMap<String, Integer>();
 map.put("a", 1);
 map.put("b", 2);
-// ===============测试Map =============== 
-EvaluationContext context2 =new StandardEvaluationContext(); 
-context2.setVariable("map", map); 
-List<Integer> result2 = 
-parser.parseExpression("#map.![value+1]").getValue(context2, List.class); 
-Assert.assertEquals(2, result2.size()); 
+// ===============测试Map ===============
+EvaluationContext context2 =new StandardEvaluationContext();
+context2.setVariable("map", map);
+List<Integer> result2 =
+parser.parseExpression("#map.![value+1]").getValue(context2, List.class);
+Assert.assertEquals(2, result2.size());
 ```
 SpEL投影运算还支持Map投影，但Map投影最终只能得到List结果，如上所示，对于投影表达式中的“#this”将是Map.Entry，所以可以使用“value”来获取值，使用“key”来获取键。
 
@@ -2525,12 +2526,12 @@ EvaluationContext context2 =new StandardEvaluationContext();
 context2.setVariable("map", map);
 Map<String, Integer> result2 = parser.parseExpression("#map.?[#this.key != 'a']").getValue(context2, Map.class);
 Assert.assertEquals(1, result2.size());
- 
+
 List<Integer> result3 = parser.parseExpression("#map.?[key != 'a'].![value+1]").getValue(context2, List.class);
 Assert.assertEquals(new Integer(3), result3.iterator().next());
 ```
 对于Map选择，如“#map.?[#this.key != 'a']”将选择键值不等于”a”的，其中选择表达式中“#this”是Map.Entry类型，而最终结果还是Map，这点和投影不同；集合选择和投影可以一起使用，如“#map.?[key != 'a'].![value+1]”将首先选择键值不等于”a”的，然后在选出的Map中再进行“value+1”的投影。
- 
+
 #### 表达式模板
 
 模板表达式就是由字面量与一个或多个表达式块组成。每个表达式块由“前缀+表达式+后缀”形式组成，如“${1+2}”即表达式块。在前边我们已经介绍了使用ParserContext接口实现来定义表达式是否是模板及前缀和后缀定义。在此就不多介绍了，如“Error ${井v0} ${井v1}”(把`井`换位`#`)表达式表示由字面量“Error ”、模板表达式“#v0”、模板表达式“#v1”组成，其中v0和v1表示自定义变量，需要在上下文定义。

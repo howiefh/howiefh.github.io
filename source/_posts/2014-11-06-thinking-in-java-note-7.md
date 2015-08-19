@@ -283,7 +283,7 @@ public @interface Constraints {
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SQLString {
     int value() default 0;
-    String name() default “”;
+    String name() default "";
     Constraints constraints() default @Constraints(unique=true);
 }
 ```

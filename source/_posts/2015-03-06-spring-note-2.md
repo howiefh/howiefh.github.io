@@ -384,6 +384,7 @@ public class SteelAxe implements Axe{
 `<include-filter.../>`元素用于指定满足该规则的Java类会被当成Bean类处理。`<exclude-filter.../>`元素用于指定满足该规则的Java类不会被当成Bean类处理。使用这两个元素时都要求指定如下两个属性：
 1. type：指定过滤器类型。
 2. expression：指定过滤器所需要的表达式。
+
 Spring内建支持如下4种过滤器：
 1. annotation：Annotation过滤器，该过滤器需要指定一个Annotation名，如lee.AnnotationTest
 2. assignable：类名过滤器，该过滤器直接指定一个Java类。
@@ -741,9 +742,9 @@ System.out.println(r.getDescription());
 ```
 通过classpath:前缀指定资源访问策略仅仅对当次访问有效，程序后面进行资源访问时，还是会根据ApplicationContext的实现类来选择对应的资源访问策略。建议尽量显示指定资源，而不是通过前缀。
 
-#### classpath*:前缀的用法
+#### `classpath*`:前缀的用法
 
-classpath*:前缀提供了装载多个XML配置文件的能力，当使用classpath*:前缀来指定XML配置文件时，系统搜索类加载路径，找出所有与文件名匹配的文件，分辨装载文件中的配置定义，最后合并成一个ApplicationContext。classpath*:前缀仅对ApplicationContext有效，用于加载配置文件。其他情况，使用classpath*:前缀加载多个资源是不行的。
+`classpath*`:前缀提供了装载多个XML配置文件的能力，当使用`classpath*`:前缀来指定XML配置文件时，系统搜索类加载路径，找出所有与文件名匹配的文件，分辨装载文件中的配置定义，最后合并成一个ApplicationContext。`classpath*`:前缀仅对ApplicationContext有效，用于加载配置文件。其他情况，使用`classpath*`:前缀加载多个资源是不行的。
 
 还有一种可以一次加载多个配置文件的方式：指定配置文件时使用通配符。
 
@@ -754,6 +755,9 @@ ApplicationContext ctx = new FileSystemXmlApplicationContext("classpath*:bean*.x
 ```
 
 这将会加载类加载路径下所有以bean开头的配置文件。
+
+classpath: 只会在当前类加载路径下加载。如果有同名资源只会加载第一个。
+`classpath*`:除了当前类加载路径还会扫描jar包中的类加载路径。所有同名资源都会被加载
 
 #### file:前缀的用法
 
@@ -1417,7 +1421,7 @@ public class Test {
 
 #### 定义切入点
 
-我们在前面的文章中，在一个切面类中定义了4个增强处理，定义4个增强处理时分别指定了相同的切入点表达式，这种做法显然不太符合软件设计的原则：我们居然将那个切入点表达式重复了4次，如果有一天需要修改这个切入点表达式，那就要修改4个地方。如果重复了更多次呢？岁，我们就得修改更多次。
+前文中，在一个切面类中定义了4个增强处理，定义4个增强处理时分别指定了相同的切入点表达式，这种做法显然不太符合软件设计的原则：我们居然将那个切入点表达式重复了4次，如果有一天需要修改这个切入点表达式，那就要修改4个地方。如果重复了更多次呢？岁，我们就得修改更多次。
 
 为了解决这个问题，AspectJ和Spring都允许定义切入点。所谓 定义切入点，其实质就是为一个切入点表达式起一个名称，从而允许在多个增强处理中重用该名称。
 
@@ -1441,7 +1445,7 @@ private void anyOldTransfer(){}
 
 一旦采用上面的代码片段定义了名为anyOldTransfer的切入点之后，程序就可以多次重复使用该切入点了，甚至可以在其他切面类、其他包的切面类里使用该切入点，至于是否可以在其他切面类、其他包的切面类里访问该切入点，则取决于该方法签名前的访问控制符--例如，本示例中anyOldTransfer方法使用的是private修饰符，则意味着仅能在当前切面类中使用该切入点。
 
-如果需要使用本切面类中的切入点，则可在使用@Pointcut时，指定value属性值为已有的切入点，如下所示：
+如果需要使用本切面类中的切入点，则可在使用@Pointcut时，指定value/pointcut属性值为已有的切入点，如下所示：
 ```
 @AfterReturning(pointcut="myPointcut()",returning="retVal")
 public void writeLog(String msg,Object retVal){
@@ -1481,7 +1485,7 @@ public class LogAspect {
 
 Spring AOP支持的切入点指示符有如下几个：
 
-* execution：用于匹配执行方法的连接点，这是Spring AOP中国最主要的切入点指示符。该切入点的用法也相对复杂，execution表达式的格式如下：
+* execution：用于匹配执行方法的连接点，这是Spring AOP中最主要的切入点指示符。该切入点的用法也相对复杂，execution表达式的格式如下：
 
     execution(modifier-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)
 
@@ -1585,7 +1589,7 @@ pointcut("execution(* com.abc.service.*.*(..) && args(name))")
 
 #### 配置增强处理
 
-与使用@AspectJ完全一样，使用XML一样可以配置Before、After、AfterReturning、AfterThrowing和Around 5种增强处理，而且完全支持和@Aspect完全一样的语义。使用XML配置增强处理分别依赖于如下几个元素：
+与使用@AspectJ完全一样，使用XML一样可以配置Before、After、AfterReturning、AfterThrowing和Around 5种增强处理，而且完全支持和@AspectJ完全一样的语义。使用XML配置增强处理分别依赖于如下几个元素：
 
 * `<aop:before../>`：配置Before增强处理
 * `<aop:after../>`：配置After增强处理
@@ -1626,7 +1630,7 @@ pointcut("execution(* com.abc.service.*.*(..) && args(name))")
     </aop:aspect>
 </aop:config>
 ```
-上面的定义中，特意为firstAspec指定了order=2，表明firstAspect的优先级为2，如果这个XML文件中还有order=1的Aspect，那么这个Aspect将被Spring AOP优先织入。其执行结果，和前面几篇文章中介绍的相同，这里不再给出。
+上面的定义中，特意为firstAspect指定了order=2，表明firstAspect的优先级为2，如果这个XML文件中还有order=1的Aspect，那么这个Aspect将被Spring AOP优先织入。其执行结果，和前面几篇文章中介绍的相同，这里不再给出。
 
 #### 配置切点
 

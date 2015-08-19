@@ -352,7 +352,7 @@ public static void main(String[] args) throws IOException {
 
 **当`FileChannel.read()`返回-1时（一个分界符，源于Unix和C），表示已经到达了输入的末尾。每次`read()`操作之后，就会将数据输入到缓冲器中，`flip()`则是准备缓冲器以便它的信息可以由`write()`提取。`write()`操作之后，信息仍在缓冲器中，接着`clear()`操作则对所有的内部指针重新安排，以便缓冲器在另一个`read()`操作期间能够做好接收数据的准备**。
 
-特殊方法`transferTo()`和`transferFrom()`允许将一个通道和另一个通道直接相连。
+特殊方法`transferTo()`和`transferFrom()`允许将一个通道和另一个通道直接相连。与传统的访问文件方式相比可以减少数据从内核到用户空间的复制，数据直接在内核空间中移动，在Linux中使用sendfile系统调用。
 
 ```
 FileChannel in = new FileInputStream(args[0]).getChannel(),
