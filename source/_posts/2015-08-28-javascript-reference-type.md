@@ -547,7 +547,7 @@ var values = [1,2,3,4,5];
 * 数组实例的fill()
     使用给定值，填充一个数组。fill()还可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置。
 * 数组实例的entries()，keys()和values()
-    ES6提供三个新的方法——entries()，keys()和values()——用于遍历数组。它们都返回一个Iterator对象，可以用for...of循环进行遍历，唯一的区别是keys()是对键名的遍历、values()是对键值的遍历，entries()是对键值对的遍历。
+    ES6提供三个新的方法——entries()，keys()和values()——用于遍历数组。它们都返回一个既实现了Iterable又实现了Iterator接口的对象，且该对象`Symbol.iterator`方法返回其自身，可以用for...of循环进行遍历，唯一的区别是keys()是对键名的遍历、values()是对键值的遍历，entries()是对键值对的遍历。
 
     {% codeblock %}
     for (let [index, elem] of ['a', 'b'].entries()) {
@@ -1132,7 +1132,7 @@ var array = [...nodeList];
 ```
 上面代码中，querySelectorAll方法返回的是一个nodeList对象，扩展运算符可以将其转为真正的数组。
 
-扩展运算符内部调用的是数据结构的Iterator接口，因此只要具有Iterator接口的对象，都可以使用扩展运算符，比如Map结构。
+扩展运算符内部调用的是数据结构的Iterable接口，因此只要具有Iterable接口的对象，都可以使用扩展运算符，比如Map结构。
 ```
 let map = new Map([
   [1, 'one'],
@@ -1142,7 +1142,7 @@ let map = new Map([
 
 let arr = [...map.keys()]; // [1, 2, 3]
 ```
-Generator函数运行后，返回一个Iterator对象，因此也可以使用扩展运算符。
+Generator函数运行后，返回一个同时实现了Iterator和Iterable接口的对象，因此也可以使用扩展运算符。
 ```
 var go = function*(){
   yield 1;
@@ -1152,7 +1152,7 @@ var go = function*(){
 
 [...go()] // [1, 2, 3]
 ```
-上面代码中，变量go是一个Generator函数，执行后返回的是一个Iterator对象，对这个对象执行扩展运算符，就会将内部遍历得到的值，转为一个数组。
+上面代码中，变量go是一个Generator函数，执行后返回的是一个Iterable对象，对这个对象执行扩展运算符，就会将内部遍历得到的值，转为一个数组。
 
 ## 基本包装类型
 为了便于操作基本类型值，ECMAScript提供了3个特殊的引用类型：Boolean、Number和String。实际上，每当读取一个基本类型值的时候，后台就会创建一个对应的基本包装类型的对象，从而让我们能够调用一些方法来操作这些数据。
@@ -1388,7 +1388,7 @@ repeat()返回一个新字符串，表示将原字符串重复n次。
 "hello".repeat(3) // "hellohellohello"
 ```
 
-模板字符串（template string）是增强版的字符串，用反引号（`）标识。它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。模板字符串中嵌入变量，需要将变量名写在`${}`之中。
+模板字符串（template string）是增强版的字符串，用反引号（\`）标识。它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。模板字符串中嵌入变量，需要将变量名写在`${}`之中。
 
 ```
 // 普通字符串
@@ -1525,7 +1525,7 @@ String.raw({ raw: ['t','e','s','t'] }, 0, 1, 2);
 Global（全局）对象可以说是ECMAScript中最特别的一个对象了，因为不管你从什么角度上看，这个对象都是不存在的。ECMAScript中的Global对象在某种意义上是作为一个终极的“兜底儿对象”来定义的。换句话说，不属于任何其他对象的属性和方法，最终都是它的属性和方法。事实上，没有全局变量或全局函数；所有在全局作用域中定义的属性和函数，都是Global对象的属性。诸如 isNaN() 、 isFinite() 、 parseInt() 以及 parseFloat() ,实际上全都是 Global 对象的方法。
 
 * URI 编码方法
-    对象的 encodeURI()和 encodeURIComponent()方法可以对 URI（Uniform Resource Identifiers，通用资源标识符）进行编码，以便发送给浏览器。有效的 URI 中不能包含某些字符，例如空格。而这两个URI编码方法就可以对URI进行编码，它们用特殊的UTF-8编码替换所有无效的字符，从而让浏览器能够接受和理解。 其中，encodeURI()主要用于整个URI（例如，`http://www.wrox.com/illegal value.htm`），而 encode- URIComponent()主要用于对URI中的某一段（例如前面URI中的illegal value.htm）进行编码。它们的主要区别在于，encodeURI()不会对本身属于 URI 的特殊字符进行编码，例如冒号、正斜杠、问号和井字号；而encodeURIComponent()则会对它发现的任何非标准字符进行编码。
+    对象的 encodeURI()和 encodeURIComponent()方法可以对 URI（Uniform Resource Identifiers，通用资源标识符）进行编码，以便发送给浏览器。有效的 URI 中不能包含某些字符，例如空格。而这两个URI编码方法就可以对URI进行编码，它们用特殊的UTF-8编码替换所有无效的字符，从而让浏览器能够接受和理解。 其中，encodeURI()主要用于整个URI（例如，`http://www.wrox.com/illegal value.htm`），而 encodeURIComponent()主要用于对URI中的某一段（例如前面URI中的illegal value.htm）进行编码。它们的主要区别在于，encodeURI()不会对本身属于 URI 的特殊字符进行编码，例如冒号、正斜杠、问号和井字号；而encodeURIComponent()则会对它发现的任何非标准字符进行编码。
 
     一般来说，我们使用 encodeURIComponent()方法的时候要比使用encodeURI()更多，因为在实践中更常见的是对查询字符串参数而不是对基础 URI进行编码。
 
@@ -1619,23 +1619,23 @@ Math.tan(x)         | 返回x 的正切值
 
 * ES6新增方法
 
-* Math.trunc(num)：去除一个数的小数部分，返回整数部分，对于空值和无法截取整数的值，返回NaN
-* Math.sign(num)：判断一个数到底是正数、负数、还是零。参数为正数，返回+1； 参数为负数，返回-1； 参数为0，返回0； 参数为-0，返回-0; 其他值，返回NaN。
-* Math.cbrt(num)：计算一个数的立方根
-* Math.clz32(num)：返回一个数的32位无符号整数二进制形式表示有多少个前导0。对于小数，只考虑整数部分，对于其他值，先转为数值，再计算
-* Math.imul(num1,num2)：回两个数以32位带符号整数形式相乘的结果，返回的也是一个32位的带符号整数。多数情况和`(a * b)|0`效果相同，但JavaScript对于超过2的53次方的值无法精确表示，该方法可以得到正确值
-* Math.fround(num)：Math.fround方法返回一个数的单精度浮点数形式。对于整数来说，Math.fround方法返回结果不会有任何不同，区别主要是那些无法用64个二进制位精确表示的小数。这时，Math.fround方法会返回最接近这个小数的单精度浮点数。
-* Math.hypot()：返回所有参数的平方和的平方根，如果参数不是数值，Math.hypot方法会将其转为数值。只要有一个参数无法转为数值，就会返回NaN
-* Math.expm1()：返回Math.exp(x) - 1
-* Math.log1p()：返回1 + x的自然对数。如果x小于-1，返回NaN
-* Math.log10()：返回以10为底的x的对数。如果x小于0，则返回NaN
-* Math.log2()：返回以2为底的x的对数。如果x小于0，则返回NaN
-* Math.sinh(x)：返回x的双曲正弦（hyperbolic sine）
-* Math.cosh(x)：返回x的双曲余弦（hyperbolic cosine）
-* Math.tanh(x)：返回x的双曲正切（hyperbolic tangent）
-* Math.asinh(x)：返回x的反双曲正弦（inverse hyperbolic sine）
-* Math.acosh(x)：返回x的反双曲余弦（inverse hyperbolic cosine）
-* Math.atanh(x)：返回x的反双曲正切（inverse hyperbolic tangent）
+    * Math.trunc(num)：去除一个数的小数部分，返回整数部分，对于空值和无法截取整数的值，返回NaN
+    * Math.sign(num)：判断一个数到底是正数、负数、还是零。参数为正数，返回+1； 参数为负数，返回-1； 参数为0，返回0； 参数为-0，返回-0; 其他值，返回NaN。
+    * Math.cbrt(num)：计算一个数的立方根
+    * Math.clz32(num)：返回一个数的32位无符号整数二进制形式表示有多少个前导0。对于小数，只考虑整数部分，对于其他值，先转为数值，再计算
+    * Math.imul(num1,num2)：回两个数以32位带符号整数形式相乘的结果，返回的也是一个32位的带符号整数。多数情况和`(a * b)|0`效果相同，但JavaScript对于超过2的53次方的值无法精确表示，该方法可以得到正确值
+    * Math.fround(num)：Math.fround方法返回一个数的单精度浮点数形式。对于整数来说，Math.fround方法返回结果不会有任何不同，区别主要是那些无法用64个二进制位精确表示的小数。这时，Math.fround方法会返回最接近这个小数的单精度浮点数。
+    * Math.hypot()：返回所有参数的平方和的平方根，如果参数不是数值，Math.hypot方法会将其转为数值。只要有一个参数无法转为数值，就会返回NaN
+    * Math.expm1()：返回Math.exp(x) - 1
+    * Math.log1p()：返回1 + x的自然对数。如果x小于-1，返回NaN
+    * Math.log10()：返回以10为底的x的对数。如果x小于0，则返回NaN
+    * Math.log2()：返回以2为底的x的对数。如果x小于0，则返回NaN
+    * Math.sinh(x)：返回x的双曲正弦（hyperbolic sine）
+    * Math.cosh(x)：返回x的双曲余弦（hyperbolic cosine）
+    * Math.tanh(x)：返回x的双曲正切（hyperbolic tangent）
+    * Math.asinh(x)：返回x的反双曲正弦（inverse hyperbolic sine）
+    * Math.acosh(x)：返回x的反双曲余弦（inverse hyperbolic cosine）
+    * Math.atanh(x)：返回x的反双曲正切（inverse hyperbolic tangent）
 
 ## 键集合类型
 ### Map 类型
@@ -1715,11 +1715,11 @@ set()方法返回的是Map本身，因此可以采用链式写法。
 
 #### 遍历方法
 
-Map原生提供三个Iterator对象。
+Map原生提供三个Iterable对象，这三个对象同样实现了Iterator接口。
 
-* keys()：返回键名的Iterator对象。
-* values()：返回键值的Iterator对象。
-* entries()：返回所有成员的Iterator对象。
+* keys()：返回键名的Iterable对象。
+* values()：返回键值的Iterable对象。
+* entries()：返回所有成员的Iterable对象。
 
 下面是使用实例。
 
@@ -1785,7 +1785,7 @@ map.forEach(function(value, key, map)) {
 ```
 
 forEach方法还可以接受第二个参数，用来绑定this。
-```javascript
+```
 var reporter = {
   report: function(key, value) {
     console.log("Key: %s, Value: %s", key, value);
@@ -1834,7 +1834,7 @@ WeakMap结构与Map结构基本类似，唯一的区别是它只接受对象作�
 WeakMap的设计目的在于，键名是对象的弱引用（垃圾回收机制不将该引用考虑在内），所以其所对应的对象可能会被自动回收。当对象被回收后，WeakMap自动移除对应的键值对。典型应用是，一个对应DOM元素的WeakMap结构，当某个DOM元素被清除，其所对应的WeakMap记录就会自动被移除。基本上，WeakMap的专用场合就是，它的键所对应的对象，可能会在将来消失。WeakMap结构有助于防止内存泄漏。
 
 下面是WeakMap结构的一个例子，可以看到用法上与Map几乎一样。
-```javascript
+```
 var wm = new WeakMap();
 var element = document.querySelector(".element");
 
@@ -1940,12 +1940,12 @@ dedupe([1,1,2,3]) // [1, 2, 3]
 
 Set结构的实例有四个遍历方法，可以用于遍历成员。
 
-* keys()：返回一个键名的Iterator对象
-* values()：返回一个键值的Iterator对象
-* entries()：返回一个键值对的Iterator对象
+* keys()：返回一个键名的Iterable对象
+* values()：返回一个键值的Iterable对象
+* entries()：返回一个键值对的Iterable对象
 * forEach()：使用回调函数遍历每个成员
 
-key方法、value方法、entries方法返回的都是Iterator对象。由于Set结构没有键名，只有键值（或者说键名和键值是同一个值），所以key方法和value方法的行为完全一致。
+key方法、value方法、entries方法返回的都是Iterable对象，该对象同样实现了Iterator接口。由于Set结构没有键名，只有键值（或者说键名和键值是同一个值），所以key方法和value方法的行为完全一致。
 
 ```
 let set = new Set(['red', 'green', 'blue']);
@@ -2039,7 +2039,7 @@ WeakSet结构与Set类似，也是不重复的值的集合。但是，它与Set�
 
 其次，WeakSet中的对象都是弱引用，即垃圾回收机制不考虑WeakSet对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于WeakSet之中。这个特点意味着，无法引用WeakSet的成员，因此WeakSet是不可遍历的。
 
-```javascript
+```
 var ws = new WeakSet();
 ws.add(1)
 // TypeError: Invalid value used in weak set
@@ -2130,7 +2130,7 @@ obj.time // 35
 
 5. **enumerate(target)**
 
-    拦截`for (var x in proxy)`，返回一个Iterator对象。
+    拦截`for (var x in proxy)`，返回一个Iterable对象。
 
 6. **hasOwn(target, propKey)**
 
@@ -2376,7 +2376,7 @@ iter.next() // { value: undefined, done: true }
 
 一个对象如果要有可被for...of循环调用的Iterable接口，就必须有Symbol.iterator方法（原型链上的对象具有该方法也可）。
 
-```javascript
+```
 class RangeIterator {
   constructor(start, stop) {
     this.value = start;
@@ -2479,7 +2479,7 @@ let [first, ...rest] = set; // first='a'; rest=['b','c'];
 
 **扩展运算符**
 
-```javascript
+```
 // 例一
 var str = 'hello';
 [...str] //  ['h','e','l','l','o']
@@ -2528,7 +2528,7 @@ iterator.next() // { value: undefined, done: true }
 
 #### 原生具备Iterable接口的数据结构
 
-ES6对数组提供entries()、keys()和values()三个方法，就是返回三个Iterator对象。
+ES6对数组提供entries()、keys()和values()三个方法，就是返回三个Iterable对象。
 
 ```
 var arr = [1, 5, 7];
@@ -2557,7 +2557,7 @@ iterator.next()  // { value: undefined, done: true }
 
 可以覆盖原生的`Symbol.iterator`方法，达到修改Iterator对象行为的目的。
 
-```javascript
+```
 var str = new String("hi");
 
 [...str] // ["h", "i"]

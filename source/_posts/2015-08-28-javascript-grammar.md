@@ -546,17 +546,17 @@ ECMAScript中的所有数值都以IEEE-754 64位格式存储，但位操作符�
 
 同时使用两个逻辑非操作符，实际上就会模拟 Boolean()转型函数的行为。如`!!'' //false`
 
-逻辑与和逻辑或在有一个操作符不是布尔值情况下不一定返回布尔值，遵循下列规则：
-* 如果第一个操作符是对象，则返回第二个操作符
-* 如果第二个操作符是对象，则只有在第一个操作符的求值结果为true的情况下才返回该对象
+逻辑与和逻辑或在有一个操作数不是布尔值情况下不一定返回布尔值，遵循下列规则：
+* 如果第一个操作数是对象，则返回第二个操作数
+* 如果第二个操作数是对象，则只有在第一个操作数的求值结果为true的情况下才返回该对象
 * 如果两个操作数都是对象，则返回第二个操作数
 * 如果有一个操作数是null，则返回null
 * 如果有一个操作数是NaN，则返回NaN
 * 如果有一个操作数是undefined，则返回undefined
 
 逻辑或遵循规则
-* 如果第一个操作符是对象，则返回第一个操作符
-* 如果第一个操作符是求值结果为false，则返回第二个操作数
+* 如果第一个操作数是对象，则返回第一个操作数
+* 如果第一个操作数是求值结果为false，则返回第二个操作数
 * 如果两个操作数都是对象，则返回第一个操作数
 * 如果两个操作数都是null，则返回null
 * 如果两个操作数都是NaN，则返回NaN
@@ -606,14 +606,7 @@ ECMAScript中的所有数值都以IEEE-754 64位格式存储，但位操作符�
 * 如果只有一个操作数是字符串，则将另一个操作数转换为字符串，然后再将两个字符串拼接 起来。 如果有一个操作数是对象、数值或布尔值，则调用它们的toString()方法取得相应的字符串值，然后再应用前面关于字符串的规则。对于undefined和null，则分别调用String()函数并取得字符串"undefined"和"null"。
 
 减法
-* 如果操作数都是数值，执行常规的除法计算，返回除得的余数；
-* 如果被除数是无穷大值而除数是有限大的数值，则结果是NaN；
-* 如果被除数是有限大的数值而除数是零，则结果是NaN；
-* 如果是Infinity被Infinity除，则结果是NaN；
-* 如果被除数是有限大的数值而除数是无穷大的数值，则结果是被除数；
-* 如果被除数是零，则结果是零；
-* 如果有一个操作数不是数值，则在后台调用Number()将其转换为数值，然后再应用上面的规则。
-* 如果两个操作符都是数值，则执行常规的算术减法操作并返回结果；
+* 如果两个操作数都是数值，则执行常规的算术减法操作并返回结果；
 * 如果有一个操作数是NaN，则结果是NaN；
 * 如果是Infinity减Infinity，则结果是NaN；
 * 如果是-Infinity减-Infinity，则结果是NaN；
@@ -714,7 +707,7 @@ var [x = 1] = [null]; //x = null
 ```
 上面代码中，如果一个数组成员是null，默认值就不会生效，因为null不严格等于undefined。
 
-解构赋值不仅适用于var命令，也适用于let和const命令。对于Set结构（ECMAScript6新增），也可以使用数组的解构赋值。事实上，只要某种数据结构具有Iterator接口，都可以采用数组形式的解构赋值。
+解构赋值不仅适用于var命令，也适用于let和const命令。对于Set结构（ECMAScript6新增），也可以使用数组的解构赋值。事实上，只要某种数据结构具有Iterable接口，都可以采用数组形式的解构赋值。
 
 ```
 function* fibs() {
@@ -728,7 +721,7 @@ function* fibs() {
 var [first, second, third, fourth, fifth, sixth] = fibs();
 sixth // 5
 ```
-上面代码中，fibs是一个Generator函数，原生具有Iterator接口。解构赋值会依次从这个接口获取值。
+上面代码中，fibs是一个Generator函数，原生具有Iterable接口。解构赋值会依次从这个接口获取值。
 
 解构不仅可以用于数组，还可以用于对象。对象的解构与数组有一个重要的不同。数组的元素是按次序排列的，变量的取值由它的位置决定；而对象的属性没有次序，变量必须与属性同名，才能取到正确的值。
 ```
@@ -890,7 +883,7 @@ jQuery.ajax = function (url, {
 
 6）遍历Map结构
 
-任何部署了Iterator接口的对象，都可以用for...of循环遍历。Map结构原生支持Iterator接口，配合变量的解构赋值，获取键名和键值就非常方便。
+任何部署了Iterable接口的对象，都可以用for...of循环遍历。Map结构原生支持Iterable接口，配合变量的解构赋值，获取键名和键值就非常方便。
 ```
 var map = new Map();
 map.set('first', 'hello');
@@ -1005,7 +998,7 @@ for (a of arr) {
 }
 ```
 
-Set和Map结构也原生具有Iterator接口，可以直接使用for...of循环。
+Set和Map结构也原生具有Iterable接口，可以直接使用for...of循环。
 ```
 var engines = Set(["Gecko", "Trident", "Webkit", "Webkit"]);
 for (var e of engines) {
@@ -1128,7 +1121,7 @@ function doAdd(num1, num2) {
     alert(arguments[0] + num2);
 }
 ```
-修改arguments[1]，也就修改了num2，结果它们的值都会变成10。不过，这并不是说读取这两个值会访问相同的内存空间；它们的内存空间是独立的，但它们的值会同步。但这种影响是单向的，修改命名参数不会改变arguments中对应的值。另外还要记住，如果只传入了一个参数，那么为arguments[1]设置的值不会反应到命名参数中。这是因为arguments对象的长度是由传入的参数个数决定的，不是由定义函数时的命名参数的个数决定的。 关于参数还要记住最后一点：没有传递值的命名参数将自动被赋予undefined值。如果给doAdd只传一个参数num2就是undefined
+arguments对象为其内部属性以及函数形式参数创建getter和setter函数。因此改变形参的值会影响arguments对象的值，但是严格模式不允许创建getter和setter方法。
 
 严格模式对如何使用 arguments 对象做出了一些限制。首先，像前面例子中那样的赋值会变得无效。也就是说，即使把 arguments[1]设置为 10，num2 的值仍然还是 undefined。其次，重写arguments的值会导致语法错误（代码将不会执行）。 ECMAScript中的所有参数传递的都是值，不可能通过引用传递参数。
 
@@ -1230,7 +1223,6 @@ var fix = f => (x => f(v => x(x)(v)))
 
 ## Generator 函数
 ### 基本概念
-
 Generator函数是ES6提供的一种异步编程解决方案，语法行为与传统函数完全不同。
 
 Generator函数有多种理解角度。从语法上，首先可以把它理解成一个函数的内部状态的遍历器（也就是说，Generator函数是一个状态机）。它每调用一次，就进入下一个内部状态。Generator函数可以控制内部状态的变化，依次遍历这些状态。
@@ -1248,7 +1240,7 @@ var hw = helloWorldGenerator();
 ```
 上面代码定义了一个Generator函数helloWorldGenerator，它内部有两个yield语句“hello”和“world”，即该函数有三个状态：hello，world和return语句（结束执行）。
 
-然后，Generator函数的调用方法与普通函数一样，也是在函数名后面加上一对圆括号。不同的是，调用Generator函数后，该函数并不执行，返回的也不是函数运行结果，而是一个Iterator对象。
+然后，Generator函数的调用方法与普通函数一样，也是在函数名后面加上一对圆括号。不同的是，调用Generator函数后，该函数并不执行，返回的也不是函数运行结果，而是一个Iterator对象（该对象同时实现了Iterable接口，并且调用该对象的`Symbol.iterator`方法返回该对象自身）。
 
 下一步，必须调用Iterator对象的next方法，使得指针移向下一个状态。也就是说，每次调用next方法，内部指针就从函数头部或上一次停下来的地方开始执行，直到遇到下一个yield语句（或return语句）为止。换言之，Generator函数是分段执行的，yield命令是暂停执行的标记，而next方法可以恢复执行。
 
@@ -1263,7 +1255,6 @@ hw.next() // { value: undefined, done: true }
 总结一下，调用Generator函数，返回一个实现了Iterator接口的对象，用来操作内部指针。以后，每次调用Iterator对象的next方法，就会返回一个实现了IteratorResult接口的对象。value属性表示当前的内部状态的值，是yield语句后面那个表达式的值；done属性是一个布尔值，表示是否遍历结束。
 
 ### yield语句
-
 由于Generator函数返回的Iterator对象，只有调用next方法才会遍历下一个内部状态，所以其实提供了一种可以暂停执行的函数。yield语句就是暂停标志。
 
 Iterator对象next方法的运行逻辑如下。
@@ -1355,17 +1346,16 @@ for (var f of flat(arr)){
 ```
 
 ### 与Iterator的关系
-
-任意一个对象的Symbol.iterator属性，等于该对象的iterator函数，调用该函数会返回该对象的一个Iterator对象。这里的Iterator对象的Symbol.iterator方法执行后，返回自身。
+调用Generator函数返回一个Iterator对象。这里的Iterator对象也实现了Iterable接口，Symbol.iterator方法执行后，返回自身。
 
 ```
 function* gen(){
   // some code
 }
 
-var g = gen();
+var i = gen();
 
-g[Symbol.iterator]() === g // true
+i[Symbol.iterator]() === i // true
 ```
 
 ### next方法的参数
@@ -1564,7 +1554,7 @@ try {
 
 这种函数体内捕获错误的机制，大大方便了对错误的处理。如果使用回调函数的写法，想要捕获多个错误，就不得不为每个函数写一个错误处理语句。
 
-```javascript
+```
 foo('a', function (a) {
   if (a.error) {
     throw new Error(a.error);
@@ -1588,7 +1578,7 @@ foo('a', function (a) {
 
 使用Generator函数可以大大简化上面的代码。
 
-```javascript
+```
 function* g(){
   try {
     var a = yield foo('a');
@@ -1604,7 +1594,7 @@ function* g(){
 
 反过来，Generator函数内抛出的错误，也可以被函数体外的catch捕获。
 
-```javascript
+```
 function *foo() {
   var x = yield 3;
   var y = x.toUpperCase();
@@ -1626,10 +1616,9 @@ try {
 一旦Generator执行过程中抛出错误，就不会再执行下去了。如果此后还调用next方法，将返回一个value属性等于undefined、done属性等于true的对象，即JavaScript引擎认为这个Generator已经运行结束了。
 
 ### `yield*`语句
+如果yield命令后面跟的是一个Iterable对象，需要在yield命令后面加上星号，表明它返回的是一个Iterable对象。这被称为`yield*`语句。
 
-如果yield命令后面跟的是一个Iterator对象，需要在yield命令后面加上星号，表明它返回的是一个Iterator对象。这被称为`yield*`语句。
-
-```javascript
+```
 let delegatedIterator = (function* () {
   yield 'Hello!';
   yield 'Bye!';
@@ -1650,7 +1639,7 @@ for(let value of delegatingIterator) {
 // "Ok, bye."
 ```
 
-上面代码中，delegatingIterator是代理者，delegatedIterator是被代理者。由于`yield* delegatedIterator`语句得到的值，是一个Iterator对象，所以要用星号表示。运行结果就是使用一个Iterator对象，遍历了多个Generator函数，有递归的效果。
+上面代码中，delegatingIterator是代理者，delegatedIterator是被代理者。由于`yield* delegatedIterator`语句得到的值，是一个Iterable对象，所以要用星号表示。运行结果就是使用一个Iterable对象，遍历了多个Generator函数，有递归的效果。
 
 `yield*`语句等同于在Generator函数内部，部署一个for...of循环。
 
@@ -1673,9 +1662,9 @@ function* concat(iter1, iter2) {
 
 上面代码说明，`yield*`不过是for...of的一种简写形式，完全可以用后者替代前者。
 
-如果`yield*`后面跟着一个数组，由于数组原生支持Iterator对象，因此就会遍历数组成员。
+如果`yield*`后面跟着一个数组，由于数组原生支持Iterable对象，因此就会遍历数组成员。
 
-```javascript
+```
 function* gen(){
   yield* ["a", "b", "c"];
 }
@@ -1683,7 +1672,7 @@ function* gen(){
 gen().next() // { value:"a", done:false }
 ```
 
-上面代码中，yield命令后面如果不加星号，返回的是整个数组，加了星号就表示返回的是数组的Iterator对象。
+上面代码中，yield命令后面如果不加星号，返回的是整个数组，加了星号就表示返回的是Iterable对象。
 
 如果被代理的Generator函数有return语句，那么就可以向代理它的Generator函数返回数据。
 

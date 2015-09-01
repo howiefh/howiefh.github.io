@@ -10,7 +10,7 @@ description: JavaScript 面向对象程序设计、函数表达式和异步编�
 ECMA-262把对象定义为：“无序属性的集合，其属性可以包含基本值、对象或者函数。”严格来讲，这就相当于说对象是一组没有特定顺序的值。对象的每个属性或方法都有一个名字，而每个名字都映射到一个值。正因为这样（以及其他将要讨论的原因），我们可以把ECMAScript的对象想象成散列表：无非就是一组名值对，其中值可以是数据或函数
 
 <!-- more -->
-### 属性类型
+## 属性类型
 ECMAScript 中有两种属性:数据属性和访问器属性。
 
 1. 数据属性
@@ -87,9 +87,9 @@ ECMAScript 中有两种属性:数据属性和访问器属性。
     {% endcodeblock %}
 
     支持ECMAScript 5的这个方法的浏览器有IE9+（IE8只是部分实现）、Firefox 4+、Safari 5+、Opera 12+和Chrome。在这个方法之前，要创建访问器属性，一般都使用两个非标准的方法：__defineGetter__()和__defineSetter__()。
-    在 不 支 持 Object.defineProperty() 方 法 的 浏 览 器 中 不 能 修 改 [[Configurable]] 和 [[Enumerable]] 。
+    在不支持 Object.defineProperty() 方法的浏览器中不能修改 [[Configurable]] 和 [[Enumerable]] 。
 
-### 定义多个属性
+## 定义多个属性
 由于为对象定义多个属性的可能性很大，ECMAScript 5又定义了一个Object.defineProperties()方法。利用这个方法可以通过描述符一次定义多个属性。这个方法接收两个对象参数：第一个对象是要添加和修改其属性的对象，第二个对象的属性与第一个对象中要添加或修改的属性一一对应。
 
 ```
@@ -114,7 +114,7 @@ Object.defineProperties(book, {
 });
 ```
 
-### 读取属性的特性
+## 读取属性的特性
 使用 ECMAScript 5的 Object.getOwnPropertyDescriptor()方法，可以取得给定属性的描述符。这个方法接收两个参数：属性所在的对象和要读取其描述符的属性名称。返回值是一个对象，如果是访问器属性，这个对象的属性有configurable、enumerable、get 和set；如果是数据属性，这个对象的属性有configurable、enumerable、writable和value
 
 ```
@@ -970,12 +970,10 @@ SuperType.prototype.sayName = function(){
   alert(this.name);
 };
 function SubType(name, age){
-  SuperType.call(this, name);
-  //第二次调用 SuperType()
+  SuperType.call(this, name); //第二次调用 SuperType()
   this.age = age;
 }
-SubType.prototype = new SuperType();
-//第一次调用 SuperType()
+SubType.prototype = new SuperType(); //第一次调用 SuperType()
 SubType.prototype.constructor = SubType;
 SubType.prototype.sayAge = function(){
   alert(this.age);
@@ -1087,7 +1085,7 @@ st instanceof SuperType // true
 上面代码中，实例对象st同时是SubType和SuperType两个类的实例，这与ES5的行为完全一致。
 
 #### 类的prototype属性和`__proto__`属性
-在ES5中，每一个对象都有`__proto__`属性，指向对应的构造函数的prototype属性。Class作为构造函数的语法糖，同时有prototype属性和`__proto__`属性，因此同时存在两条继承链。
+大部分浏览器实现中，每一个对象都有`__proto__`属性，指向对应的构造函数的prototype属性。Class作为构造函数的语法糖，同时有prototype属性和`__proto__`属性，因此同时存在两条继承链。
 
 1. 子类的`__proto__`属性，表示构造函数的继承，总是指向父类。
 2. 子类prototype属性的`__proto__`属性，表示方法的继承，总是指向父类的prototype属性。
@@ -1796,7 +1794,7 @@ Promise 的最大问题是代码冗余，原来的任务被Promise 包装了一�
 举例来说，读取文件的协程写法如下。
 
 ```
-function asnycJob() {
+function* asnycJob() {
   // ...其他代码
   var f = yield readFile(fileA);
   // ...其他代码
