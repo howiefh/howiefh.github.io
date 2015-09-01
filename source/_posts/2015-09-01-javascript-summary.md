@@ -1307,20 +1307,15 @@ instance2.sayAge(); //27
 寄生组合式继承,即通过借用构造函数来继承属性,通过原型链的混成形式来继承方法。其背后的基本思路是:不必为了指定子类型的原型而调用超类型的构造函数,我们所需要的无非就是超类型原型的一个副本而已。本质上,就是使用寄生式继承来继承超类型的原型,然后再将结果指定给子类型的原型。
 
 ```javascript
-function object(o){
-  function F(){}
-  F.prototype = o;
-  return new F();
-}
 function inheritPrototype(subType, superType){
-  var prototype = object(superType.prototype); //创建对象
+  var prototype = Object.create(superType.prototype); //创建对象
   prototype.constructor = subType; //增强对象
   subType.prototype = prototype; //指定对象
 }
 ```
 在函数内部,第一步是创建超类型原型的一个副本。第二步是为创建的副本添加 constructor 属性,从而弥补因重写原型而失去的默认的 constructor 属性。最后一步,将新创建的对象(即副本)赋值给子类型的原型。
 
-ECMAScript 5 新增 Object.create() 方法。这个方法接收两个参数:一个用作新对象原型的对象和(可选的)一个为新对象定义额外属性的对象。在传入一个参数的情况下,Object.create() 与 object() 方法的行为相同
+ECMAScript 5 新增 Object.create() 方法。这个方法接收两个参数:一个用作新对象原型的对象和(可选的)一个为新对象定义额外属性的对象。
 ```javascript
 function SuperType(name){
   this.name = name;
