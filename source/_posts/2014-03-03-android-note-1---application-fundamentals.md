@@ -3,111 +3,111 @@ date: 2014-03-03 11:26:29
 categories: Android
 tags: Android
 ---
-## 创建Android项目命令 
+## 创建Android项目命令
 ```
-android create project -n HelloWorld -t 8 -p HelloWorld -k org.crazyit.helloworld -a HelloWorld 
-create project：手动创建一个Android应用子命令； 
--n：指定创建项目名称； 
--t：指定项目针对的Android平台； 
--p：指定项目的保存路径； 
--k：指定该项目的包名； 
--a：指定Activity的名称； 
+android create project -n HelloWorld -t 8 -p HelloWorld -k org.crazyit.helloworld -a HelloWorld
 ```
+create project：手动创建一个Android应用子命令
+* -n：指定创建项目名称；
+* -t：指定项目针对的Android平台；
+* -p：指定项目的保存路径；
+* -k：指定该项目的包名；
+* -a：指定Activity的名称；
 
-<!-- more --> 
-## Android项目结构 
-```
-Hello World   
-|—libs   
-|—res   
-|     |—drawable-ldpi、drawable-mdpi、drawable-hdpi、drawable-xhdpi   
-|     |—layout   
-|     |—values   
-|—src   
-|     |—org   
-                  |—crazyit   
-                   |—helloworld   
-|—AndroidManifest.xml   
-```
-上面的结构目录中res目录、src目录、AndroidManifest.xml文件是Android项目必需的。其它文件都是可选的。 
+<!-- more -->
 
-* res目录：存放Android项目中的各种资源文件； 
-	* layout：存放界面布局文件； 
-	* values：存放各种XML格式的资源文件，如Strings.xml，colors.xml，dimens.xml等； 
-	* drawable-ldpi、drawable-mdpi、drawable-hdpi和drawable-xhdpi：分别存放低分辨率、中分辨率、高分辨率和超高分辨率的4种图片文件； 
-* src目录：保存Java源文件； 
+## Android项目结构
+```
+Hello World
+|—libs
+|—res
+|     |—drawable-ldpi、drawable-mdpi、drawable-hdpi、drawable-xhdpi
+|     |—layout
+|     |—values
+|—src
+|     |—org
+            |—crazyit
+                  |—helloworld
+|—AndroidManifest.xml
+```
+上面的结构目录中res目录、src目录、AndroidManifest.xml文件是Android项目必需的。其它文件都是可选的。
+
+* res目录：存放Android项目中的各种资源文件；
+    * layout：存放界面布局文件；
+    * values：存放各种XML格式的资源文件，如Strings.xml，colors.xml，dimens.xml等；
+    * drawable-ldpi、drawable-mdpi、drawable-hdpi和drawable-xhdpi：分别存放低分辨率、中分辨率、高分辨率和超高分辨率的4种图片文件；
+* src目录：保存Java源文件；
 * AndroidManifest.xml文件：Android项目的清单文件，控制Android应用的名称、图标、访问权限等属性，配置Activity，Service，ContentProvider，BroadcastReceiver 四大组件；
- 
-* bin目录：存放生成的目标文件，如Java二进制文件、资源打包文件（`.ap_后缀`）等； 
-* gen目录：保存自动生成的、位于Andorid项目包下的R.java文件； 
- 
-注意：除此之外，还有build.xml文件，这是Android为该项目提供的一个Ant生成文件。通过该文件，开发者可以通过Ant来生成、安装Android项目。 
- 
-## R.java文件 
-R.java文件是由aapt工具根据应用中的资源文件来自动生成的，理解成Android应用的资源字典。 
+* bin目录：存放生成的目标文件，如Java二进制文件、资源打包文件（`.ap_后缀`）等；
+* gen目录：保存自动生成的、位于Andorid项目包下的R.java文件；
+
+注意：除此之外，还有build.xml文件，这是Android为该项目提供的一个Ant生成文件。通过该文件，开发者可以通过Ant来生成、安装Android项目。
+
+## R.java文件
+R.java文件是由aapt工具根据应用中的资源文件来自动生成的，理解成Android应用的资源字典。
 ```
-public final class R{   
-        public static final class attr{   
-        }   
-        public static final class drawable{   
-                public static final int ic_launcher = 0x7f020000;   
-        }   
-       public static final class id{   
-                public static final int ok = 0x7f05001;   
-                public static final int show = 0x7f05000;   
-       }   
-       public static final class layout{   
-                public static finla int main=0x7f03000;             
-       }   
-}   
+public final class R{
+        public static final class attr{
+        }
+        public static final class drawable{
+                public static final int ic_launcher = 0x7f020000;
+        }
+       public static final class id{
+                public static final int ok = 0x7f05001;
+                public static final int show = 0x7f05000;
+       }
+       public static final class layout{
+                public static finla int main=0x7f03000;
+       }
+}
 ```
-每类资源对应R类中的一个内部类，如所有布局文件对应layout内部类； 
-每个具体的资源对应内部类的一个public static final int类型的Field； 
- 
-## res目录 
-Android项目允许分别在Java代码、XML代码中使用资源文件中的资源： 
-* 在Java代码中使用资源：R.<资源类型>.<资源名称>；`R.string.app_name`； 
+每类资源对应R类中的一个内部类，如所有布局文件对应layout内部类；
+每个具体的资源对应内部类的一个public static final int类型的Field；
+
+## res目录
+Android项目允许分别在Java代码、XML代码中使用资源文件中的资源：
+* 在Java代码中使用资源：R.<资源类型>.<资源名称>；`R.string.app_name`；
 * 在XML文件中使用资源：@<资源对应的内部类的类名>/<资源项的名称>；`@string/app_name`；
- 
-例外：按如下方式分配标识符：@+id/<标示符代号>。android:id="@+id/ok"为一个组件分配标示符，接下来在应用程序中引用该标示符： 
-* 在Java代码中获取该组件：通过findViewById()方法 
-* 在XML文件中获取该组件：@id/<标示符代号> 
- 
-## AndroidManifest.xml清单文件 
+
+例外：按如下方式分配标识符：@+id/<标示符代号>。android:id="@+id/ok"为一个组件分配标示符，接下来在应用程序中引用该标示符：
+* 在Java代码中获取该组件：通过findViewById()方法
+* 在XML文件中获取该组件：@id/<标示符代号>
+
+## AndroidManifest.xml清单文件
 ```
-<?xml version="1.0" encoding="GBK"?>   
-      <manifest xmlns:android="http://schemas.android.com/apk/res/android"   
-              package="org.crazyit.helloworld"<!--包名-->   
-              android:versionCode="1"   
-              android:versionName="1.0">   
-              <!--应用程序标签，图标-->   
-              <application android:label="@string/app_name"   
-                      android:ico="@drawable/ic_launcher">   
-                      <!--应用程序组件-->   
-                      <activity android:name="HelloWorld"   
-                              android:label="@string/app_name">   
-                              <intent-filter>   
-                                       <!--指定程序入口-->   
-                                       <action android:name="android.intent.action.MAIN"/>   
-                                       <!--指定加载该应用时运行该Activity-->   
-                                       <category android:name="android.intent.category.LAUNCHER"/>   
-                              </intent-filter>   
-                      </activity>    
-                </application>   
-      </manifest>         
+<?xml version="1.0" encoding="GBK"?>
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+              package="org.crazyit.helloworld"<!--包名-->
+              android:versionCode="1"
+              android:versionName="1.0">
+              <!--应用程序标签，图标-->
+              <application android:label="@string/app_name"
+                      android:ico="@drawable/ic_launcher">
+                      <!--应用程序组件-->
+                      <activity android:name="HelloWorld"
+                              android:label="@string/app_name">
+                              <intent-filter>
+                                       <!--指定程序入口-->
+                                       <action android:name="android.intent.action.MAIN"/>
+                                       <!--指定加载该应用时运行该Activity-->
+                                       <category android:name="android.intent.category.LAUNCHER"/>
+                              </intent-filter>
+                      </activity>
+                </application>
+      </manifest>
 ```
-AndroidManifext.xml文件包含如下信息： 
-* 应用程序包名，该包名也会作为该应用的唯一标识； 
-* 应用程序所包含的组件，如Activity、Service、BroadcastReceiver和ContentProvider等； 
-* 应用程序兼容的最低版本； 
-* 应用程序使用系统所需的权限声明； 
-* 其他程序访问该程序所需要的权限； 
- 
-## 应用程序权限说明 
-声明应用程序本身需要的权限：为<manifest.../>元素添加<uses-permission.../>子元素可维程序本身声明权限； 
+AndroidManifext.xml文件包含如下信息：
+* 应用程序包名，该包名也会作为该应用的唯一标识；
+* 应用程序所包含的组件，如Activity、Service、BroadcastReceiver和ContentProvider等；
+* 应用程序兼容的最低版本；
+* 应用程序使用系统所需的权限声明；
+* 其他程序访问该程序所需要的权限；
+
+## 应用程序权限说明
+声明应用程序本身需要的权限：为<manifest.../>元素添加<uses-permission.../>子元素可维程序本身声明权限；
 ```
 <!--声明该应用本身印有打电话的权限-->
-<uses-permission android:name="android.permission.CALL_PHONE"/> 
+<uses-permission android:name="android.permission.CALL_PHONE"/>
 ```
 声明调用该应用所需要的权限：通过为应用程序各组件元素，如<activity.../>元素添加<uses-permission.../>子元素即可声明调用该程序所需要的权限
 

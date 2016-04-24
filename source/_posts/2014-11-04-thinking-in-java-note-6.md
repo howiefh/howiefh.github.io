@@ -11,13 +11,13 @@ File类是文件和目录路径名的抽象表示形式。
 
 <!-- more -->
 
-#### 目录列表器 
+#### 目录列表器
 
 若在不含自变量（参数）的情况下调用list()，会获得 File 对象包含的一个完整列表。然而，若想对这个列表进行某些限制，就需要使用一个“目录过滤器”，该类的作用是指出应如何选择 File 对象来完成显示。
 
 ```
 public interface FilenameFilter {
-	boolean accept(File dir, String name);
+    boolean accept(File dir, String name);
 }
 ```
 File类的list()的重载方法接收一个FilenameFilter对象，并且会为此目录对象下的每个文件调用accept()方法，来判断该文件是否包含在内。这是一个策略模式的例子，因为list()实现了基本的功能，而且按照FilenameFilter的形式提供这个策略，以便完善list()在提供服务时所需的算法。
@@ -29,21 +29,21 @@ import java.io.*;
 import java.util.*;
 
 public class DirList4 {
-  public static void main(final String[] args) {
-    File path = new File(".");
-    String[] list;
-    if(args.length == 0) {
-      list = path.list();
-	} else {
-	  final Pattern pattern = Pattern.compile(args[0]);
-      list = path.list((dir, name) -> {
-          return pattern.matcher(name).matches();
-      });
-	}
-    Arrays.sort(list, String.CASE_INSENSITIVE_ORDER);
-    for(String dirItem : list)
-      System.out.println(dirItem);
-  }
+    public static void main(final String[] args) {
+        File path = new File(".");
+        String[] list;
+        if(args.length == 0) {
+            list = path.list();
+        } else {
+            final Pattern pattern = Pattern.compile(args[0]);
+            list = path.list((dir, name) -> {
+                return pattern.matcher(name).matches();
+            });
+        }
+        Arrays.sort(list, String.CASE_INSENSITIVE_ORDER);
+        for(String dirItem : list)
+            System.out.println(dirItem);
+    }
 }
 ```
 
@@ -94,7 +94,7 @@ FilterOutputStream    | 抽象类，作为装饰器的接口；装饰器为其�
 
 装饰器为我们提供了大得多的灵活性（因为可以方便地混合与匹配属性），但它们也使自己的代码变得更加复杂。原因在于 Java IO 库操作不便，我们必须创建许多类——“核心”IO 类型加上所有装饰器——才能得到自己希望的单个 IO 对象。
 
-#### 通过 FilterInputStream 从 InputStream 里读入数据 
+#### 通过 FilterInputStream 从 InputStream 里读入数据
 
 基本都是使用基本的InputStream类型作为构造器参数创建这些类对象。下面的最后两个类我们基本不会用到
 
@@ -161,7 +161,7 @@ PushBackInputStream   | PushBackReader
 
 #### 未发生改变的类
 
-没有对应 Java 1.1 类的 Java 1.0 类 
+没有对应 Java 1.1 类的 Java 1.0 类
 * DataOutputStream
 * File
 * RandomAccessFile
@@ -178,91 +178,91 @@ BufferedInputStream 确实允许我们标记一个位置（使用 mark()，它�
 ### I/O流的经典适用方式
 
 * 缓冲输入文件
-	{% codeblock %}
-	BufferedReader in = new BufferedReader(new FileReader(filename));
-	StringBuffer sb = new StringBuffer();
-	while((s=in.readLine())!=null)
-		sb.append(s+"\n");
-	in.close();
-	{% endcodeblock %}
-	readLine()方法会去掉换行符
+    {% codeblock %}
+    BufferedReader in = new BufferedReader(new FileReader(filename));
+    StringBuffer sb = new StringBuffer();
+    while((s=in.readLine())!=null)
+        sb.append(s+"\n");
+    in.close();
+    {% endcodeblock %}
+    readLine()方法会去掉换行符
 * 从内存输入
-	{% codeblock %}
-	String str = "hello world";
-	StringReader in = new StringReader(str);
-	int c;
-	while((c=in.read())!=-1)
-		System.out.println((char)c);
-	{% endcodeblock %}
-* 格式化的内存输入 
-	{% codeblock %}
-	DataInputStream in = new DataInputStream(new ByteArrayInputStream("FormattedMemoryInput.java".getBytes())); 
-	while(in.available() != 0) 
-		System.out.print((char)in.readByte()); 
-	{% endcodeblock %}
-	**可以使用available()方法查看还有多少可供存取的字符。必须为ByteArrayInputStream提供字节数组。available()的工作方式会随着所读取的媒介类型的不同而有所不同，字面意思就是“在没有阻塞的情况下所能读取的字节数”**。
+    {% codeblock %}
+    String str = "hello world";
+    StringReader in = new StringReader(str);
+    int c;
+    while((c=in.read())!=-1)
+        System.out.println((char)c);
+    {% endcodeblock %}
+* 格式化的内存输入
+    {% codeblock %}
+    DataInputStream in = new DataInputStream(new ByteArrayInputStream("FormattedMemoryInput.java".getBytes()));
+    while(in.available() != 0)
+        System.out.print((char)in.readByte());
+    {% endcodeblock %}
+    **可以使用available()方法查看还有多少可供存取的字符。必须为ByteArrayInputStream提供字节数组。available()的工作方式会随着所读取的媒介类型的不同而有所不同，字面意思就是“在没有阻塞的情况下所能读取的字节数”**。
 * 基本的文件输出
-	{% codeblock %}
-	BufferedReader in = new BufferedReader(new FileReader(filename));
-	PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("file.out"))); 
-	//PrintWriter out = new PrintWriter("file.out");  //Java SE5提供了更加快捷的构造器，仍然使用缓存，但是不用自己实现
-	int lineCount = 1; 
-	String s; 
-	while((s = in.readLine()) != null ) 
-		out.println(lineCount++ + ": " + s); 
-	out.close(); 
-	in.close();
-	{% endcodeblock %}
+    {% codeblock %}
+    BufferedReader in = new BufferedReader(new FileReader(filename));
+    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("file.out")));
+    //PrintWriter out = new PrintWriter("file.out");  //Java SE5提供了更加快捷的构造器，仍然使用缓存，但是不用自己实现
+    int lineCount = 1;
+    String s;
+    while((s = in.readLine()) != null )
+        out.println(lineCount++ + ": " + s);
+    out.close();
+    in.close();
+    {% endcodeblock %}
 * 存储和恢复数据
-	为了输出可供另一个流恢复的数据，我们需要用DataInputStream写入数据，并用DataInputStream恢复数据。当使用DataOutputStream时，写字符串并且让DataInputStream能够恢复它的唯一可靠的做法就是使用UTF-8，在这个示例中是用writeUTF()和readUTF()来实现的。Java使用的UTF-8的变体，所以使用其他语言恢复数据时，需要编写一些特殊的代码。
-	{% codeblock %}
-	DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("Data.txt"))); 
-	out.writeDouble(3.14159); 
-	out.writeUTF("That was pi"); 
-	out.writeDouble(1.41413); 
-	out.writeUTF("Square root of 2"); 
-	out.close(); 
-	DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream("Data.txt"))); 
-	System.out.println(in.readDouble()); 
-	// Only readUTF() will recover the 
-	// Java-UTF String properly: 
-	System.out.println(in.readUTF()); 
-	System.out.println(in.readDouble()); 
-	System.out.println(in.readUTF()); 
-	{% endcodeblock %}
+    为了输出可供另一个流恢复的数据，我们需要用DataInputStream写入数据，并用DataInputStream恢复数据。当使用DataOutputStream时，写字符串并且让DataInputStream能够恢复它的唯一可靠的做法就是使用UTF-8，在这个示例中是用writeUTF()和readUTF()来实现的。Java使用的UTF-8的变体，所以使用其他语言恢复数据时，需要编写一些特殊的代码。
+    {% codeblock %}
+    DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("Data.txt")));
+    out.writeDouble(3.14159);
+    out.writeUTF("That was pi");
+    out.writeDouble(1.41413);
+    out.writeUTF("Square root of 2");
+    out.close();
+    DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream("Data.txt")));
+    System.out.println(in.readDouble());
+    // Only readUTF() will recover the
+    // Java-UTF String properly:
+    System.out.println(in.readUTF());
+    System.out.println(in.readDouble());
+    System.out.println(in.readUTF());
+    {% endcodeblock %}
 * 读写随机访问文件
-	{% codeblock %}
-	import java.io.*; 
-	public class UsingRandomAccessFile { 
-		static String file = "rtest.dat"; 
-		static void display() throws IOException { 
-			RandomAccessFile rf = new RandomAccessFile(file, "r"); 
-			for(int i = 0; i < 7; i++) 
-				System.out.println("Value " + i + ": " + rf.readDouble()); 
-			System.out.println(rf.readUTF()); 
-			rf.close(); 
-		} 
-		public static void main(String[] args) throws IOException { 
-			RandomAccessFile rf = new RandomAccessFile(file, "rw"); 
-			for(int i = 0; i < 7; i++) 
-				rf.writeDouble(i*1.414); 
-			rf.writeUTF("The end of the file"); 
-			rf.close(); 
-			display(); 
-			rf = new RandomAccessFile(file, "rw"); 
-			rf.seek(5*8); 
-			rf.writeDouble(47.0001); 
-			rf.close(); 
-			display(); 
-		} 
-	} 
-	{% endcodeblock %}
+    {% codeblock %}
+    import java.io.*;
+    public class UsingRandomAccessFile {
+        static String file = "rtest.dat";
+        static void display() throws IOException {
+            RandomAccessFile rf = new RandomAccessFile(file, "r");
+            for(int i = 0; i < 7; i++)
+                System.out.println("Value " + i + ": " + rf.readDouble());
+            System.out.println(rf.readUTF());
+            rf.close();
+        }
+        public static void main(String[] args) throws IOException {
+            RandomAccessFile rf = new RandomAccessFile(file, "rw");
+            for(int i = 0; i < 7; i++)
+                rf.writeDouble(i*1.414);
+            rf.writeUTF("The end of the file");
+            rf.close();
+            display();
+            rf = new RandomAccessFile(file, "rw");
+            rf.seek(5*8);
+            rf.writeDouble(47.0001);
+            rf.close();
+            display();
+        }
+    }
+    {% endcodeblock %}
 * 管道流
-	{% codeblock %}
-	PipedInputStream pin = new PipedInputStream();
+    {% codeblock %}
+    PipedInputStream pin = new PipedInputStream();
     PipedOutputStream pout = new PipedOutputStream();
-    pin.connect(pout); // 输入流与输出流连接 
-	{% endcodeblock %}
+    pin.connect(pout); // 输入流与输出流连接
+    {% endcodeblock %}
 
 ### 文件读写的实用工具
 
@@ -275,11 +275,11 @@ BufferedInputStream 确实允许我们标记一个位置（使用 mark()，它�
 Java 提供了System.in，System.out 以及 System.err。System.out 已预封装成一个 PrintStream 对象。System.err 同样是一个 PrintStream，但 System.in 是一个原始的 InputStream ，未进行任何封装处理。这意味着尽管能直接使用 System.out 和 System.err，但必须事先封装 System.in，否则不能从中读取数据。
 
 ```
-BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in)); 
+BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 String s;
-while((s = stdin.readLine()) != null && s.length()!= 0) 
-	System.out.println(s); 
-// An empty line or Ctrl-Z terminates the program 
+while((s = stdin.readLine()) != null && s.length()!= 0)
+    System.out.println(s);
+// An empty line or Ctrl-Z terminates the program
 ```
 
 `Scanner scanner = new Scanner(System.in);`也可以从标准输入中读取，System.in和大多数流一样，通常应该对它缓存。
@@ -298,17 +298,17 @@ System类提供了`setIn(InputStream)`，`setOut(PrintStream)`，`setErr(PrintSt
 
 ```
 String command = "ls";
-Process process = new ProcessBuilder(command.split(" ")).start(); 
-BufferedReader results = new BufferedReader(new InputStreamReader(process.getInputStream())); 
-String s; 
-while((s = results.readLine())!= null) 
-	System.out.println(s); 
-BufferedReader errors = new BufferedReader(new InputStreamReader(process.getErrorStream())); 
-// Report errors and return nonzero value 
-// to calling process if there are problems: 
-while((s = errors.readLine())!= null) { 
-	System.err.println(s); 
-	err = true; 
+Process process = new ProcessBuilder(command.split(" ")).start();
+BufferedReader results = new BufferedReader(new InputStreamReader(process.getInputStream()));
+String s;
+while((s = results.readLine())!= null)
+    System.out.println(s);
+BufferedReader errors = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+// Report errors and return nonzero value
+// to calling process if there are problems:
+while((s = errors.readLine())!= null) {
+    System.err.println(s);
+    err = true;
 }
 ```
 
@@ -335,18 +335,18 @@ JDK 1.4的`java.nio.*`包中引入了新的Java I/O类库，其目的在于提�
 ```
 private static final int BSIZE = 1024;
 public static void main(String[] args) throws IOException {
-	if(args.length != 2){
-		System.out.println("arguments: sourcefile destfile");
-		System.exit(1);
-	}
-	FileChannel in = new FileInputStream(args[0]).getChannel(),
-			out = new FileOutputStream(args[1]).getChannel();
-	ByteBuffer buffer = ByteBuffer.allocate(BSIZE);
-	while(in.read(buffer) != -1){
-		buffer.flip();//Prepare for writing
-		out.write(buffer);
-		buffer.clear();//Prepare for reading
-	}
+    if(args.length != 2){
+        System.out.println("arguments: sourcefile destfile");
+        System.exit(1);
+    }
+    FileChannel in = new FileInputStream(args[0]).getChannel(),
+            out = new FileOutputStream(args[1]).getChannel();
+    ByteBuffer buffer = ByteBuffer.allocate(BSIZE);
+    while(in.read(buffer) != -1){
+        buffer.flip();//Prepare for writing
+        out.write(buffer);
+        buffer.clear();//Prepare for reading
+    }
 }
 ```
 
@@ -356,7 +356,7 @@ public static void main(String[] args) throws IOException {
 
 ```
 FileChannel in = new FileInputStream(args[0]).getChannel(),
-		out = new FileOutputStream(args[1]).getChannel();
+        out = new FileOutputStream(args[1]).getChannel();
 in.transferTo(0, in.size(), out);
 //Or:
 //out.transferFrom(in, 0, in.size());
@@ -373,9 +373,9 @@ in.transferTo(0, in.size(), out);
 
 #### 获取基本类型
 
-`ByteBuffer`只能保存字节类型的数据，但是它具有从其所容纳的字节中产生出各种不同基本类型值的方法。 
+`ByteBuffer`只能保存字节类型的数据，但是它具有从其所容纳的字节中产生出各种不同基本类型值的方法。
 
-分配一个`ByteBuffer`之后，缓冲器（ByteBuffer）自动把自己的内容置为零。 
+分配一个`ByteBuffer`之后，缓冲器（ByteBuffer）自动把自己的内容置为零。
 
 向`ByteBuffer`插入基本类型数据的最简单的方法是：利用`asCharBuffer()`、`asShortBuffer()`等获得该缓冲器上的视图，然后使用视图的`put()`方法。此方法适用于所有基本数据类型。使用`ShorBuffer`的`put()`方法时，需要进行类型转换（注意类型转换会截取或改变结果）。而其他所有的视图缓冲器在使用`put()`方法时，不需要进行类型转换。
 
@@ -394,26 +394,26 @@ ib.put(3,1811);
 //Setting a new limit before rewinding the buffer.
 ib.flip();
 while(ib.hasRemaining()){
-	int i = ib.get();
-	System.out.println(i);
+    int i = ib.get();
+    System.out.println(i);
 }
 ```
 
-`get()`和`put()`方法调用直接访问底层`ByteBuffer`中的某个整数位置。注意，这些通过直接与`ByteBuffer`对话访问绝对位置的方式也同样适用于基本类型。 
+`get()`和`put()`方法调用直接访问底层`ByteBuffer`中的某个整数位置。注意，这些通过直接与`ByteBuffer`对话访问绝对位置的方式也同样适用于基本类型。
 
 一旦底层的`ByteBuffer`通过视图缓冲器填满了整数或其他类型数据时，就可以直接被写到通道中了。使用视图缓冲器可以把任何数据都转化成某一特定的基本类型。
-	
+
 **字节存放次序**
 
-不同的机器可能会使用不同的字节排序方法来存储数据。“big endian”（高位字节优先）将高位字节存放在地址最低的存储器单元。“litter endian”（低位字节优先）则是将高位字节放在地址最高的存储器单元。当存储量大于一个字节时，像`int`、`float`等，就要考虑字节的顺序问题了。`ByteBuffer`是以高字节优先的形式存储数据的，并且数据在网上传送时也常常使用高位优先的形式。可以使用带有参数的`ByteOrder.BIG_ENDIAN`或`ByteOrder.LITTLE_ENDIAN`的`order()`方法改变`ByteBuffer`的字节排序方式。 
+不同的机器可能会使用不同的字节排序方法来存储数据。“big endian”（高位字节优先）将高位字节存放在地址最低的存储器单元。“litter endian”（低位字节优先）则是将高位字节放在地址最高的存储器单元。当存储量大于一个字节时，像`int`、`float`等，就要考虑字节的顺序问题了。`ByteBuffer`是以高字节优先的形式存储数据的，并且数据在网上传送时也常常使用高位优先的形式。可以使用带有参数的`ByteOrder.BIG_ENDIAN`或`ByteOrder.LITTLE_ENDIAN`的`order()`方法改变`ByteBuffer`的字节排序方式。
 
-如果以`short`(`ByteBuffer.asShortBuffer`)形式读取数据，得到的数字是97（二进制的形式为00000000 01100001）；但是如果将`ByteBuffer`更改成低位优先形式，得到的数字却是24832（01100001 00000000） 
+如果以`short`(`ByteBuffer.asShortBuffer`)形式读取数据，得到的数字是97（二进制的形式为00000000 01100001）；但是如果将`ByteBuffer`更改成低位优先形式，得到的数字却是24832（01100001 00000000）
 
-`ByteBuffer`有足够的空间，以存储作为外部缓冲器的`charArray`中的所有字节，因此可以调用`array()`方法显示视图底层的字节。`array()`方法是“可选的”，并且只能对由数组支持的缓冲器调用此方法；否则，将会抛出`UnsupportedOperationException`。 
+`ByteBuffer`有足够的空间，以存储作为外部缓冲器的`charArray`中的所有字节，因此可以调用`array()`方法显示视图底层的字节。`array()`方法是“可选的”，并且只能对由数组支持的缓冲器调用此方法；否则，将会抛出`UnsupportedOperationException`。
 
 #### 用缓冲器操纵数据
- 
-注意，**`ByteBuffer`是将数据移进移出通道的唯一方式，并且只能创建一个独立的基本类型缓冲器，或者使用“as”方法从`ByteBuffer`中获得**。也就是说，不能把基本类型的缓冲器转换成`ByteBuffer`。然而，由于可以经由视图缓冲器将基本类型数据移进移出ByteBuffer，所以这也不是什么真正的限制了。 
+
+注意，**`ByteBuffer`是将数据移进移出通道的唯一方式，并且只能创建一个独立的基本类型缓冲器，或者使用“as”方法从`ByteBuffer`中获得**。也就是说，不能把基本类型的缓冲器转换成`ByteBuffer`。然而，由于可以经由视图缓冲器将基本类型数据移进移出ByteBuffer，所以这也不是什么真正的限制了。
 
 #### 缓冲器的细节
 
@@ -434,7 +434,7 @@ position(int pos) | 设置position值
 remaining( )      | 返回(limit - position)
 hasRemaining( )   | 若有介于position和limit之间的元素，则返回true
 
-io.UsingBuffers的例子可以很好的理解这些方法。尽管可以通过对某个char数组调用`wrap()`方法（`CharBuffer java.nio.CharBuffer.wrap(CharSequence csq)`）来直接产生一个`CharBuffer`，但是在本例中取而代之的是分配一个底层的`ByteBuffer`，产生的`CharBuffer`只是`ByteBuffer`上的一个视图而已。这里要强调的是，我们总是以操纵`ByteBuffer`为目标，因为它可以和通道进行交互。 
+io.UsingBuffers的例子可以很好的理解这些方法。尽管可以通过对某个char数组调用`wrap()`方法（`CharBuffer java.nio.CharBuffer.wrap(CharSequence csq)`）来直接产生一个`CharBuffer`，但是在本例中取而代之的是分配一个底层的`ByteBuffer`，产生的`CharBuffer`只是`ByteBuffer`上的一个视图而已。这里要强调的是，我们总是以操纵`ByteBuffer`为目标，因为它可以和通道进行交互。
 
 #### 内存映射文件
 
@@ -444,18 +444,18 @@ import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 public class LargeMappedFiles {
-	static int length = 0X8FFFFFF;// 128MB
-	public static void main(String[] args) throws Exception {
-		MappedByteBuffer out = new RandomAccessFile("test.data", "rw")
-				.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, length);
-		for(int i = 0; i < length; i++){
-			out.put((byte)'x');
-		}
-		System.out.println("Finished writing");
-		for(int i = length/2; i < length/2 + 6;i++){
-			System.out.print((char)out.get(i));
-		}
-	}
+    static int length = 0X8FFFFFF;// 128MB
+    public static void main(String[] args) throws Exception {
+        MappedByteBuffer out = new RandomAccessFile("test.data", "rw")
+                .getChannel().map(FileChannel.MapMode.READ_WRITE, 0, length);
+        for(int i = 0; i < length; i++){
+            out.put((byte)'x');
+        }
+        System.out.println("Finished writing");
+        for(int i = length/2; i < length/2 + 6;i++){
+            System.out.print((char)out.get(i));
+        }
+    }
 }
 ```
 为了既能写又能读，先由RandomAccessFile开始，获得该文件上的通道，然后调用map()产生MappedByteBuffer，这是一种特殊类型的直接缓冲器。注意必须指定映射文件的初始位置和映射区域的长度，这意味着可以映射某个大文件的较小的部分。
@@ -518,57 +518,57 @@ import java.io.*;
 import java.util.*;
 import static net.mindview.util.Print.*;
 public class ZipCompress {
-  public static void main(String[] args)
-  throws IOException {
-    FileOutputStream f = new FileOutputStream("test.zip");
-    CheckedOutputStream csum =
-      new CheckedOutputStream(f, new Adler32());
-     ZipOutputStream zos = new ZipOutputStream(csum);
-     BufferedOutputStream out =
-      new BufferedOutputStream(zos);
-    zos.setComment("A test of Java Zipping");
-    // No corresponding getComment(), though.
-    for(String arg : args) {
-      print("Writing file " + arg);
-      BufferedReader in =
-        new BufferedReader(new FileReader(arg));
-      zos.putNextEntry(new ZipEntry(arg));
-      int c;
-      while((c = in.read()) != -1)
-        out.write(c);
-      in.close();
-      out.flush();
+    public static void main(String[] args)
+        throws IOException {
+        FileOutputStream f = new FileOutputStream("test.zip");
+        CheckedOutputStream csum =
+            new CheckedOutputStream(f, new Adler32());
+        ZipOutputStream zos = new ZipOutputStream(csum);
+        BufferedOutputStream out =
+            new BufferedOutputStream(zos);
+        zos.setComment("A test of Java Zipping");
+        // No corresponding getComment(), though.
+        for(String arg : args) {
+            print("Writing file " + arg);
+            BufferedReader in =
+                new BufferedReader(new FileReader(arg));
+            zos.putNextEntry(new ZipEntry(arg));
+            int c;
+            while((c = in.read()) != -1)
+                out.write(c);
+            in.close();
+            out.flush();
+        }
+        out.close();
+        // Checksum valid only after the file has been closed!
+        print("Checksum: " + csum.getChecksum().getValue());
+        // Now extract the files:
+        print("Reading file");
+        FileInputStream fi = new FileInputStream("test.zip");
+        CheckedInputStream csumi =
+            new CheckedInputStream(fi, new Adler32());
+        ZipInputStream in2 = new ZipInputStream(csumi);
+        BufferedInputStream bis = new BufferedInputStream(in2);
+        ZipEntry ze;
+        while((ze = in2.getNextEntry()) != null) {
+            print("Reading file " + ze);
+            int x;
+            while((x = bis.read()) != -1)
+                System.out.write(x);
+        }
+        if(args.length == 1)
+            print("Checksum: " + csumi.getChecksum().getValue());
+        bis.close();
+        // Alternative way to open and read Zip files:
+        ZipFile zf = new ZipFile("test.zip");
+        Enumeration e = zf.entries();
+        while(e.hasMoreElements()) {
+            ZipEntry ze2 = (ZipEntry)e.nextElement();
+            print("File: " + ze2);
+            // ... and extract the data as before
+        }
+        /* if(args.length == 1) */
     }
-    out.close();
-    // Checksum valid only after the file has been closed!
-    print("Checksum: " + csum.getChecksum().getValue());
-    // Now extract the files:
-    print("Reading file");
-    FileInputStream fi = new FileInputStream("test.zip");
-    CheckedInputStream csumi =
-      new CheckedInputStream(fi, new Adler32());
-    ZipInputStream in2 = new ZipInputStream(csumi);
-    BufferedInputStream bis = new BufferedInputStream(in2);
-    ZipEntry ze;
-    while((ze = in2.getNextEntry()) != null) {
-      print("Reading file " + ze);
-      int x;
-      while((x = bis.read()) != -1)
-        System.out.write(x);
-    }
-    if(args.length == 1)
-    print("Checksum: " + csumi.getChecksum().getValue());
-    bis.close();
-    // Alternative way to open and read Zip files:
-    ZipFile zf = new ZipFile("test.zip");
-    Enumeration e = zf.entries();
-    while(e.hasMoreElements()) {
-      ZipEntry ze2 = (ZipEntry)e.nextElement();
-      print("File: " + ze2);
-      // ... and extract the data as before
-    }
-    /* if(args.length == 1) */
-  }
 } /* (Execute to see output) *///:~
 ```
 对于要加入压缩档的每一个文件，都必须调用 putNextEntry()，并将其传递给一个 ZipEntry 对象。ZipEntry 对象包含了一个功能全面的接口，利用它可以获取和设置 Zip 文件内那个特定的 Entry（入口）上能够接受的所有数据：名字、压缩后和压缩前的长度、日期、CRC 校验和、额外字段的数据、注释、压缩方法以及它是否一个目录入口等等。然而，虽然 Zip 格式提供了设置密码的方法，但 Java 的 Zip 库没有提供这方面的支持。而且尽管 CheckedInputStream 和 CheckedOutputStream 同时提供了对 Adler32 和CRC32 校验和的支持，但是 ZipEntry 只支持 CRC 的接口。这虽然属于基层 Zip 格式的限制，但却限制了我们使用速度更快的 Adler32。
@@ -585,7 +585,7 @@ jar [选项] 说明[详情单] 输入文件
 其中，“选项”用一系列字母表示（不必输入连字号或其他任何指示符）和tar命令类似。如下所示：
 
 * c 创建新的或空的压缩档
-* t 列出目录表 
+* t 列出目录表
 * x 解压所有文件
 * x file 解压指定文件
 * f 指出“我准备向你提供文件名”。若省略此参数，jar 会假定它的输入来自标准输入；或者在它创建文件时，输出会进入标准输出内
@@ -658,10 +658,10 @@ put()，get()有系列针对基本类型的方法
 get()如果没有这个条目，将使用第二个参数设置该条目。
 
 ```
-Preferences prefs = Preferences.userNodeForPackage(PreferencesDemo.class); 
-int usageCount = prefs.getInt("UsageCount", 0); 
-usageCount++; 
-prefs.putInt("UsageCount", usageCount); 
+Preferences prefs = Preferences.userNodeForPackage(PreferencesDemo.class);
+int usageCount = prefs.getInt("UsageCount", 0);
+usageCount++;
+prefs.putInt("UsageCount", usageCount);
 ```
 第一次运行程序时，UsageCount值为0，随后引用中，他将会是非零值。
 
@@ -669,18 +669,18 @@ prefs.putInt("UsageCount", usageCount);
 
 **Properties**
 
-Properties 类表示了一个持久的属性集。Properties 可保存在流中或从流中加载。属性列表中每个键及其对应值都是一个字符串。 
+Properties 类表示了一个持久的属性集。Properties 可保存在流中或从流中加载。属性列表中每个键及其对应值都是一个字符串。
 
-一个属性列表可包含另一个属性列表作为它的“默认值”；如果未能在原有的属性列表中搜索到属性键，则搜索第二个属性列表。（重载的构造器提供了这种功能） 
+一个属性列表可包含另一个属性列表作为它的“默认值”；如果未能在原有的属性列表中搜索到属性键，则搜索第二个属性列表。（重载的构造器提供了这种功能）
 
-因为 Properties 继承于 Hashtable，所以可对 Properties 对象应用 put 和 putAll 方法。但不建议使用这两个方法，因为它们允许调用者插入其键或值不是 String 的项。相反，应该使用 setProperty 方法。如果在“不安全”的 Properties 对象（即包含非 String 的键或值）上调用 store 或 save 方法，则该调用将失败。类似地，如果在“不安全”的 Properties 对象（即包含非 String 的键）上调用 propertyNames 或 list 方法，则该调用将失败。 
+因为 Properties 继承于 Hashtable，所以可对 Properties 对象应用 put 和 putAll 方法。但不建议使用这两个方法，因为它们允许调用者插入其键或值不是 String 的项。相反，应该使用 setProperty 方法。如果在“不安全”的 Properties 对象（即包含非 String 的键或值）上调用 store 或 save 方法，则该调用将失败。类似地，如果在“不安全”的 Properties 对象（即包含非 String 的键）上调用 propertyNames 或 list 方法，则该调用将失败。
 
-load(Reader) / store(Writer, String) 方法按下面所指定的、简单的面向行的格式在基于字符的流中加载和存储属性。除了输入/输出流使用 ISO 8859-1 字符编码外，load(InputStream) / store(OutputStream, String) 方法与 load(Reader)/store(Writer, String) 对的工作方式完全相同。可以使用 Unicode 转义来编写此编码中无法直接表示的字符；转义序列中只允许单个 'u' 字符。可使用 native2ascii 工具对属性文件和其他字符编码进行相互转换。 
+load(Reader) / store(Writer, String) 方法按下面所指定的、简单的面向行的格式在基于字符的流中加载和存储属性。除了输入/输出流使用 ISO 8859-1 字符编码外，load(InputStream) / store(OutputStream, String) 方法与 load(Reader)/store(Writer, String) 对的工作方式完全相同。可以使用 Unicode 转义来编写此编码中无法直接表示的字符；转义序列中只允许单个 'u' 字符。可使用 native2ascii 工具对属性文件和其他字符编码进行相互转换。
 
-loadFromXML(InputStream) 和 storeToXML(OutputStream, String, String) 方法按简单的 XML 格式加载和存储属性。默认使用 UTF-8 字符编码，但如果需要，可以指定某种特定的编码。XML 属性文档具有以下 DOCTYPE 声明： 
+loadFromXML(InputStream) 和 storeToXML(OutputStream, String, String) 方法按简单的 XML 格式加载和存储属性。默认使用 UTF-8 字符编码，但如果需要，可以指定某种特定的编码。XML 属性文档具有以下 DOCTYPE 声明：
 
  <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
- 注意，导入或导出属性时不 访问系统 URI (http://java.sun.com/dtd/properties.dtd)；该系统 URI 仅作为一个唯一标识 DTD 的字符串： 
+ 注意，导入或导出属性时不 访问系统 URI (http://java.sun.com/dtd/properties.dtd)；该系统 URI 仅作为一个唯一标识 DTD 的字符串：
 
 **JSON**
 

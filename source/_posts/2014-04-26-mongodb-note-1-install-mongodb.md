@@ -17,19 +17,19 @@ Windows Server 2008 R2 或 Windows 7下需要安装一个补丁： [DOS 错误�
 ### 安装
 
 - 下载
-    
+
     从 <http://www.mongodb.org/downloads> 下载你所需要的版本，可以通过下面的命令判断你需要安装的版本
 ```shell
 wmic os get osarchitecture
 ```
 
 - 解压缩文件
-    
+
     将下载的压缩包解压到一个目录中，例如 D:\PortableApps\mongodb\
 
 - 设置系统变量
 
-    为了在控制台执行命令方便可以设置系统环境变量  
+    为了在控制台执行命令方便可以设置系统环境变量
 
     计算机--属性--高级系统配置--环境变量--系统变量中的path,加上`;D:\PortableApps\mongodb\bin` ，注意前面的分号。
 
@@ -38,7 +38,7 @@ wmic os get osarchitecture
 > 不要让mongod.exe运行在没有身份验证设置的“安全模式”的公网上。MongoDB被设计运行在可信任的环境中，数据库默认情况下没有启用“安全模式”。
 
 - 配置 mongodb 运行环境
-    
+
     配置mongodb的数据库目录，mongodb默认的存放数据的目录是`\data\db`。如果你的mongodb在D盘，那么`\data\db`就在你的D盘根目录下，即`D:\data\db`，此目录需要自己创建，mongodb不会帮你创建，可以使用下面命令创建。
 ```shell
 md \data\db
@@ -46,18 +46,18 @@ md \data\db
     也可以用 `--dbpath` 参数来指定mongodb的运行数据目录。如果你的目录路径中包含空格，记得在路径两边加引号。
 
 - 启动mongodb服务
-    
+
     运行下面命令
 ```shell
 cd D:\PortableApps\mongodb
 bin\mongod --dbpath data\db
 ```
-    如果有"waiting for connections"的提示，说明你已经运行成功了，请选择私有网络运行mongodb，比如家庭或工作网络。  
-    
+    如果有"waiting for connections"的提示，说明你已经运行成功了，请选择私有网络运行mongodb，比如家庭或工作网络。
+
     mongod还会启动一个非常基本的HTTP服务器，使用端口28017,可以访问http://localhost:28017 来获取数据库的管理信息。要更好利用好管理接口，需要用--rest选项开启REST支持。可以通过--nohttpinterface关闭管理接口。
 
 - 连接mongodb
-    
+
     运行下面命令连接到mongodb
 ```shell
 cd D:\PortableApps\mongodb\bin
@@ -68,12 +68,12 @@ mongo
 
 - 需要以管理员权限启动命令行窗口
 
-    **Windows 7 / Vista / Server 2008 (and R2)** 按`Win + R`，输入`cmd`，再按`Ctrl + Shift + Enter`  
+    **Windows 7 / Vista / Server 2008 (and R2)** 按`Win + R`，输入`cmd`，再按`Ctrl + Shift + Enter`
 
     **Windows 8** 按`Win + X`，再按`A`
 
 - 创建目录
-    
+
     为数据库文件和日志文件创建目录
 ```shell
 md D:\portableapps\mongodb\data\db
@@ -81,7 +81,7 @@ md D:\portableapps\mongodb\data\log
 ```
 
 - 创建配置文件
-    
+
     配置文件中必须包含有效的logpath
 ```shell
 echo logpath=D:\PortableApps\mongodb\data\log\mongod.log> "D:\portableapps\mongodb\mongod.cfg"
@@ -92,14 +92,14 @@ echo fork=true>> "D:\portableapps\mongodb\mongod.cfg"
 
 
 - 添加系统服务
-    
+
     执行下面命令，binPath需要对`"`进行转义
 ```shell
 sc create MongoDB binPath= "\"D:\PortableApps\mongodb\bin\mongod.exe\" --service --config=\"D:\PortableApps\mongodb\mongod.cfg\"" DisplayName= "MongoDB" start= "demand"
 ```
-    start设置为`demand`，需要每次手动启动，可以设置为`auto`  
+    start设置为`demand`，需要每次手动启动，可以设置为`auto`
 
-    成功后将会输出`[SC] CreateService 成功`  
+    成功后将会输出`[SC] CreateService 成功`
 
 {% blockquote 百度百科, http://baike.baidu.com/view/1367668.htm?fr=ala0_1_1#3 %}
 sc [ServerName] create [ServiceName] [type= {own | share | kernel | filesys | rec | adapt | interacttype= {own | share}}] [start= {boot | system | auto | demand | disabled}] [error= {normal | severe | critical | ignore}] [binpath= BinaryPathName] [group= LoadOrderGroup] [tag= {yes | no}] [depend= dependencies] [obj= {AccountName | ObjectName}] [displayname= DisplayName] [password= Password]
@@ -127,7 +127,7 @@ sc delete MongoDB
 ### 安装
 
 - 下载
-    
+
     执行下面命令，下载压缩包
 ```shell
 curl -0 https://fastdl.mongodb.org/linux/mongodb-linux-i686-2.6.0.tgz
@@ -141,7 +141,7 @@ tar -zxvf mongodb-linux-i686-2.6.0.tgz
 ```
 
 - 将解压后的目录复制到要运行mongodb的目录
-    
+
     执行下面命令拷贝mongodb
 ```shell
 mkdir -p /opt/mongodb
@@ -149,11 +149,11 @@ cp -R -n mongodb-linux-i686-2.6.0/ /opt/mongodb
 ```
 
 - 确保可执行文件的在PATH变量中
-    
+
     可以在`/etc/profile`中添加`PATH=/opt/mongodb/bin:$PATH`，也可以在`/usr/local/bin`中创建符号链接。
 
 - 其它
-    
+
     几个主流的Linux操作系统，可以分别通过它们的包管理工具安装mongodb:[Red Hat]、[Ubuntu]、[Debian]
 
 ### 运行mongodb
@@ -166,7 +166,7 @@ mkdir -p /data/db
 ```
 
 - 设置用户对数据目录的权限
-    
+
     在运行mongod之前需要确保用户对，用户对mongodb的数据库目录有读写权限。
 
 - 运行mongodb
@@ -183,13 +183,13 @@ mongod --dbpath <path to data directory>
 
 - 启动脚本
 
-    <http://wbzyl.inf.ug.edu.pl/nosql/fedora/f16/mongod.sh>  
+    <http://wbzyl.inf.ug.edu.pl/nosql/fedora/f16/mongod.sh>
 
-    <https://github.com/mongodb/mongo/blob/master/debian/init.d>  
+    <https://github.com/mongodb/mongo/blob/master/debian/init.d>
 
-    对于Debian， 在 `/etc/init.d/mongod` 中创建脚本  
+    对于Debian， 在 `/etc/init.d/mongod` 中创建脚本
 
-    对于Red Hat，在 `/etc/rc.d/init.d/mongod` 中创建脚本  
+    对于Red Hat，在 `/etc/rc.d/init.d/mongod` 中创建脚本
 
 - 停止
 
@@ -267,7 +267,7 @@ mongod --dbpath <path to data directory>
 | --source arg     | 从库 端口号                |
 | --only arg       | 指定单一的数据库复制       |
 | --slavedelay arg | 设置从库同步主库的延迟时间 |
- 
+
 - Replica set(副本集)选项：
 
 | 参数          | 描述           |

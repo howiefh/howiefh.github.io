@@ -8,7 +8,7 @@ description: thinking in java; java编程思想; 枚举类型;
 ### 基本enum特性
 
 * Enum类是枚举的一个封装类，是所有枚举类型的超类，它是一个没有抽象方法的抽象类。Enum类实现了Comparable接口，所以它具有compareTo() 方法。同时它还实现了Serializable接口。
-* ordinal() : 获取枚举元素声明时的顺序，从0开始计算 
+* ordinal() : 获取枚举元素声明时的顺序，从0开始计算
 * 可以使用"=="来比较两个枚举实例相同与否，由于编译器自动实现了equals()和hashCode()两个方法
 * 调用getDeclaringClass()方法，我们就能知道其所属的enum类
 * name() : 返回enum实例声明时的名字，与使用toString()方法效果相同
@@ -59,21 +59,21 @@ enum类都继承自Enum类，但是Enum类中并没有values()方法。**values(
 
 ```
 public interface Food {
-  enum Appetizer implements Food {
-    SALAD, SOUP, SPRING_ROLLS;
-  }
-  enum MainCourse implements Food {
-    LASAGNE, BURRITO, PAD_THAI,
-    LENTILS, HUMMOUS, VINDALOO;
-  }
-  enum Dessert implements Food {
-    TIRAMISU, GELATO, BLACK_FOREST_CAKE,
-    FRUIT, CREME_CARAMEL;
-  }
-  enum Coffee implements Food {
-    BLACK_COFFEE, DECAF_COFFEE, ESPRESSO,
-    LATTE, CAPPUCCINO, TEA, HERB_TEA;
-  }
+    enum Appetizer implements Food {
+        SALAD, SOUP, SPRING_ROLLS;
+    }
+    enum MainCourse implements Food {
+        LASAGNE, BURRITO, PAD_THAI,
+        LENTILS, HUMMOUS, VINDALOO;
+    }
+    enum Dessert implements Food {
+        TIRAMISU, GELATO, BLACK_FOREST_CAKE,
+        FRUIT, CREME_CARAMEL;
+    }
+    enum Coffee implements Food {
+        BLACK_COFFEE, DECAF_COFFEE, ESPRESSO,
+        LATTE, CAPPUCCINO, TEA, HERB_TEA;
+    }
 }
 ```
 
@@ -81,17 +81,17 @@ public interface Food {
 
 ```
 public enum Course {
-  APPETIZER(Food.Appetizer.class),
-  MAINCOURSE(Food.MainCourse.class),
-  DESSERT(Food.Dessert.class),
-  COFFEE(Food.Coffee.class);
-  private Food[] values;
-  private Course(Class<? extends Food> kind) {
-    values = kind.getEnumConstants();
-  }
-  public Food randomSelection() {
-    return Enums.random(values);
-  }
+    APPETIZER(Food.Appetizer.class),
+    MAINCOURSE(Food.MainCourse.class),
+    DESSERT(Food.Dessert.class),
+    COFFEE(Food.Coffee.class);
+    private Food[] values;
+    private Course(Class<? extends Food> kind) {
+        values = kind.getEnumConstants();
+    }
+    public Food randomSelection() {
+        return Enums.random(values);
+    }
 }
 ```
 
@@ -99,26 +99,26 @@ public enum Course {
 
 ```
 enum SecurityCategory {
-  STOCK(Security.Stock.class), BOND(Security.Bond.class);
-  Security[] values;
-  SecurityCategory(Class<? extends Security> kind) {
-    values = kind.getEnumConstants();
-  }
-  interface Security {
-    enum Stock implements Security { SHORT, LONG, MARGIN }
-    enum Bond implements Security { MUNICIPAL, JUNK }
-  }
-  public Security randomSelection() {
-    return Enums.random(values);
-  }
-  public static void main(String[] args) {
-    for(int i = 0; i < 10; i++) {
-      SecurityCategory category =
-        Enums.random(SecurityCategory.class);
-      System.out.println(category + ": " +
-        category.randomSelection());
+    STOCK(Security.Stock.class), BOND(Security.Bond.class);
+    Security[] values;
+    SecurityCategory(Class<? extends Security> kind) {
+        values = kind.getEnumConstants();
     }
-  }
+    interface Security {
+        enum Stock implements Security { SHORT, LONG, MARGIN }
+        enum Bond implements Security { MUNICIPAL, JUNK }
+    }
+    public Security randomSelection() {
+        return Enums.random(values);
+    }
+    public static void main(String[] args) {
+        for(int i = 0; i < 10; i++) {
+            SecurityCategory category =
+                Enums.random(SecurityCategory.class);
+            System.out.println(category + ": " +
+                    category.randomSelection());
+        }
+    }
 }
 ```
 
@@ -126,14 +126,14 @@ enum SecurityCategory {
 
 EnumSet（可能）就是将一个long值作为比特向量，所以EnumSet非常快速高效。
 
-allOf(Class<E> elementType) 创建一个包含指定元素类型的所有元素的 EnumSet。 
+allOf(Class<E> elementType) 创建一个包含指定元素类型的所有元素的 EnumSet。
 clone() 返回set的副本
-complementOf(EnumSet<E> s) 创建一个其元素类型与指定 EnumSet 相同的 EnumSet，最初包含指定 set 中所不包含的此类型的所有元素。 
-copyOf(Collection<E> c) 创建一个从指定 collection 初始化的枚举 set。 
-copyOf(EnumSet<E> s) 创建一个其元素类型与指定 EnumSet 相同的 EnumSet，最初包含相同的元素（如果有的话）。 
-noneOf(Class<E> elementType) 创建一个具有指定元素类型的空 EnumSet。 
-of() 创建一个最初包含指定元素的EnumSet。有很多个重载版本，接收1到5个参数的，以及可变参数的，表现出EnumSet对性能的注重。 
-range(E from, E to) 创建一个最初包含由两个指定端点所定义范围内的所有元素的EnumSet。 
+complementOf(EnumSet<E> s) 创建一个其元素类型与指定 EnumSet 相同的 EnumSet，最初包含指定 set 中所不包含的此类型的所有元素。
+copyOf(Collection<E> c) 创建一个从指定 collection 初始化的枚举 set。
+copyOf(EnumSet<E> s) 创建一个其元素类型与指定 EnumSet 相同的 EnumSet，最初包含相同的元素（如果有的话）。
+noneOf(Class<E> elementType) 创建一个具有指定元素类型的空 EnumSet。
+of() 创建一个最初包含指定元素的EnumSet。有很多个重载版本，接收1到5个参数的，以及可变参数的，表现出EnumSet对性能的注重。
+range(E from, E to) 创建一个最初包含由两个指定端点所定义范围内的所有元素的EnumSet。
 
 ### 使用EnumMap
 
@@ -153,10 +153,10 @@ EnumMap速度很快，只能讲enum的实例作为键来调用put()方法，其�
 
 ```
 enum LikeClasses {
-  WINKEN { void behavior() { print("Behavior1"); } },
-  BLINKEN { void behavior() { print("Behavior2"); } },
-  NOD { void behavior() { print("Behavior3"); } };
-  abstract void behavior();
+    WINKEN { void behavior() { print("Behavior1"); } },
+    BLINKEN { void behavior() { print("Behavior2"); } },
+    NOD { void behavior() { print("Behavior3"); } };
+    abstract void behavior();
 }
 ```
 
@@ -236,7 +236,7 @@ public class UseCaseTracker {
         for (Method m : cl.getDeclaredMethods()) {
             UseCase uc = m.getAnnotation(UseCase.class);
             if (uc != null) {
-                System.out.println(“Found Use Case: ” + uc.id() 
+                System.out.println(“Found Use Case: ” + uc.id()
                 + “ ” + uc.description());
                 useCases.remove(new Integer(uc.id()));
             }
@@ -376,7 +376,7 @@ public class InterfaceExtractorProcessor extends AbstractProcessor {
                         writer.print(m.getReturnType() + " ");
                         writer.print(m.getSimpleName() + " (");
                         int i = 0;
-                        
+
                         for(VariableElement parm : m.getParameters()) {
                             writer.print(parm.asType() + " " +
                                     parm.getSimpleName());
@@ -391,7 +391,7 @@ public class InterfaceExtractorProcessor extends AbstractProcessor {
                     throw new RuntimeException(ioe);
                 }
             }
-        } 
+        }
         return true;
     }
 } ///:~
@@ -406,7 +406,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface ExtractInterface {
-  public String value();
+    public String value();
 } ///:~
 
 ```
@@ -416,18 +416,18 @@ Multiplier.java文件
 package annotations;
 @ExtractInterface("IMultiplier")
 public class Multiplier {
-  public int multiply(int x, int y) {
-    int total = 0;
-    for(int i = 0; i < x; i++)
-      total = add(total, y);
-    return total;
-  }
-  private int add(int x, int y) { return x + y; }
-  public static void main(String[] args) {
-    Multiplier m = new Multiplier();
-    System.out.println("11*16 = " + m.multiply(11, 16));
-  }
-} 
+    public int multiply(int x, int y) {
+        int total = 0;
+        for(int i = 0; i < x; i++)
+            total = add(total, y);
+        return total;
+    }
+    private int add(int x, int y) { return x + y; }
+    public static void main(String[] args) {
+        Multiplier m = new Multiplier();
+        System.out.println("11*16 = " + m.multiply(11, 16));
+    }
+}
 ```
 
 自定义注解处理器继承 AbstractProcessor（这是 Processor 接口的默认实现），并覆盖 process() 方法。

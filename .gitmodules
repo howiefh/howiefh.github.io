@@ -1,0 +1,3 @@
+[submodule "themes/landscape-f"]
+	path = themes/landscape-f
+	url = https://github.com/howiefh/hexo-theme-landscape-f.git

@@ -39,51 +39,51 @@ MongoDB支持超过75个命令，我们可以在shell中运行：db.listCommands
 
     管理专用命令，返回MongoDB服务器的版本号和主机等
     `{"buildinfo":1}`
- 
+
 - collStats
 
     返回指定集合的统计信息
     `{"collStats":"coll"}`
- 
+
 - distinct
 
     返回指定集合中满足条件的文档的指定键的所有不同值
     `{"distinct":"coll","key":"key","query":"query"}`
- 
+
 - drop
 
     删除集合的所有数据
     `{"drop":"coll"}`
- 
+
 - dropDatabase
 
     删除当前数据库的所有数据
     `{"dropDatabase":1}`
- 
+
 - dropIndexes
 
     删除集合里面名称为name的索引，如果名称为*，则代表删除全部。
     `{"dropIndexes":"coll","index":"name"}`
- 
+
 - findAndModify
 
     用法在第3章有记录
- 
+
 - getLastError
 
     查看对本集合执行的最后一次操作的信息。在w台服务器复制集合的最后操作之前，这个命令会阻塞(超时的毫秒数)
     `{"getLastError":1 [,"w":w[,"wtimeout": timeout]]}`
- 
+
 - isMaster
 
     检查本服务器是主服务器还是从服务器
     `{"isMaster":1}`
- 
+
 - ListCommands
 
     返回所有可以在服务器上运行的命令及相关信息
     `{"ListCommands":1}`
- 
+
 - listDatabases
 
     管理专用命令，列出服务器上所有的数据库
@@ -93,17 +93,17 @@ MongoDB支持超过75个命令，我们可以在shell中运行：db.listCommands
 
     检查服务器连接是否正常。
     `{"ping":1}`
- 
+
 - renameCollection
 
     将集合a重命名为b，其中a和b都必须是完整的集合命名空间(例如"foo.bar"表示foo数据库中的bar集合)
     `{"renameCollection":a,"to":b}`
- 
+
 - repairDatabase
 
     修复并压缩当前数据库
     `{"repairDatabase":1}`
- 
+
 - serverStatus
 
     返回服务器的管理统计信息
@@ -175,7 +175,7 @@ $ cat foo.txt
 $ ./mongofiles search foo.txt #查询文件
 $ ./mongofiles delete foo.txt #删除Grid上的文件
 ```
- 
+
 ### 内部原理
 
 GridFS的块有个单独的集合，默认情况下，都会使用fs.chunks集合，结构如下：
@@ -184,14 +184,14 @@ GridFS的块有个单独的集合，默认情况下，都会使用fs.chunks集�
 - n #块编号，也就是这个块在原文件中的编号
 - data #包含组成文件块的二进制数据
 - files_id #包含这个块原数据的文件文档 "_id"
- 
+
 文件的原数据都放在另一个集合中，fs.files里面。结构如下：
 - _id #文件的唯一id,对应files_id
 - length #文件内容的字节数
 - chunkSize #每块的大小，以字节为单位，默认是256K
 - updateDate #文件存入GridFS的时间戳
 - md5 #文件内容的md5校验和，由服务器端生成
- 
+
 我们可以使用distinct命令获取GridFS中不重复的文件名列表。
 ```
 db.fs.files.distinct("filename")
@@ -208,25 +208,30 @@ db.fs.files.distinct("filename")
 ```
 db.eval("return 1;")
 db.eval("function(){return 1;}")
-``` 
+```
 
 只有传递参数时需要封装成一个函数，参数通过db.eval的第二个参数传递，不过要写成一个数组的形式。例如传递给函数username。
+
 ```
 db.eval("function(u){print('hello'+ u +'!');}",[username])
 ```
+
 有必要的话，可以传递多个参数，例如要计算3个数之和。
+
 ```
 db.eval("function(x,y,z){return x+y+z;}",[num1,num2,num3])
 ```
- 
+
 ### 存储Javascript
 
 每个MongoDB的数据库中都有个特殊的集合，叫做system.js，用来存放Javascript变量。这些变量可以在任何MongoDB的javascript上下文中调用，包括$where字句，db.eval调用，MapReduce作业。用insert可以将变量加入到system.js之中。
+
 ```
 db.system.js.insert({"_id":"x","value":1})
 ```
- 
+
 System.js还可以存入Javascript代码。如用javascript写一个日志函数，将其放在system.js中。
+
 ```
 db.system.js.insert({"_id":"log","value":function(msg,level){
 var levels = ['DEBUG','WARNING','ERROR','FATAL'];
@@ -235,23 +240,29 @@ var now = new Date();
 print(now + " " + levels[level] + msg );
 }})
 ```
+
 现在我们可以调用这个函数：
+
 ```
 db.eval("x='hello';log('x is'+x,1);");
 ```
- 
+
 ### 安全性
 
 ```
 func = "function(){print('Hello,"+username+"!');}"
 ```
+
 上面代码可以实现打印欢迎信息，但如果username是`"');db.dropDatabase();print('"`,上面代码就变成了
+
 ```
 func = "function(){print('Hello,');db.dropDatabase();print('!');}"
 ```
+
 数据库被清空了
 
 为了避免这种情况，要限定作用域，PHP中代码如下：
+
 ```
 $func=new MongoCode("function(){
 print('hello,"+username+"!');
@@ -269,8 +280,9 @@ DBRef是个内嵌文档，下面有几个是DBRef的必选键,注意必须建的
 $ref #指定集合
 $id #指定文档的 _id
 ```
- 
+
 如果想用另外一个数据的文档，还有个$db键，这个键是可选的
+
 ```
 {"$ref":collection,"$id":id_value,"$db":database}
 ```
@@ -278,16 +290,20 @@ $id #指定文档的 _id
 ### 示例模式
 
 users集合：
+
 ```
 {"_id","mike","display_name":"Mike D"}
 {"_id","kristina","display_name":"Kristina C"}
 ```
 notes集合：
+
 ```
 {"_id":5,"author":"mike","text":"mongodb is fun"}
 {"_id":25,"author":"kristina","text":" DBREF ", "references"[{"$ref":"users","$id":"mike"},{"$ref":"notes","$id":5}]}
 ```
+
 第二个笔记包含一些对其它文档的引用，每一条都作为一个DBRef存储。
+
 ```
 var note = db.notes.findOne({"_id":20})
 note.references.forEach(function(ref){
@@ -298,6 +314,7 @@ note.references.forEach(function(ref){
 ### 驱动对DBRef的支持
 
 下面是使用PyMongo中的DBRef类型。
+
 ```
 note = {"_id":25,"author":"kristina","text":" DBREF ", "references":[DBRef("users","mike"),DBRef("notes",5)]}
 ```

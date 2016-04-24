@@ -103,11 +103,9 @@ http://jvi.sourceforge.net/vimhelp/help.txt.html#reference_toc
 
 特色：
 
-缩放网页
-
-C-y 缩短当前网址，并且复制缩短后的地址到剪贴板（此功能需要设置，此插件设置很不错，可以像配置vim一样简单配置下）
-
-C-i  使用外部编辑器编辑等。
+* 缩放网页
+* C-y 缩短当前网址，并且复制缩短后的地址到剪贴板（此功能需要设置，此插件设置很不错，可以像配置vim一样简单配置下）
+* C-i  使用外部编辑器编辑等。
 
 具体可以参考：http://linuxtoy.org/archives/vimlike-smooziee-chrome-vim-extension.html#comment-133032
 

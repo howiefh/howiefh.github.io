@@ -1,5 +1,5 @@
 # Hexo Configuration
-## Docs: http://hexo.io/docs/configuration.html
+## Docs: https://hexo.io/docs/configuration.html
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
@@ -7,7 +7,6 @@ title: 净土
 subtitle: 乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。
 description: A blog of howiefh.
 author: howiefh
-email: howiefh@gmail.com
 # language: zh-CN
 language: default
 timezone:

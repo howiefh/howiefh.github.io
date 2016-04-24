@@ -1,6 +1,6 @@
 title: vsftpd 配置虚拟用户
 date: 2014-07-26 11:46:40
-tags: 
+tags:
 - FTP
 - Vsftpd
 categories:
@@ -14,7 +14,7 @@ description: vsftpd 虚拟用户, vsftpd 配置
 sudo apt-get install vsftpd
 ```
 <!-- more -->
-查看是否打开21端口: 
+查看是否打开21端口:
 ```
 sudo netstat -npltu | grep 21
 ```
@@ -59,7 +59,7 @@ banner_file=/etc/vsftpd/welcome.txt
 anonymous_enable=NO
 #设定本地用户可以访问。默认.注意：主要是为虚拟宿主用户，如果该项目设定为NO那么所有虚拟用户将无法访问
 local_enable=YES
-#可写 
+#可写
 write_enable=NO
 #上传后文件的权限掩码 默认
 local_umask=022
@@ -122,7 +122,7 @@ local_max_rate=1310720
 ```
 更改配置后，重启vsftpd使配置生效。
 
-## Vsftpd虚拟用户设置(通过MySQL) 
+## Vsftpd虚拟用户设置(通过MySQL)
 
 ### 安装 libpam-mysql
 
@@ -142,7 +142,7 @@ sudo useradd vsftpduser -d /srv/ftp -s /sbin/nologin -g nogroup
 
 > 创建/etc/nologin文件，则除root用户外，其它用户无法登录，可以在维护服务器的时候使用。
 
-> 删除用户（userdel命令）: `userdel  [-r]  [要删除的用户的名称]` 
+> 删除用户（userdel命令）: `userdel  [-r]  [要删除的用户的名称]`
 
 设置密码: `passwd vsftpduser`
 
@@ -177,7 +177,7 @@ insert into user values (null,'user1','123456');
 insert into user values (null,'user2','123456');
 insert into user values (null,'user3','123456');
 ```
-分配权限,把123456换成你的密码： 
+分配权限,把123456换成你的密码：
 ```
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP ON test.* TO 'vsftpduser'@'localhost' IDENTIFIED BY '123456';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP ON test.* TO 'vsftpduser'@'localhost.localdomain' IDENTIFIED BY '123456';
@@ -216,7 +216,7 @@ user_config_dir=/etc/vsftpd/vconf
 现在，我们要把各个用户的配置文件放到目录/etc/vsftpd/vconf中
 ```
 sudo mkdir /etc/vsftpd/vconf
-cd /etc/vsftpd/vconf 
+cd /etc/vsftpd/vconf
 sudo touch user1 user2 user3
 ```
 用户的根目录不能对别的用户开放写权限
@@ -238,7 +238,7 @@ write_enable=YES
 ```
 这里要注意不能有空格，不然登录的时候会提示出错。
 
-## Vsftpd虚拟用户设置(通过数据文件) 
+## Vsftpd虚拟用户设置(通过数据文件)
 
 ### 安装db4-utils
 
@@ -300,14 +300,14 @@ guest_username=vsftpduser
 root@ubuntu:~# ftp localhost
 Connected to localhost.
 220 (vsFTPd 2.3.2)
-Name (localhost:fenghao): fenghao 
+Name (localhost:fenghao): fenghao
 
 331 Please specify the password.
 Password:
 230 Login successful.
 Remote system type is UNIX.
 Using binary mode to transfer files.
-ftp> 
+ftp>
 ftp> pwd
 '''257 "/"'''
 ```
@@ -353,15 +353,15 @@ chroot_list_file=/etc/vsftpd/chroot_list
 ```
 sudo apt-get install weblizer
 ```
-配置文件: 
+配置文件:
 ```
 sudo gedit /etc/webalizer/webalizer.conf
 ```
-解决乱码: 
+解决乱码:
 ```
 sudo mv /usr/share/locale/zh/LC_MESSAGES/webalizer.mo /home/fenghao/back
 ```
-分析日志: 
+分析日志:
 ```
 sudo webalizer /var/log/xferlog -F ftp
 ```
@@ -369,9 +369,9 @@ sudo webalizer /var/log/xferlog -F ftp
 ```
 #!/bin/bash
 # update access statistics for ftp
-# 需要设置/var/www/webalizer /var/log/xferlog 
+# 需要设置/var/www/webalizer /var/log/xferlog
 if [ -s /var/log/xferlog ]; then
-   exec /usr/bin/webalizer -Q -F ftp -o /var/www/webalizer /var/log/xferlog 
+   exec /usr/bin/webalizer -Q -F ftp -o /var/www/webalizer /var/log/xferlog
 fi
 ```
 把上面的复制粘贴到`webalizer_daily.sh`中。

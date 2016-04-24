@@ -91,25 +91,25 @@ db.people.update({"name" : "joe"}, joe);
 
 ### 使用修改器
 
-- `$set` 
+- `$set`
     用来指定一个键的值。如果这个键不存在，则创建它。用$set甚至可以修改键的数据类型。也可以用$set修改内嵌文档。
 ```
 db.users.update({"name" : "joe"}, {"$set" : {"favorite book" : ["Cat's Cradle", "Foundation Trilogy", "Ender's Game"]}})
 ```
 
-- `$unset` 
+- `$unset`
     将键完全删除。
 ```
 db.users.update({"name" : "joe"}, {"$unset" : {"favorite book" : 1}})
 ```
 
-- `$inc` 
+- `$inc`
     用来增加已有键的值，或者在键不存在时创建一个键。$inc只能用于整数、长整数或双精度浮点数。要是用在其他类型的数据上就会导致操作失败。另外$inc键的值必须是数字。
 ```
 db.games.update({"game" : "pinball", "user" : "joe"},{"$inc" : {"score" : 50}})
 ```
 
-- `$push` 
+- `$push`
     会向已有的数组末尾加入一个元素，要是没有就会创建一个新的数组。
     比如向博客中添加评论，如果数组comments不存在，下面语句会创建这个数组，如果存在，则是向数组末尾再添加一个评论
 ```
@@ -124,7 +124,7 @@ db.stock.ticker.update({"_id" : "GOOG"}, {"$push" : {"hourly" : {"$each" : [562.
 db.movies.find({"genre" : "horror"}, {"$push" : {"top10" : { "$each" : [{"name" : "Nightmare on Elm Street", "rating" : 6.6}, {"name" : "Saw", "rating" : 4.3}], "$slice" : -10, "$sort" : {"rating" : -1}}}})
 ```
 
-- `$addToSet` 
+- `$addToSet`
     可以避免重复。和$each组合起来，可以添加多个不同的值。
     如果把数组当做集合，里面的值就不能相同了，这时可以用`$push`和`$ne`，`db.papers.update({"authors cited" : {"$ne" : "Richie"}}, {$push : {"authors cited" : "Richie"}})` ，如果不存在 Richie,则会插入，但是有些情况，`$ne`就不能很好工作了。
     只有当数组emails中不存在joe@gmail.com时，才会添加进去。
@@ -133,13 +133,13 @@ db.users.update({"_id" : ObjectId("4b2d75476cc613d5ee930164")}, {"$addToSet" : {
 db.users.update({"_id" : ObjectId("4b2d75476cc613d5ee930164")}, {"$addToSet" : {"emails" : {"$each" : ["joe@php.net", "joe@example.com", "joe@python.org"]}}})
 ```
 
-- `$pop` 
+- `$pop`
     这个修改器可以从数组任何一端删除元素。{$pop:{key:1}}从数组末尾删除一个元素，{$pop:{key:-1}}从头部删除。
 
-- `$pull` 
+- `$pull`
     会将所有匹配的部分删除。
 ```
-db.lists.insert({"todo" : ["dishes", "laundry", "dry cleaning"]}) 
+db.lists.insert({"todo" : ["dishes", "laundry", "dry cleaning"]})
 db.lists.update({}, {"$pull" : {"todo" : "laundry"}})
 ```
 
@@ -149,7 +149,7 @@ db.lists.update({}, {"$pull" : {"todo" : "laundry"}})
 db.blog.update({"post" : post_id}, {"$inc" : {"comments.0.votes" : 1}})
 db.blog.update({"comments.author" : "John"}, {"$set" : {"comments.$.author" : "Jim"}})
 ```
-- 修改器速度    
+- 修改器速度
     如果修改器操作后集合大小会改变，速度会稍慢一些。如果是很大的数组，速度也会比较慢。有时候可以考虑将内嵌数组独立到一个集合中。
 
 ### upsert

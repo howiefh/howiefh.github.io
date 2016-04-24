@@ -10,12 +10,12 @@ description: Clean Code, 代码整洁之道
 ## 有意义的命名
 
 ### 名副其实
-    
+
 变量、函数或类名称应该告诉人们，它为什么会存在，它做什么事，应该怎么用。如以日计的消逝的时间可以命名为elapsedTimeInDays。
 
 <!-- more -->
 ### 避免误导
-    
+
 1. 避免使用专有的计算机术语缩写做变量名，如hp,aix,sco
 2. 不要在名称中直接写出容器类型名，如accountList可以用accountGroup,bunchOfAccounts,accounts来代替。
 3. 避免使用不同之处较小的名称， XYZControllerForEfficientHandlingOfStringsin和XYZControllerForEfficientStorageOfStrings如果出现在一起，区分需要一定的时间。
@@ -300,7 +300,7 @@ delete函数只与错误处理有关。deletePageAndAllReference函数只与完�
 
 ```
 // Check to see if the employee is eligible for full benefits
-if ((employee.flags & HOURLY_FLAG) && (employee.age > 65)) 
+if ((employee.flags & HOURLY_FLAG) && (employee.age > 65))
 ```
 尽量用代码来描述意图，而不是注释。
 ```
@@ -441,7 +441,7 @@ if (moduleDependees.contains(ourSubSystem))
 
 ```
 while(){
-}//while 
+}//while
 ```
 如果这样做了，说明函数可能需要缩短了。
 

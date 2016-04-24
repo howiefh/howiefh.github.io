@@ -30,17 +30,17 @@ let g:table_mode_delimiter = ' '
 
 它的命令前缀是`<Leader>t`，可以通过 `g:table_mode_map_prefix` 来更改。
 
-- `<Leader>tm`   table mode 开关                               
+- `<Leader>tm`   table mode 开关
 - `<Leader>tt`   使用g:table_mode_delimiter定义的分隔符插入表格
-- `<Leader>T`    使用用户输入的分隔符插入表格                  
-- `<Leader>tr`   重新对齐                                      
-- `[|`           移动到前一个表格                              
-- `]|`           移动到下一个表格                              
-- `{|`           移动到上面一个表格                            
-- `}|`           移动到下面一个表格                            
-- `||`           插入表头边框                                  
-- `<Leader>tdd`  删除一行                                      
-- `<Leader>tdc`  删除一列                                      
+- `<Leader>T`    使用用户输入的分隔符插入表格
+- `<Leader>tr`   重新对齐
+- `[|`           移动到前一个表格
+- `]|`           移动到下一个表格
+- `{|`           移动到上面一个表格
+- `}|`           移动到下面一个表格
+- `||`           插入表头边框
+- `<Leader>tdd`  删除一行
+- `<Leader>tdc`  删除一列
 
 其它命令请`:h table-mode-mappings`
 

@@ -14,7 +14,7 @@ LInearLayout常用XML属性及相关方法:
 | Xml属性               | 相关方法                | 说明                                                                                                          |
 |---------------------|---------------------|----------------------------------------------------------------------------------------------------------------------|
 | android:gravity     | setGravity(int)     | 设置布局管理器内组件的对齐方式。支持top、bottom、left、right、center_vertical、fill_vertical、center_horizontal、fill_horizontal、center、fill、clip_vertical、clip_horizontal几个属性值。可以同时指定多种对齐方式，如left|center_vertical表示出现在屏幕左边，并且垂直居中。 |
-| android:orientation | setOrientation(int) | 设置布局管理器内组件的排列方式，可设置为horizontal（水平排列）、vertical（垂直排列），但只能是其中之一。     |    
+| android:orientation | setOrientation(int) | 设置布局管理器内组件的排列方式，可设置为horizontal（水平排列）、vertical（垂直排列），但只能是其中之一。     |
 
 说明:android:gravity属性中的多个属性值之间用竖线隔开，但竖线前后千万不能出现空格
 
@@ -45,7 +45,7 @@ FrameLayout的常用XML属性及相关方法:
 |---------------------------|--------------------------|--------------------|
 | android:foreground        | setForeground(Drawable)  | 设置该帧布局容器的前景图像      |
 | android:foregroundGravity | setForegroundGravty(int) | 定义绘制前景图像的gravity属性 |
- 
+
 ## 相对布局
 相对布局由RelativeLayout代表，相对布局内子组件的位置总是相对兄弟组件、父容器来决定。如果A组件的位置由B组件位置来决定，Android要先定义B组件，再定义A组件。
 

@@ -1,7 +1,7 @@
 title: JSP/Servlet及相关技术笔记
 date: 2015-03-13 10:04:54
 tags: [JSP,Servlet]
-categories: 
+categories:
 - JavaEE
 - JSP
 description: JSP/Servlet及相关技术笔记
@@ -147,10 +147,10 @@ useBean语法格式如下：
 
 其中id是JavaBean的实例名，class属性确定JavaBean的实现类。Scope属性用于指定JavaBean实例的作用范围：
 
-page：仅在该页面有效。
-request：在本次请求有效。
-session：在本次session内有效。
-application：在本次应用内一直有效。
+* page：仅在该页面有效。
+* request：在本次请求有效。
+* session：在本次session内有效。
+* application：在本次应用内一直有效。
 
 setProperty语法格式如下：
 
@@ -243,16 +243,16 @@ application对象通常有如下两个作用：
     * param-name：配置Web参数名。
     * param-value：配置Web参数值。
     {% codeblock %}
-    <!-- 配置第一个参数：user --> 
-    <context-param> 
-        <param-name>user</param-name> 
-        <param-value>root</param-value> 
-    </context-param> 
-    <!-- 配置第二个参数：pass --> 
-    <context-param> 
-        <param-name>pass</param-name> 
-        <param-value>32147</param-value> 
-    </context-param> 
+    <!-- 配置第一个参数：user -->
+    <context-param>
+        <param-name>user</param-name>
+        <param-value>root</param-value>
+    </context-param>
+    <!-- 配置第二个参数：pass -->
+    <context-param>
+        <param-name>pass</param-name>
+        <param-value>32147</param-value>
+    </context-param>
     {% endcodeblock %}
     之后可以通过application的 getInitParameter(String paramName)方法获取配置参数。
     {% codeblock %}
@@ -274,27 +274,27 @@ config对象是ServletConfig的实例，该接口用于获取配置参数的方�
 配置JSP也是在web.xml文件中进行的，JSP被当成Servlet配置，为Servlet配置参数使用init-param元素，该元素可以接受param-name和param-value两个子元素，分别指定参数名和参数值。
 
 ```
-<servlet> 
-    <!-- 指定Servlet名字 --> 
-    <servlet-name>config</servlet-name> 
-    <!-- 指定将哪个JSP页面配置成Servlet --> 
-    <jsp-file>/configTest2.jsp</jsp-file> 
-    <!-- 配置名为name的参数，值为yeeku --> 
-    <init-param> 
-        <param-name>name</param-name> 
-        <param-value>yeeku</param-value> 
-    </init-param> 
-    <!-- 配置名为age的参数，值为30 --> 
-    <init-param> 
-        <param-name>age</param-name> 
-        <param-value>30</param-value> 
-    </init-param> 
-</servlet> 
-<servlet-mapping> 
-    <!-- 指定将config Servlet配置到/config路径 --> 
-    <servlet-name>config</servlet-name> 
-    <url-pattern>/config</url-pattern> 
-</servlet-mapping> 
+<servlet>
+    <!-- 指定Servlet名字 -->
+    <servlet-name>config</servlet-name>
+    <!-- 指定将哪个JSP页面配置成Servlet -->
+    <jsp-file>/configTest2.jsp</jsp-file>
+    <!-- 配置名为name的参数，值为yeeku -->
+    <init-param>
+        <param-name>name</param-name>
+        <param-value>yeeku</param-value>
+    </init-param>
+    <!-- 配置名为age的参数，值为30 -->
+    <init-param>
+        <param-name>age</param-name>
+        <param-value>30</param-value>
+    </init-param>
+</servlet>
+<servlet-mapping>
+    <!-- 指定将config Servlet配置到/config路径 -->
+    <servlet-name>config</servlet-name>
+    <url-pattern>/config</url-pattern>
+</servlet-mapping>
 ```
 
 上面的配置文件片段为该Servlet（其实是JSP）配置了2个参数：name和age。上面的配置片段把configTest2.jsp页面配置成名为config的Servlet，并将该Servlet映射到/config处，这就允许我们通过/config来访问该页面。
@@ -380,23 +380,23 @@ request对象是获取请求参数的重要途径。除此之外，request可代
     使用GET方法，如果请求参数值里包含非西欧字符，那么是不是应该先调用setCharacterEncoding()来设置request编码的字符集呢？读者可以试一下。答案是不行，如果GET方式的请求值里包含了非西欧字符，则获取这些参数比较复杂。为了获取GET请求里的中文参数值，必须借助于java.net.URLDecoder类。
     {% codeblock %}
     <%
-    //获取请求里包含的查询字符串  
-    String rawQueryStr = request.getQueryString();  
-    out.println("原始查询字符串为：" + rawQueryStr + "<hr/>");  
-    //使用URLDecoder解码字符串  
-    String queryStr = java.net.URLDecoder.decode(rawQueryStr , "gbk"); 
+    //获取请求里包含的查询字符串
+    String rawQueryStr = request.getQueryString();
+    out.println("原始查询字符串为：" + rawQueryStr + "<hr/>");
+    //使用URLDecoder解码字符串
+    String queryStr = java.net.URLDecoder.decode(rawQueryStr , "gbk");
     out.println("解码后的查询字符串为：" + queryStr + "<hr/>");
     %>
     {% endcodeblock %}
     可通过如下代码来取得name请求参数的参数值。
     {% codeblock %}
     <%
-    //获取原始的请求参数值  
-    String rawName = request.getParameter("name");  
-    //将请求参数值使用ISO-8859-1字符串分解成字节数组  
-    byte[] rawBytes = rawName.getBytes("ISO-8859-1");  
-    //将字节数组重新解码成字符串  
-    String name = new String(rawBytes , "gb2312"); 
+    //获取原始的请求参数值
+    String rawName = request.getParameter("name");
+    //将请求参数值使用ISO-8859-1字符串分解成字节数组
+    byte[] rawBytes = rawName.getBytes("ISO-8859-1");
+    //将字节数组重新解码成字符串
+    String name = new String(rawBytes , "gb2312");
     %>
     {% endcodeblock %}
 
@@ -416,7 +416,7 @@ request对象是获取请求参数的重要途径。除此之外，request可代
     * include(ServletRequest request, ServletResponse response)：执行include。
 
     使用request的getRequestDispatcher(String path)方法时，该path字符串必须以斜线开头。
-    
+
 ### response
 
 response代表服务器对客户端的响应。大部分时候，程序无须使用response来响应客户端请求，因为有个更简单的响应对象--out，它代表页面输出流，直接使用out生成响应更简单。
@@ -429,39 +429,39 @@ response代表服务器对客户端的响应。大部分时候，程序无须使
 
     response是HttpServletResponse接口的实例，该接口提供了一个getOutputStream()方法，该方法返回响应输出字节流。下面的方法可以输出图像。
     {% codeblock %}
-    <%-- 通过contentType属性指定响应数据是图片 --%> 
-    <%@ page contentType="image/jpeg" language="java"%> 
-    <%@ page import="java.awt.image.*,javax.imageio.*,java.io.*,java.awt.*"%> 
-    <%  
-    //创建BufferedImage对象  
-    BufferedImage image = new BufferedImage(340 , 160, BufferedImage.TYPE_INT_RGB);  
-    //以Image对象获取Graphics对象  
-    Graphics g = image.getGraphics();  
-    //使用Graphics画图，所画的图像将会出现在image对象中  
-    g.fillRect(0,0,400,400);  
-    //设置颜色：红  
-    g.setColor(new Color(255,0,0));  
-    //画出一段弧  
-    g.fillArc(20, 20, 100,100, 30, 120);  
-    //设置颜色：绿  
-    g.setColor(new Color(0 , 255, 0));  
-    //画出一段弧  
-    g.fillArc(20, 20, 100,100, 150, 120);  
-    //设置颜色：蓝  
-    g.setColor(new Color(0 , 0, 255));  
-    //画出一段弧  
-    g.fillArc(20, 20, 100,100, 270, 120);  
-    //设置颜色：黑  
-    g.setColor(new Color(0,0,0));  
-    g.setFont(new Font("Arial Black", Font.PLAIN, 16));  
-    //画出三个字符串  
-    g.drawString("red:climb" , 200 , 60);  
-    g.drawString("green:swim" , 200 , 100);  
-    g.drawString("blue:jump" , 200 , 140);  
-    g.dispose();  
-    //将图像输出到页面的响应  
-    ImageIO.write(image , "jpg" , response.getOutputStream());  
-    %> 
+    <%-- 通过contentType属性指定响应数据是图片 --%>
+    <%@ page contentType="image/jpeg" language="java"%>
+    <%@ page import="java.awt.image.*,javax.imageio.*,java.io.*,java.awt.*"%>
+    <%
+    //创建BufferedImage对象
+    BufferedImage image = new BufferedImage(340 , 160, BufferedImage.TYPE_INT_RGB);
+    //以Image对象获取Graphics对象
+    Graphics g = image.getGraphics();
+    //使用Graphics画图，所画的图像将会出现在image对象中
+    g.fillRect(0,0,400,400);
+    //设置颜色：红
+    g.setColor(new Color(255,0,0));
+    //画出一段弧
+    g.fillArc(20, 20, 100,100, 30, 120);
+    //设置颜色：绿
+    g.setColor(new Color(0 , 255, 0));
+    //画出一段弧
+    g.fillArc(20, 20, 100,100, 150, 120);
+    //设置颜色：蓝
+    g.setColor(new Color(0 , 0, 255));
+    //画出一段弧
+    g.fillArc(20, 20, 100,100, 270, 120);
+    //设置颜色：黑
+    g.setColor(new Color(0,0,0));
+    g.setFont(new Font("Arial Black", Font.PLAIN, 16));
+    //画出三个字符串
+    g.drawString("red:climb" , 200 , 60);
+    g.drawString("green:swim" , 200 , 100);
+    g.drawString("blue:jump" , 200 , 140);
+    g.dispose();
+    //将图像输出到页面的响应
+    ImageIO.write(image , "jpg" , response.getOutputStream());
+    %>
     {% endcodeblock %}
 
 2. 重定向
@@ -490,14 +490,14 @@ response代表服务器对客户端的响应。大部分时候，程序无须使
     {% codeblock %}
     <%
     //增加cookie
-    String name = request.getParameter("name");  
-    //以获取到的请求参数为值，创建一个Cookie对象  
-    Cookie c = new Cookie("username" , name);  
-    //设置Cookie对象的生存期限  
-    c.setMaxAge(24 * 3600);  
-    //向客户端增加Cookie对象  
-    response.addCookie(c);  
-    %> 
+    String name = request.getParameter("name");
+    //以获取到的请求参数为值，创建一个Cookie对象
+    Cookie c = new Cookie("username" , name);
+    //设置Cookie对象的生存期限
+    c.setMaxAge(24 * 3600);
+    //向客户端增加Cookie对象
+    response.addCookie(c);
+    %>
     {% endcodeblock %}
     访问客户端Cookie使用request对象，request对象提供了getCookies()方法，该方法将返回客户端机器上所有Cookie组成的数组，遍历该数组的每个元素，找到希望访问的Cookie即可。
     使用Cookie对象必须设置其生存期限，否则Cookie将会随浏览器的关闭而自动消失。
@@ -567,6 +567,7 @@ Servlet和JSP的区别在于：
 上面开发Servlet类时使用了@WebServlet Annotation修饰该Servlet类，使用@WebServlet时可指定如表所示的常用属性。
 
 属    性          | 是否必需 | 说    明
+---|---|---
 asyncSupported    | 否       | 指定该Servlet是否支持异步操作模式。关于Servlet的异步调用请参考2.15节
 displayName       | 否       | 指定该Servlet的显示名
 initParams        | 否       | 用于为该Servlet配置参数
@@ -585,23 +586,23 @@ urlPatterns/value | 否       | 这两个属性的作用完全相同。都指定
 * 配置Servlet的URL：对应web.xml文件中的`<servlet-mapping/>`元素。这一步是可选的。但如果没有为Servlet配置URL，则该Servlet不能响应用户请求。
 
 ```
-<!-- 配置Servlet的名字 --> 
-<servlet>     
-<!-- 指定Servlet的名字，相当于指定@WebServlet的name属性 -->     
-<servlet-name>firstServlet</servlet-name>     
-<!-- 指定Servlet的实现类 -->     
-<servlet-class>lee.FirstServlet</servlet-class> </servlet> 
-<!-- 配置Servlet的URL --> 
-<servlet-mapping>     
-<!-- 指定Servlet的名字 -->     
-<servlet-name>firstServlet</servlet-name>     
-<!-- 指定Servlet映射的URL地址，相当于指定@WebServlet的urlPatterns属性-->    <url-pattern>/aa</url-pattern> 
-</servlet-mapping> 
+<!-- 配置Servlet的名字 -->
+<servlet>
+<!-- 指定Servlet的名字，相当于指定@WebServlet的name属性 -->
+<servlet-name>firstServlet</servlet-name>
+<!-- 指定Servlet的实现类 -->
+<servlet-class>lee.FirstServlet</servlet-class> </servlet>
+<!-- 配置Servlet的URL -->
+<servlet-mapping>
+<!-- 指定Servlet的名字 -->
+<servlet-name>firstServlet</servlet-name>
+<!-- 指定Servlet映射的URL地址，相当于指定@WebServlet的urlPatterns属性-->    <url-pattern>/aa</url-pattern>
+</servlet-mapping>
 ```
 
 通过注解
 ```
-@WebServlet(name="firstServlet", urlPatterns={"/firstServlet"}) 
+@WebServlet(name="firstServlet", urlPatterns={"/firstServlet"})
 ```
 
 ### JSP/Servlet的生命周期
@@ -626,18 +627,18 @@ urlPatterns/value | 否       | 这两个属性的作用完全相同。都指定
 * 通过@WebServlet Annotation的loadOnStartup属性指定。
 
 ```
-<servlet>     
-<!-- Servlet名 -->     
-<servlet-name>timerServlet</servlet-name>     
-<!-- Servlet的实现类 -->     
-<servlet-class>lee.TimerServlet</servlet-class>     
-<!-- 配置应用启动时，创建Servlet实例，相当于指定@WebServlet的loadOnStartup属性-->     
-<load-on-startup>1</load-on-startup> 
+<servlet>
+<!-- Servlet名 -->
+<servlet-name>timerServlet</servlet-name>
+<!-- Servlet的实现类 -->
+<servlet-class>lee.TimerServlet</servlet-class>
+<!-- 配置应用启动时，创建Servlet实例，相当于指定@WebServlet的loadOnStartup属性-->
+<load-on-startup>1</load-on-startup>
 </servlet>
 ```
 通过注解
 ```
-@WebServlet(loadOnStartup=1) 
+@WebServlet(loadOnStartup=1)
 ```
 
 ### 访问Servlet的配置参数
@@ -652,36 +653,36 @@ java.lang.String getInitParameter(java.lang.String name)：用于获取初始化
 JSP的内置对象config就是此处的ServletConfig。
 
 ```
-<servlet> 
-    <!-- 配置Servlet名 --> 
-    <servlet-name>testServlet</servlet-name> 
-    <!-- 指定Servlet的实现类 --> 
-    <servlet-class>lee.TestServlet</servlet-class> 
-    <!-- 配置Servlet的初始化参数：user --> 
-    <init-param> 
-        <param-name>user</param-name> 
-        <param-value>root</param-value> 
-    </init-param> 
-    <!-- 配置Servlet的初始化参数：pass --> 
-    <init-param> 
-        <param-name>pass</param-name> 
-        <param-value>32147</param-value> 
-    </init-param> 
-</servlet> 
-<servlet-mapping> 
-    <!-- 确定Servlet名 --> 
-    <servlet-name>testServlet</servlet-name> 
-    <!-- 配置Servlet映射的URL --> 
-    <url-pattern>/testServlet</url-pattern> 
-</servlet-mapping> 
+<servlet>
+    <!-- 配置Servlet名 -->
+    <servlet-name>testServlet</servlet-name>
+    <!-- 指定Servlet的实现类 -->
+    <servlet-class>lee.TestServlet</servlet-class>
+    <!-- 配置Servlet的初始化参数：user -->
+    <init-param>
+        <param-name>user</param-name>
+        <param-value>root</param-value>
+    </init-param>
+    <!-- 配置Servlet的初始化参数：pass -->
+    <init-param>
+        <param-name>pass</param-name>
+        <param-value>32147</param-value>
+    </init-param>
+</servlet>
+<servlet-mapping>
+    <!-- 确定Servlet名 -->
+    <servlet-name>testServlet</servlet-name>
+    <!-- 配置Servlet映射的URL -->
+    <url-pattern>/testServlet</url-pattern>
+</servlet-mapping>
 ```
 通过注解
 ```
-@WebServlet(name="testServlet" 
-    , urlPatterns={"/testServlet"}  
-    , initParams={  
-        @WebInitParam(name="user", value="root"),  
-        @WebInitParam(name="pass", value="32147")})  
+@WebServlet(name="testServlet"
+    , urlPatterns={"/testServlet"}
+    , initParams={
+        @WebInitParam(name="user", value="root"),
+        @WebInitParam(name="pass", value="32147")})
 ```
 
 ### 使用Servlet作为控制器
@@ -697,9 +698,9 @@ Model通常由JavaBean来充当，所有业务逻辑、数据访问逻辑都在M
 
 下面是MVC中各个角色的对应组件。
 
-M：Model，即模型，对应JavaBean。
-V：View，即视图，对应JSP页面。
-C：Controller，即控制器，对应Servlet。
+* M：Model，即模型，对应JavaBean。
+* V：View，即视图，对应JSP页面。
+* C：Controller，即控制器，对应Servlet。
 
 ## JSP 2的自定义标签
 
@@ -723,25 +724,25 @@ TLD是Tag Library Definition的缩写，即标签库定义，文件的后缀是t
 标签库定义文件的根元素是taglib，它可以包含多个tag子元素，每个tag子元素都定义一个标签。
 
 ```
-<?xml version="1.0" encoding="GBK"?> 
-<taglib xmlns="http://java.sun.com/xml/ns/j2ee" 
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"     
-xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd"     
-version="2.0">     
-<tlib-version>1.0</tlib-version>     
-<short-name>mytaglib</short-name>     
-<!-- 定义该标签库的URI -->     
-<uri>http://www.crazyit.org/mytaglib</uri>     
-<!-- 定义第一个标签 -->     
-<tag>         
-<!-- 定义标签名 -->         
-<name>helloWorld</name>         
-<!-- 定义标签处理类 -->         
-<tag-class>lee.HelloWorldTag</tag-class>         
-<!-- 定义标签体为空 -->         
-<body-content>empty</body-content>     
-</tag> 
-</taglib> 
+<?xml version="1.0" encoding="GBK"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd"
+version="2.0">
+<tlib-version>1.0</tlib-version>
+<short-name>mytaglib</short-name>
+<!-- 定义该标签库的URI -->
+<uri>http://www.crazyit.org/mytaglib</uri>
+<!-- 定义第一个标签 -->
+<tag>
+<!-- 定义标签名 -->
+<name>helloWorld</name>
+<!-- 定义标签处理类 -->
+<tag-class>lee.HelloWorldTag</tag-class>
+<!-- 定义标签体为空 -->
+<body-content>empty</body-content>
+</tag>
+</taglib>
 ```
 
 taglib下有如下三个子元素。
@@ -785,17 +786,17 @@ taglib的语法格式如下：
 其中uri属性确定标签库的URI，这个URI可以确定一个标签库。而prefix属性指定标签库前缀，即所有使用该前缀的标签将由此标签库处理。
 
 ```
-<%@ page contentType="text/html; charset=GBK" language="java" errorPage="" %> 
-<!-- 导入标签库，指定mytag前缀的标签，由http://www.crazyit.org/mytaglib的标签库处理 --> 
-<%@ taglib uri="http://www.crazyit.org/mytaglib" prefix="mytag"%> 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml"> 
-<head><title>自定义标签示范</title></head> 
-<body bgcolor="#ffffc0"> 
-<h2>下面显示的是自定义标签中的内容</h2> 
-<!-- 使用标签 ，其中mytag是标签前缀，根据taglib的编译指令，mytag前缀将由http://www.crazyit.org/mytaglib的标签库处理 --> 
-<mytag:helloWorld/><br/> 
-</body> </html> 
+<%@ page contentType="text/html; charset=GBK" language="java" errorPage="" %>
+<!-- 导入标签库，指定mytag前缀的标签，由http://www.crazyit.org/mytaglib的标签库处理 -->
+<%@ taglib uri="http://www.crazyit.org/mytaglib" prefix="mytag"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>自定义标签示范</title></head>
+<body bgcolor="#ffffc0">
+<h2>下面显示的是自定义标签中的内容</h2>
+<!-- 使用标签 ，其中mytag是标签前缀，根据taglib的编译指令，mytag前缀将由http://www.crazyit.org/mytaglib的标签库处理 -->
+<mytag:helloWorld/><br/>
+</body> </html>
 ```
 
 ### 带属性的标签
@@ -809,26 +810,26 @@ taglib的语法格式如下：
 * fragment：设置该属性是否支持JSP脚本、表达式等动态内容，子元素的值是true或false。
 
 ```
-<tag> 
-    <!-- 定义标签名 --> 
-    <name>tagname</name> 
-    <!-- 定义标签处理类 --> 
-    <tag-class>lee.Tag</tag-class> 
-    <!-- 定义标签体为空 --> 
-    <body-content>empty</body-content> 
-    <!-- 配置标签属性:user --> 
-    <attribute> 
-        <name>user</name> 
-        <required>true</required> 
-        <fragment>true</fragment> 
-    </attribute> 
-    <!-- 配置标签属性:pass --> 
-    <attribute> 
-        <name>pass</name> 
-        <required>true</required> 
-        <fragment>true</fragment> 
-    </attribute> 
-</tag> 
+<tag>
+    <!-- 定义标签名 -->
+    <name>tagname</name>
+    <!-- 定义标签处理类 -->
+    <tag-class>lee.Tag</tag-class>
+    <!-- 定义标签体为空 -->
+    <body-content>empty</body-content>
+    <!-- 配置标签属性:user -->
+    <attribute>
+        <name>user</name>
+        <required>true</required>
+        <fragment>true</fragment>
+    </attribute>
+    <!-- 配置标签属性:pass -->
+    <attribute>
+        <name>pass</name>
+        <required>true</required>
+        <fragment>true</fragment>
+    </attribute>
+</tag>
 ```
 JSTL是Sun提供的一套标签库，这套标签库的功能非常强大。另外，DisplayTag是Apache组织下的一套开源标签库，主要用于生成页面并显示效果。
 
@@ -842,28 +843,28 @@ public class IteratorTag extends SimpleTagSupport  {
     private String collection;
     //标签属性，指定迭代集合元素，为集合元素指定的名称
     private String item;
-    //省略collection属性的setter和getter方法      ...      
-    //省略item属性的setter和getter方法      ...      
-    //标签的处理方法，简单标签处理类只需要重写doTag方法      
+    //省略collection属性的setter和getter方法      ...
+    //省略item属性的setter和getter方法      ...
+    //标签的处理方法，简单标签处理类只需要重写doTag方法
     public void doTag() throws JspException, IOException{
         //从page scope中获取属性名为collection的集合
         Collection itemList = (Collection)getJspContext().getAttribute(collection);
-        //遍历集合          
+        //遍历集合
         for (Object s : itemList)
-        { 
+        {
             //将集合的元素设置到page 范围
             getJspContext().setAttribute(item, s );
-            //输出标签体              
+            //输出标签体
             getJspBody().invoke(null);
-        }      
-    }  
-} 
+        }
+    }
+}
 ```
 标签处理类的doTag方法首先从page范围内获取了指定名称的Collection对象，然后遍历Collection对象的元素，每次遍历都调用了getJspBody()方法，该方法返回该标签所包含的标签体：JspFragment对象，执行该对象的invoke()方法，即可输出标签体内容。该标签的作用是：遍历指定集合，每遍历一个集合元素，即输出标签体一次。
 
 mytaglib.tld:
 ```
-<tag>     
+<tag>
 <!-- 定义标签名 -->
 <name>iterator</name>
 <!-- 定义标签处理类 -->
@@ -881,13 +882,13 @@ mytaglib.tld:
     <name>item</name>
     <required>true</required>
     <fragment>true</fragment>
-</attribute> 
-</tag> 
+</attribute>
+</tag>
 ```
 
 iteratorTag.jsp:
 ```
-<%@ page contentType="text/html; charset=GBK" language="java" errorPage="" %> 
+<%@ page contentType="text/html; charset=GBK" language="java" errorPage="" %>
 <%@ page import="java.util.*"%>
 <!-- 导入标签库，指定mytag前缀的标签，由http://www.crazyit.org/mytaglib的标签库处理 -->
 <%@ taglib uri="http://www.crazyit.org/mytaglib" prefix="mytag"%>
@@ -901,16 +902,16 @@ a.add("疯狂Java");
 a.add("www.crazyit.org");
 a.add("java");
 //将List对象放入page范围内
-pageContext.setAttribute("a" , a); 
+pageContext.setAttribute("a" , a);
 %>
 <table border="1" bgcolor="#aaaadd" width="300">
 <!-- 使用迭代器标签，对a集合进行迭代 -->
 <mytag:iterator collection="a" item="item">
 <tr>
 <td>${pageScope.item}</td>
-<tr>         
+<tr>
 </mytag:iterator>
-</table> 
+</table>
 </body>
 ```
 
@@ -925,7 +926,7 @@ JSP 2规范的自定义标签还允许直接将一段"页面片段"作为属性�
 
 ```
 public class FragmentTag extends SimpleTagSupport {
-    private JspFragment fragment;     
+    private JspFragment fragment;
     //fragment属性的setter和getter方法
     public void setFragment(JspFragment fragment) {
         this.fragment = fragment;
@@ -976,8 +977,8 @@ fragmentTag.jsp:
     <jsp:attribute name="fragment">
         <!-- 下面是动态的JSP页面片段 -->
         ${pageContext.request.remoteAddr}
-    </jsp:attribute> 
-</mytag:fragment> 
+    </jsp:attribute>
+</mytag:fragment>
 ```
 
 ### 动态属性的标签
@@ -1015,7 +1016,7 @@ public class DynaAttributesTag extends SimpleTagSupport implements DynamicAttrib
         //添加属性值
         values.add( value );
     }
-} 
+}
 ```
 
 mytaglib.tld
@@ -1028,18 +1029,18 @@ mytaglib.tld
     <body-content>empty</body-content>
     <!-- 指定支持动态属性 -->
     <dynamic-attributes>true</dynamic-attributes>
-</tag> 
+</tag>
 ```
 
 dynaAttrTag.jsp
 
 ```
-<!-- 导入标签库，指定mytag前缀的标签，由http://www.crazyit.org/mytaglib的标签库处理 --> 
+<!-- 导入标签库，指定mytag前缀的标签，由http://www.crazyit.org/mytaglib的标签库处理 -->
 <%@ taglib uri="http://www.crazyit.org/mytaglib" prefix="mytag"%>
 <h2>下面显示的是自定义标签中的内容</h2>
 <h4>指定两个属性</h4>
 <mytag:dynaAttr name="crazyit" url="crazyit.org"/>
-<br/> 
+<br/>
 <h4>指定四个属性</h4>
 <mytag:dynaAttr 书名="疯狂Java讲义" 价格="99.0" 出版时间="2008年" 描述="Java图书"/>
 <br/>
@@ -1095,6 +1096,7 @@ Filter有如下几个种类。
 @WebFilter支持的常用属性
 
 属    性          | 是否必需 | 说    明
+---|---|---
 asyncSupported    | 否       | 指定该Filter是否支持异步操作模式。关于Filter的异步调用请参考2.15节
 dispatcherTypes   | 否       | 指定该Filter仅对那种dispatcher模式的请求进行过滤。该属性支持ASYNC、ERROR、FORWARD、INCLUDE、REQUEST 这5个值的任意组合。默认值为同时过滤5种模式的请求
 displayName       | 否       | 指定该Filter的显示名
@@ -1119,7 +1121,7 @@ urlPatterns/value | 否       | 这两个属性的作用完全相同。都指定
     <filter-name>log</filter-name>
     <!-- Filter负责拦截的URL，相当于指定@WebFilter的urlPatterns属性 -->
     <url-pattern>/*</url-pattern>
-</filter-mapping> 
+</filter-mapping>
 ```
 
 实际上Filter和Servlet极其相似，区别只是Filter的doFilter()方法里多了一个FilterChain的参数，通过该参数可以控制是否放行用户请求。
@@ -1150,7 +1152,7 @@ web.xml
 <filter-mapping>
 <filter-name>UrlRewriteFilter</filter-name>
 <url-pattern>/*</url-pattern>
-</filter-mapping> 
+</filter-mapping>
 ```
 上面的配置片段指定使用URL Rewrite Filter拦截所有的用户请求。
 
@@ -1168,7 +1170,7 @@ web.xml
 <!-- 将被forward到如下JSP页面，其中$1代表上面第一个正则表达式所匹配的字符串 -->
 <to type="forward">/userinf.jsp?username=$1</to>
 </rule>
-</urlrewrite> 
+</urlrewrite>
 ```
 
 上面的规则文件中只定义了一个简单的规则：所有发向/userinf-(\w*).html的请求都将被forward到user.jsp页面，并将(\w*)正则表达式所匹配的内容作为username参数值。根据这个伪静态规则，我们应该为该应用提供一个userinf.jsp页面，该页面只是一个模拟了一个显示用户信息的页面
@@ -1190,7 +1192,7 @@ String user = request.getParameter("username");
 //此处只是模拟，因此简单输出：
 out.println("现在时间是：" + new java.util.Date() + "<br/>");
 out.println("用户名：" + user);  %>
-</body> </html> 
+</body> </html>
 ```
 
 ## Listener 介绍
@@ -1270,12 +1272,12 @@ HttpSessionAttributeListener则用于监听HttpSession（session）范围内属�
 ```
 <?xml version="1.0" encoding="GBK"?>
 <!--  不再使用DTD，而是使用Schema描述，版本也升级为 2.4-->
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee" 
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
 <!-- 此处是Web应用的其他配置 -->
 ...
-</web-app> 
+</web-app>
 ```
 ### 配置jsp属性
 
@@ -1315,7 +1317,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/
         <scripting-invalid>true</scripting-invalid>
     </jsp-property-group>
 </jsp-config>
-</web-app> 
+</web-app>
 ```
 
 ### 表达式语言
@@ -1333,7 +1335,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/
     表达式语言把所有数值都当成浮点数处理，所以3/0的实质是3.0/0.0，得到结果应该是Infinity。
 
 2. 表达式语言的内置对象
-    
+
     表达式语言包含如下11个内置对象。
     * pageContext：代表该页面的pageContext对象，与JSP的pageContext内置对象相同。
     * pageScope：用于获取page范围的属性值。
@@ -1387,7 +1389,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/
         <!-- 定义函数的实现方法-->
         <function-signature>int countChar(java.lang.String)</function-signature>
     </function>
-    </taglib> 
+    </taglib>
     {% endcodeblock %}
 
     上面的粗体字代码定义了两个函数，不难发现其实定义函数比定义自定义标签更简单，因为自定义函数只需配置三个子元素即可，变化更少。
@@ -1431,7 +1433,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/
     <td>${crazyit:countChar(param["name"])}&nbsp;</td>
     </tr>
     </table>
-    </body> </html> 
+    </body> </html>
     {% endcodeblock %}
 
     如上面程序中粗体字代码所示，导入标签库定义文件后（实质上也是函数库定义文件），就可以在表达式语言中使用函数定义库文件里定义的各函数了。
@@ -1465,9 +1467,9 @@ iterator.tag
 List<String> list = (List<String>) request.getAttribute("a");
 //遍历输出list集合的元素
 for (Object ele : list){
-%> 
+%>
 <tr> <td bgcolor="${cellColor}"><%=ele%> </td> </tr>
-<%}%> 
+<%}%>
 ```
 
 将该文件存在Web应用的某个路径下，这个路径相当于标签库的URI名。如将其放在/WEB-INF/tags下
@@ -1475,7 +1477,7 @@ for (Object ele : list){
 在页面中使用自定义标签时，需要先导入标签库，再使用标签。使用Tag File标签与普通自定义标签的用法完全相同，只是在导入标签库时存在一些差异。由于此时的标签库没有URI，只有标签库路径。因此导入标签时，使用如下语法格式：
 
 ```
-<%@ taglib prefix="tagPrefix" tagdir="path" %> 
+<%@ taglib prefix="tagPrefix" tagdir="path" %>
 ```
 其中，prefix与之前的taglib指令的prefix属性完全相同，用于确定标签前缀；而tagdir标签库路径下存放很多Tag File，每个Tag File对应一个标签。
 
@@ -1504,7 +1506,7 @@ request.setAttribute("a" , a);%>
 ```
 
 ```
-<tags:iterator bgColor="#99dd99" cellColor="#9999cc" title="迭代器标签" bean="a" /> 
+<tags:iterator bgColor="#99dd99" cellColor="#9999cc" title="迭代器标签" bean="a" />
 ```
 tags表明该标签使用/WEB-INF/tags路径下的Tag File来处理标签；**而iterator是标签名，即使用WEB-INF/tags路径下的iterator.tag文件负责处理该标签**。
 
@@ -1663,7 +1665,7 @@ public class Executor implements Runnable {
             e.printStackTrace();
         }
     }
-} 
+}
 ```
 该线程执行体内让线程暂停5秒来模拟调用耗时的业务方法，最后调用AsyncContext的dispatch方法把请求dispatch到指定JSP页面。
 
@@ -1675,13 +1677,13 @@ async.jsp:
 <%@ page contentType="text/html; charset=GBK" language="java" session="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <ul> <c:forEach items="${books}" var="book">
-<li>${book}</li> 
-</c:forEach> 
+<li>${book}</li>
+</c:forEach>
 </ul>
 <%out.println("业务调用结束的时间：" + new java.util.Date());
 //完成异步调用
 request.getAsyncContext().complete();
-%> 
+%>
 ```
 为Servlet开启异步调用有两种方式：
 
@@ -1741,7 +1743,7 @@ UploadServlet.java:
 @WebServlet(name="upload" , urlPatterns={"/upload"})
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
-    public void service(HttpServletRequest request , HttpServletResponse response) throws IOException , ServletException { 
+    public void service(HttpServletRequest request , HttpServletResponse response) throws IOException , ServletException {
         response.setContentType("text/html;charset=GBK");
         PrintWriter out = response.getWriter();
         //获取普通请求参数
@@ -1762,7 +1764,7 @@ public class UploadServlet extends HttpServlet {
         part.write(getServletContext().getRealPath("/uploadFiles") + "/" + fileName );
         //①
     }
-} 
+}
 ```
 
 上面Servlet使用了@MultipartConfig修饰，处理文件上传的Servlet应该使用该Annotation修饰。接下来该Servlet中HttpServletRequest就可通过getPart(String name)方法来获取文件上传域--就像获取普通请求参数一样。

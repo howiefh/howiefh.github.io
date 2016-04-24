@@ -4,7 +4,7 @@ tags: JavaScript
 categories: JavaScript
 description: JavaScript 基本语法，ECMAScript 6，语法，变量，数据类型，操作符，语句，函数，箭头函数，Generator函数，尾调用优化，模块，错误处理，基本类型和引用类型，执行环境和作用域，垃圾回收
 ---
-[JavaScript 基本语法](2015/08/28/javascript-grammar/)，[JavaScript 引用类型](2015/08/28/javascript-reference-type/)，[JavaScript 面向对象程序设计、函数表达式和异步编程](2015/08/28/javascript-oop-function-expression-and-async/)三篇笔记是对《JavaScript 高级程序设计》和 [《ECMAScript 6入门》](https://github.com/ruanyf/es6tutorial/tree/5a5f9d8d492d0f925cbb6e09b10ebed9d2078d40)两本书的总结整理。
+[JavaScript 基本语法](/2015/08/28/javascript-grammar/)，[JavaScript 引用类型](/2015/08/28/javascript-reference-type/)，[JavaScript 面向对象程序设计、函数表达式和异步编程](/2015/08/28/javascript-oop-function-expression-and-async/)三篇笔记是对《JavaScript 高级程序设计》和 [《ECMAScript 6入门》](https://github.com/ruanyf/es6tutorial/tree/5a5f9d8d492d0f925cbb6e09b10ebed9d2078d40)两本书的总结整理。
 
 # 简介
 一个完整的JavaScript实现应该由三个不同的部分组成：核心（ECMAScript）、文档对象模型（DOM）、浏览器对象模型（BOM）

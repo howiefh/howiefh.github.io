@@ -107,24 +107,24 @@ extern "C"
 
 extern int log_init(const char *category);
 extern void log_message(int priority ,
-		const char *file, int line, const char *fun,
-		const char *fmt , ...);
+        const char *file, int line, const char *fun,
+        const char *fmt , ...);
 extern int log_fini();
 
 #define LOG_FATAL(fmt,args...) 		\
-	log_message(LOG_PRI_FATAL,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
+    log_message(LOG_PRI_FATAL,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
 #define LOG_ERROR(fmt , args...)	\
-	log_message(LOG_PRI_ERROR,__FILE__ , __LINE__ , __FUNCTION__ , fmt, ##args)
+    log_message(LOG_PRI_ERROR,__FILE__ , __LINE__ , __FUNCTION__ , fmt, ##args)
 #define LOG_WARN(fmt, args...)		\
-	log_message(LOG_PRI_WARN,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
+    log_message(LOG_PRI_WARN,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
 #define LOG_NOTICE(fmt , args...)	\
-	log_message(LOG_PRI_NOTICE,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
+    log_message(LOG_PRI_NOTICE,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
 #define LOG_INFO(fmt,args...) 		\
-	log_message(LOG_PRI_INFO,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
+    log_message(LOG_PRI_INFO,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
 #define LOG_DEBUG(fmt , args...)	\
-	log_message(LOG_PRI_DEBUG,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
+    log_message(LOG_PRI_DEBUG,__FILE__ , __LINE__ , __FUNCTION__ , fmt , ##args)
 #define LOG_TRACE(fmt,args...) 		\
-	log_message(LOG_PRI_TRACE, __FILE__ , __LINE__ , __FUNCTION__ , fmt ,##args)
+    log_message(LOG_PRI_TRACE, __FILE__ , __LINE__ , __FUNCTION__ , fmt ,##args)
 
 #endif
 ```
@@ -167,8 +167,8 @@ int log_init(const char *category)
 //  @param fmt [in]: 格式化参数
 // =====================================================================================
 void log_message(int priority ,
-			const char *file, int line, const char *fun,
-			const char *fmt , ...)
+                    const char *file, int line, const char *fun,
+                    const char *fmt , ...)
 {
     char new_fmt[2048];
     const char * head_fmt = "[file:%s, line:%d, function:%s]";
@@ -288,29 +288,29 @@ extern int log_init(const char *category);
 extern void log_fini();
 //宏定义
 #define LOG_FATAL(fmt,args...) 		\
-	zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
-	__func__, sizeof(__func__)-1, __LINE__, \
-	ZLOG_LEVEL_FATAL, fmt, ##args)
+    zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
+    __func__, sizeof(__func__)-1, __LINE__, \
+    ZLOG_LEVEL_FATAL, fmt, ##args)
 #define LOG_ERROR(fmt , args...)	\
-	zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
-	__func__, sizeof(__func__)-1, __LINE__, \
-	ZLOG_LEVEL_ERROR, fmt, ##args)
+    zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
+    __func__, sizeof(__func__)-1, __LINE__, \
+    ZLOG_LEVEL_ERROR, fmt, ##args)
 #define LOG_WARN(fmt, args...)		\
-	zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
-	__func__, sizeof(__func__)-1, __LINE__, \
-	ZLOG_LEVEL_WARN, fmt, ##args)
+    zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
+    __func__, sizeof(__func__)-1, __LINE__, \
+    ZLOG_LEVEL_WARN, fmt, ##args)
 #define LOG_NOTICE(fmt , args...)	\
-	zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
-	__func__, sizeof(__func__)-1, __LINE__, \
-	ZLOG_LEVEL_NOTICE, fmt, ##args)
+    zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
+    __func__, sizeof(__func__)-1, __LINE__, \
+    ZLOG_LEVEL_NOTICE, fmt, ##args)
 #define LOG_INFO(fmt,args...) 		\
-	zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
-	__func__, sizeof(__func__)-1, __LINE__, \
-	ZLOG_LEVEL_INFO, fmt, ##args)
+    zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
+    __func__, sizeof(__func__)-1, __LINE__, \
+    ZLOG_LEVEL_INFO, fmt, ##args)
 #define LOG_DEBUG(fmt , args...)	\
-	zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
-	__func__, sizeof(__func__)-1, __LINE__, \
-	ZLOG_LEVEL_DEBUG, fmt, ##args)
+    zlog(log_category, __FILE__, sizeof(__FILE__)-1, \
+    __func__, sizeof(__func__)-1, __LINE__, \
+    ZLOG_LEVEL_DEBUG, fmt, ##args)
 
 #endif
 ```

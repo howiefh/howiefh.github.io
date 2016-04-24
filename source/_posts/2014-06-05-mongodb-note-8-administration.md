@@ -49,6 +49,7 @@ Nagios、Munin、Ganglia、Cacti
 每个MongoDB实例中的数据库都有多个用户，如果开启了安全性检查，则只有数据库认证用户才能执行读或写操作。在认证的上下文中，MongoDB会将普通的数据作为admin数据库处理。admin数据库中的用户被视为超级用户。
 
 在开启安全检查之前，一定要至少有个管理员账号。开始时shell连接的是没有开启安全检查的服务器。
+
 ```
 use admin
 db.addUser("root","abcd");
@@ -56,11 +57,13 @@ use test
 db.addUser("test_user","abcd");
 db.addUser("read_only","abcd",true);
 ```
+
 上面添加了管理员root，在test数据库添加了两个普通账号，其中一个是只读权限的，不能对数据库写入。在shell中创建只读用户只需要将addUser的第三个参数设置为true即可。
 
 addUser 还可以修改用户口令或只读状态。
 
 现在我们重启服务器，这次加入 --auth 命令选项，开启安全检查。
+
 ```
 use test
 db.test.find(); //这样会报错，因为没有登录
@@ -79,14 +82,17 @@ show dbs
 ### 认证的工作原理
 
 数据库的用户账户以文档的形式存储在system.users集合里面，文档的结构是
+
 ```
 {"user":username,"readonly":true,"pwd":password hash}
 ```
+
 如果需要删除用户，和删除文档一样：
+
 ```
 db.system.users.remove({"user":"username"})
 ```
- 
+
 ### 其他安全考虑
 
 建议将MongoDB服务器布置在防火墙后或者布置在只有应用服务器能访问的网络中。但要是MongoDB必须能被外面访问到的话，建议使用 --bindip 选项，可以指定mongod绑定到本地IP地址。
@@ -104,13 +110,13 @@ db.system.users.remove({"user":"username"})
 
 - 优点：可以完全保证数据一致性
 - 缺点：需要数据库引擎离线
- 
+
 ### mongodump和mongorestore
 
 属于热备份。mongodump是一种能在运行时备份的方法。mongodump对运行的MongoDB做查询，然后将所有查到的文档写入磁盘。
 
 mongodump也可以通过运行 --help 选项查看所有选项。
- 
+
 mongorestore可以获取mongodump的输出结果，并将备份的数据插入到运行的MongoDB实例中。下面的例子演示了从数据库test到backup目录的热备份。
 
 ```
@@ -130,7 +136,9 @@ mongorestore可以获取mongodump的输出结果，并将备份的数据插入�
 use admin
 db.runCommand({"fsync":1,"lock":1});
 ```
+
 上锁了，备份成功之后，我们就要解锁。
+
 ```
 db.$cmd.sys.unlock.findOne(); //解锁
 db.currentOp(); //确保已经解锁
@@ -138,18 +146,19 @@ db.currentOp(); //确保已经解锁
 
 - 优点：备份灵活，不用停止服务器，也不用牺牲备份的实时特性
 - 缺点：一些写入操作被暂时阻塞了
- 
+
 ### 从属备份
 
 创建主从复制机制，配置完成后数据会自动同步
 
 - 优点：可以保持MongoDB处于联机状态，不影响性能
 - 缺点：在数据写入密集的情况下可能无法保持数据完整性
- 
+
 ### 修复
 
 在启动的时候 mongod --repair 修复数据。修复数据还能起到压缩数据的作用。
 修复正在运行中的服务器上的数据库，要在shell中用repairDatabase。
+
 ```
 use test
 db.repairDatabase()

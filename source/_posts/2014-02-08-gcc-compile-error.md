@@ -4,7 +4,8 @@ categories: C
 tags: [C, Gcc]
 ---
 # 问题
-(.rodata+0x0): multiple definition of   
+(.rodata+0x0): multiple definition of
+
 在头文件中有如下代码:
 
 ```c
@@ -27,6 +28,7 @@ make: *** [master] Error 1
 ```
 
 <!-- more -->
+
 # 解决
 因为每个c文件中都包含了这个头文件。
 ```
