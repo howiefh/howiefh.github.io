@@ -1151,7 +1151,8 @@ Foo.classMethod() // 'hello'
 var foo = new Foo();
 foo.classMethod()
 // TypeError: undefined is not a function
-```javascript
+```
+
 父类的静态方法，可以被子类继承。
 
 ES6为new命令引入了一个`new.target`属性，（在构造函数中）返回new命令作用于的那个构造函数。如果构造函数不是通过new命令调用的，`new.target`会返回undefined，因此这个属性可以用来确定构造函数是怎么调用的。
@@ -1167,7 +1168,7 @@ class Shape {
     }
   }
 }
-```javascript
+```
 ### 共享变量
 在构造函数原型上定义的属性可以被所有实例共享。
 
