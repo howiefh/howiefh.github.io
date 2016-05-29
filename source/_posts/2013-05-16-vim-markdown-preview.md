@@ -37,3 +37,5 @@ tags: [Vim, Markdown, Chrome]
 autocmd BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} map <Leader>p :!start "C:\Program Files\Google\Chrome\Application\chrome.exe" "%:p"<CR>
 {% endcodeblock %}
 以后，需要预览时再`\p`打开浏览器预览。
+
+Update: 现在如果使用 Hexo 想实时预览的话，有更方便的选择，就是安装插件[hexo-livereload](https://github.com/hexojs/hexo-livereload)

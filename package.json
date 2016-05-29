@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "hexo": "^3.2.0",
-    "hexo-calendar": "git://github.com/howiefh/hexo-calendar.git",
     "hexo-deployer-git": "^0.1.0",
     "hexo-generator-archive": "^0.1.4",
     "hexo-generator-calendar": "git://github.com/howiefh/hexo-generator-calendar.git",
