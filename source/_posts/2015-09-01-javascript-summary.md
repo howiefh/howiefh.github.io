@@ -413,13 +413,14 @@ with(location){
     var hostName = hostname;
     var url = href;
 }
-```javascript
+```
 使用with 语句关联了location 对象。这意味着在with 语句的代码块内部，每个变量首先被认为是一个局部变量，而如果在局部环境中找不到该变量的定义，就会查询location对象中是否有同名的属性。如果发现了同名属性，则以location对象属性的值作为变量的值。 严格模式下不允许使用with语句，否则将视为语法错误
 
 ## for-of
 实现了Iterable接口的对象都可以用于for-of循环。for-of循环可以使用的范围包括数组、Set和Map结构及其entries,values,keys方法返回的对象、某些类似数组的对象（比如arguments对象、DOM NodeList对象）、Generator函数返回的对象，以及字符串。
 
 并不是所有类似数组的对象都具有iterator接口，一个简便的解决方法，就是使用Array.from方法将其转为数组。
+
 ```javascript
 let arrayLike = { length: 2, 0: 'a', 1: 'b' };
 Array.from(arrayLike);
