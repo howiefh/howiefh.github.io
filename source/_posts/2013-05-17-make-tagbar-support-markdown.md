@@ -28,13 +28,14 @@ let g:tagbar_type_markdown = {
 ```
 
 <!--more-->
-由于用tagbar替换了taglist，原来的txtbrowser不能再生成目录结构了，和上面类似的  
-   
+
+由于用tagbar替换了taglist，原来的txtbrowser不能再生成目录结构了，和上面类似的
+
 ### 编辑ctags.cnf
 
 向ctags.cnf文件再添加以下内容
 ```
---langdef=txt 
+--langdef=txt
 --langmap=txt:.txt
 --regex-txt=/^([0-9]+\.?[ \t]+)(.+$)/\1\2/c,content/
 --regex-txt=/^(([0-9]+\.){1}([0-9]+\.?)[ \t]+)(.+$)/.   \1\4/c,content/
@@ -49,9 +50,9 @@ let g:tagbar_type_txt = {
     \ 'ctagstype': 'txt',
     \ 'kinds' : [
         \'c:content',
-		\'t:tables',
-		\'f:figures'
+        \'t:tables',
+        \'f:figures'
     \],
-	\ 'sort'    : 0
+    \ 'sort'    : 0
 \}
 ```

@@ -3,7 +3,7 @@ title: hexo优化及主题Landscape-F
 date: 2014-04-20 21:45:47
 tags: Hexo
 categories: Hexo
-description: hexo Landscape-F, hexo 优化，hexo 博客，hexo 主题，hexo 七牛，hexo 多说，hexo theme，hexo github，hexo 图片，hexo 返回顶部, hexo 日历, hexo 友情链接, hexo about me, hexo 分享，hexo 彩色标签云, hexo 文章目录, hexo 最近更新, hexo 评论, hexo 技巧，hexo 教程 
+description: hexo Landscape-F, hexo 优化，hexo 博客，hexo 主题，hexo 七牛，hexo 多说，hexo theme，hexo github，hexo 图片，hexo 返回顶部, hexo 日历, hexo 友情链接, hexo about me, hexo 分享，hexo 彩色标签云, hexo 文章目录, hexo 最近更新, hexo 评论, hexo 技巧，hexo 教程
 ---
 自从去年装好[Hexo]后就没有更新过，直到最近才把[Hexo]从1.1.3更新到了2.5.2。发现有了不少的变化，插件比过去多了，还有了新的默认主题，[文档]也比过去更详细了。但是默认主题有一些我需要的东西还没有，比如文章目录、返回顶部按钮、多说评论，百度分享等等。在网上找了不少[Hexo主题]，最后还是觉得默认主题比较不错，还有一个[Pacman]感觉也挺好的。于是就在[Landscape]基础上主要参考[Pacman]对默认主题进行了一些优化，这样我的主题[Landscape-F]就诞生了。
 
@@ -58,10 +58,21 @@ widgets:
 - duoshuo_recent_comments
 - links
 
+# display widgets at the bottom of index pages (pagination == 2)
+index_widgets:
+# - category
+# - tagcloud
+# - archive
+
+# widget behavior
+archive_type: 'monthly'
+show_count: true
+
 # Miscellaneous
 google_analytics:
 baidu_tongji:
 favicon: /favicon.ico
+
 twitter:
 google_plus:
 fb_admins:
@@ -71,12 +82,11 @@ fb_app_id:
 toc:
   article: true   ## show contents in article.
   aside: true     ## show contents in aside.
-
 # Scroll to top
 go_top: true
 
 # duoshuo
-duoshuo_shortname: 
+duoshuo_shortname:
 
 # baidu share
 baidushare: true
@@ -96,6 +106,9 @@ about_me:
 
 # display updated
 display_updated: true
+
+# 不蒜子
+busuanzi: true
 ```
 
 - **menu** - 导航菜单
@@ -107,7 +120,7 @@ display_updated: true
 - **widgets** - 侧边栏显示的小工具
 - **google_analytics** - Google Analytics ID
 - **baidu_tongji** - 百度统计ID
-- **favicon** - Favicon 路径 
+- **favicon** - Favicon 路径
 - **twitter** - Twiiter ID
 - **google_plus** - Google+ ID
 - **toc** - 在文章和侧边栏显示文章目录（侧边栏的文章目录默认隐藏，按返回顶部下面的按钮可以显示）
@@ -117,6 +130,7 @@ display_updated: true
 - **links** - 在侧边栏显示友情链接，name链接名称，link链接地址
 - **about_me** - 在侧边栏显示关于我。优先使用gravatar，如果没有填写gravatar，将使用设置的avatar图片。texts 可以是一些介绍的文字。
 - **display_updated** - 在文章底部显示文章更新时间
+- **busuanzi** - 是否启用不蒜子统计访问量
 
 ### 侧边栏
 
@@ -159,7 +173,7 @@ display_updated: true
 
 侧边栏添加日历，如果当月某天发布过博客，对应日期将会显示为链接，仅限当月。需要使用[hexo-calendar]
 
-### 顶部添加github链接 
+### 顶部添加github链接
 
 顶部github 链接可以在`_config`中设置
 
@@ -173,7 +187,7 @@ display_updated: true
 
 ### 调整侧边栏样式
 
-在archive页面仅显示archive小工具 
+在archive页面仅显示archive小工具
 
 ### 修改article title样式
 
@@ -182,6 +196,8 @@ display_updated: true
 ### 添加语言文件
 
 ### 修改滚动条样式
+
+### 添加不蒜子统计访问量
 
 ## 其它
 

@@ -33,8 +33,7 @@ tags: [Eclipse, 软件]
 
 ## 显示行号
 
-打开window->Preferences->General->Editors->Text Editors，
-Show line numbers前面打钩
+打开window->Preferences->General->Editors->Text Editors，Show line numbers前面打钩
 
 ## 转向声明
 

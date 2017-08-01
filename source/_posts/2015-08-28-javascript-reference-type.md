@@ -4,7 +4,7 @@ tags: JavaScript
 categories: JavaScript
 description: JavaScript 引用类型，Object，Array，Date，RegExp，Function，Number，Boolean，String，Global，Math，Map，Set，WeakMap，WeakSet，Proxy，Reflect，Promise，Iterator
 ---
-[JavaScript 基本语法](2015/08/28/javascript-grammar/)，[JavaScript 引用类型](2015/08/28/javascript-reference-type/)，[JavaScript 面向对象程序设计、函数表达式和异步编程](2015/08/28/javascript-oop-function-expression-and-async/)三篇笔记是对《JavaScript 高级程序设计》和 [《ECMAScript 6入门》](https://github.com/ruanyf/es6tutorial/tree/5a5f9d8d492d0f925cbb6e09b10ebed9d2078d40)两本书的总结整理。
+[JavaScript 基本语法](/2015/08/28/javascript-grammar/)，[JavaScript 引用类型](/2015/08/28/javascript-reference-type/)，[JavaScript 面向对象程序设计、函数表达式和异步编程](/2015/08/28/javascript-oop-function-expression-and-async/)三篇笔记是对《JavaScript 高级程序设计》和 [《ECMAScript 6入门》](https://github.com/ruanyf/es6tutorial/tree/5a5f9d8d492d0f925cbb6e09b10ebed9d2078d40)两本书的总结整理。
 
 # 引用类型
 引用类型是一种数据结构，用于将数据和功能组织在一起。它也常被称为类，但这种称呼并不妥当。尽管 ECMAScript从技术上讲是一门面向对象的语言，但它不具备传统的面向对象语言所支持的类和接口等基本结构。引用类型有时候也被称为对象定义，因为它们描述的是一类对象所具有的属性和方法。

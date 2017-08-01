@@ -4,7 +4,9 @@ categories: Ubuntu
 tags: Ubuntu
 ---
 不知道为啥在执行sudo命令时，会提示sudo: unable to resolve host ，亦即无法解析主机。在网上搜了下，找到了解决方法：
+
 <!-- more -->
+
 ```
 sudo gedit /etc/hosts
 ```

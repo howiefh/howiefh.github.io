@@ -107,7 +107,7 @@ array = (T[])new Object[size]; // "unchecked" Warning
 
 为了更灵活的创建更有意义的数组，可以使用数据生成器。
 ```
-interface Generator<T> { T next(); } 
+interface Generator<T> { T next(); }
 ```
 
 ### Arrays实用功能
@@ -176,7 +176,7 @@ Java标准库中的排序算法针对正排序的特殊类型进行了优化： 
 
 #### 一种Generator解决方案
 
-所有的Collection子类型都有一个接收另一个Collection对象的构造器，用所接收的Collection对象中的元素来填充新的容器。 
+所有的Collection子类型都有一个接收另一个Collection对象的构造器，用所接收的Collection对象中的元素来填充新的容器。
 
 #### Map生成器
 
@@ -186,7 +186,7 @@ Java标准库中的排序算法针对正排序的特殊类型进行了优化： 
 
 对于产生用于容器的测试数据问题，另一种解决方式是创建定制的Collection和Map实现。每个java.util容器都有其自己的Abstract类，它们提供了该容器的部分实现，因此你必须做的只是去实现那些产生想要的容器所必需的方法。如果所产生的容器是只读的，那么你提供的方法数量将减少到最少。
 
-亨元：在普通的解决方案需要过多的对象，或者产生普通对象太占用空间时使用亨元。亨元模式使得对象的一部分可以被具体化，因此，与对象中的所有事物都包含在对象内部不同，我们可以在更高效的外部表中查找对象的一部分或整体（或者通过其他节省空间的计算来产生对象的一部分或整体）。 
+亨元：在普通的解决方案需要过多的对象，或者产生普通对象太占用空间时使用亨元。亨元模式使得对象的一部分可以被具体化，因此，与对象中的所有事物都包含在对象内部不同，我们可以在更高效的外部表中查找对象的一部分或整体（或者通过其他节省空间的计算来产生对象的一部分或整体）。
 
 为了创建只读的Map，可以继承AbstractMap并实现`entrySet()`，为了创建只读的Set，可以继承AbstractSet并实现`iterator()`和`size()`。
 
@@ -196,7 +196,7 @@ net/mindview/util/Countries.java代码:`FlyweightMap`必须实现`entrySet()`方
 
 是Set或List可以执行的操作(List还有额外的功能),Map不是继承自Collection的。
 
-方法                                      | 描述 
+方法                                      | 描述
 ---                                       | ---
 `boolean add(T)`                          | 确保容器持有具有泛型类型T的参数。如果没有将此参数添加进容器，则返回false（这是可选的方法）
 `boolean addAll(Collection<? extends T>)` | 添加参数中所有元素。只要添加了任意元素就返回true（可选）
@@ -218,7 +218,7 @@ net/mindview/util/Countries.java代码:`FlyweightMap`必须实现`entrySet()`方
 
 执行各种不同的添加和移除的方法在Collection接口中都是可选操作。这意味着实现类并不需要为这些方法提供功能定义。
 
-这是一种不寻常的接口定义方式。接口是面向对象设计中的契约，它声明“无论你选择如何实现该接口，我保证你可以向该接口（描述正式的interface关键字和“任何类或子类支持的方法”）发送这些消息。”但是可选操作违反了这个非常基本的原则，它声明调用这些方法将不会执行有意义的行为，相反，它们会抛出异常。这看起来好像是编译器类型安全被抛弃了。 
+这是一种不寻常的接口定义方式。接口是面向对象设计中的契约，它声明“无论你选择如何实现该接口，我保证你可以向该接口（描述正式的interface关键字和“任何类或子类支持的方法”）发送这些消息。”但是可选操作违反了这个非常基本的原则，它声明调用这些方法将不会执行有意义的行为，相反，它们会抛出异常。这看起来好像是编译器类型安全被抛弃了。
 
 事情并不那么糟。如果一个操作是可选的，编译器仍旧会严格要求你只能调用该接口中的方法。这与动态语言不同，动态语言可以在任何对象上调用任何方法，并且可以在运行时发现某个特定调用是否可以工作。
 
@@ -258,7 +258,7 @@ LinkedHashSet                  | 具有HashSet的查询速度，且内部使用�
 
 #### SortedSet
 
-`SortedSet`中的元素可以保证处于排序状态： 
+`SortedSet`中的元素可以保证处于排序状态：
 `Comparator comparator()` 返回当前Set使用的Comparator；或者返回null，表示以自然方式排序。
 `Object first()`返回容器中的第一个元素
 `Object last()`返回容器中的最末一个元素
@@ -268,7 +268,7 @@ LinkedHashSet                  | 具有HashSet的查询速度，且内部使用�
 
 ### 队列
 
-除了并发应用，Queue在Java SE5中仅有的两个实现是`LinkedList`和`PriotityQueue`，它们的差异在于排序行为而不是性能。 
+除了并发应用，Queue在Java SE5中仅有的两个实现是`LinkedList`和`PriotityQueue`，它们的差异在于排序行为而不是性能。
 
 除了优先级队列，`Queue`将精确地按照元素被置于`Queue`中的顺序产生它们。
 
@@ -312,7 +312,7 @@ IdentityHashMap             | 使用==代替equals()对“键”进行比较的�
 #### 正确的equals()方法必须满足下列5个条件：
 
 - 自反性。对任意x，`x.equals(x)`一定返回true。
-- 对称性。对任意x和y，如果`y.equals(x)`返回true，则`x.equals(y)`也返回true。 
+- 对称性。对任意x和y，如果`y.equals(x)`返回true，则`x.equals(y)`也返回true。
 - 传递性。对任意x、y、z，如果`x.equals(y)`返回true，`y.equals(z)`返回true，则`x.equals(z)`一定返回true。
 - 一致性。对任意x和y，如果对象中用于等价比较的信息没有改变，那么无论调用`x.equals(y)`多少次，返回的结果应该保持一致，要么一直是true，要么一直是false。
 - 对任何不是null的x，`x.equals(null)`一定返回false。
@@ -358,17 +358,17 @@ IdentityHashMap             | 使用==代替equals()对“键”进行比较的�
 - 给`int`变量result赋予某个非零常量
 - 为对象内每个有意义的域f(即每个可以做equals()操作的域)计算出一个int散列码e:
 
-域类型                                 | 计算                                                           
----                                    | ---                                                            
-boolean                                | `c=(f?0:1)`                                                    
-byte、char、short或int                 | `c=(int)f`                                                     
-long                                   | `c=(int)(f^(f>>>32))`                                          
-float                                  | `c=Float.floatToIntBits(f);`                                   
+域类型                                 | 计算
+---                                    | ---
+boolean                                | `c=(f?0:1)`
+byte、char、short或int                 | `c=(int)f`
+long                                   | `c=(int)(f^(f>>>32))`
+float                                  | `c=Float.floatToIntBits(f);`
 double                                 | `long l = Double.doubleToLongBits(f);<br/>c=(int)(l ^ (l>>>32))`
-Object，其equals()调用这个域的equals() | `c=f.hashCode()`                                               
-数组                                   | 对每个元素应用上述规则                                         
+Object，其equals()调用这个域的equals() | `c=f.hashCode()`
+数组                                   | 对每个元素应用上述规则
 
-- 合并计算得到的散列码： 
+- 合并计算得到的散列码：
     result = 37*result + c;
 - 返回result。
 - 检查`hashCode()`最后生成的结果，确保相同的对象有相同的散列码。

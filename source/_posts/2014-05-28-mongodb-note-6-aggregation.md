@@ -168,22 +168,22 @@ mr = db.runCommand({"mapreduce" : "foo", "map" : map, "reduce" : reduce})
 ```
 
 - "result" : "tmp.mr.mapreduce_1266787811_1"
-    
+
     存放MapReduce结果的集合名，是个临时集合，MapReduce连接关闭后自动就被删除了。
 - "timeMillis" : 12
-    
+
     操作花费时间，单位是毫秒
 - "counts" : { ... }
-    
+
     这个内嵌文档包含3个键
 - "input" : 6
-    
+
     发送到map函数的文档个数
 - "emit" : 14
-    
+
     在map函数中emit被调用的次数
 - "output" : 5
-    
+
     结果集合中创建的文档数量
 
 reduce一定要能被反复调用，不论是映射环节还是前一个简化环节。所以reduce返回的文档必须能作为reduce的第二个参数的一个元素。
@@ -234,10 +234,10 @@ mapreduce除了map和reduce之外的其它键
 
     结果集合的名字，设定该项则隐藏含着keeptemp:true
 - "query" : document
-    
+
     会在发往map函数前，先用指定条件过滤文档
 - "sort" : document
-    
+
     在发往map前先给文档排序
 - "limit" : integer
 
@@ -246,7 +246,7 @@ mapreduce除了map和reduce之外的其它键
 
     javascript代码中要用到的变量
 - "verbose" : boolean
-    
+
     是否产生更加详尽的服务器日志
 
 

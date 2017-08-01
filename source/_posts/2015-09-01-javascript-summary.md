@@ -4,7 +4,7 @@ tags: JavaScript
 categories: JavaScript
 description: JavaScript 总结，涉及变量，数据类型，操作符，语句，函数，模块，错误处理，垃圾回收，面向对象编程，原生类型，异步编程；声明提升，typeof，对象的类定义，undefined & null，类型转换，Symbol，Number，模板字符串，标签模板，ES6中的`...`，解构赋值，for-in，with，for-of，函数声明和表达式，arguments，this，函数返回值，默认参数，rest参数，扩展运算符，箭头函数，Generator函数，尾调用优化，作用域，闭包，对象，继承，Object，Array，Date，RegExp，Function，Boolean，Number，String，Global，Math，Map，WeakMap，Set，WeakSet，Proxy，Reflect，Promise，回调函数，async函数；属性类型，对象使用和属性，原型，创建对象，class，共享变量，静态变量，私有变量，静态私有变量，模块模式，增强的模块模式，原型链，继承方法，extends
 ---
-这篇是对前面[JavaScript 基本语法](2015/08/28/javascript-grammar/)，[JavaScript 引用类型](2015/08/28/javascript-reference-type/)，[JavaScript 面向对象程序设计、函数表达式和异步编程](2015/08/28/javascript-oop-function-expression-and-async/)三篇笔记的总结。
+这篇是对前面[JavaScript 基本语法](/2015/08/28/javascript-grammar/)，[JavaScript 引用类型](/2015/08/28/javascript-reference-type/)，[JavaScript 面向对象程序设计、函数表达式和异步编程](/2015/08/28/javascript-oop-function-expression-and-async/)三篇笔记的总结。
 
 <!-- more -->
 # 变量
@@ -413,13 +413,14 @@ with(location){
     var hostName = hostname;
     var url = href;
 }
-```javascript
+```
 使用with 语句关联了location 对象。这意味着在with 语句的代码块内部，每个变量首先被认为是一个局部变量，而如果在局部环境中找不到该变量的定义，就会查询location对象中是否有同名的属性。如果发现了同名属性，则以location对象属性的值作为变量的值。 严格模式下不允许使用with语句，否则将视为语法错误
 
 ## for-of
 实现了Iterable接口的对象都可以用于for-of循环。for-of循环可以使用的范围包括数组、Set和Map结构及其entries,values,keys方法返回的对象、某些类似数组的对象（比如arguments对象、DOM NodeList对象）、Generator函数返回的对象，以及字符串。
 
 并不是所有类似数组的对象都具有iterator接口，一个简便的解决方法，就是使用Array.from方法将其转为数组。
+
 ```javascript
 let arrayLike = { length: 2, 0: 'a', 1: 'b' };
 Array.from(arrayLike);
@@ -1151,7 +1152,8 @@ Foo.classMethod() // 'hello'
 var foo = new Foo();
 foo.classMethod()
 // TypeError: undefined is not a function
-```javascript
+```
+
 父类的静态方法，可以被子类继承。
 
 ES6为new命令引入了一个`new.target`属性，（在构造函数中）返回new命令作用于的那个构造函数。如果构造函数不是通过new命令调用的，`new.target`会返回undefined，因此这个属性可以用来确定构造函数是怎么调用的。
@@ -1167,7 +1169,7 @@ class Shape {
     }
   }
 }
-```javascript
+```
 ### 共享变量
 在构造函数原型上定义的属性可以被所有实例共享。
 
@@ -1706,8 +1708,8 @@ new Number([value])
 Number属性
 * Number.MAX_VALUE 能表示的最大正数。最大的负数是 -MAX_VALUE。
 * Number.MIN_VALUE 能表示的最小正数 -- 即，最接近 0 的正数 (实际上不会变成 0)。最小的负数是 -MIN_VALUE。
-* Number.MAX_SAFE_INTEGER 能表示的最大整数。(2^53−1).
-* Number.MIN_SAFE_INTEGER 能表示的最小整数。 (−(2^53−1))
+* Number.MAX_SAFE_INTEGER 能表示的最大整数。(2^53?1).
+* Number.MIN_SAFE_INTEGER 能表示的最小整数。 (?(2^53?1))
 * Number.NaN 特殊的“非数字”值。
 * Number.NEGATIVE_INFINITY 特殊的负无穷大值，在溢出时返回。
 * Number.POSITIVE_INFINITY 特殊的正无穷大值，在溢出时返回。

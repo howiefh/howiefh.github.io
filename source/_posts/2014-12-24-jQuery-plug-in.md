@@ -208,7 +208,7 @@ $.Showmsg(msg)
 <input type="text" class="form-control" id="datetimepicker2" data-date-format="YYYY-MM-DD HH:mm:ss">
 <script>
 $('input[data-date-format]').datetimepicker({
-	useSeconds: true     //设置时间时可以设置秒
+    useSeconds: true     //设置时间时可以设置秒
 });
 </script>
 ```

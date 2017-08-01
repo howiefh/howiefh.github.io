@@ -7,7 +7,7 @@ categories:
 - MongoDB
 description: mongodb querying, mongodb 查询
 ---
-## find 
+## find
 
 ### 指定返回的键
 
@@ -319,7 +319,7 @@ db.stock.find({"desc" : "mp3"}).limit(50).skip(50).sort({"price" : -1})
 
 - 不用skip对结果分页
 
-   要尽量避免使用skip对结果分页。 
+   要尽量避免使用skip对结果分页。
 ```
 var page1 = db.foo.find().sort({"date" : -1}).limit(100)
 var latest = null;
@@ -335,7 +335,7 @@ page2.sort({"date" : -1}).limit(100);
     像上面这种查询中就没有skip了。
 
 - 随机选取文档
-    
+
     如果先计算文档总数，然后从0到文档总数之间取一个随机数，再略过这个随机数那么多文档，这种方式效率是很低的。
 
     可以在文档中多加一个随机数的键。
@@ -374,10 +374,10 @@ db.foo.find(criteria)._addSpecial("$maxscan", 20)
 
     查询的开始条件
 - $max : document
-    
+
     查询的结束条件
 - $showDiskLoc : true
-    
+
     显示查询结果在磁盘中的位置
 ```
 > db.foo.find()._addSpecial('$showDiskLoc',true)
@@ -387,15 +387,15 @@ db.foo.find(criteria)._addSpecial("$maxscan", 20)
     第一项是结果所在文件，建设数据是test，那么查询结果在test.2中，第二项是结果在文件中的偏移量。
 
 - $hint : document
-    
+
     指定服务器使用哪个索引来进行查询
 
 - $explain : boolean
-    
+
     获取查询执行的细节(用到的索引、结果数量、耗时等)，并非真正执行查询
 
 - $snapshot : boolean
-    
+
     确保查询的结果是在查询执行的那一刻的一致快照
 
 ### 获取一致结果

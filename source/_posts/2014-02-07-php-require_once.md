@@ -6,13 +6,14 @@ tags: PHP
 先看个例子。目录结构./c.php，./a.php，./demo/b.php。
 
 <!-- more -->
-c.php 的内容  
+
+c.php 的内容
 ```php
 //c.php
 require_once(“a.php”);
 require_once(“demo/b.php”);
 ```
-a.php 的内容  
+a.php 的内容
 ```php
 //a.php
 class A
@@ -39,6 +40,6 @@ require_once(“../a.php”);
 
 ```php
 if (!defined('ROOT')) {
-	define('ROOT', dirname(__FILE__) . '/');
+    define('ROOT', dirname(__FILE__) . '/');
 }
 ```
