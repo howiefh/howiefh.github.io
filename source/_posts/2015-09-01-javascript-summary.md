@@ -1315,7 +1315,16 @@ function inheritPrototype(subType, superType){
 ```
 在函数内部,第一步是创建超类型原型的一个副本。第二步是为创建的副本添加 constructor 属性,从而弥补因重写原型而失去的默认的 constructor 属性。最后一步,将新创建的对象(即副本)赋值给子类型的原型。
 
-ECMAScript 5 新增 Object.create() 方法。这个方法接收两个参数:一个用作新对象原型的对象和(可选的)一个为新对象定义额外属性的对象。
+ECMAScript 5 新增 Object.create() 方法。这个方法接收两个参数:一个用作新对象原型的对象和(可选的)一个为新对象定义额外属性的对象。如果没有Object.create()方法，使用下面代码可以达到类似效果。
+```
+function object(o){
+  function F(){};
+  F.prototype = o;
+  return new F();
+}
+```
+
+下面的代码是实现继承的常用方法。
 ```javascript
 function SuperType(name){
   this.name = name;

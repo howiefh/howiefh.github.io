@@ -6,6 +6,6 @@ public/
 .deploy_git/
 *.jpg
 *.png
-themes/jacman/
+themes/*
 *.log
 source/_drafts/
