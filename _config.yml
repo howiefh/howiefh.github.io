@@ -77,7 +77,7 @@ deploy:
   message: Site updated {{ now("YYYY-MM-DD HH:mm:ss") }}
 
 # Disqus
-disqus_shortname: howiefh
+disqus_shortname: fenghao-1
 
 # pagination
 ## 2: Enable pagination

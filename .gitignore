@@ -9,3 +9,4 @@ public/
 themes/*
 *.log
 source/_drafts/
+*.lock
