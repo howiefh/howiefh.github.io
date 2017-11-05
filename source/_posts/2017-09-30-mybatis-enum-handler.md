@@ -101,8 +101,6 @@ public class CodeEnumTypeHandler<E extends Enum & CodeEnum> extends BaseTypeHand
 
 ## 定位问题
 
-通过 DEBUG 跟踪代码发现是 BaseBuilder 和 TypeHandlerRegistry 两个类做了调整
-
 ```
 1. org.apache.ibatis.builder.xml.XMLMapperBuilder#resultMapElement(org.apache.ibatis.parsing.XNode, java.util.List<org.apache.ibatis.mapping.ResultMapping>)
 2. org.apache.ibatis.builder.MapperBuilderAssistant#buildResultMapping(java.lang.Class<?>, java.lang.String, java.lang.String, java.lang.Class<?>, org.apache.ibatis.type.JdbcType, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Class<? extends org.apache.ibatis.type.TypeHandler<?>>, java.util.List<org.apache.ibatis.mapping.ResultFlag>, java.lang.String, java.lang.String, boolean)
@@ -110,6 +108,8 @@ public class CodeEnumTypeHandler<E extends Enum & CodeEnum> extends BaseTypeHand
 4. org.apache.ibatis.builder.BaseBuilder#resolveTypeHandler(java.lang.Class<?>, java.lang.Class<? extends org.apache.ibatis.type.TypeHandler<?>>)
 5. org.apache.ibatis.type.TypeHandlerRegistry#getMappingTypeHandler
 ```
+
+DEBUG 跟踪代码发现是 BaseBuilder 和 TypeHandlerRegistry 两个类做了调整
 
 通过 Github 上 TypeHandlerRegistry 类的变更记录，发现是 [commit e92c2a2](https://github.com/mybatis/mybatis-3/commit/e92c2a2f1aacce52d7c1470b9aaa524dc8e9d1e7#diff-f54f4f9d0324952c3d7545a3e7a4dbee) 这次提交引入了这些变更。注释说明了这次变更的原因在 [issue #746](https://github.com/mybatis/old-google-code-issues/issues/746) 中有记录。为了解决 Spring 注入依赖的问题，有了这次的代码变更。
 
