@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Category: Java | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A blog of howiefh.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="净土">
+<meta property="og:url" content="http://howiefh.github.io/categories/Java/page/2/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="A blog of howiefh.">
+<meta property="article:author" content="howiefh">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-jvm-note-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/04/07/jvm-note-1/" class="article-date">
+  <time class="dt-published" datetime="2015-04-07T15:31:59.000Z" itemprop="datePublished">2015-04-07</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/04/07/jvm-note-1/">深入理解Java虚拟机笔记一（Java内存区域与内存溢出异常）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h2><p>Java虚拟机在执行Java程序的过程中，会把内存分为不同的数据区域。如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/jvm-model.jpg" alt="Java虚拟机运行时数据区"></p>
+        
+          <p class="article-more-link">
+            <a href="/2015/04/07/jvm-note-1/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2015/04/07/jvm-note-1/" data-id="ck9sl6g8v007z77fye0e11ey6" data-title="深入理解Java虚拟机笔记一（Java内存区域与内存溢出异常）" data-summary="运行时数据区域Java虚拟机在执行Java程序的过程中..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2015/04/07/jvm-note-1/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-04T11:32:41.976Z" itemprop="dateModified">2020-05-04</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-thinking-in-java-note-9" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/02/07/thinking-in-java-note-9/" class="article-date">
+  <time class="dt-published" datetime="2015-02-07T12:51:16.000Z" itemprop="datePublished">2015-02-07</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/02/07/thinking-in-java-note-9/">Java编程思想笔记九</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Swing中有一个非常令人称道的原则，称为“正交使用”。意思是，一旦你理解了库中的某个通用概念，你就可以把这个概念应用到其他地方。</p>
+<h2 id="Swing-基础"><a href="#Swing-基础" class="headerlink" title="Swing 基础"></a>Swing 基础</h2><p>Swing有它自己的专用线程来接收UI事件并更新屏幕，如果从其他线程着手对屏幕进行操作，那么就可能产生冲突和死锁。其他线程通过事件分发线程提交要执行的任务，可以通过将任务提交给SwingUtilities.invokeLater()来实现这种方式，这个方法会通过事件分发线程将任务放置到（最终将得到执行的）待执行事件队列中。程序中的所有代码都遵循这种通过SwingUtilities.invokeLater()来提交操作的方式。这包括启动程序自身，即main也不应该调用Swing方法，就像上面的程序一样，它应该向事件队列提交任务。</p>
+<p>Java中设计和实现图形用户界面的工作主要有：</p>
+<ol>
+<li>创建组件（Component)：创建组成界面的各种元素，如按钮、文本框等。</li>
+<li>指定布局（Layout）：根据具体需要排列组件的位置关系。</li>
+<li>响应事件（Event）：定义图形用户界面的事件和各界面元素对不同事件的响应，从而实现图形用户界面与用户的交互功能。</li>
+</ol>
+        
+          <p class="article-more-link">
+            <a href="/2015/02/07/thinking-in-java-note-9/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2015/02/07/thinking-in-java-note-9/" data-id="ck9sl6g8w008177fy3v4w3ff7" data-title="Java编程思想笔记九" data-summary="Swing中有一个非常令人称道的原则，称为“正交使用”..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2015/02/07/thinking-in-java-note-9/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.475Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-thinking-in-java-note-8" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/02/06/thinking-in-java-note-8/" class="article-date">
+  <time class="dt-published" datetime="2015-02-06T02:17:57.000Z" itemprop="datePublished">2015-02-06</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/02/06/thinking-in-java-note-8/">Java编程思想笔记八</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>并发“具有可论证的正确性，但是实际上具有不可确定性”</p>
+<h2 id="并发的多样性"><a href="#并发的多样性" class="headerlink" title="并发的多样性"></a>并发的多样性</h2><p>并发解决的问题大体上可以分为“速度”和“设计可管理性”两种。</p>
+        
+          <p class="article-more-link">
+            <a href="/2015/02/06/thinking-in-java-note-8/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2015/02/06/thinking-in-java-note-8/" data-id="ck9sl6g9k009m77fy3brsbkna" data-title="Java编程思想笔记八" data-summary="并发“具有可论证的正确性，但是实际上具有不可确定性”
+..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2015/02/06/thinking-in-java-note-8/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.474Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-javamail" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/12/24/javamail/" class="article-date">
+  <time class="dt-published" datetime="2014-12-24T06:50:40.000Z" itemprop="datePublished">2014-12-24</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2014/12/24/javamail/">JavaMail简介</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="JavaMail"><a href="#JavaMail" class="headerlink" title="JavaMail"></a>JavaMail</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>虽然<a href="http://www.oracle.com/technetwork/java/javamail/index-138643.html" target="_blank" rel="noopener">JavaMail</a>是Sun的API之一，但它目前还没有被加在标准的java开发工具包中（Java Development Kit），这就意味着你在使用前必须另外下载<a href="http://www.oracle.com/technetwork/java/javamail/index-138643.html" target="_blank" rel="noopener">JavaMail</a>文件。除此以外，你还需要有Sun的JavaBeans Activation Framework （<a href="http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-java-plat-419418.html#jaf-1.1.1-fcs-oth-JPR" target="_blank" rel="noopener">JAF</a>）。JavaBeans Activation Framework的运行很复杂，在这里简单的说就是<a href="http://www.oracle.com/technetwork/java/javamail/index-138643.html" target="_blank" rel="noopener">JavaMail</a>的运行必须得依赖于它的支持。JAF在Java6之后已经合并到JDK中，而JDK5之前需要另外下载JAF的类库。使用JavaMail，我们可以实现类似OutLook的软件。</p>
+        
+          <p class="article-more-link">
+            <a href="/2014/12/24/javamail/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2014/12/24/javamail/" data-id="ck9sl6g7b002t77fyeak09t52" data-title="JavaMail简介" data-summary="JavaMail简介虽然JavaMail是Sun的AP..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2014/12/24/javamail/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaMail/" rel="tag">JavaMail</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.474Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-thinking-in-java-note-7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/11/06/thinking-in-java-note-7/" class="article-date">
+  <time class="dt-published" datetime="2014-11-06T03:02:46.000Z" itemprop="datePublished">2014-11-06</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2014/11/06/thinking-in-java-note-7/">Java编程思想笔记七</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h2><h3 id="基本enum特性"><a href="#基本enum特性" class="headerlink" title="基本enum特性"></a>基本enum特性</h3><ul>
+<li>Enum类是枚举的一个封装类，是所有枚举类型的超类，它是一个没有抽象方法的抽象类。Enum类实现了Comparable接口，所以它具有compareTo() 方法。同时它还实现了Serializable接口。</li>
+<li>ordinal() : 获取枚举元素声明时的顺序，从0开始计算</li>
+<li>可以使用”==”来比较两个枚举实例相同与否，由于编译器自动实现了equals()和hashCode()两个方法</li>
+<li>调用getDeclaringClass()方法，我们就能知道其所属的enum类</li>
+<li>name() : 返回enum实例声明时的名字，与使用toString()方法效果相同</li>
+<li>valueOf() : Enum中的static方法，根据给定的名字返回相应的enum实例，如果不存在给定实例的名字，将会抛出异常。</li>
+<li>values() : 这个方法不是Enum提供的。</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2014/11/06/thinking-in-java-note-7/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2014/11/06/thinking-in-java-note-7/" data-id="ck9sl6g8t007w77fyem2nglov" data-title="Java编程思想笔记七" data-summary="枚举类型基本enum特性
+Enum类是枚举的一个封装类..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2014/11/06/thinking-in-java-note-7/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.474Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-thinking-in-java-note-6" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/11/04/thinking-in-java-note-6/" class="article-date">
+  <time class="dt-published" datetime="2014-11-04T12:53:54.000Z" itemprop="datePublished">2014-11-04</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2014/11/04/thinking-in-java-note-6/">Java编程思想笔记六</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Java-I-O-系统"><a href="#Java-I-O-系统" class="headerlink" title="Java I/O 系统"></a>Java I/O 系统</h2><h3 id="File类"><a href="#File类" class="headerlink" title="File类"></a>File类</h3><p>File类是文件和目录路径名的抽象表示形式。</p>
+        
+          <p class="article-more-link">
+            <a href="/2014/11/04/thinking-in-java-note-6/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2014/11/04/thinking-in-java-note-6/" data-id="ck9sl6g9h009g77fyg1sichhv" data-title="Java编程思想笔记六" data-summary="Java I/O 系统File类File类是文件和目录..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2014/11/04/thinking-in-java-note-6/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.473Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-thinking-in-java-note-5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/10/30/thinking-in-java-note-5/" class="article-date">
+  <time class="dt-published" datetime="2014-10-30T03:54:53.000Z" itemprop="datePublished">2014-10-30</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2014/10/30/thinking-in-java-note-5/">Java编程思想笔记五</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h3 id="数组为什么特殊"><a href="#数组为什么特殊" class="headerlink" title="数组为什么特殊"></a>数组为什么特殊</h3><p>数组和其它容器之间的区别有三方面：效率、编译期类型检查和保存基本类型的能力，但是由于有了泛型容器和自动包装机制，现在最主要的区别就是效率。ArrayList效率低很多。</p>
+        
+          <p class="article-more-link">
+            <a href="/2014/10/30/thinking-in-java-note-5/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2014/10/30/thinking-in-java-note-5/" data-id="ck9sl6g9g009f77fy3bbg8d0s" data-title="Java编程思想笔记五" data-summary="数组数组为什么特殊数组和其它容器之间的区别有三方面：效..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2014/10/30/thinking-in-java-note-5/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-04T11:40:38.450Z" itemprop="dateModified">2020-05-04</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-thinking-in-java-note-4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/10/17/thinking-in-java-note-4/" class="article-date">
+  <time class="dt-published" datetime="2014-10-17T01:58:25.000Z" itemprop="datePublished">2014-10-17</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2014/10/17/thinking-in-java-note-4/">Java编程思想笔记四</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="类型信息"><a href="#类型信息" class="headerlink" title="类型信息"></a>类型信息</h2><p>Java是如何让我们在运行时候识别对象和类的信息的</p>
+<ol>
+<li>传统的RTTI（运行时类型信息），它假定我们在编译时就已经知道了所有的类型</li>
+<li>反射机制，允许我们在运行的时候发现和使用类的信息
+        
+          <p class="article-more-link">
+            <a href="/2014/10/17/thinking-in-java-note-4/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2014/10/17/thinking-in-java-note-4/" data-id="ck9sl6g96008o77fy1d6826w7" data-title="Java编程思想笔记四" data-summary="类型信息Java是如何让我们在运行时候识别对象和类的信..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2014/10/17/thinking-in-java-note-4/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.472Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-thinking-in-java-note-3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/09/08/thinking-in-java-note-3/" class="article-date">
+  <time class="dt-published" datetime="2014-09-08T14:34:23.000Z" itemprop="datePublished">2014-09-08</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2014/09/08/thinking-in-java-note-3/">Java编程思想笔记三</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="持有对象"><a href="#持有对象" class="headerlink" title="持有对象"></a>持有对象</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>容器类类库的用途是“保存对象”，可划分为两个不同概念：</p>
+<ol>
+<li><p>Collection。一个独立元素的序列，这些元素都服从一条或多条规则。</p>
+<ul>
+<li>List必须按照插入顺序保存元素。</li>
+<li>Set不能有重复元素</li>
+<li>Queue按照排队规则来确定对象产生的顺序（通常与它们被插入的顺序相同）</li>
+</ul>
+</li>
+<li><p>Map。一组成对的“键值对”对象，允许你使用键来查找值。也被称为”关联数组”或”字典”。某种意义上来说，ArrayList也是一种Map</p>
+        
+          <p class="article-more-link">
+            <a href="/2014/09/08/thinking-in-java-note-3/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2014/09/08/thinking-in-java-note-3/" data-id="ck9sl6g9k009l77fy6kc31x42" data-title="Java编程思想笔记三" data-summary="持有对象基本概念容器类类库的用途是“保存对象”，可划分..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2014/09/08/thinking-in-java-note-3/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-04T11:30:51.623Z" itemprop="dateModified">2020-05-04</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-thinking-in-java-note-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/09/04/thinking-in-java-note-2/" class="article-date">
+  <time class="dt-published" datetime="2014-09-04T01:40:25.000Z" itemprop="datePublished">2014-09-04</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2014/09/04/thinking-in-java-note-2/">Java编程思想笔记二</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="访问权限控制"><a href="#访问权限控制" class="headerlink" title="访问权限控制"></a>访问权限控制</h2><h3 id="包：库单元"><a href="#包：库单元" class="headerlink" title="包：库单元"></a>包：库单元</h3><p>一个Java源代码文件通常称为编译单元。每个编译单元只能有一个public类，否则编译器就不会接受。如果在该编译单元之中还有额外的类的话，那么在包之外的世界是无法看见这些类的。</p>
+        
+          <p class="article-more-link">
+            <a href="/2014/09/04/thinking-in-java-note-2/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2014/09/04/thinking-in-java-note-2/" data-id="ck9sl6g95008l77fybvvd1xdd" data-title="Java编程思想笔记二" data-summary="访问权限控制包：库单元一个Java源代码文件通常称为编..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2014/09/04/thinking-in-java-note-2/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.472Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/categories/Java/">&laquo; Prev</a><a class="page-number" href="/categories/Java/">1</a><span class="page-number current">2</span><a class="page-number" href="/categories/Java/page/3/">3</a><a class="extend next" rel="next" href="/categories/Java/page/3/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/count.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

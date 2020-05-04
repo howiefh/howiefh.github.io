@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>深入理解Java虚拟机笔记三（JVM性能监控与故障处理工具） | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="深入理解Java虚拟机; JVM性能监控与故障处理工具;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Java虚拟机笔记三（JVM性能监控与故障处理工具）">
+<meta property="og:url" content="http://howiefh.github.io/2015/04/09/jvm-note-3/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="深入理解Java虚拟机; JVM性能监控与故障处理工具;">
+<meta property="article:published_time" content="2015-04-09T08:00:22.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.479Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-jvm-note-3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/04/09/jvm-note-3/" class="article-date">
+  <time class="dt-published" datetime="2015-04-09T08:00:22.000Z" itemprop="datePublished">2015-04-09</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      深入理解Java虚拟机笔记三（JVM性能监控与故障处理工具）
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK的命令行工具"><span class="toc-number">2.</span> <span class="toc-text">JDK的命令行工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jps：虚拟机进程状况工具"><span class="toc-number">2.1.</span> <span class="toc-text">jps：虚拟机进程状况工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstat：虚拟机统计信息监视工具"><span class="toc-number">2.2.</span> <span class="toc-text">jstat：虚拟机统计信息监视工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jinfo：Java配置信息工具"><span class="toc-number">2.3.</span> <span class="toc-text">jinfo：Java配置信息工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jmap：Java内存映像工具"><span class="toc-number">2.4.</span> <span class="toc-text">jmap：Java内存映像工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jhat：虚拟机堆转储快照分析工具"><span class="toc-number">2.5.</span> <span class="toc-text">jhat：虚拟机堆转储快照分析工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstack：Java堆栈跟踪工具"><span class="toc-number">2.6.</span> <span class="toc-text">jstack：Java堆栈跟踪工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK的可视化工具"><span class="toc-number">2.7.</span> <span class="toc-text">JDK的可视化工具</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>大多工具都是对jdk/lib/tools.jar类库的一层包装，SUN JDK监控和故障处理工具：</p>
+<ol>
+<li>jps：JVM Process Status Tool，显示指定系统内所有的HotSpot虚拟机进程</li>
+<li>jstat：JVM Statistics Monitoring Tool，用于收集HotSpot虚拟机各方面的运行数据</li>
+<li>jinfo：Configuration Info for Java，显示虚拟机配置信息</li>
+<li>jmap：Memory Map for Java，生成虚拟机的内存转储快照(heap dump文件)</li>
+<li>jhat：JVM Heap Dump Browser，用于分析heap dump文件，会建立一个HTTP/HTML服务器，让用户可以在浏览器查看分析结果</li>
+<li>jstack：Stack Trace for Java，显示虚拟机的线程快照</li>
+</ol>
+<p>然后还有两个GUI工具：</p>
+<ol>
+<li>jconsole：略微过时的JVM各状态查看工具</li>
+<li>visualVM：Sun出品的强大的JVM工具，推荐使用！</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="JDK的命令行工具"><a href="#JDK的命令行工具" class="headerlink" title="JDK的命令行工具"></a>JDK的命令行工具</h2><h3 id="jps：虚拟机进程状况工具"><a href="#jps：虚拟机进程状况工具" class="headerlink" title="jps：虚拟机进程状况工具"></a>jps：虚拟机进程状况工具</h3><p>它和Unix的ps命令有类似功能：</p>
+<p><strong>它可以列出正在运行的虚拟机进程，并显示虚拟机执行主类（Main Claas，main()函数所在的类）的名称，以及这些进程的内地虚拟机的唯一ID（LVMID，Local Virtual Machine Identifier）。</strong></p>
+<p>命令格式：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">jps</span> <span class="selector-attr">[options]</span> <span class="selector-attr">[hostid]</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-q</td>
+<td>只输出LVMID，省略主类的名称</td>
+</tr>
+<tr>
+<td>-m</td>
+<td>输出虚拟机进程启动时传递给主类main()函数的参数</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>输出主类的全名，如果进程执行的是jar包，输出jar包路径</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>输出虚拟机进程启动时JVM参数</td>
+</tr>
+</tbody></table>
+<h3 id="jstat：虚拟机统计信息监视工具"><a href="#jstat：虚拟机统计信息监视工具" class="headerlink" title="jstat：虚拟机统计信息监视工具"></a>jstat：虚拟机统计信息监视工具</h3><p>jstat的全称是JVM Statistics Monitoring Tool，它用于监视虚拟机各种运行状态信息。可以显示<strong>本地或远程虚拟机进程中的类装载、内存、垃圾收集、JIT编译等运行数据</strong>，在没有GUI图形界面，只提供纯文本控制台环境的服务器上，它将是运行期定位虚拟机性能问题的首选工具。</p>
+<p>命令格式：</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstat <span class="comment">[options vmid <span class="comment">[interval<span class="comment">[s|ms]</span> <span class="comment">[count]</span>]</span> ]</span></span><br></pre></td></tr></table></figure>
+
+<p>假如我想监控gc，每250ms查询一次，一共查询20次，进程号为1234。命令就是:<code>jstat -gc 1234 250 20</code>。如何监控远程机器呢？很简单，使用jstatd。和mysql类似，mysql是客户端，mysqld是服务器端。所以当远程机器开始了jstatd，就相当于开启了远程虚拟机进程的监控，本地可通过RMI查看远程机器的运行时数据，非常方便。</p>
+<p>在这里，option主要分为3类：</p>
+<ol>
+<li>类装载</li>
+<li>垃圾收集</li>
+<li>运行期编译状况</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-class</td>
+<td>监视类装载、卸载数量、总空间及类装载所耗费的时间</td>
+</tr>
+<tr>
+<td>-gc</td>
+<td>监视Java堆状况，包括Eden区、2个survivor区、老年代、永久代等的容量、已用空间、GC时间合计等信息</td>
+</tr>
+<tr>
+<td>-gccapacity</td>
+<td>监视内容与-gc基本相同，但输出主要关注Java堆各个区域使用到的最大和最新空间</td>
+</tr>
+<tr>
+<td>-gcutil</td>
+<td>监视内容与-gc基本相同，但输出主要关注已使用空间占总空间的百分比</td>
+</tr>
+<tr>
+<td>-gccause</td>
+<td>监视内容与-gc基本相同，但会额外输出导致上一次GC产生的原因</td>
+</tr>
+<tr>
+<td>-gcnew</td>
+<td>监视新生代GC状况</td>
+</tr>
+<tr>
+<td>-gcnewcapacity</td>
+<td>监视内容与-gcnew基本相同，输出主要关注使用到的最大和最小空间</td>
+</tr>
+<tr>
+<td>-gcold</td>
+<td>监视老年代GC的状况</td>
+</tr>
+<tr>
+<td>-gcoldcapacity</td>
+<td>监视内容与-gcold基本相同，输出主要关注使用到的最大和最小空间</td>
+</tr>
+<tr>
+<td>-gcpermcapacity</td>
+<td>输出永久代使用到的最大和最小空间</td>
+</tr>
+<tr>
+<td>-compiler</td>
+<td>输出JIT编译期编译过的方法、耗时等信息</td>
+</tr>
+<tr>
+<td>-printcomplilation</td>
+<td>输出已经被JIT编译的方法</td>
+</tr>
+</tbody></table>
+<h3 id="jinfo：Java配置信息工具"><a href="#jinfo：Java配置信息工具" class="headerlink" title="jinfo：Java配置信息工具"></a>jinfo：Java配置信息工具</h3><p>jinfo全称为Configuration Info for Java，它的作用是<strong>实时地查看和调整虚拟机的各项参数</strong>。</p>
+<p>命令格式：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jinfo [ <span class="keyword">option</span> ] pid</span><br></pre></td></tr></table></figure>
+
+<p>使用jps命令的-v参数可以查看虚拟机启动时显式指定的参数列表，但如果想知道未被显式指定的参数的系统默认值，除了去找资料外，就只能使用jinfo的-flag选项进行查询了（如果只限于JDK1.6或以上版本的话，使用java -XX:+PrintFlasFinal查看参数默认值也是一个很好的选择），jinfo还可以使用-sysprops选项把虚拟机进程的System.getProperties()的内容打印出来。可以使用-flag [+-] name或-flag name=value修改一部分运行期可写的虚拟机参数值。</p>
+<h3 id="jmap：Java内存映像工具"><a href="#jmap：Java内存映像工具" class="headerlink" title="jmap：Java内存映像工具"></a>jmap：Java内存映像工具</h3><p>jmap全称为Memory Map for Java，它<strong>用于生成堆转储快照（一般称为heap dump或者dump文件）</strong>。jmap的作用并不仅仅是为了获取dump文件供其他工具分析当前JVM的内存情况，它还可以<strong>查询finalize执行队列，Java堆和永久代的详细信息，如空间使用率、当前用的是哪种收集器等</strong>。它的命令格式为：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jmap [ <span class="keyword">option</span> ] vmid</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-dump</td>
+<td>生成java堆转储快照。格式为：-dump:[live,]format=b,file=<filename>，其中live子参数说明是否只dump出存活的对象</td>
+</tr>
+<tr>
+<td>-finalizerinfo</td>
+<td>显示在F-Queue中等待Filalizer线程执行finalize方法的对象，只在Linux/Solaris平台下有效</td>
+</tr>
+<tr>
+<td>-heap</td>
+<td>显示java堆详细信息，如使用哪种回收器、参数配置、分代状况等，只在Linux/Solaris平台下有效</td>
+</tr>
+<tr>
+<td>-histo</td>
+<td>显示堆中统计信息，包括类、实例数量和合计容量</td>
+</tr>
+<tr>
+<td>-permstat</td>
+<td>以ClassLoader为统计口径显示永久代内存状态。只在Linux/Solaris平台下有效</td>
+</tr>
+<tr>
+<td>-F</td>
+<td>当虚拟机进程对-dump选项没有响应时，可使用这个选项强制生成dump快照。只在Linux/Solaris平台下有效</td>
+</tr>
+</tbody></table>
+<p>比如我得到dump快照，就可以先通过jps拿到虚拟机的LVMID，然后使用<code>jmap -dump:format=b,file=haha.bin &lt;LVMID&gt;</code>就可以了。</p>
+<h3 id="jhat：虚拟机堆转储快照分析工具"><a href="#jhat：虚拟机堆转储快照分析工具" class="headerlink" title="jhat：虚拟机堆转储快照分析工具"></a>jhat：虚拟机堆转储快照分析工具</h3><p>jhat命令与jmap搭配使用，来分析jmap生成的堆转储快照。jhat内置了一个微型的http/html服务器，生成dump文件的分析结果后，可以在浏览器中查看。但一般情况下，这个命令使用的几率不会太大。首先对于线上服务器来说，生成dump快照后，分析快照是一个很耗时且吃硬件的过程，如果dump快照过于复杂，甚至会影响线上服务；其次jhat的分析功能相对来说比较简陋。建议是将这个dump快照拷贝到线下，然后使用更强大的GUI工具来直观分析，比如Eclipse Memory Analyzer、IBM HeapAnalyzer等工具。</p>
+<p>如果打开后，可以在本地localhost:7000查看结果。拉到最下面有个Heap Histogram，点进去就可以看到虚拟机中所有对象实例的数目和大小。</p>
+<h3 id="jstack：Java堆栈跟踪工具"><a href="#jstack：Java堆栈跟踪工具" class="headerlink" title="jstack：Java堆栈跟踪工具"></a>jstack：Java堆栈跟踪工具</h3><p>jstack全称为Stack Trace for Java，它<strong>用于生成虚拟机当前时刻的线程快照（一般称为threaddump或者javacore文件）。线程快照就是当前虚拟机内存每一个线程正在执行的方法堆栈的集合</strong>。生成线程快照的主要目的就是<strong>定位线程出现长时间停顿的原因</strong>，比如线程间死锁、死循环、请求外部资源导致的长时间等待都是导致线程长时间停顿的常见原因。</p>
+<p>命令格式：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack [ <span class="keyword">option</span> ] vmid</span><br></pre></td></tr></table></figure>
+
+<p>option选项说明如下：</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-F</td>
+<td>当正常输出的请求不被响应时，强制输出线程堆栈</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>除堆栈外，显示关于锁的附加信息</td>
+</tr>
+<tr>
+<td>-m</td>
+<td>如果调用到本地方法的话，可以显示C/C++的堆栈</td>
+</tr>
+</tbody></table>
+<p>在JDK 1.5中，java.lang.Thread类新增了一个叫做getAllStackTraces()方法用于获取虚拟机中所有线程的StackTraceElement对象，使用这个方法可以通过简单的几行代码就完成jstack的大部分功能。</p>
+<h3 id="JDK的可视化工具"><a href="#JDK的可视化工具" class="headerlink" title="JDK的可视化工具"></a>JDK的可视化工具</h3><p>JDK除了提供大量的命令行工具外，还提供了两个功能强大的可视化工具：JConsole和VisualVM，这两个工具是JDK的正式成员</p>
+<p>其实现在Sun主推VisualVM了，因为JConsole稍微有点老。而且可视化工具基本不需要学习，稍微看看就知道啥情况。说白了就是把上面的jdk工具，比如jstat、jmap、jstack结果套个GUI。</p>
+<p>其中看了感觉比较有价值的是BTrace这个插件，它竟然可以动态的在项目中插入调试信息</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.479Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/04/30/freemarker-template-development-note/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          FreeMarker-模板开发笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/04/08/jvm-note-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">深入理解Java虚拟机笔记二（垃圾收集器与内存分配策略）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK的命令行工具"><span class="toc-number">2.</span> <span class="toc-text">JDK的命令行工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jps：虚拟机进程状况工具"><span class="toc-number">2.1.</span> <span class="toc-text">jps：虚拟机进程状况工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstat：虚拟机统计信息监视工具"><span class="toc-number">2.2.</span> <span class="toc-text">jstat：虚拟机统计信息监视工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jinfo：Java配置信息工具"><span class="toc-number">2.3.</span> <span class="toc-text">jinfo：Java配置信息工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jmap：Java内存映像工具"><span class="toc-number">2.4.</span> <span class="toc-text">jmap：Java内存映像工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jhat：虚拟机堆转储快照分析工具"><span class="toc-number">2.5.</span> <span class="toc-text">jhat：虚拟机堆转储快照分析工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstack：Java堆栈跟踪工具"><span class="toc-number">2.6.</span> <span class="toc-text">jstack：Java堆栈跟踪工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK的可视化工具"><span class="toc-number">2.7.</span> <span class="toc-text">JDK的可视化工具</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2015/04/09/jvm-note-3/';
+  this.page.identifier = '2015/04/09/jvm-note-3/';
+  this.page.title = '深入理解Java虚拟机笔记三（JVM性能监控与故障处理工具）';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

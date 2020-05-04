@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>MyBatis 类型处理器 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MyBatis 类型处理器, MyBatis, 类型处理器, 枚举">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis 类型处理器">
+<meta property="og:url" content="http://howiefh.github.io/2017/09/30/mybatis-enum-handler/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="MyBatis 类型处理器, MyBatis, 类型处理器, 枚举">
+<meta property="article:published_time" content="2017-09-30T09:44:42.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.486Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="MyBatis">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-mybatis-enum-handler" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2017/09/30/mybatis-enum-handler/" class="article-date">
+  <time class="dt-published" datetime="2017-09-30T09:44:42.000Z" itemprop="datePublished">2017-09-30</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Java/MyBatis/">MyBatis</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      MyBatis 类型处理器
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题描述"><span class="toc-number">1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定位问题"><span class="toc-number">2.</span> <span class="toc-text">定位问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决问题"><span class="toc-number">3.</span> <span class="toc-text">解决问题</span></a></li></ol>
+		
+		</div>
+		
+        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>最近测试将 MyBatis 从 3.1.1 升级到 3.2.3 时遇到一个问题。原来可以正常工作的枚举类型处理器，抛异常了。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Caused <span class="symbol">by:</span> org.apache.ibatis.executor.result.<span class="symbol">ResultMapException:</span> Error attempting to get column <span class="string">'member_type'</span> from result set.  <span class="symbol">Cause:</span> java.lang.<span class="symbol">IllegalArgumentException:</span> No <span class="class"><span class="keyword">enum</span> <span class="title">code</span> '<span class="title">MERCHANT</span>'. <span class="title">class</span> <span class="title">com</span>...<span class="title">ChangeSceneType</span></span></span><br></pre></td></tr></table></figure>
+
+<p>涉及的代码及配置信息如下：</p>
+<a id="more"></a>
+
+<p>mybatis-config.xml :</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">type</span>=<span class="string">"com...CodeEnumTypeHandler"</span> <span class="attr">alias</span>=<span class="string">"enumHandler"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">typeHandlers</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 其他枚举配置... --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeHandler</span> <span class="attr">handler</span>=<span class="string">"com...CodeEnumTypeHandler"</span> <span class="attr">javaType</span>=<span class="string">"com...MemberType"</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 其他枚举配置... --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeHandler</span> <span class="attr">handler</span>=<span class="string">"com...CodeEnumTypeHandler"</span> <span class="attr">javaType</span>=<span class="string">"com...ChangeSceneType"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeHandlers</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Mapper:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"XxxMap"</span> <span class="attr">type</span>=<span class="string">"com...XxxEntity"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 其他属性配置... --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"member_type"</span> <span class="attr">property</span>=<span class="string">"memberType"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> <span class="attr">typeHandler</span>=<span class="string">"enumHandler"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 其他属性配置... --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>CodeEnumTypeHandler.java:</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">CodeEnumTypeHandler&lt;E</span> <span class="keyword">extends</span> <span class="title">Enum</span> <span class="title">&amp;</span> <span class="title">CodeEnum&gt;</span> <span class="keyword">extends</span> <span class="title">BaseTypeHandler&lt;E&gt;</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">Class</span>&lt;<span class="type">E</span>&gt; <span class="class"><span class="keyword">type</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">E</span>&gt; enums;</span><br><span class="line"></span><br><span class="line">    public <span class="type">CodeEnumTypeHandler</span>(<span class="type">Class</span>&lt;<span class="type">E</span>&gt; <span class="class"><span class="keyword">type</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span><span class="class">.<span class="keyword">type</span> </span>= <span class="class"><span class="keyword">type</span></span>;</span><br><span class="line">        <span class="type">E</span>[] es = <span class="class"><span class="keyword">type</span>.<span class="title">getEnumConstants</span>(<span class="params"></span>)</span>;</span><br><span class="line">        <span class="keyword">if</span> (es == <span class="literal">null</span> || es.length==<span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalArgumentException</span>(<span class="class"><span class="keyword">type</span>.<span class="title">getSimpleName</span>(<span class="params"></span>) <span class="title">+</span> " <span class="title">does</span> <span class="title">not</span> <span class="title">represent</span> <span class="title">an</span> <span class="title">enum</span> <span class="title">type</span>.")</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        enums = <span class="keyword">new</span> <span class="type">HashMap</span>&lt;<span class="type">String</span>, <span class="type">E</span>&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">E</span> e: es) &#123;</span><br><span class="line">            enums.put(e.getCode(), e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">E</span> valueOf(<span class="type">String</span> code) &#123;</span><br><span class="line">        <span class="keyword">if</span> (code == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">E</span> e = enums.get(code);</span><br><span class="line">        <span class="keyword">if</span> (e == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalArgumentException</span>(<span class="string">"No enum code '"</span> + code + <span class="string">"'. "</span> + <span class="class"><span class="keyword">type</span>)</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> e;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public void setNonNullParameter(<span class="type">PreparedStatement</span> ps, int i, <span class="type">E</span> e, <span class="type">JdbcType</span> jdbcType)</span><br><span class="line">            <span class="keyword">throws</span> <span class="type">SQLException</span> &#123;</span><br><span class="line">        ps.setString(i, e.getCode());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public <span class="type">E</span> getNullableResult(<span class="type">ResultSet</span> rs, <span class="type">String</span> columnName) <span class="keyword">throws</span> <span class="type">SQLException</span> &#123;</span><br><span class="line">        <span class="type">String</span> value = rs.getString(columnName);</span><br><span class="line">        <span class="keyword">return</span> valueOf(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public <span class="type">E</span> getNullableResult(<span class="type">ResultSet</span> rs, int columnIndex) <span class="keyword">throws</span> <span class="type">SQLException</span> &#123;</span><br><span class="line">        <span class="type">String</span> value = rs.getString(columnIndex);</span><br><span class="line">        <span class="keyword">return</span> valueOf(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public <span class="type">E</span> getNullableResult(<span class="type">CallableStatement</span> cs, int columnIndex) <span class="keyword">throws</span> <span class="type">SQLException</span> &#123;</span><br><span class="line">        <span class="type">String</span> value = cs.getString(columnIndex);</span><br><span class="line">        <span class="keyword">return</span> valueOf(value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="定位问题"><a href="#定位问题" class="headerlink" title="定位问题"></a>定位问题</h2><figure class="highlight leaf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. org.apache.ibatis.builder.xml.XMLMapperBuilder<span class="function"><span class="keyword">#</span><span class="title">resultMapElement</span><span class="params">(<span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">parsing</span>.<span class="variable">XNode</span>, <span class="variable">java</span>.<span class="variable">util</span>.<span class="variable">List</span>&lt;<span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">mapping</span>.<span class="variable">ResultMapping</span>&gt;)</span></span></span><br><span class="line">2. org.apache.ibatis.builder.MapperBuilderAssistant<span class="function"><span class="keyword">#</span><span class="title">buildResultMapping</span><span class="params">(<span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;?&gt;, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;?&gt;, <span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">type</span>.<span class="variable">JdbcType</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;? <span class="variable">extends</span> <span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">type</span>.<span class="variable">TypeHandler</span>&lt;?&gt;&gt;, <span class="variable">java</span>.<span class="variable">util</span>.<span class="variable">List</span>&lt;<span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">mapping</span>.<span class="variable">ResultFlag</span>&gt;, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">boolean</span>)</span></span></span><br><span class="line">3. org.apache.ibatis.builder.MapperBuilderAssistant<span class="function"><span class="keyword">#</span><span class="title">buildResultMapping</span><span class="params">(<span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;?&gt;, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;?&gt;, <span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">type</span>.<span class="variable">JdbcType</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;? <span class="variable">extends</span> <span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">type</span>.<span class="variable">TypeHandler</span>&lt;?&gt;&gt;, <span class="variable">java</span>.<span class="variable">util</span>.<span class="variable">List</span>&lt;<span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">mapping</span>.<span class="variable">ResultFlag</span>&gt;, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">boolean</span>)</span></span></span><br><span class="line">4. org.apache.ibatis.builder.BaseBuilder<span class="function"><span class="keyword">#</span><span class="title">resolveTypeHandler</span><span class="params">(<span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;?&gt;, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;? <span class="variable">extends</span> <span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">type</span>.<span class="variable">TypeHandler</span>&lt;?&gt;&gt;)</span></span></span><br><span class="line">5. org.apache.ibatis.type.TypeHandlerRegistry#getMappingTypeHandler</span><br></pre></td></tr></table></figure>
+
+<p>DEBUG 跟踪代码发现是 BaseBuilder 和 TypeHandlerRegistry 两个类做了调整</p>
+<p>通过 Github 上 TypeHandlerRegistry 类的变更记录，发现是 <a href="https://github.com/mybatis/mybatis-3/commit/e92c2a2f1aacce52d7c1470b9aaa524dc8e9d1e7#diff-f54f4f9d0324952c3d7545a3e7a4dbee" target="_blank" rel="noopener">commit e92c2a2</a> 这次提交引入了这些变更。注释说明了这次变更的原因在 <a href="https://github.com/mybatis/old-google-code-issues/issues/746" target="_blank" rel="noopener">issue #746</a> 中有记录。为了解决 Spring 注入依赖的问题，有了这次的代码变更。</p>
+<p>可以看到缓存 TypeHandler 的 Map 有了变化</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-  <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;<span class="keyword">Class</span>&lt;?&gt;, Map&lt;<span class="keyword">Type</span>, TypeHandler&lt;?&gt;&gt;&gt; REVERSE_TYPE_HANDLER_MAP = <span class="keyword">new</span> HashMap&lt;<span class="keyword">Class</span>&lt;?&gt;, Map&lt;<span class="keyword">Type</span>, TypeHandler&lt;?&gt;&gt;&gt;();</span><br><span class="line">+  <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;<span class="keyword">Class</span>&lt;?&gt;, TypeHandler&lt;?&gt;&gt; ALL_TYPE_HANDLERS_MAP = <span class="keyword">new</span> HashMap&lt;<span class="keyword">Class</span>&lt;?&gt;, TypeHandler&lt;?&gt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>原来查找具体的 TypeHandler 是先根据 TypeHandler.class 类查找到 <code>Map&lt;Type, TypeHandler&lt;?&gt;&gt;</code>，最后通过属性的 javaType 查找到 TypeHandler。所以之前的代码和配置运行是没问题。但是之后改成了直接通过 TypeHandler.class 找 TypeHandler，所以 <code>&lt;typeHandler handler=&quot;com...CodeEnumTypeHandler&quot; javaType=&quot;com...ChangeSceneType&quot; /&gt;</code> 之前枚举的 TypeHandler 配置都会被覆盖掉，会抛出 <code>No enum code &#39;MERCHANT&#39;. class com...ChangeSceneType</code> 异常也就很好理解了。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>既然是直接通过 TypeHandler.class 找 TypeHandler，那么就可以对每种枚举都实现一个对应的 TypeHandler 类。这样带来的问题也很明显，项目中有多少枚举就得写多少对应的 TypeHandler。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MemberTypeHandler</span> <span class="keyword">extends</span> <span class="title">CodeEnumTypeHandler&lt;MemberType&gt;</span> </span>&#123;</span><br><span class="line">    public <span class="type">MemberTypeHandler</span>(<span class="type">Class</span>&lt;<span class="type">MemberType</span>&gt; <span class="class"><span class="keyword">type</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="class"><span class="keyword">type</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过在 Github Issue 里翻 enum 相关的信息，在 <a href="https://github.com/mybatis/mybatis-3/issues/995" target="_blank" rel="noopener">Issue #995</a> 找到了一个完美的解决办法。就是去掉 <code>&lt;resultMap&gt;</code> 配置中的typeHandler 属性。也就是说指定 typeHandler 是没有必要的，为什么是这样呢？</p>
+<p>在设置返回对象的属性值时有如下的调用顺序：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="selector-tag">org</span><span class="selector-class">.apache</span><span class="selector-class">.ibatis</span><span class="selector-class">.executor</span><span class="selector-class">.resultset</span><span class="selector-class">.DefaultResultSetHandler</span><span class="selector-id">#applyPropertyMappings</span></span><br><span class="line">2. <span class="selector-tag">org</span><span class="selector-class">.apache</span><span class="selector-class">.ibatis</span><span class="selector-class">.executor</span><span class="selector-class">.resultset</span><span class="selector-class">.DefaultResultSetHandler</span><span class="selector-id">#getPropertyMappingValue</span></span><br><span class="line">3. <span class="selector-tag">org</span><span class="selector-class">.apache</span><span class="selector-class">.ibatis</span><span class="selector-class">.type</span><span class="selector-class">.BaseTypeHandler</span><span class="selector-id">#getResult</span>(<span class="selector-tag">java</span><span class="selector-class">.sql</span><span class="selector-class">.ResultSet</span>, <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.String</span>)</span><br><span class="line">4. <span class="selector-tag">com</span>..<span class="selector-class">.CodeEnumTypeHandler</span><span class="selector-id">#getNullableResult</span>(<span class="selector-tag">java</span><span class="selector-class">.sql</span><span class="selector-class">.ResultSet</span>, <span class="selector-tag">java</span><span class="selector-class">.lang</span><span class="selector-class">.String</span>)</span><br><span class="line">5. <span class="selector-tag">com</span>..<span class="selector-class">.CodeEnumTypeHandler</span><span class="selector-id">#valueOf</span></span><br></pre></td></tr></table></figure>
+
+<p><code>org.apache.ibatis.executor.resultset.DefaultResultSetHandler#getPropertyMappingValue</code> 中有几行代码：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">final TypeHandler&lt;?&gt; typeHandler = propertyMapping.get<span class="constructor">TypeHandler()</span>;</span><br><span class="line">final String column = prepend<span class="constructor">Prefix(<span class="params">propertyMapping</span>.<span class="params">getColumn</span>()</span>, columnPrefix);</span><br><span class="line">return typeHandler.get<span class="constructor">Result(<span class="params">rs</span>, <span class="params">column</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>通过 propertyMapping 找到了类型处理器，这个 propertyMapping 是通过遍历 <code>org.apache.ibatis.mapping.ResultMap</code> 的 <code>propertyResultMappings</code> 属性获得的。<code>ResultMap</code> 类对应于 Mapper 文件中的 <code>&lt;resultMap&gt;</code> 元素，<code>ResultMapping</code> 类对应于 <code>&lt;resultMap&gt;</code> 元素的子元素 <code>&lt;result&gt;</code>。</p>
+<p><code>ResultMap</code> 类中有四个 <code>ResultMapping</code> 列表，<code>ResultMap</code> 实例是由内部类 <code>ResultMap.Builder</code> 构造的，通过其<code>build</code> 方法可以看出 <code>idResultMappings</code>，<code>constructorResultMappings</code>，<code>propertyResultMappings</code> 是 <code>resultMappings</code> 的一个子集。<code>resultMappings</code> 又是什么时候构造出来的呢。</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">List</span>&lt;ResultMapping&gt; resultMappings;</span><br><span class="line"><span class="keyword">private</span> <span class="built_in">List</span>&lt;ResultMapping&gt; idResultMappings;</span><br><span class="line"><span class="keyword">private</span> <span class="built_in">List</span>&lt;ResultMapping&gt; constructorResultMappings;</span><br><span class="line"><span class="keyword">private</span> <span class="built_in">List</span>&lt;ResultMapping&gt; propertyResultMappings;</span><br></pre></td></tr></table></figure>
+
+<p><code>ResultMap</code> 构建的过程。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="selector-tag">org</span><span class="selector-class">.apache</span><span class="selector-class">.ibatis</span><span class="selector-class">.builder</span><span class="selector-class">.xml</span><span class="selector-class">.XMLMapperBuilder</span><span class="selector-id">#resultMapElement</span>(<span class="selector-tag">org</span><span class="selector-class">.apache</span><span class="selector-class">.ibatis</span><span class="selector-class">.parsing</span><span class="selector-class">.XNode</span>, <span class="selector-tag">java</span><span class="selector-class">.util</span><span class="selector-class">.List</span>&lt;<span class="selector-tag">org</span><span class="selector-class">.apache</span><span class="selector-class">.ibatis</span><span class="selector-class">.mapping</span><span class="selector-class">.ResultMapping</span>&gt;)</span><br><span class="line">2. <span class="selector-tag">org</span><span class="selector-class">.apache</span><span class="selector-class">.ibatis</span><span class="selector-class">.builder</span><span class="selector-class">.ResultMapResolver</span><span class="selector-id">#resolve</span></span><br><span class="line">3. <span class="selector-tag">org</span><span class="selector-class">.apache</span><span class="selector-class">.ibatis</span><span class="selector-class">.builder</span><span class="selector-class">.MapperBuilderAssistant</span><span class="selector-id">#addResultMap</span></span><br><span class="line">4. <span class="selector-tag">org</span><span class="selector-class">.apache</span><span class="selector-class">.ibatis</span><span class="selector-class">.mapping</span><span class="selector-class">.ResultMap</span><span class="selector-class">.Builder</span><span class="selector-id">#build</span></span><br></pre></td></tr></table></figure>
+
+<p><code>ResultMapping</code> 也是由他的内部类<code>ResultMapping.Builder</code> 改造。它的构建的过程如下。</p>
+<figure class="highlight leaf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. org.apache.ibatis.builder.xml.XMLMapperBuilder<span class="function"><span class="keyword">#</span><span class="title">resultMapElement</span><span class="params">(<span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">parsing</span>.<span class="variable">XNode</span>, <span class="variable">java</span>.<span class="variable">util</span>.<span class="variable">List</span>&lt;<span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">mapping</span>.<span class="variable">ResultMapping</span>&gt;)</span></span></span><br><span class="line">2. org.apache.ibatis.builder.xml.XMLMapperBuilder#buildResultMappingFromContext</span><br><span class="line">3. org.apache.ibatis.builder.MapperBuilderAssistant<span class="function"><span class="keyword">#</span><span class="title">buildResultMapping</span><span class="params">(<span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;?&gt;, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;?&gt;, <span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">type</span>.<span class="variable">JdbcType</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">Class</span>&lt;? <span class="variable">extends</span> <span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">type</span>.<span class="variable">TypeHandler</span>&lt;?&gt;&gt;, <span class="variable">java</span>.<span class="variable">util</span>.<span class="variable">List</span>&lt;<span class="variable">org</span>.<span class="variable">apache</span>.<span class="variable">ibatis</span>.<span class="variable">mapping</span>.<span class="variable">ResultFlag</span>&gt;, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">java</span>.<span class="variable">lang</span>.<span class="variable">String</span>, <span class="variable">boolean</span>)</span></span></span><br><span class="line">4. org.apache.ibatis.mapping.ResultMapping.Builder#build</span><br></pre></td></tr></table></figure>
+
+<p><code>buildResultMapping</code> 方法会调用前面提到的 <code>BaseBuilder#resolveTypeHandler</code> 方法，而因为我们没有配置 typeHandler 属性，所以此时调用 <code>BaseBuilder#resolveTypeHandler</code> 只会返回 null。但是每个类型都应该有它对应的类型处理器，这个类型处理器是什么时候构建出来的。<code>ResultMapping.Builder#build</code> 方法中就能找到答案了，这个方法会调用<code>ResultMapping.Builder#resolveTypeHandler</code>，如果它发现执行到这里 <code>ResultMapping</code> 的 <code>typeHandler</code> 属性还为 null，就会调用 <code>typeHandlerRegistry.getTypeHandler(resultMapping.javaType, resultMapping.jdbcType)</code>，这个方法和前面提到的同名方法是有区别的。它是从 <code>TYPE_HANDLER_MAP</code> 中取的 typeHandler，而前面是 <code>ALL_TYPE_HANDLERS_MAP</code>。<code>TYPE_HANDLER_MAP</code> 中存储的是属性的 javaType 和 jdbcType 与 typeHandler 映射的映射关系，可能有点拗口，也就是通过属性的 javaType 和 jdbcType 就可以找到它对应的类型处理器，而后者<br><code>ALL_TYPE_HANDLERS_MAP</code> 存储的是 TypeHandler.class 和 TypeHandler 实例的映射关系。</p>
+<p>总结一下，不必配置<code>&lt;result&gt;</code> 元素的 typeHandler 属性是因为这样避免了通过 typeHandler 属性值(在本例中就是之前的enumHandler)找对应的 TypeHandler 实例，而是通过 javaType 和 jdbcType (在本例终究是MemberType枚举和VARCHAR) 找到对应的 TypeHandler 实例。</p>
+<p>最后一个问题。TypeHandlerRegistry 中存储的映射关系又是什么时候注册进来的呢。 从方法<code>org.apache.ibatis.builder.xml.XMLConfigBuilder#typeHandlerElement</code>里可以找到答案。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.486Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/09/29/maven/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Maven 总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题描述"><span class="toc-number">1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定位问题"><span class="toc-number">2.</span> <span class="toc-text">定位问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决问题"><span class="toc-number">3.</span> <span class="toc-text">解决问题</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2017/09/30/mybatis-enum-handler/';
+  this.page.identifier = '2017/09/30/mybatis-enum-handler/';
+  this.page.title = 'MyBatis 类型处理器';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

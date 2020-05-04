@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Java编程思想笔记四 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="thinking in java; java编程思想">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java编程思想笔记四">
+<meta property="og:url" content="http://howiefh.github.io/2014/10/17/thinking-in-java-note-4/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="thinking in java; java编程思想">
+<meta property="article:published_time" content="2014-10-17T01:58:25.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.472Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Thinking in Java">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-thinking-in-java-note-4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/10/17/thinking-in-java-note-4/" class="article-date">
+  <time class="dt-published" datetime="2014-10-17T01:58:25.000Z" itemprop="datePublished">2014-10-17</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Java编程思想笔记四
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#类型信息"><span class="toc-number">1.</span> <span class="toc-text">类型信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么需要RTTI"><span class="toc-number">1.1.</span> <span class="toc-text">为什么需要RTTI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class对象"><span class="toc-number">1.2.</span> <span class="toc-text">Class对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#类字面常量"><span class="toc-number">1.2.1.</span> <span class="toc-text">类字面常量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#泛化的Class引用"><span class="toc-number">1.2.2.</span> <span class="toc-text">泛化的Class引用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#新的转型语法"><span class="toc-number">1.2.3.</span> <span class="toc-text">新的转型语法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类型转换前先做检查"><span class="toc-number">1.3.</span> <span class="toc-text">类型转换前先做检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注册工厂"><span class="toc-number">1.4.</span> <span class="toc-text">注册工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#instanceof与Class的等价性"><span class="toc-number">1.5.</span> <span class="toc-text">instanceof与Class的等价性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#反射：运行时候的类信息"><span class="toc-number">1.6.</span> <span class="toc-text">反射：运行时候的类信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态代理"><span class="toc-number">1.7.</span> <span class="toc-text">动态代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空对象"><span class="toc-number">1.8.</span> <span class="toc-text">空对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口与类型信息"><span class="toc-number">1.9.</span> <span class="toc-text">接口与类型信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型"><span class="toc-number">2.</span> <span class="toc-text">泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单泛型"><span class="toc-number">2.1.</span> <span class="toc-text">简单泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#一个元组类库"><span class="toc-number">2.1.1.</span> <span class="toc-text">一个元组类库</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型接口"><span class="toc-number">2.2.</span> <span class="toc-text">泛型接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型方法"><span class="toc-number">2.3.</span> <span class="toc-text">泛型方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#擦除"><span class="toc-number">2.4.</span> <span class="toc-text">擦除</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#擦除的问题"><span class="toc-number">2.4.1.</span> <span class="toc-text">擦除的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#边界处的的动作"><span class="toc-number">2.4.2.</span> <span class="toc-text">边界处的的动作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#擦除的补偿"><span class="toc-number">2.5.</span> <span class="toc-text">擦除的补偿</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建类型实例"><span class="toc-number">2.5.1.</span> <span class="toc-text">创建类型实例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#泛型数组"><span class="toc-number">2.5.2.</span> <span class="toc-text">泛型数组</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通配符"><span class="toc-number">2.6.</span> <span class="toc-text">通配符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题"><span class="toc-number">2.7.</span> <span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#任何基本类型都不能作为类型参数"><span class="toc-number">2.7.1.</span> <span class="toc-text">任何基本类型都不能作为类型参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实现参数化接口"><span class="toc-number">2.7.2.</span> <span class="toc-text">实现参数化接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#转型和警告"><span class="toc-number">2.7.3.</span> <span class="toc-text">转型和警告</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#重载"><span class="toc-number">2.7.4.</span> <span class="toc-text">重载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#基类劫持了接口"><span class="toc-number">2.7.5.</span> <span class="toc-text">基类劫持了接口</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自限定类型"><span class="toc-number">2.8.</span> <span class="toc-text">自限定类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态类型安全"><span class="toc-number">2.9.</span> <span class="toc-text">动态类型安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常"><span class="toc-number">2.10.</span> <span class="toc-text">异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#混型"><span class="toc-number">2.11.</span> <span class="toc-text">混型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#潜在类型机制"><span class="toc-number">2.12.</span> <span class="toc-text">潜在类型机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对潜在类型机制的补偿"><span class="toc-number">2.13.</span> <span class="toc-text">对潜在类型机制的补偿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将函数对象用作策略"><span class="toc-number">2.14.</span> <span class="toc-text">将函数对象用作策略</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="类型信息"><a href="#类型信息" class="headerlink" title="类型信息"></a>类型信息</h2><p>Java是如何让我们在运行时候识别对象和类的信息的</p>
+<ol>
+<li>传统的RTTI（运行时类型信息），它假定我们在编译时就已经知道了所有的类型</li>
+<li>反射机制，允许我们在运行的时候发现和使用类的信息<a id="more"></a>
+
+</li>
+</ol>
+<h3 id="为什么需要RTTI"><a href="#为什么需要RTTI" class="headerlink" title="为什么需要RTTI"></a>为什么需要RTTI</h3><p>RTTI名字的含义：在运行时，识别一个对象的类型。<br>使用RTTI可以知道某个引用所指向的对象的确切类型。</p>
+<h3 id="Class对象"><a href="#Class对象" class="headerlink" title="Class对象"></a>Class对象</h3><p>每个类都有一个Class 对象，每当编写并且编译一个新类，就会产生一个Class对象（更恰当的说，是被保存在一个同名的.class文件中）。为了生成这个类的对象，运行这个程序的java虚拟机将使用被称为“类加载器”的子系统。</p>
+<p>所有的类都是在对其第一次使用的时候，动态加载到JVM中的。当程序创建第一个对类的静态成员的引用时，就会加载这个类。这个证明构造器也是类的静态方法，即使在构造器之前并没有使用static关键字。</p>
+<p>类加载器首先检查这个类的Class对象是否已加载。如果尚未加载，默认的类加载器就会根据类名查找.class文件。在这个类的字节码被加载时，它们会接受验证，确保其没有被破坏，并且不包含不良java代码。</p>
+<p>forName()的调用会产生“副作用”：如果类还没有被加载就加载它。在加载的过程中，static子句被执行。注意，在传递给forName()的字符串中，你必须使用全限定名（包含包名）。</p>
+<p>getSimpleName()不包含包名，getName()，getCanonicalName()包含包名。<br>isInterface()这个Class对象是否表示某个接口。<br>getInterfaces()返回的是Class对象，它们表示在感兴趣的Class对象中所包含的接口。<br>getSuperclass()返回其直接基类。<br>newInstance()创建新实例，会得到Object对象。使用newInstance()创建的实例的类必须有默认构造器。</p>
+<h4 id="类字面常量"><a href="#类字面常量" class="headerlink" title="类字面常量"></a>类字面常量</h4><p>java还提供了另一种方法来生成对Class对象的引用，即使用类字面常量。如：<br>FancyToy.class;   </p>
+<p>这样做不仅简单，而且更安全，因为它是在编译时候就会受到检查（因此不需要置于try语句块中），并且它根除了对forName()方法的调用，所以也更高效。</p>
+<p>类字面常量不仅可以应用于普通的类，也可以应用于接口、数组、以及基本数据类型。另外，对于基本数据类型的包装类，还有一个标准的TYPE。TYPE字段是一个引用，指向对应的基本数据类型的Class对象，和.class是等效的。</p>
+<p>当使用.class来创建对Class对象的引用的时候，不会自动初始化该Class对象，为了使用类而做的准备工作实际包含三个步骤：</p>
+<ol>
+<li><strong>加载。由类加载器执行。该步骤将查找字节码，并从字节码中创建class对象。</strong></li>
+<li><strong>链接。验证类中的字节码，为静态域分配存储空间，并且需要的话，将解析这个类创建的对其他类的所有引用。</strong></li>
+<li><strong>初始化。如果该类具有超类，则对其进行初始化，执行静态初始化器和静态初始化模块。</strong></li>
+</ol>
+<ul>
+<li>仅使用.class语法来获得对类的引用不会引发初始化。但是，为了产生Class引用，Class.forName()立即就进行了初始化。</li>
+<li>如果一个static final值是“编译期常量”，那么这个值不需要对类进行初始化就可以被读取。但是有例外，如果是通过一个静态方法赋值的，仍需要进行初始化。</li>
+<li>如果是一个static域不是final，对它进行访问时，总是要求在它被读取之前，要先进行链接和初始化。</li>
+</ul>
+<h4 id="泛化的Class引用"><a href="#泛化的Class引用" class="headerlink" title="泛化的Class引用"></a>泛化的Class引用</h4><p>在Java SE5中，Class<?>优于平凡的Class，即便它们是等价的，并且平凡的Class如你所见，不会产生编译器警告信息。Class<?>的好处是它表示你并非碰巧或者由于疏忽，而使用了一个非具体的类引用，你就是选择了非具体的版本。</p>
+<p>向Class引用添加泛型语法的原因仅仅是为了提供编译期类型检查，因此如果你操作有误，稍后立即就会发现这一点。</p>
+<h4 id="新的转型语法"><a href="#新的转型语法" class="headerlink" title="新的转型语法"></a>新的转型语法</h4><p><strong>Java SE5还添加了用于Class引用的转型语法，即cast()方法</strong>：</p>
+<h3 id="类型转换前先做检查"><a href="#类型转换前先做检查" class="headerlink" title="类型转换前先做检查"></a>类型转换前先做检查</h3><p>我们知道RTTI的形式包括：</p>
+<ol>
+<li>传统的类型转换 (Shape)</li>
+<li>代表对象的类型的Class对象</li>
+<li>关键字instanceof<ul>
+<li>instanceof，如果编写了许多的instanceof表达式，就说明你的设计存在瑕疵。</li>
+<li>动态instanceof，即Class.isInstance方法提供了一种解决过多使用instanceof表达式的方法，但是一般效率稍微低一些。</li>
+</ul>
+</li>
+</ol>
+<h3 id="注册工厂"><a href="#注册工厂" class="headerlink" title="注册工厂"></a>注册工厂</h3><p>使用工厂方法设计模式，将对象的创建工作交给类自己去完成。</p>
+<h3 id="instanceof与Class的等价性"><a href="#instanceof与Class的等价性" class="headerlink" title="instanceof与Class的等价性"></a>instanceof与Class的等价性</h3><ol>
+<li>instanceof和isInstance()保持了类型的概念，它指的是“你是这个类吗？或者你是这个类的派生类吗?”</li>
+<li>如果用==或equal()比较实际的Class对象，就没有考虑继承–它或者是这个确切的类型，或者不是。</li>
+</ol>
+<h3 id="反射：运行时候的类信息"><a href="#反射：运行时候的类信息" class="headerlink" title="反射：运行时候的类信息"></a>反射：运行时候的类信息</h3><p>运行时获取类信息的两个动机：</p>
+<ol>
+<li>集成开发环境中检查可用的方法。</li>
+<li>远程方法调用（RMI）。允许将一个java程序将对象分部到多态机器上。</li>
+</ol>
+<p>Class类和java.lang.reflect类库对反射进行了支持，该类库包含Field、Method、Constructor类。</p>
+<p><strong>Constructor的newInstance()方法，Method的invoke()方法，Field的一系列get()和set()方法，Class的getFields()、getMethods()、getConstructors()方法都是常用到的方法。</strong></p>
+<p>反射在java中用来支持其它特性，如对象序列化和JavaBean。</p>
+<p><strong>默认构造器会自动被赋予与类一样的访问权限</strong></p>
+<h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><p>通过调用静态方法Proxy.newProxyInstance()可以创建动态代理，这个方法需要得到一个类加载器（你通常可以从已经被加载的对象中获取其类加载器，然后传递给它），一个你希望该代理实现的接口列表（不是类或者抽象类），以及InvocationHandle接口的一个实现。</p>
+<p>在动态代理上所做的所有调用都会被重定向到单一的调用处理器上，它的工作是揭示调用的类型并确定相应的对策。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public List get<span class="constructor">List(<span class="params">final</span> List <span class="params">list</span>)</span> &#123;</span><br><span class="line">    return (List) <span class="module-access"><span class="module"><span class="identifier">Proxy</span>.</span></span><span class="keyword">new</span><span class="constructor">ProxyInstance(DummyProxy.<span class="params">class</span>.<span class="params">getClassLoader</span>()</span>, <span class="keyword">new</span> Class<span class="literal">[]</span> &#123; <span class="module-access"><span class="module"><span class="identifier">List</span>.</span></span><span class="keyword">class</span> &#125;,</span><br><span class="line">        <span class="keyword">new</span> <span class="constructor">InvocationHandler()</span> &#123;</span><br><span class="line">            public Object invoke(Object proxy, Method <span class="keyword">method</span>, Object<span class="literal">[]</span> args) throws Throwable &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">"add"</span>.equals(<span class="keyword">method</span>.get<span class="constructor">Name()</span>)) &#123;</span><br><span class="line">                    throw <span class="keyword">new</span> <span class="constructor">UnsupportedOperationException()</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    return <span class="keyword">method</span>.invoke(<span class="built_in">list</span>, args);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="空对象"><a href="#空对象" class="headerlink" title="空对象"></a>空对象</h3><p>通过空对象，你可以假设所有的对象都是有效的，而不必浪费编程精力去检查null。到处使用空对象没有任何意义–有时检查null就可以了，有时可以合理假设不会遇到null，有时探测NullPointerException异常也可以。空对象最有用的地方在于它更靠近数据，因为对象表示的是问题空间内的实体。</p>
+<h3 id="接口与类型信息"><a href="#接口与类型信息" class="headerlink" title="接口与类型信息"></a>接口与类型信息</h3><p>看起来没有任何方式可以阻止反射到达并调用那些非公共访问权限的方法。对于域来说，的确如此，即便是private域。final域实际上在遭遇修改时是安全的。</p>
+<p>不要太早关注程序的效率问题，这是个诱人的陷阱，最好首先让程序运作起来，然后再考虑它的速度，如果要解决效率问题可以使用profiler。</p>
+<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p>一般的类和方法，只能使用具体的类型：要么是基本类型，要么是自定义的类。如果要编写可以应用于多种类型的代码，这种刻板的限制对代码的束缚就会很大。</p>
+<p>多态，接口都算是一种泛化机制，将方法的参数类型设为基类或接口，这样的方法更加通用一些。有时多态和接口还是有限制，要使代码应用于某种不具体的类型，而不是指定的接口或类。</p>
+<p>Java SE5提供了泛型的概念，其实现了参数化类型的概念。但是相比有些语言的泛型机制，Java的泛型并不是纯粹的，有很多的局限。</p>
+<h3 id="简单泛型"><a href="#简单泛型" class="headerlink" title="简单泛型"></a>简单泛型</h3><p>暂时并不指定类型，而是在使用的时候在指定具体使用什么类型。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Holder</span>&lt;T&gt;&#123;</span></span><br><span class="line">    <span class="keyword">private</span> T a;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123;</span><br><span class="line">        Holder&lt;<span class="keyword">String</span>&gt; holder = <span class="keyword">new</span> Holder();    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="一个元组类库"><a href="#一个元组类库" class="headerlink" title="一个元组类库"></a>一个元组类库</h4><p>使用元组，可以解决方法调用一次返回多个对象的需求。</p>
+<p>元组，它是将一组对象直接打包存储于其中的一个单一对象。这个容器对象允许读取其中元素，但是不允许存放新的对象。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">TwoTuple</span>&lt;<span class="symbol">A,<span class="symbol">B</span></span>&gt; &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> A first;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> B second;</span><br><span class="line">    <span class="keyword">public</span> TwoTuple(A a, B b)&#123;first = a; second = b;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>first和second并没有声明为private，这是否违反了Java编程的安全性原则，实际上final声明提供了相同的安全保险，而这种格式更加简洁明了。（如果是private的，还需要提供get方法）</p>
+<p>可以通过继承机制实现更长的元组。</p>
+<h3 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h3><p>泛型也可以应用于接口。例如生成器（generator），这是一种专门负责创建对象的类。实际上，这是工厂方法设计模式的一种应用。不过，当使用生成器创建新的对象时，它不需要任何参数，而工厂方法一般需要参数。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public<span class="built_in"> interface </span>Generator&lt;T&gt;&#123;T next();&#125;</span><br></pre></td></tr></table></figure>
+<p>Java泛型的一个局限性：<strong>基本类型无法作为类型参数</strong>。不过Java提供了自动打包和自动拆包机制。</p>
+<h3 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h3><p>一个基本的指导原则：无论何时，只要你能做到，你就应该尽量使用泛型方法。也就是说，如果使用泛型方法可以取代将整个类泛型化，那么就应该只使用泛型方法，因为它可以使事情更清楚明白。另外，对于一个static的方法而言，无法访问泛型类的类型参数，所以，如果static方法需要使用泛型能力，就必须使其成为泛型方法。</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="keyword">void</span> <span class="function"><span class="keyword">function</span><span class="params">(T i)</span></span>&#123;&#125;  <span class="comment">//将泛型参数列表置于返回类型之前</span></span><br></pre></td></tr></table></figure>
+<p>当使用泛型类时，必须在创建对象的时候指定类型参数的值，而使用泛型方法的时候，通常不必指明参数类型，因为编译器会为我们找出具体的类型。这称为类型参数推断（type argument inference）。因此，我们可以像调用普通方法一样调用f()，而且就好像是f()被无限次地重载过。</p>
+<p>类型推断只对赋值操作有效，但是现在，<a href="http://my.oschina.net/benhaile/blog/184390" target="_blank" rel="noopener">Java SE7和Java SE8对类型推断做了一些改进</a><br><strong>java7的泛型类型推断改进</strong><br>在以前的版本中使用泛型类型，需要在声明并赋值的时候，两侧都加上泛型类型。例如：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt; myMap = <span class="keyword">new</span> HashMap&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt;();</span><br></pre></td></tr></table></figure>
+<p>在Java SE 7中，这种方式得以改进，现在你可以使用如下语句进行声明并赋值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">String</span>&gt; myMap = <span class="keyword">new</span> HashMap&lt;&gt;(); <span class="comment">//注意后面的"&lt;&gt;"</span></span><br></pre></td></tr></table></figure>
+<p>在这条语句中，编译器会根据变量声明时的泛型类型自动推断出实例化HashMap时的泛型类型。再次提醒一定要注意new HashMap后面的“&lt;&gt;”，只有加上这个“&lt;&gt;”才表示是自动类型推断，否则就是非泛型类型的HashMap，并且在使用编译器编译源代码时会给出一个警告提示。</p>
+<p>但是：Java SE 7在创建泛型实例时的类型推断是有限制的：只有构造器的参数化类型在上下文中被显著的声明了，才可以使用类型推断，否则不行。例如：下面的例子在java 7无法正确编译（但现在在java8里面可以编译，因为根据方法参数来自动推断泛型的类型）：</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; <span class="built_in">list</span> = <span class="literal">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="built_in">list</span>.add(<span class="string">"A"</span>);<span class="comment">// 由于addAll期望获得Collection&lt;? extends String&gt;类型的参数，因此下面的语句无法通过</span></span><br><span class="line"><span class="built_in">list</span>.addAll(<span class="literal">new</span> ArrayList&lt;&gt;());</span><br></pre></td></tr></table></figure>
+<p><strong>Java8的泛型类型推断改进</strong><br>java8里面泛型的目标类型推断主要2个：</p>
+<ol>
+<li>支持通过方法上下文推断泛型目标类型</li>
+<li>支持在方法调用链路当中，泛型类型推断传递到最后一个方法<br>让我们看看官网的例子<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">List</span>&lt;E&gt; &#123;</span></span><br><span class="line">   <span class="keyword">static</span> &lt;Z&gt; <span class="function">List&lt;Z&gt; <span class="title">nil</span><span class="params">()</span> </span>&#123; ... &#125;;</span><br><span class="line">   <span class="keyword">static</span> &lt;Z&gt; <span class="function">List&lt;Z&gt; <span class="title">cons</span><span class="params">(Z head, List&lt;Z&gt; tail)</span> </span>&#123; ... &#125;;</span><br><span class="line">   <span class="function">E <span class="title">head</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+根据JEP101的特性，我们在调用上面方法的时候可以这样写<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//通过方法赋值的目标参数来自动推断泛型的类型，这个不是新特性</span><br><span class="line"><span class="keyword">List</span>&lt;<span class="keyword">String</span>&gt; l = <span class="keyword">List</span>.nil();</span><br><span class="line">//而不是显示的指定类型</span><br><span class="line">//<span class="keyword">List</span>&lt;<span class="keyword">String</span>&gt; l = <span class="keyword">List</span>.&lt;<span class="keyword">String</span>&gt;nil();</span><br><span class="line">//通过前面方法参数类型推断泛型的类型</span><br><span class="line"><span class="keyword">List</span>.cons(<span class="number">42</span>, <span class="keyword">List</span>.nil());</span><br><span class="line">//而不是显示的指定类型</span><br><span class="line">//<span class="keyword">List</span>.cons(<span class="number">42</span>, <span class="keyword">List</span>.&lt;<span class="keyword">Integer</span>&gt;nil());</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>显示的类型说明，在点操作符和方法名之间插入尖括号，然后把类型置于尖括号内。</strong></p>
+<ul>
+<li>类.&lt;实际类型参数…&gt;method()</li>
+<li>对象.&lt;实际类型参数…&gt;method()</li>
+<li>this.&lt;实际类型参数…&gt;method()</li>
+</ul>
+<p>匿名内部类与泛型：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">new Generator&lt;Customer&gt;()&#123;</span><br><span class="line">    public<span class="built_in"> Customer </span>next()&#123;return new Customer();&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从泛型类继承</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shelf</span> <span class="keyword">extends</span> <span class="title">Arraylist&lt;Product&gt;</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="擦除"><a href="#擦除" class="headerlink" title="擦除"></a>擦除</h3><p><strong>在泛型代码内部，无法获得任何有关泛型参数类型的信息</strong></p>
+<p><strong>Java泛型是使用擦除来实现的，这意味着当你在使用泛型时，任何具体的类型信息都被擦除了，你唯一知道的就是你在使用一个对象</strong>。因此List<String>和List<Integer>在<strong>运行时</strong>事实上是相同的类型。</p>
+<p>C++中的模板</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt; </span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>; </span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">class</span> <span class="title">Manipulator</span> &#123;</span> </span><br><span class="line">    T obj; </span><br><span class="line">    <span class="keyword">public</span>: </span><br><span class="line">    Manipulator(T x) &#123; obj = x; &#125; </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">manipulate</span><span class="params">()</span> </span>&#123; obj.f(); &#125; </span><br><span class="line">&#125;; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HasF</span> &#123;</span> </span><br><span class="line">    <span class="keyword">public</span>: </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; <span class="string">"HasF::f()"</span> &lt;&lt; <span class="built_in">endl</span>; &#125; </span><br><span class="line">&#125;; </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    HasF hf; </span><br><span class="line">    <span class="function">Manipulator&lt;HasF&gt; <span class="title">manipulator</span><span class="params">(hf)</span></span>; </span><br><span class="line">    manipulator.manipulate(); </span><br><span class="line">&#125; <span class="comment">/* Output: </span></span><br><span class="line"><span class="comment">HasF::f() </span></span><br><span class="line"><span class="comment">///:~</span></span><br></pre></td></tr></table></figure>
+<p>在C++中，可以知道T的具体类型，进而准确调用该类的f()方法。Java中的话实现类似的代码就会有些麻烦了。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HasF</span> &#123;</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123; System.out.<span class="built_in">println</span>(<span class="string">"HasF.f()"</span>); &#125; </span><br><span class="line">&#125; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manipulator</span>&lt;T&gt; &#123;</span> </span><br><span class="line">    <span class="keyword">private</span> T obj; </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Manipulator</span><span class="params">(T x)</span> </span>&#123; obj = x; &#125; </span><br><span class="line">    <span class="comment">// Error: cannot find symbol: method f(): </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">manipulate</span><span class="params">()</span> </span>&#123; obj.f(); &#125; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Manipulation</span> &#123;</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123; </span><br><span class="line">        HasF hf = <span class="keyword">new</span> HasF();</span><br><span class="line">        Manipulator&lt;HasF&gt; manipulator = </span><br><span class="line">        <span class="keyword">new</span> Manipulator&lt;HasF&gt;(hf); </span><br><span class="line">        manipulator.manipulate(); </span><br><span class="line">    &#125; </span><br><span class="line">&#125; <span class="comment">///:~</span></span><br></pre></td></tr></table></figure>
+<p><strong>上面的代码没有通过编译，就是由于擦除，会将T替换为Object，这样就没法调用f()方法了。可以使用边界来解决这个问题</strong>。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manipulator&lt;T</span> <span class="keyword">extends</span> <span class="title">HasF&gt;</span> </span>&#123; </span><br><span class="line">    <span class="keyword">private</span> <span class="type">T</span> obj; </span><br><span class="line">    public <span class="type">Manipulator</span>(<span class="type">T</span> x) &#123; obj = x; &#125; </span><br><span class="line">    public void manipulate() &#123; obj.f(); &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>泛型类型参数将擦除到它的第一个边界（他可能有多个边界，只能有一个类做边界，而且必须是第一个边界）。类型参数的擦除，编译器实际上会把类型参数替换为它的擦除，就像上面的例子，T擦除到了HasF，就好像在类的声明中用HasF替换了T一样</strong>。</p>
+<p>只有当你希望使用的类型参数比某个具体类型（以及它的所有子类型）更加“泛化”时–也就是说，当你希望代码能够跨多个类工作时，使用泛型才是有帮助的。</p>
+<p>泛型类型只有在静态类型检查期间才出现，在此之后，程序中的所有泛型类型都将被擦除，替换为它们的非泛型上界。诸如List<T>这样的类型将被擦除为List，而普通的类型变量在未指定边界的情况下将被擦除为Object。</p>
+<p>擦除的核心动机是它使得泛化的客户端可以使用非泛化的类库，反之亦然，这经常被称为“迁移兼容性”。</p>
+<h4 id="擦除的问题"><a href="#擦除的问题" class="headerlink" title="擦除的问题"></a>擦除的问题</h4><p><strong>泛型不能用于显式地引用运行时类型的操作之中，例如转型、instanceof操作和new表达式。因为类型信息会丢失，必须时刻提醒自己，只是看起来像拥有有关参数的类型信息而已</strong>。</p>
+<p>在整个类的各个地方，类型T都在被替换，无论何时，必须时刻提醒自己“它只是个Object”。</p>
+<h4 id="边界处的的动作"><a href="#边界处的的动作" class="headerlink" title="边界处的的动作"></a>边界处的的动作</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleHolder</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span> Object obj;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(Object obj)</span> </span>&#123;<span class="keyword">this</span>.obj = obj;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> obj;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        SimpleHolder holder = <span class="keyword">new</span> SimpleHolder();</span><br><span class="line">        holder.<span class="built_in">set</span>(<span class="string">"item"</span>);</span><br><span class="line">        <span class="keyword">String</span> s = (<span class="keyword">String</span>)holder.<span class="built_in">get</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericHolder</span>&lt;T&gt;&#123;</span></span><br><span class="line">    <span class="keyword">private</span> T obj;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T obj)</span> </span>&#123;<span class="keyword">this</span>.obj = obj;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> obj;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        GenericHolder&lt;<span class="keyword">String</span>&gt; holder = <span class="keyword">new</span> GenericHolder&lt;&gt;();</span><br><span class="line">        holder.<span class="built_in">set</span>(<span class="string">"item"</span>);</span><br><span class="line">        <span class="keyword">String</span> s = holder.<span class="built_in">get</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码实现了非泛型和泛型版本的相似的两个类通过<code>javap -c</code> 命令反编译可以发现字节码是相同的，就是说在运行时使用泛型的代码和普通代码没有什么区别。<strong>泛型中的所有动作都发生在边界处–对传递进来的值进行额外的编译期检查，并插入对传递出去的值的转型。这有助于澄清对擦除的混淆，记住，“边界就是发生动作的地方”</strong>。</p>
+<h3 id="擦除的补偿"><a href="#擦除的补偿" class="headerlink" title="擦除的补偿"></a>擦除的补偿</h3><p><strong>Java泛型在instanceof、创建类型实例，创建数组、转型时都会有问题。有时必须通过引入类型标签（即你的类型的Class对象）进行补偿。使用动态的isInstance()方法，而不是instanceof</strong>。</p>
+<h4 id="创建类型实例"><a href="#创建类型实例" class="headerlink" title="创建类型实例"></a>创建类型实例</h4><p>解决方案是传递一个工厂对象，并使用它来创建新的实例。最便利的工厂对象就是Class对象。</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassAsFactory</span>&lt;<span class="title">T</span>&gt;</span>&#123;</span><br><span class="line">    T x;</span><br><span class="line">    <span class="keyword">public</span> ClassAsFactory(Class&lt;T&gt; kind)&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            x = kind.<span class="keyword">new</span><span class="type">Instance</span>();</span><br><span class="line">        &#125; <span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">RuntimeException</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是对于没有默认构造器的类，上述方法不能奏效了。可以使用显示的工厂。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="symbol">Factory</span>&lt;<span class="symbol">T</span>&gt;&#123;</span><br><span class="line">    T create();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="symbol">Foo2</span>&lt;<span class="symbol">T</span>&gt;&#123;</span><br><span class="line">    <span class="keyword">private</span> T x;</span><br><span class="line">    <span class="keyword">public</span> &lt;F extends Factory&lt;T&gt;&gt; Foo2(F factory)&#123;</span><br><span class="line">        x = factory.create();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="symbol">IntegerFactory</span> <span class="symbol">implements</span> <span class="symbol">Factory</span>&lt;<span class="symbol">Integer</span>&gt;&#123;</span><br><span class="line">    <span class="keyword">public</span> Integer create()&#123;</span><br><span class="line">        <span class="keyword">return</span> new Integer(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另一种方式是模板方法设计模式。</p>
+<h4 id="泛型数组"><a href="#泛型数组" class="headerlink" title="泛型数组"></a>泛型数组</h4><p>解决方案是在任何想要创建泛型数组的地方都使用ArrayList。<br>如果非要用泛型数组，可以创建Object数组，然后转型。但是如果返回该泛型数组还是需要再进行一次转型。</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T[] <span class="keyword">array</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">Constructor</span><span class="params">(int sz)</span><span class="comment">&#123;</span></span></span><br><span class="line"><span class="function"><span class="comment">    array = (T[]) new Object[sz];</span></span></span><br><span class="line"><span class="function"><span class="comment">&#125;</span></span></span><br></pre></td></tr></table></figure>
+<p>使用类型标记</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T[] <span class="keyword">array</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">Constructor</span><span class="params">(<span class="keyword">Class</span>&lt;T&gt; <span class="keyword">type</span>, int sz)</span><span class="comment">&#123;</span></span></span><br><span class="line"><span class="function"><span class="comment">    array = (T[]) Array.newInstance(type, sz);</span></span></span><br><span class="line"><span class="function"><span class="comment">&#125;</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h3><p><strong>协变</strong>就是子类型可以被当作基类型使用。</p>
+<p>如果实际数组类型是Apple[]，你应该只能在其中放置Apple或Apple的子类型，这在编译期和运行期都可以工作。编译器也允许放入Fruit类型但是运行时会抛出异常。与数组不同，泛型没有内建的协变类型。这是因为数组在语言中是完全定义的，因此可以内建了编译期和运行时的检查。</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CompilerIntelligence</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void main(<span class="keyword">String</span>[] args)&#123;</span><br><span class="line">        List&lt;? extends Fruit&gt; flist1 = <span class="keyword">new</span> <span class="type">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">//flist1.add(new Apple()); //Compile Error</span></span><br><span class="line">        flist1.add(<span class="literal">null</span>);</span><br><span class="line">        Fruit f = flist1.<span class="keyword">get</span>(<span class="number">0</span>);</span><br><span class="line">        List&lt;? extends Fruit&gt; flist2 = Arrays.asList(<span class="keyword">new</span> <span class="type">Apple</span>());</span><br><span class="line">        Apple a = (Apple) flist2.<span class="keyword">get</span>(<span class="number">0</span>);</span><br><span class="line">        flist2.contains(<span class="keyword">new</span> <span class="type">Apple</span>());</span><br><span class="line">        flist2.indexOf(<span class="keyword">new</span> <span class="type">Apple</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查看ArrayList文档，add()方法接受泛型类型的参数，contains()和indexOf()方法接受Object类型的参数。因此，当指定ArrayList&lt;? extends Fruit&gt;时，add()的参数就变成”? extends Fruit”。从这个描述中，编译器并不知道确切的类型，因此它不接受任何类型的Fruit。contains()和indexOf()方法参数类型是Object类型。不涉及任何通配符，编译器将允许这个调用。</p>
+<p><strong>逆变</strong></p>
+<p>超类型通配符。可以声明通配符是由某个特定类的任何基类来界定的，方法是指定<code>&lt;? super MyClass&gt;</code>，可以使用类型参数：<code>&lt;? super T&gt;</code>(不能声明类型参数为<code>&lt;T super MyClass&gt;</code>)</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;? <span class="keyword">super</span> Apple&gt; flist = <span class="keyword">new</span> <span class="type">ArrayList</span>&lt;&gt;();</span><br><span class="line">flist.add(<span class="keyword">new</span> <span class="type">Apple</span>()); </span><br><span class="line">flist.add(<span class="keyword">new</span> <span class="type">Jonathan</span>()); </span><br><span class="line"><span class="comment">//flist.add(new Fruit()); //Compile Error</span></span><br></pre></td></tr></table></figure>
+<p>Apple是下界，这样你就知道向其中添加Apple或Apple的子类型是安全的，而添加Fruit是不安全的了。</p>
+<p>小结：<br>子类型通配符(指定上界)：如&lt;? extends Apple&gt;，Apple是指定的上界，表示可以接收Apple或Apple的任意子类, 但是现在还不确定是什么。这种不确定性带来的问题是无法写入（传递给一个方法）。<br>超类型通配符(指定下界)：如&lt;? super Apple&gt;，Apple是指定的下界，表示可以接收Apple或Apple的任意超类, 但是现在还不确定是什么。确保是Apple或Apple的任意超类，所以可以写入。</p>
+<p><strong>无界通配符</strong></p>
+<p>无界通配符<code>&lt;?&gt;</code>看起来意味着“任何事物”，因此使用无界通配符好像等价于使用原生类型。</p>
+<p><strong>List实际上表示“持有任何Object类型的原生List”，而List&lt;?&gt;表示“具有某种特定类型的非原生List，只是我们不知道那种类型是什么。”</strong></p>
+<p><strong>捕获转换</strong></p>
+<p>有一种情况特别需要使用&lt;?&gt;而不是原生类型。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CaptureConversion</span> &#123;</span></span><br><span class="line">  <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">(Holder&lt;T&gt; holder)</span> </span>&#123;</span><br><span class="line">    T t = holder.<span class="built_in">get</span>();</span><br><span class="line">    System.out.<span class="built_in">println</span>(t.getClass().getSimpleName());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">f2</span><span class="params">(Holder&lt;?&gt; holder)</span> </span>&#123;</span><br><span class="line">    f1(holder); <span class="comment">// Call with captured type</span></span><br><span class="line">  &#125;	</span><br><span class="line">  @SuppressWarnings(<span class="string">"unchecked"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">    Holder raw = <span class="keyword">new</span> Holder&lt;Integer&gt;(<span class="number">1</span>);</span><br><span class="line">    <span class="comment">// f1(raw); // Produces warnings</span></span><br><span class="line">    f2(raw); <span class="comment">// No warnings</span></span><br><span class="line">    Holder rawBasic = <span class="keyword">new</span> Holder();</span><br><span class="line">    rawBasic.<span class="built_in">set</span>(<span class="keyword">new</span> Object()); <span class="comment">// Warning</span></span><br><span class="line">    f2(rawBasic); <span class="comment">// No warnings</span></span><br><span class="line">    <span class="comment">// Upcast to Holder&lt;?&gt;, still figures it out:</span></span><br><span class="line">    Holder&lt;?&gt; wildcarded = <span class="keyword">new</span> Holder&lt;Double&gt;(<span class="number">1.0</span>);</span><br><span class="line">    f2(wildcarded);</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="comment">/* Output:</span></span><br><span class="line"><span class="comment">Integer</span></span><br><span class="line"><span class="comment">Object</span></span><br><span class="line"><span class="comment">Double</span></span><br><span class="line"><span class="comment">*/</span><span class="comment">//:~</span></span><br></pre></td></tr></table></figure>
+<p>参数类型在调用f2()的过程中被捕获，因此它可以在对f1()调用中被使用。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h4 id="任何基本类型都不能作为类型参数"><a href="#任何基本类型都不能作为类型参数" class="headerlink" title="任何基本类型都不能作为类型参数"></a>任何基本类型都不能作为类型参数</h4><p>解决之道是自动包装机制。但是<strong>自动包装机制不能作用于数组</strong>。</p>
+<p><strong>类泛型无法在静态方法中工作</strong>。</p>
+<h4 id="实现参数化接口"><a href="#实现参数化接口" class="headerlink" title="实现参数化接口"></a>实现参数化接口</h4><p><strong>一个类不能同时实现同一个泛型接口的两种变体，由于擦除的原因，这两个变体会变成相同的接口</strong>。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="symbol">Payable</span>&lt;<span class="symbol">T</span>&gt;&#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="symbol">Employee</span> <span class="symbol">implements</span> <span class="symbol">Payable</span>&lt;<span class="symbol">Employee</span>&gt; &#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="symbol">Hourly</span> <span class="symbol">extends</span> <span class="symbol">Employee</span> <span class="symbol">implements</span> <span class="symbol">Payable</span>&lt;<span class="symbol">Hourly</span>&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>有趣的是，去掉泛型参数后可以。</p>
+<h4 id="转型和警告"><a href="#转型和警告" class="headerlink" title="转型和警告"></a>转型和警告</h4><p>泛型没有消除对转型的需要。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Widget&gt; lw = <span class="module-access"><span class="module"><span class="identifier">List</span>.</span></span><span class="keyword">class</span>.cast(<span class="keyword">in</span>.read<span class="constructor">Object()</span>);</span><br></pre></td></tr></table></figure>
+<p>不能转型成实际类型（<code>List&lt;Widget&gt;</code>），即不能声明</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">List</span>&lt;Widget&gt; lw = <span class="keyword">List</span>&lt;Widget&gt;.<span class="keyword">class</span>.cast(<span class="keyword">in</span>.readObject());</span><br><span class="line"><span class="comment">//或</span></span><br><span class="line"><span class="keyword">List</span>&lt;Widget&gt; lw = (<span class="keyword">List</span>&lt;Widget&gt;)<span class="keyword">List</span>.<span class="keyword">class</span>.cast(<span class="keyword">in</span>.readObject());</span><br></pre></td></tr></table></figure>
+
+<h4 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(List&lt;T&gt; v)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(List&lt;W&gt; v)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><strong>由于擦除的原因，重载方法将产生相同的类型签名</strong>。</p>
+<h4 id="基类劫持了接口"><a href="#基类劫持了接口" class="headerlink" title="基类劫持了接口"></a>基类劫持了接口</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">ComparablePet</span> <span class="symbol">implements</span> <span class="symbol">Comparable</span>&lt;<span class="symbol">ComparablePet</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">int</span> compareTo(ComparablePet arg) &#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;</span><br><span class="line">&#125; <span class="comment">///:~</span></span><br><span class="line"><span class="keyword">class</span> <span class="symbol">Cat</span> <span class="symbol">extends</span> <span class="symbol">ComparablePet</span> <span class="symbol">implements</span> <span class="symbol">Comparable</span>&lt;<span class="symbol">Cat</span>&gt;&#123;</span><br><span class="line">  <span class="comment">// Error: Comparable cannot be inherited with</span></span><br><span class="line">  <span class="comment">// different arguments: &lt;Cat&gt; and &lt;Pet&gt;</span></span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">int</span> compareTo(Cat arg) &#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;</span><br><span class="line">&#125; <span class="comment">///:~</span></span><br></pre></td></tr></table></figure>
+<p>如果基类已经确定了泛型参数，那么导出类不能再指定其它泛型参数。但是指定相同的泛型参数是可以的，不过直接继承就可以了。</p>
+<h3 id="自限定类型"><a href="#自限定类型" class="headerlink" title="自限定类型"></a>自限定类型</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SelfBounded&lt;T</span> <span class="keyword">extends</span> <span class="title">Selfbounded&lt;T&gt;&gt;</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>古怪的循环泛型（CRG）：基类用导出类替代其参数。这意味着泛型基类变成了一种其所有导出类的公共功能的模板，但是这些功能对于其所有参数和返回值，将使用导出类型。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicHolder</span>&lt;T&gt; &#123;</span></span><br><span class="line">  T element;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">set</span><span class="params">(T arg)</span> </span>&#123; element = arg; &#125;</span><br><span class="line">  <span class="function">T <span class="title">get</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> element; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.<span class="built_in">println</span>(element.getClass().getSimpleName());</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="comment">///:~</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Subtype</span> <span class="title">extends</span> <span class="title">BasicHolder</span>&lt;Subtype&gt; &#123;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CRGWithBasicHolder</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">    Subtype st1 = <span class="keyword">new</span> Subtype(), st2 = <span class="keyword">new</span> Subtype();</span><br><span class="line">    st1.<span class="built_in">set</span>(st2);</span><br><span class="line">    Subtype st3 = st1.<span class="built_in">get</span>();</span><br><span class="line">    st1.f();</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="comment">/* Output:</span></span><br><span class="line"><span class="comment">Subtype</span></span><br><span class="line"><span class="comment">*/</span><span class="comment">//:~</span></span><br></pre></td></tr></table></figure>
+<p>自限定可以保证类型参数必须与正在被定义的类相同。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SelfBounded&lt;T</span> <span class="keyword">extends</span> <span class="title">SelfBounded&lt;T&gt;&gt;</span> </span>&#123;</span><br><span class="line">  <span class="type">T</span> element;</span><br><span class="line">  <span class="type">SelfBounded</span>&lt;<span class="type">T</span>&gt; set(<span class="type">T</span> arg) &#123;</span><br><span class="line">    element = arg;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="type">T</span> get() &#123; <span class="keyword">return</span> element; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">extends</span> <span class="title">SelfBounded&lt;A&gt;</span> </span>&#123;&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">SelfBounded&lt;A&gt;</span> </span>&#123;&#125; <span class="comment">// Also OK</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> <span class="keyword">extends</span> <span class="title">SelfBounded&lt;C&gt;</span> </span>&#123;</span><br><span class="line">  <span class="type">C</span> setAndGet(<span class="type">C</span> arg) &#123; set(arg); <span class="keyword">return</span> get(); &#125;</span><br><span class="line">&#125;	</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span> </span>&#123;&#125;</span><br><span class="line"><span class="comment">// Can't do this:</span></span><br><span class="line"><span class="comment">// class E extends SelfBounded&lt;D&gt; &#123;&#125;</span></span><br><span class="line"><span class="comment">// Compile error: Type parameter D is not within its bound</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Alas, you can do this, so you can't force the idiom:</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">F</span> <span class="keyword">extends</span> <span class="title">SelfBounded</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>自限定也可以用于泛型方法，防止方法被应用除自限定参数之外的任何事物。</p>
+<p><strong>参数协变</strong><br>自限定类型的价值在于它们可以产生协变参数类型–方法参数类型会随着子类变化而变化。</p>
+<p>自限定类型可以限制重载，方法的参数类型会协变，使得子类中不能即含有基类型参数的方法，又含有子类型参数的方法，而如果不是自限定的，则可以重载</p>
+<h3 id="动态类型安全"><a href="#动态类型安全" class="headerlink" title="动态类型安全"></a>动态类型安全</h3><p>java.util.Collections中提供来一组便利工具，可以解决类型检查的问题。它们是：静态方法checkedCollection()、checkedList()、checkedMap()、checkedSet()、checkedSortedMap()和checkedSortedSet()。这些方法每一个都会将你希望动态检查的容器当做第一个参数接受，并将你希望强制要求的类型作为第二个参数接受。如果向Java SE5之前的代码传递泛型容器，可能会导致类似“将猫插入狗队列”的问题，使用这些方法可以确保不出现这种问题。</p>
+<h3 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h3><p><strong>由于擦除的原因，将泛型应用于异常是非常受限的。catch语句不能捕获泛型类型的异常，泛型类也不能直接或间接继承自Throwable。但是，类型参数可能会在一个方法的throws子句中用到</strong>。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="symbol">Processor</span>&lt;<span class="symbol">T</span>,<span class="symbol">E</span> <span class="symbol">extends</span> <span class="symbol">Exception</span>&gt;&#123;</span><br><span class="line">    <span class="built_in">void</span> process(List&lt;T&gt; resultCollector) throws E;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="混型"><a href="#混型" class="headerlink" title="混型"></a>混型</h3><p>混型最基本的概念是混合多个类的能力，以产生一个可以表示混型中所有类型的类。混型的价值之一是它们可以将特性和行为一致地应用于多个类之上。C++有多重继承机制，模板，可以方便地实现混型。</p>
+<ul>
+<li>与接口混合<br>  Java中推荐解决方案是使用接口产生混型效果。基本上使用代理。</li>
+<li>使用装饰器模式<br>  装饰器是通过使用组合和形式化结构来实现的，而混型是基于继承的。其明显缺陷是它只能有效地工作于装饰中的一层（最后一层），只是一种局限的解决方案。</li>
+<li>与动态代理混合<br>  更接近真正的混型</li>
+</ul>
+<h3 id="潜在类型机制"><a href="#潜在类型机制" class="headerlink" title="潜在类型机制"></a>潜在类型机制</h3><p>潜在类型机制使得你可以横跨类继承结构，调用不属于某个公共接口的方法。因此实际上一段代码可以声明：“我不关心你是什么类型，只要你可以speack()和sit()即可”。潜在类型机制是一种代码组织和复用机制。python和C++均支持潜在类型机制。</p>
+<h3 id="对潜在类型机制的补偿"><a href="#对潜在类型机制的补偿" class="headerlink" title="对潜在类型机制的补偿"></a>对潜在类型机制的补偿</h3><ul>
+<li>反射<br>  利用Method的invoke()方法可以动态地确定所需要的方法。但是类型检查转移到了运行时。</li>
+<li>用适配器仿真潜在类型机制<br>  潜在类型机制将在这里实现什么？他意味着你可以编写代码声明：“我不关心我在这里使用的类型，只要它具有这些方法即可”。实际上潜在类型机制创建了 一个包含所需方法的隐式接口。从拥有的接口编写代码来产生我们需要的接口，这是适配器设计模式的一个典型示例。</li>
+</ul>
+<h3 id="将函数对象用作策略"><a href="#将函数对象用作策略" class="headerlink" title="将函数对象用作策略"></a>将函数对象用作策略</h3><p>书中前一节的示例代码中添加对象，这是多个类的公共操作，但是这个操作没有在任何我们可以指定的基类中表示。使用策略设计模式，将“变化的事物”完全隔离到一个函数对象中。函数对象就是在某种程度上行为像函数的对象，一般会有一个相关方法。</p>
+<p>Java中添加泛型，使得编译期类型检查成为可能。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.472Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/10/30/thinking-in-java-note-5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java编程思想笔记五
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/10/13/setting-up-git-server/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">搭建git服务器</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#类型信息"><span class="toc-number">1.</span> <span class="toc-text">类型信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么需要RTTI"><span class="toc-number">1.1.</span> <span class="toc-text">为什么需要RTTI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class对象"><span class="toc-number">1.2.</span> <span class="toc-text">Class对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#类字面常量"><span class="toc-number">1.2.1.</span> <span class="toc-text">类字面常量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#泛化的Class引用"><span class="toc-number">1.2.2.</span> <span class="toc-text">泛化的Class引用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#新的转型语法"><span class="toc-number">1.2.3.</span> <span class="toc-text">新的转型语法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类型转换前先做检查"><span class="toc-number">1.3.</span> <span class="toc-text">类型转换前先做检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注册工厂"><span class="toc-number">1.4.</span> <span class="toc-text">注册工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#instanceof与Class的等价性"><span class="toc-number">1.5.</span> <span class="toc-text">instanceof与Class的等价性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#反射：运行时候的类信息"><span class="toc-number">1.6.</span> <span class="toc-text">反射：运行时候的类信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态代理"><span class="toc-number">1.7.</span> <span class="toc-text">动态代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空对象"><span class="toc-number">1.8.</span> <span class="toc-text">空对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口与类型信息"><span class="toc-number">1.9.</span> <span class="toc-text">接口与类型信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型"><span class="toc-number">2.</span> <span class="toc-text">泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单泛型"><span class="toc-number">2.1.</span> <span class="toc-text">简单泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#一个元组类库"><span class="toc-number">2.1.1.</span> <span class="toc-text">一个元组类库</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型接口"><span class="toc-number">2.2.</span> <span class="toc-text">泛型接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型方法"><span class="toc-number">2.3.</span> <span class="toc-text">泛型方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#擦除"><span class="toc-number">2.4.</span> <span class="toc-text">擦除</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#擦除的问题"><span class="toc-number">2.4.1.</span> <span class="toc-text">擦除的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#边界处的的动作"><span class="toc-number">2.4.2.</span> <span class="toc-text">边界处的的动作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#擦除的补偿"><span class="toc-number">2.5.</span> <span class="toc-text">擦除的补偿</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建类型实例"><span class="toc-number">2.5.1.</span> <span class="toc-text">创建类型实例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#泛型数组"><span class="toc-number">2.5.2.</span> <span class="toc-text">泛型数组</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通配符"><span class="toc-number">2.6.</span> <span class="toc-text">通配符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题"><span class="toc-number">2.7.</span> <span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#任何基本类型都不能作为类型参数"><span class="toc-number">2.7.1.</span> <span class="toc-text">任何基本类型都不能作为类型参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实现参数化接口"><span class="toc-number">2.7.2.</span> <span class="toc-text">实现参数化接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#转型和警告"><span class="toc-number">2.7.3.</span> <span class="toc-text">转型和警告</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#重载"><span class="toc-number">2.7.4.</span> <span class="toc-text">重载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#基类劫持了接口"><span class="toc-number">2.7.5.</span> <span class="toc-text">基类劫持了接口</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自限定类型"><span class="toc-number">2.8.</span> <span class="toc-text">自限定类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态类型安全"><span class="toc-number">2.9.</span> <span class="toc-text">动态类型安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常"><span class="toc-number">2.10.</span> <span class="toc-text">异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#混型"><span class="toc-number">2.11.</span> <span class="toc-text">混型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#潜在类型机制"><span class="toc-number">2.12.</span> <span class="toc-text">潜在类型机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对潜在类型机制的补偿"><span class="toc-number">2.13.</span> <span class="toc-text">对潜在类型机制的补偿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#将函数对象用作策略"><span class="toc-number">2.14.</span> <span class="toc-text">将函数对象用作策略</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/10/17/thinking-in-java-note-4/';
+  this.page.identifier = '2014/10/17/thinking-in-java-note-4/';
+  this.page.title = 'Java编程思想笔记四';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

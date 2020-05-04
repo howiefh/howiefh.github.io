@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>mongodb笔记(九) 复制 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="mongodb replication, mongodb 复制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongodb笔记(九) 复制">
+<meta property="og:url" content="http://howiefh.github.io/2014/06/05/mongodb-note-9-replication/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="mongodb replication, mongodb 复制">
+<meta property="article:published_time" content="2014-06-05T15:13:04.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.469Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="MongoDB">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-mongodb-note-9-replication" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/06/05/mongodb-note-9-replication/" class="article-date">
+  <time class="dt-published" datetime="2014-06-05T15:13:04.000Z" itemprop="datePublished">2014-06-05</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>►<a class="article-category-link" href="/categories/Database/MongoDB/">MongoDB</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      mongodb笔记(九) 复制
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#主从复制"><span class="toc-number">1.</span> <span class="toc-text">主从复制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#选项"><span class="toc-number">1.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加及删除源"><span class="toc-number">1.2.</span> <span class="toc-text">添加及删除源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#副本集"><span class="toc-number">2.</span> <span class="toc-text">副本集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化副本集"><span class="toc-number">2.1.</span> <span class="toc-text">初始化副本集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#副本集中的节点"><span class="toc-number">2.2.</span> <span class="toc-text">副本集中的节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#故障切换和活跃点选举"><span class="toc-number">2.3.</span> <span class="toc-text">故障切换和活跃点选举</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在从服务器上执行操作"><span class="toc-number">3.</span> <span class="toc-text">在从服务器上执行操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#读扩展"><span class="toc-number">3.1.</span> <span class="toc-text">读扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用从节点做数据处理"><span class="toc-number">3.2.</span> <span class="toc-text">用从节点做数据处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作原理"><span class="toc-number">4.</span> <span class="toc-text">工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Oplog"><span class="toc-number">4.1.</span> <span class="toc-text">Oplog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同步"><span class="toc-number">4.2.</span> <span class="toc-text">同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制状态和本地数据库"><span class="toc-number">4.3.</span> <span class="toc-text">复制状态和本地数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#阻塞复制"><span class="toc-number">4.4.</span> <span class="toc-text">阻塞复制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管理"><span class="toc-number">5.</span> <span class="toc-text">管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#诊断"><span class="toc-number">5.1.</span> <span class="toc-text">诊断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变更oplog的大小"><span class="toc-number">5.2.</span> <span class="toc-text">变更oplog的大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制的认证问题"><span class="toc-number">5.3.</span> <span class="toc-text">复制的认证问题</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p>运行mongod –master就启动了主服务器。运行mongod –slave –source master_address则启动了从服务器，其中master_address就是上面的主节点地址。</p>
+<a id="more"></a>
+
+<p>生产环境下应该有多台服务器的，下面简化一下在一台机器上试验。首先，给主节点建立数据目录，绑定端口(10000)</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/dbs/<span class="literal">master</span></span><br><span class="line">./mongod --dbpath ~/dbs/<span class="keyword">master</span> <span class="title">--port</span> <span class="number">10000</span> --<span class="literal">master</span></span><br></pre></td></tr></table></figure>
+
+<p>设置从节点，切记选择不同的目录和端口，并且用–source为从节点指定主节点地址</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~<span class="string">/dbs/slave</span></span><br><span class="line"><span class="string">./mongod</span> <span class="params">--dbpath</span> ~<span class="string">/dbs/slave</span> <span class="params">--port</span> 10001 <span class="params">--slave</span> <span class="params">--source</span> localhost<span class="function">:10000</span></span><br></pre></td></tr></table></figure>
+
+<p>一般，不超过12个节点的集群就可以运转良好。</p>
+<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><ul>
+<li><p>–only</p>
+<p>  在从节点上指定复制某个数据库（默认复制所有数据库）</p>
+</li>
+<li><p>–slavedelay</p>
+<p>  用在从节点上，当应用主节点的操作时增加延时（秒）。对于错误的删除或者插入垃圾数据等事故，通过延缓执行，可以有个恢复的时间差。</p>
+</li>
+<li><p>–fastsync</p>
+<p>  以主节点的数据快照为基础启动从节点，如果数据目录一开始是主节点的数据快照，从节点用这个选项启动要比完整同步快多了</p>
+</li>
+<li><p>–autoresync</p>
+<p>  如果从节点与主节点不同步，则自动重新同步</p>
+</li>
+<li><p>–oplogSize</p>
+<p>  主节点oplog的大小（MB）</p>
+</li>
+</ul>
+<h3 id="添加及删除源"><a href="#添加及删除源" class="headerlink" title="添加及删除源"></a>添加及删除源</h3><p>启动从节点时，可以用–source指定主节点，也可以在shell中配置这个选项。</p>
+<p>假设主节点绑定了localhost:27017。启动从节点时可以不添加源，而是随后向sources集合添加主节点信息。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">./mongod</span> <span class="params">--slave</span> <span class="params">--dbpath</span> ~<span class="string">/dbs/slave</span> <span class="params">--port</span> 27018</span><br></pre></td></tr></table></figure>
+
+<p>现在可以在shell中运行如下命令，将localhost:27017作为源添加到从节点上：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="keyword">local</span></span><br><span class="line"><span class="keyword">db</span>.sources.insert(&#123;<span class="string">"host"</span>:<span class="string">"localhost:27017"</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>假设在生产环境下，想更改从节点的配置，改为prod.example.com为源，则可以用insert和remove来完成。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.sources.<span class="built_in">insert</span>(&#123;<span class="string">"host"</span>,<span class="string">"prod.example.com"</span>&#125;)</span><br><span class="line">db.sources.<span class="built_in">remove</span>(&#123;<span class="string">"host"</span>,<span class="string">"localhost:27017"</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，sources集合可以当做普通集合进行操作，而且为管理从节点提供了很大的灵活性。</p>
+<p>注：要是切换的两个主节点有相同的集合名，则MongoDB会尝试合并，但不能保证正确合并，要是使用一个从节点对应多个不同的主节点，最好使用不同的命名空间。</p>
+<h2 id="副本集"><a href="#副本集" class="headerlink" title="副本集"></a>副本集</h2><p>副本集就是有自动故障恢复功能的主从集群。主从集群和副本集最为明显的区别就是副本集没有固定的主节点。可以把副本集当做一个集群，整个集群会选出一个主节点，当其不能正常工作时则会激活其他节点。</p>
+<h3 id="初始化副本集"><a href="#初始化副本集" class="headerlink" title="初始化副本集"></a>初始化副本集</h3><p>设置副本集比主从稍微复杂点，我们从2个服务器开始：</p>
+<p>注意不能用localhost作为地址成员，需要找到主机名，<code>cat /etc/hostname</code>(主机名是morton) 。然后为每一个服务器创建数据目录，选择端口，<code>mkdir -p ~/dbs/node1 ~/dbs/node2</code> 。</p>
+<p>在启动之前，我们需要给副本集一个名字，这里命名为blort 。之后我们用 –replSet选项，作用是让服务器知晓在这个blort副本集还有别的同伴。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">./mongod</span> <span class="params">--dbpath</span> ~<span class="string">/dbs/node1</span> <span class="params">--port</span> 10001 <span class="params">--replSet</span> blort/morton<span class="function">:10002</span></span><br><span class="line"><span class="string">./mongod</span> <span class="params">--dbpath</span> ~<span class="string">/dbs/node2</span> <span class="params">--port</span> 10002 <span class="params">--replSet</span> blort/morton<span class="function">:10001</span></span><br></pre></td></tr></table></figure>
+
+<p>如果想添加第三台：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">./mongod</span> <span class="params">--dbpath</span> ~<span class="string">/dbs/node3</span> <span class="params">--port</span> 10003 <span class="params">--replSet</span> blort/morton<span class="function">:10001</span>,morton<span class="function">:10002</span></span><br></pre></td></tr></table></figure>
+
+<p>现在我们启动一个服务器morton:10001，并进行初始化设置</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.<span class="regexp">/mongo morton:10001/</span>admin</span><br><span class="line">db.runCommand(&#123;<span class="string">"replSetInitiate"</span>:&#123;</span><br><span class="line"><span class="string">"_id"</span> : <span class="string">"blort"</span>,</span><br><span class="line"><span class="string">"members"</span> : [</span><br><span class="line">&#123;</span><br><span class="line"><span class="string">"_id"</span> : <span class="number">1</span>,</span><br><span class="line"><span class="string">"host"</span> : <span class="string">"morton:10001"</span></span><br><span class="line">&#125;,</span><br><span class="line">&#123;</span><br><span class="line"><span class="string">"_id"</span> : <span class="number">2</span>,</span><br><span class="line"><span class="string">"host"</span> : <span class="string">"morton:10002"</span></span><br><span class="line">&#125;</span><br><span class="line">]</span><br><span class="line">&#125;&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="副本集中的节点"><a href="#副本集中的节点" class="headerlink" title="副本集中的节点"></a>副本集中的节点</h3><ul>
+<li><p>standard</p>
+<p>  常规节点，它存储一份完整的数据副本，参与选举投票可以成为活跃节点。</p>
+</li>
+<li><p>passive</p>
+<p>  被动节点。存储了完整的数据副本，参与投票，不能成为活跃节点。</p>
+</li>
+<li><p>arbiter</p>
+<p>  仲裁者只参与投票，不能接受复制数据，也不能成为活跃节点。</p>
+</li>
+</ul>
+<p>每个参与节点（非仲裁者）都有个优先权，优先权为0是被动的，不能成为活跃节点，优先值不为0，则按照大小选出活跃节点。如果2个值一样，则数据最新的为活跃节点。</p>
+<p>在节点配置中修改priority键，来配置成标准节点或被动节点。</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">member</span>.<span class="built_in">push</span>(&#123;</span><br><span class="line"><span class="string">"_id"</span>:<span class="number">3</span>,</span><br><span class="line"><span class="string">"host"</span>:<span class="string">"morton:10003"</span>,</span><br><span class="line"><span class="string">"priority"</span>:<span class="number">40</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>默认优先级是1，可以是0~1000(含)</p>
+<p>arbiterOnly键可以指定仲裁节点</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">member</span>.<span class="built_in">push</span>(&#123;</span><br><span class="line"><span class="string">"_id"</span>:<span class="number">4</span>,</span><br><span class="line"><span class="string">"host"</span>:<span class="string">"morton:10004"</span>,</span><br><span class="line"><span class="string">"arbiterOnly"</span>:<span class="literal">true</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="故障切换和活跃点选举"><a href="#故障切换和活跃点选举" class="headerlink" title="故障切换和活跃点选举"></a>故障切换和活跃点选举</h3><p>如果活跃几点坏了，其它节点会选一个新的活跃节点出来(新比较优先级，优先级相同的，各个节点判断哪个数据最新，就会投哪个)。</p>
+<p>当前活跃节点失效，包括两种情况：</p>
+<ul>
+<li>当前活跃节点宕机或本身异常。</li>
+<li>当前活跃节点会通过心跳跟踪集群中多少节点对其可见，如果数量小于集群服务器数量的一半，会自动降级为备份节点。</li>
+</ul>
+<p>任何时候，活跃节点的数据会被认为是最新的,当重新确定了活跃节点后，所有其他节点都要重新进行完整同步(数据可能发生回滚)。</p>
+<h2 id="在从服务器上执行操作"><a href="#在从服务器上执行操作" class="headerlink" title="在从服务器上执行操作"></a>在从服务器上执行操作</h2><h3 id="读扩展"><a href="#读扩展" class="headerlink" title="读扩展"></a>读扩展</h3><p>用mongodb扩展读取的一种方式就是将查询放在从节点上。这样主节点的负载就减轻了。一般来说，当负载是读取密集型时这是非常不错的方案。要是写入密集型，则要参见第十章用分片来进行扩展。</p>
+<p>扩展读取本身很简单，和往常一样设置主从复制，连接从服务器处理请求，唯一的技巧是告诉从服务器是否可以处理请求（默认是不可以的）。这个选项叫做slaveOkay。</p>
+<h3 id="用从节点做数据处理"><a href="#用从节点做数据处理" class="headerlink" title="用从节点做数据处理"></a>用从节点做数据处理</h3><p>我们可以使用–master参数启动一个普通的从节点。同时使用–slave和–master有点矛盾，其实这意味着如果对从节点进行写入，则把从节点就当做普通的MongoDB。其实它还是会不断的复制主节点的数据，这样就可以对节点执行阻塞操作而不影响主节点性能。</p>
+<p>注意：用这种技术的时候，一定要确保不能对正在复制的主节点的从节点进行数据库插入。而且从节点第一次启动时也不能有正被复制的数据库。</p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><h3 id="Oplog"><a href="#Oplog" class="headerlink" title="Oplog"></a>Oplog</h3><p>主节点的操作记录称为oplog(operation log)。oplog存储在一个特殊的数据库中，叫做local。oplog就在其中的oplog.$main集合里面。oplog中的每个文档都代表主节点执行的一个操作。</p>
+<ul>
+<li><p>ts</p>
+<p>  操作的时间戳</p>
+</li>
+<li><p>op</p>
+<p>  操作的类型,只有1字节代码（如i代表插入）</p>
+</li>
+<li><p>ns</p>
+<p>  执行操作的命令空间</p>
+</li>
+<li><p>o</p>
+<p>  进一步指定要执行的操作的文档，对插入来说，就是要插入的文档</p>
+</li>
+</ul>
+<p>oplog不记录查询操作，oplog存储在固定集合里面，所以它们会自动替换旧的操作。启动服务器时可以用–oplogSize指定这个大小（单位是MB）</p>
+<h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>从节点跟不上同步时，可以用{“resync”:1}命令手动执行重新同步，也可以在启动从节点的时候用–autoresync选项让其自动重新同步。为避免从节点跟不上，一定要确保主节点oplog足够大，默认oplog的大小是剩余磁盘空间的5%。</p>
+<h3 id="复制状态和本地数据库"><a href="#复制状态和本地数据库" class="headerlink" title="复制状态和本地数据库"></a>复制状态和本地数据库</h3><p>本地数据库（local）用来存放所有内部复制状态。其内容不会被复制，确保了一个MongoDB服务器只有一个本地数据库。</p>
+<p>主节点上的复制状态还包括从节点的列表，这个列表存放在slaves集合中。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.slaves</span><span class="selector-class">.find</span>()</span><br></pre></td></tr></table></figure>
+
+<p>从节点也在本地数据库中存放状态。在me集合存放从节点唯一标识符，在sources集合存放源或节点的列表。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.sources</span><span class="selector-class">.find</span>()</span><br></pre></td></tr></table></figure>
+
+<h3 id="阻塞复制"><a href="#阻塞复制" class="headerlink" title="阻塞复制"></a>阻塞复制</h3><p>可以用getLastError的”w”参数来确保数据的同步性。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">db</span><span class="selector-class">.runCommand</span>(&#123;<span class="attribute">getLastError</span>:<span class="number">1</span>,w:N&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>如果没有N，或者小于2，命令就会立刻返回。如果N等于2，主节点要等到至少一个从节点复制了上一个操作才会响应命令(主节点本身也包括在N里面)。指定”w”选项后，还可以使用”wtimeout”选项，表示以毫秒为单位的超时。getLastError就能在上一个操作复制到N个节点超时时的错误。将N设为2或3就能效率与安全兼备了。</p>
+<h2 id="管理"><a href="#管理" class="headerlink" title="管理"></a>管理</h2><h3 id="诊断"><a href="#诊断" class="headerlink" title="诊断"></a>诊断</h3><p>当连接到主节点后，使用db.printReplicationInfo()函数</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.printReplicationInfo()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>这些信息是oplog的大小和oplog中操作的时间范围。</p>
+<p>当连接到从节点时，用db.printSlaveReplicationInfo()函数，能得到从节点的一些信息。</p>
+<h3 id="变更oplog的大小"><a href="#变更oplog的大小" class="headerlink" title="变更oplog的大小"></a>变更oplog的大小</h3><p>若发现oplog大小不适合，最简单的方法是停掉主节点，删除local数据库的文件，用新的设置(–oplogSize)重新启动。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm <span class="string">/data/db/local.</span>*</span><br><span class="line"><span class="string">./mongod</span> <span class="params">--master</span> <span class="params">--oplogSize</span> &lt;size&gt;</span><br></pre></td></tr></table></figure>
+
+<p>重启主节点后，所有的从节点要用–autoresync重启，否则需要手动同步更新。</p>
+<h3 id="复制的认证问题"><a href="#复制的认证问题" class="headerlink" title="复制的认证问题"></a>复制的认证问题</h3><p>在主节点和从节点都需要在本地数据库添加用户，每个节点的用户名和口令都是相同的。</p>
+<p>从节点连接主节点时，会用存储在local.system.users中的用户进行认证。最先尝试”repl”用户，若没有此用户，则用local.system.users中的第一个可用用户。所以按如下步骤配置主节点和从节点。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="keyword">local</span></span><br><span class="line">db.addUser(<span class="string">"repl"</span>,<span class="keyword">password</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MongoDB/" rel="tag">MongoDB</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.469Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/06/06/mongodb-note-10-sharding/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          mongodb笔记(十) 分片
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/06/05/mongodb-note-8-administration/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">mongodb笔记(八) 管理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#主从复制"><span class="toc-number">1.</span> <span class="toc-text">主从复制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#选项"><span class="toc-number">1.1.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加及删除源"><span class="toc-number">1.2.</span> <span class="toc-text">添加及删除源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#副本集"><span class="toc-number">2.</span> <span class="toc-text">副本集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化副本集"><span class="toc-number">2.1.</span> <span class="toc-text">初始化副本集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#副本集中的节点"><span class="toc-number">2.2.</span> <span class="toc-text">副本集中的节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#故障切换和活跃点选举"><span class="toc-number">2.3.</span> <span class="toc-text">故障切换和活跃点选举</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在从服务器上执行操作"><span class="toc-number">3.</span> <span class="toc-text">在从服务器上执行操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#读扩展"><span class="toc-number">3.1.</span> <span class="toc-text">读扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用从节点做数据处理"><span class="toc-number">3.2.</span> <span class="toc-text">用从节点做数据处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作原理"><span class="toc-number">4.</span> <span class="toc-text">工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Oplog"><span class="toc-number">4.1.</span> <span class="toc-text">Oplog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同步"><span class="toc-number">4.2.</span> <span class="toc-text">同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制状态和本地数据库"><span class="toc-number">4.3.</span> <span class="toc-text">复制状态和本地数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#阻塞复制"><span class="toc-number">4.4.</span> <span class="toc-text">阻塞复制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管理"><span class="toc-number">5.</span> <span class="toc-text">管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#诊断"><span class="toc-number">5.1.</span> <span class="toc-text">诊断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变更oplog的大小"><span class="toc-number">5.2.</span> <span class="toc-text">变更oplog的大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制的认证问题"><span class="toc-number">5.3.</span> <span class="toc-text">复制的认证问题</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/06/05/mongodb-note-9-replication/';
+  this.page.identifier = '2014/06/05/mongodb-note-9-replication/';
+  this.page.title = 'mongodb笔记(九) 复制';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>jQuery 插件使用记录 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="dragsort; Validform; bootstrap-datetimepicker; highcharts; jQuery File Upload; uploadify; Plupload; Dropzonejs; Web Uploader; zyFile;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jQuery 插件使用记录">
+<meta property="og:url" content="http://howiefh.github.io/2014/12/24/jQuery-plug-in/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="dragsort; Validform; bootstrap-datetimepicker; highcharts; jQuery File Upload; uploadify; Plupload; Dropzonejs; Web Uploader; zyFile;">
+<meta property="article:published_time" content="2014-12-24T07:20:47.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.474Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-jQuery-plug-in" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/12/24/jQuery-plug-in/" class="article-date">
+  <time class="dt-published" datetime="2014-12-24T07:20:47.000Z" itemprop="datePublished">2014-12-24</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>►<a class="article-category-link" href="/categories/JavaScript/jQuery/">jQuery</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      jQuery 插件使用记录
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#dragsort"><span class="toc-number">1.</span> <span class="toc-text">dragsort</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载地址：http-dragsort-codeplex-com"><span class="toc-number">1.1.</span> <span class="toc-text">下载地址：http:&#x2F;&#x2F;dragsort.codeplex.com&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用方法"><span class="toc-number">1.2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个table示例"><span class="toc-number">1.3.</span> <span class="toc-text">一个table示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Validform"><span class="toc-number">2.</span> <span class="toc-text">Validform</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载地址：http-validform-rjboy-cn"><span class="toc-number">2.1.</span> <span class="toc-text">下载地址：http:&#x2F;&#x2F;validform.rjboy.cn&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用方法-1"><span class="toc-number">2.2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#绑定附加属性"><span class="toc-number">2.3.</span> <span class="toc-text">绑定附加属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数说明"><span class="toc-number">2.4.</span> <span class="toc-text">参数说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#公用对象"><span class="toc-number">2.5.</span> <span class="toc-text">公用对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bootstrap-datetimepicker"><span class="toc-number">3.</span> <span class="toc-text">bootstrap-datetimepicker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#highcharts"><span class="toc-number">4.</span> <span class="toc-text">highcharts</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载地址-http-code-highcharts-com"><span class="toc-number">4.1.</span> <span class="toc-text">下载地址: http:&#x2F;&#x2F;code.highcharts.com&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#中文网-http-www-hcharts-cn"><span class="toc-number">4.2.</span> <span class="toc-text">中文网: http:&#x2F;&#x2F;www.hcharts.cn&#x2F;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上传文件"><span class="toc-number">5.</span> <span class="toc-text">上传文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jQuery-File-Upload"><span class="toc-number">5.1.</span> <span class="toc-text">jQuery File Upload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Uploadify"><span class="toc-number">5.2.</span> <span class="toc-text">Uploadify</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Plupload"><span class="toc-number">5.3.</span> <span class="toc-text">Plupload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DropzoneJS"><span class="toc-number">5.4.</span> <span class="toc-text">DropzoneJS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-Uploader"><span class="toc-number">5.5.</span> <span class="toc-text">Web Uploader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zyFile"><span class="toc-number">5.6.</span> <span class="toc-text">zyFile</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <p>记录几个自己了解到的jQuery插件: dragsort、Validform、bootstrap-datetimepicker、highcharts、jQuery File Upload、uploadify、Plupload、Dropzonejs、Web Uploader、zyFile。</p>
+<a id="more"></a>
+
+<h2 id="dragsort"><a href="#dragsort" class="headerlink" title="dragsort"></a>dragsort</h2><h3 id="下载地址：http-dragsort-codeplex-com"><a href="#下载地址：http-dragsort-codeplex-com" class="headerlink" title="下载地址：http://dragsort.codeplex.com/"></a>下载地址：<a href="http://dragsort.codeplex.com/" target="_blank" rel="noopener">http://dragsort.codeplex.com/</a></h3><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"ul"</span>).dragsort(&#123;</span><br><span class="line">    dragSelector: <span class="string">"li"</span>,</span><br><span class="line">    dragEnd: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; &#125;,</span><br><span class="line">    dragBetween: <span class="literal">false</span>,</span><br><span class="line">    placeHolderTemplate: <span class="string">"&lt;li&gt;&lt;/li&gt;"</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>jquery list dragsort列表拖动插件参数说明</p>
+<ul>
+<li>dragSelector<br>  CSS选择器内的元素的列表项的拖动手柄。默认值是“li”。</li>
+<li>dragSelectorExclude<br>  CSS选择器的元素内的dragSelector不会触发dragsort的。默认值是“input, textarea, a[href]”。</li>
+<li>dragEnd<br>  拖动结束后将被调用的回调函数.</li>
+<li>dragBetween<br>  设置为“true”，如果你要启用多组列表之间拖动选定的列表。 默认值是false。</li>
+<li>placeHolderTemplate<br>  拖动列表的HTML部分。默认值是<code>&lt;li&gt;&lt;/li&gt;</code>.</li>
+<li>scrollContainer<br>  CSS选择器的元素，作为滚动容器，例如溢出的div设置为自动。 默认值是“窗口“.</li>
+<li>scrollSpeed<br>  一个数字，它代表了速度，页面拖动某一项时，将滚动容器外，较高使用价值的是速度和较低的值是较慢的。 如果设置为“0”以禁用滚动。默认值是“5”.</li>
+</ul>
+<h3 id="一个table示例"><a href="#一个table示例" class="headerlink" title="一个table示例"></a>一个table示例</h3><p>下载的压缩包中提供了ul的示例，下面是一个table的示例</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>  <span class="attr">id</span>=<span class="string">'tableid'</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>999999<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>923123<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>123123<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>123123<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">    $(<span class="string">"#tableid"</span>).dragsort(&#123;</span></span><br><span class="line"><span class="actionscript">    dragSelector : <span class="string">"tr"</span>,  <span class="comment">//可以不用设置，他会根据$("#tableid")的类型来决定是tr还是li</span></span></span><br><span class="line"><span class="actionscript">    dragEnd : <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log($(<span class="keyword">this</span>));  <span class="comment">//拖动完成的回调函数，$(this)当前拖动对象</span></span></span><br><span class="line">    &#125;,</span><br><span class="line"><span class="actionscript">    scrollSpeed:<span class="number">0</span>,  <span class="comment">//默认为5，数值越大拖动的速度越快，为0则拖动时页面不会滚动</span></span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Validform"><a href="#Validform" class="headerlink" title="Validform"></a>Validform</h2><p>Validform：一行代码搞定整站的表单验证！</p>
+<h3 id="下载地址：http-validform-rjboy-cn"><a href="#下载地址：http-validform-rjboy-cn" class="headerlink" title="下载地址：http://validform.rjboy.cn/"></a>下载地址：<a href="http://validform.rjboy.cn/" target="_blank" rel="noopener">http://validform.rjboy.cn/</a></h3><h3 id="使用方法-1"><a href="#使用方法-1" class="headerlink" title="使用方法"></a>使用方法</h3><p>Validform是国人写的插件，<a href="http://validform.rjboy.cn/document.html" target="_blank" rel="noopener">中文文档</a>很详细。下面介绍一下基本使用方法。</p>
+<ol>
+<li><p>引入css</p>
+<p> 请查看下载文件中的style.css，把里面Validform必须部分复制到你的css中（文件里这个注释 “/<em>==========以下部分是Validform必须的===========</em>/“ 之后的部分是必须的）。之前发现有部分网友把整个style.css都引用在了页面里，然后发现样式冲突了。</p>
+</li>
+<li><p>引入js （jquery 1.4.3 以上版本都可以，官网写的是1.4.3以上版本，但是需要调用外部插件datepicker的话，最新的jQuery貌似不行，最好使用它使用的1.6.2版本的）</p>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"http://validform.rjboy.cn/wp-content/themes/validform/js/jquery-1.6.2.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"http://validform.rjboy.cn/Validform/v5.1/Validform_v5.1_min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给需要验证的表单元素绑定附加属性</p>
+ <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;form <span class="keyword">class</span>="demoform"&gt;</span><br><span class="line">&lt;<span class="keyword">input</span> <span class="keyword">type</span>="text" <span class="keyword">value</span>="" <span class="type">name</span>="name" datatype="s5-16" errormsg="昵称至少5个字符,最多16个字符！" /&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>初始化，就这么简单</p>
+ <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="constructor">$(<span class="string">".demoform"</span>)</span>.<span class="constructor">Validform()</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="绑定附加属性"><a href="#绑定附加属性" class="headerlink" title="绑定附加属性"></a>绑定附加属性</h3><ul>
+<li>datatype<br>  内置基本的datatype类型有： <code>* | *6-16 | n | n6-16 | s | s6-18 | p | m | e | url</code>。最新版本可以直接绑定正则：如可用这样写<code>datatype=&quot;/\w{3,6}/i&quot;</code>，并且网站提供了一个datatype扩展文件<a href="http://validform.rjboy.cn/Validform/Validform_Datatype.js" target="_blank" rel="noopener">Validform_Datatype</a>。</li>
+<li>nullmsg<br>  当表单元素值为空时的提示信息，不绑定，默认提示”请填入信息！”。5.3+会自动查找class为Validform_label下的文字作为提示文字</li>
+<li>sucmsg 5.3+<br>  当表单元素通过验证时的提示信息，不绑定，默认提示”通过信息验证！”。</li>
+<li>errormsg<br>  输入内容不能通过验证时的提示信息，默认提示”请输入正确信息！”。</li>
+<li>ignore<br>  绑定了ignore=”ignore”的表单元素，在有输入时，会验证所填数据是否符合datatype所指定数据类型，没有填写内容时则会忽略对它的验证；</li>
+<li>recheck<br>  表单里面经常需要检查两次密码输入是否一致，recheck就是用来指定需要比较的另外一个表单元素。</li>
+<li>ajaxurl<br>  指定ajax实时验证的后台文件的地址。Ajax中会POST过来变量param和name。param是文本框的值，name是文本框的name属性。  <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> demo=$(<span class="string">".formsub"</span>).Validform()</span><br><span class="line">demo.config(&#123;</span><br><span class="line">    ajaxurl:&#123;</span><br><span class="line">        <span class="comment">//可以传入$.ajax()能使用的，除dataType外的所有参数;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+  后台返回json格式的数据:<code>{status:&quot;y&quot;,info:&quot;tip&quot;}</code>，如果status是y则提示成功，n则提示失败。</li>
+<li>plugin<br>  指定需要使用的插件。<br>  5.3版开始，对于日期、swfupload和密码强度检测这三个插件，绑定了plugin属性即可以初始化对应的插件，可以不用在validform初始化时传入空的usePlugin了。</li>
+</ul>
+<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><ul>
+<li>tiptype<br>  可用的值有：1、2、3、4和function函数，默认tiptype为1。 3、4是5.2.1版本新增<br>  1=&gt; 自定义弹出框提示；<br>  2=&gt; 侧边提示(会在当前元素的父级的next对象的子级查找显示提示信息的对象，表单以ajax提交时会弹出自定义提示框显示表单提交状态)；<br>  3=&gt; 侧边提示(会在当前元素的siblings对象中查找显示提示信息的对象，表单以ajax提交时会弹出自定义提示框显示表单提交状态)；<br>  4=&gt; 侧边提示(会在当前元素的父级的next对象下查找显示提示信息的对象，表单以ajax提交时不显示表单的提交状态)；  <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    $(<span class="string">".registerform"</span>).Validform(&#123;</span><br><span class="line">        tiptype:<span class="function"><span class="keyword">function</span>(<span class="params">msg,o,cssctl</span>)</span>&#123;</span><br><span class="line">            <span class="comment">//msg：提示信息;</span></span><br><span class="line">            <span class="comment">//o:&#123;obj:*,type:*,curform:*&#125;, obj指向的是当前验证的表单元素（或表单对象），type指示提示的状态，值为1、2、3、4， 1：正在检测/提交数据，2：通过验证，3：验证失败，4：提示ignore状态, curform为当前form对象;</span></span><br><span class="line">            <span class="comment">//cssctl:内置的提示信息样式控制函数，该函数需传入两个参数：显示提示信息的对象 和 当前提示的状态（既形参o中的type）;</span></span><br><span class="line">            <span class="keyword">if</span>(!o.obj.is(<span class="string">"form"</span>))&#123;<span class="comment">//验证表单元素时o.obj为该表单元素，全部验证通过提交表单时o.obj为该表单对象;</span></span><br><span class="line">                <span class="keyword">var</span> objtip=o.obj.siblings(<span class="string">".Validform_checktip"</span>);</span><br><span class="line">                cssctl(objtip,o.type);</span><br><span class="line">                objtip.text(msg);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">var</span> objtip=o.obj.find(<span class="string">"#msgdemo"</span>);</span><br><span class="line">                cssctl(objtip,o.type);</span><br><span class="line">                objtip.text(msg);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        ajaxPost:<span class="literal">true</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li>ajaxPost<br>  可用值： true | false。<br>  默认为false，使用ajax方式提交表单数据，将会把数据POST到config方法或表单action属性里设定的地址；</li>
+<li>datatype<br>  传入自定义datatype类型，可以是正则，也可以是函数。  <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">datatyp:</span>&#123;</span><br><span class="line">    <span class="string">"zh2-4"</span><span class="symbol">:/^</span>[\u4E00-\u9FA5\uf900-\ufa2d]&#123;<span class="number">2,4</span>&#125;<span class="variable">$/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>callback<br>  在使用ajax提交表单数据时，数据提交后的回调函数。返回数据data是Json对象：{“info”:”demo info”,”status”:”y”}。后台可以返回额外的数据供处理</li>
+</ul>
+<h3 id="公用对象"><a href="#公用对象" class="headerlink" title="公用对象"></a>公用对象</h3><p>$.Showmsg(msg)<br>调用Validform自定义的弹出框。<br>参数msg是要显示的提示文字。<br>如$.Showmsg(“这是提示文字”); //如果不传入信息则不会有弹出框出现，像$.Showmsg()这样是不会弹出提示框的。</p>
+<h2 id="bootstrap-datetimepicker"><a href="#bootstrap-datetimepicker" class="headerlink" title="bootstrap-datetimepicker"></a>bootstrap-datetimepicker</h2><p>用Google搜索可以搜到三个不同的同名插件</p>
+<ol>
+<li><a href="http://eonasdan.github.io/bootstrap-datetimepicker/" target="_blank" rel="noopener">http://eonasdan.github.io/bootstrap-datetimepicker/</a></li>
+<li><a href="http://www.bootcss.com/p/bootstrap-datetimepicker/" target="_blank" rel="noopener">http://www.bootcss.com/p/bootstrap-datetimepicker/</a> bootstrap中文网有详细介绍</li>
+<li><a href="http://tarruda.github.io/bootstrap-datetimepicker/" target="_blank" rel="noopener">http://tarruda.github.io/bootstrap-datetimepicker/</a> 作者是neovim项目的发起者，这个项目fork自eonasdan，已经很久没更新了</li>
+</ol>
+<p>简单介绍一下第一个，首先需要引入一下这些文件</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;link <span class="attribute">rel</span>=<span class="string">"stylesheet"</span> <span class="attribute">type</span>=<span class="string">"text/css"</span> <span class="attribute">href</span>=<span class="string">"css/bootstrap.min.css"</span>&gt;</span><br><span class="line">&lt;link <span class="attribute">rel</span>=<span class="string">"stylesheet"</span> <span class="attribute">type</span>=<span class="string">"text/css"</span> <span class="attribute">href</span>=<span class="string">"css/bootstrap-datetimepicker.min.css"</span>&gt;</span><br><span class="line">&lt;script <span class="attribute">type</span>=<span class="string">"text/javascript"</span> <span class="attribute">src</span>=<span class="string">"js/jquery-1.8.2.min.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script <span class="attribute">type</span>=<span class="string">"text/javascript"</span> <span class="attribute">src</span>=<span class="string">"js/bootstrap.min.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script <span class="attribute">type</span>=<span class="string">"text/javascript"</span> <span class="attribute">src</span>=<span class="string">"js/moment.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;script <span class="attribute">type</span>=<span class="string">"text/javascript"</span> <span class="attribute">src</span>=<span class="string">"js/bootstrap-datetimepicker.min.js"</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 需要给input添加一个属性  data-date-format 设置日期的格式 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">id</span>=<span class="string">"datetimepicker2"</span> <span class="attr">data-date-format</span>=<span class="string">"YYYY-MM-DD HH:mm:ss"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">$(<span class="string">'input[data-date-format]'</span>).datetimepicker(&#123;</span></span><br><span class="line"><span class="actionscript">    useSeconds: <span class="literal">true</span>     <span class="comment">//设置时间时可以设置秒</span></span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="highcharts"><a href="#highcharts" class="headerlink" title="highcharts"></a>highcharts</h2><p>功能强大、开源、美观、图表丰富、兼容绝大多数浏览器的纯js图表库</p>
+<h3 id="下载地址-http-code-highcharts-com"><a href="#下载地址-http-code-highcharts-com" class="headerlink" title="下载地址: http://code.highcharts.com/"></a>下载地址: <a href="http://code.highcharts.com/" target="_blank" rel="noopener">http://code.highcharts.com/</a></h3><h3 id="中文网-http-www-hcharts-cn"><a href="#中文网-http-www-hcharts-cn" class="headerlink" title="中文网: http://www.hcharts.cn/"></a>中文网: <a href="http://www.hcharts.cn/" target="_blank" rel="noopener">http://www.hcharts.cn/</a></h3><h2 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h2><p>这类组件比较多，下面列出我搜到的几个还不错的。</p>
+<h3 id="jQuery-File-Upload"><a href="#jQuery-File-Upload" class="headerlink" title="jQuery File Upload"></a><a href="https://github.com/blueimp/jQuery-File-Upload" target="_blank" rel="noopener">jQuery File Upload</a></h3><p>jQuery File Upload 是一个Jquery图片上传组件，支持多文件上传、取消、删除，上传前缩略图预览、列表显示图片大小，支持上传进度条显示；支持各种动态语言开发的服务器端。<br>jQuery File Upload有多个文件选择，拖放上传控件拖放支持，进度条，验证和预览图像，音频和视频 。<br>支持跨域，分块和可恢复的文件上传和客户端图像大小调整。适用于任何服务器端平台（PHP, Python, Ruby on Rails, Java, Node.js, Go etc.） ，支持标准的HTML表单文件上传。</p>
+<p>两篇可以参考的博客<br><a href="http://blog.csdn.net/huangcongjie/article/details/38793909" target="_blank" rel="noopener">jQuery File Upload 与SpringMVC结合</a><br><a href="http://www.yihaomen.com/article/java/416.htm" target="_blank" rel="noopener">最适合中国国情的jquery file upload 批量上传改版插件,结合spring mvc</a></p>
+<h3 id="Uploadify"><a href="#Uploadify" class="headerlink" title="Uploadify"></a><a href="http://www.uploadify.com/" target="_blank" rel="noopener">Uploadify</a></h3><p>1、高度地定义化，参数、方法和事件丰富<br>2、支持Flash和html两种版本<br>3、强大的社区支持<br>4、支持多文件上传和进度显示</p>
+<h3 id="Plupload"><a href="#Plupload" class="headerlink" title="Plupload"></a><a href="http://www.plupload.com/" target="_blank" rel="noopener">Plupload</a></h3><p>Plupload这个JavaScript控件可以让你选择Adobe Flash、Google Gears、HTML5、Microsoft Silverlight、Yahoo BrowserPlus或正常表单Form等多种方法进行文件上传。Plupload还提供其它功能包括：上传进度提醒、图片缩小、多文件上传，拖拽文件到上传控件，文件类型过滤和Chunked上传等。这些功能在不同的上传方式中支持情况会受到限制。</p>
+<h3 id="DropzoneJS"><a href="#DropzoneJS" class="headerlink" title="DropzoneJS"></a><a href="https://github.com/enyo/dropzone" target="_blank" rel="noopener">DropzoneJS</a></h3><p>特点是Dropzone 不依赖其它框架（比如jQuery)。提供 AJAX 异步上传功能。</p>
+<h3 id="Web-Uploader"><a href="#Web-Uploader" class="headerlink" title="Web Uploader"></a><a href="http://fex.baidu.com/webuploader/" target="_blank" rel="noopener">Web Uploader</a></h3><p>WebUploader是由Baidu WebFE(FEX)团队开发的一个简单的以HTML5为主，FLASH为辅的现代文件上传组件。在现代的浏览器里面能充分发挥HTML5的优势，同时又不摒弃主流IE浏览器，沿用原来的FLASH运行时，兼容IE6+，iOS 6+, android 4+。两套运行时，同样的调用方式，可供用户任意选用。<br>采用大文件分片并发上传，极大的提高了文件上传效率。</p>
+<h3 id="zyFile"><a href="#zyFile" class="headerlink" title="zyFile"></a><a href="http://www.czlqibu.com/show.html?id=190" target="_blank" rel="noopener">zyFile</a></h3><p>zyFile特点是简单，中文注释挺全，可以修改一下满足自己的需求。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/" rel="tag">jQuery</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.474Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/02/06/thinking-in-java-note-8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java编程思想笔记八
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/12/24/javamail/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaMail简介</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#dragsort"><span class="toc-number">1.</span> <span class="toc-text">dragsort</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载地址：http-dragsort-codeplex-com"><span class="toc-number">1.1.</span> <span class="toc-text">下载地址：http:&#x2F;&#x2F;dragsort.codeplex.com&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用方法"><span class="toc-number">1.2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一个table示例"><span class="toc-number">1.3.</span> <span class="toc-text">一个table示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Validform"><span class="toc-number">2.</span> <span class="toc-text">Validform</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载地址：http-validform-rjboy-cn"><span class="toc-number">2.1.</span> <span class="toc-text">下载地址：http:&#x2F;&#x2F;validform.rjboy.cn&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用方法-1"><span class="toc-number">2.2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#绑定附加属性"><span class="toc-number">2.3.</span> <span class="toc-text">绑定附加属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数说明"><span class="toc-number">2.4.</span> <span class="toc-text">参数说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#公用对象"><span class="toc-number">2.5.</span> <span class="toc-text">公用对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bootstrap-datetimepicker"><span class="toc-number">3.</span> <span class="toc-text">bootstrap-datetimepicker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#highcharts"><span class="toc-number">4.</span> <span class="toc-text">highcharts</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载地址-http-code-highcharts-com"><span class="toc-number">4.1.</span> <span class="toc-text">下载地址: http:&#x2F;&#x2F;code.highcharts.com&#x2F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#中文网-http-www-hcharts-cn"><span class="toc-number">4.2.</span> <span class="toc-text">中文网: http:&#x2F;&#x2F;www.hcharts.cn&#x2F;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上传文件"><span class="toc-number">5.</span> <span class="toc-text">上传文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jQuery-File-Upload"><span class="toc-number">5.1.</span> <span class="toc-text">jQuery File Upload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Uploadify"><span class="toc-number">5.2.</span> <span class="toc-text">Uploadify</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Plupload"><span class="toc-number">5.3.</span> <span class="toc-text">Plupload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DropzoneJS"><span class="toc-number">5.4.</span> <span class="toc-text">DropzoneJS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-Uploader"><span class="toc-number">5.5.</span> <span class="toc-text">Web Uploader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zyFile"><span class="toc-number">5.6.</span> <span class="toc-text">zyFile</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/12/24/jQuery-plug-in/';
+  this.page.identifier = '2014/12/24/jQuery-plug-in/';
+  this.page.title = 'jQuery 插件使用记录';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

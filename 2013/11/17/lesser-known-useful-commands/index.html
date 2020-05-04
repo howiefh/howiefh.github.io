@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>鲜为人知的Linux命令 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A blog of howiefh.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鲜为人知的Linux命令">
+<meta property="og:url" content="http://howiefh.github.io/2013/11/17/lesser-known-useful-commands/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="A blog of howiefh.">
+<meta property="article:published_time" content="2013-11-17T09:16:56.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.465Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-lesser-known-useful-commands" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2013/11/17/lesser-known-useful-commands/" class="article-date">
+  <time class="dt-published" datetime="2013-11-17T09:16:56.000Z" itemprop="datePublished">2013-11-17</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      鲜为人知的Linux命令
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sudo-命令"><span class="toc-number">1.</span> <span class="toc-text">sudo !! 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python命令"><span class="toc-number">2.</span> <span class="toc-text">python命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mtr命令"><span class="toc-number">3.</span> <span class="toc-text">mtr命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ctrl-x-e命令"><span class="toc-number">4.</span> <span class="toc-text">ctrl+x+e命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nl命令"><span class="toc-number">5.</span> <span class="toc-text">nl命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shuf命令"><span class="toc-number">6.</span> <span class="toc-text">shuf命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ss命令"><span class="toc-number">7.</span> <span class="toc-text">ss命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#last-命令"><span class="toc-number">8.</span> <span class="toc-text">last 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#curl-ifconfig-me"><span class="toc-number">9.</span> <span class="toc-text">curl ifconfig.me</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tree命令"><span class="toc-number">10.</span> <span class="toc-text">tree命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pstree命令"><span class="toc-number">11.</span> <span class="toc-text">pstree命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-空格-gt-命令"><span class="toc-number">12.</span> <span class="toc-text">&lt;空格&gt;命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stat命令"><span class="toc-number">13.</span> <span class="toc-text">stat命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-alt-gt-和-lt-esc-gt"><span class="toc-number">14.</span> <span class="toc-text">&lt;alt&gt;+.和&lt;esc&gt;+.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pv命令"><span class="toc-number">15.</span> <span class="toc-text">pv命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mount-colum-t"><span class="toc-number">16.</span> <span class="toc-text">mount | colum -t</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ctrl-l"><span class="toc-number">17.</span> <span class="toc-text">ctrl+l</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#screen命令"><span class="toc-number">18.</span> <span class="toc-text">screen命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#file"><span class="toc-number">19.</span> <span class="toc-text">file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#id"><span class="toc-number">20.</span> <span class="toc-text">id</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在bash和zsh中CTRL-R"><span class="toc-number">21.</span> <span class="toc-text">在bash和zsh中CTRL-R</span></a></li></ol>
+		
+		</div>
+		
+        <h2 id="sudo-命令"><a href="#sudo-命令" class="headerlink" title="sudo !! 命令"></a>sudo !! 命令</h2><p>使用sudo命令执行上一条命令</p>
+<h2 id="python命令"><a href="#python命令" class="headerlink" title="python命令"></a>python命令</h2><p>下面的命令生产一个通过HTTP显示文件夹(家目录)结构树的简单网页，可以通过浏览器在端口8000访问，直到发出中断信号。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m SimpleHTTPServer</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="mtr命令"><a href="#mtr命令" class="headerlink" title="mtr命令"></a>mtr命令</h2><p>将ping和traceroute两个命令合二为一</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mtr google.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="ctrl-x-e命令"><a href="#ctrl-x-e命令" class="headerlink" title="ctrl+x+e命令"></a>ctrl+x+e命令</h2><p>打开编辑器(请确定你的bash是在emacs模式)</p>
+<h2 id="nl命令"><a href="#nl命令" class="headerlink" title="nl命令"></a>nl命令</h2><p>将文本以每行加行号的方式显示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nl one.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="shuf命令"><a href="#shuf命令" class="headerlink" title="shuf命令"></a>shuf命令</h2><p>随机从一个文件或文件夹中选择行/文件/文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls | shuf</span><br><span class="line">ls | shuf -n1</span><br><span class="line">ls | shuf -n2</span><br></pre></td></tr></table></figure>
+
+<h2 id="ss命令"><a href="#ss命令" class="headerlink" title="ss命令"></a>ss命令</h2><p><code>ss</code>表示socket统计。这个命令调查socket，显示类似netstat命令的信息。它可以比其他工具显示更多的TCP和状态信息。</p>
+<h2 id="last-命令"><a href="#last-命令" class="headerlink" title="last 命令"></a>last 命令</h2><p><code>last</code>命令显示的是上次登录用户的历史信息。这个命令通过搜索文件“/var/log/wtmp”，显示logged-in和logged-out及其tty’s的用户列表。</p>
+<h2 id="curl-ifconfig-me"><a href="#curl-ifconfig-me" class="headerlink" title="curl ifconfig.me"></a>curl ifconfig.me</h2><p>获取外部IP地址</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl ifconfig.me</span><br></pre></td></tr></table></figure>
+
+<h2 id="tree命令"><a href="#tree命令" class="headerlink" title="tree命令"></a>tree命令</h2><p>以树式的格式得到当前文件夹的结构。</p>
+<h2 id="pstree命令"><a href="#pstree命令" class="headerlink" title="pstree命令"></a>pstree命令</h2><p>这个命令显示当前运行的所有进程及其相关的子进程，输出的是类似‘tree’命令的树状格式。</p>
+<h2 id="lt-空格-gt-命令"><a href="#lt-空格-gt-命令" class="headerlink" title="&lt;空格&gt;命令"></a>&lt;空格&gt;命令</h2><p>在每个命令之前输入一个或多个空格，这样命令就不会被history命令记录了。</p>
+<h2 id="stat命令"><a href="#stat命令" class="headerlink" title="stat命令"></a>stat命令</h2><p>加文件名作为参数，能够显示文件的全部信息。</p>
+<h2 id="lt-alt-gt-和-lt-esc-gt"><a href="#lt-alt-gt-和-lt-esc-gt" class="headerlink" title="&lt;alt&gt;+.和&lt;esc&gt;+."></a><code>&lt;alt&gt;</code>+.和<code>&lt;esc&gt;</code>+.</h2><p>上面的组合键事实上不是一个命令，而是传递最后一个命令参数到提示符后的快捷键，以输入命令的倒序方式传递命令。按住 Alt或Esc再按一下 “.”。</p>
+<p>得在bash是emacs模式下使用。还有在emacs模式下（没有使用set -o vi），ctrl+a跳转到命令第一个字母，ctrl+e跳转到命令的最后一个字母。</p>
+<h2 id="pv命令"><a href="#pv命令" class="headerlink" title="pv命令"></a>pv命令</h2><p>在电影里尤其是好莱坞电影你可能已经看见过模拟文本了，像是在实时输入文字，你可以用pv命令仿照任何类型模拟风的文本输出，包括流水线输出。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo "Tecmint [dot] com is the world's best website for qualitative Linux article" | pv -qL 20</span><br></pre></td></tr></table></figure>
+
+<h2 id="mount-colum-t"><a href="#mount-colum-t" class="headerlink" title="mount | colum -t"></a>mount | colum -t</h2><p>上面的命令用一个很不错的格式与规范列出了所有挂载文件系统。</p>
+<h2 id="ctrl-l"><a href="#ctrl-l" class="headerlink" title="ctrl+l"></a>ctrl+l</h2><p>清屏</p>
+<h2 id="screen命令"><a href="#screen命令" class="headerlink" title="screen命令"></a>screen命令</h2><p>screen命令能断开一个会话下的一个长时间运行的进程并能再次连接，如有需要，也提供了灵活的命令选项</p>
+<p>要运行一个长时间的进程，我们通常执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./long-unix-script.sh</span><br></pre></td></tr></table></figure>
+<p>缺乏灵活性，需要用户持续当前的会话，但是如果我们执行上面的命令是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen ./long-unix-script.sh</span><br></pre></td></tr></table></figure>
+<p>它能在不同会话间断开或重连。当一个命令正在执行时按“Ctrl + A”然后再按“d”来断开。</p>
+<p>重新连接运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen -r 4980.pts-0.localhost</span><br></pre></td></tr></table></figure>
+<p>注解：在这里，这个命令的稍后的部分是screen id，你能用‘screen -ls’命令查看</p>
+<h2 id="file"><a href="#file" class="headerlink" title="file"></a>file</h2><p>显示文件类型信息</p>
+<h2 id="id"><a href="#id" class="headerlink" title="id"></a>id</h2><p>打印真正有效的用户和组的id</p>
+<h2 id="在bash和zsh中CTRL-R"><a href="#在bash和zsh中CTRL-R" class="headerlink" title="在bash和zsh中CTRL-R"></a>在bash和zsh中CTRL-R</h2><p>可以使用快捷键 Ctrl+R 来快速搜索历史输入，在bash中显示的提示符为<code>(reverse-i-search)</code>；在zsh中显示的提示符为<code>bck-i-search：</code>。</p>
+<p>此时键入你想要搜索的内容，比如ssh，你就会得到第一个匹配的历史输入。如果按 Ctrl + R 快捷键将会继续向前搜索包含ssh的历史输入。当你发现自己想要查找的内容后，按回车键 Enter 结束搜索。如果需要对搜索到的内容进行修改，使用方向键右键来定位修改位置，然后做出需要的修改。</p>
+<p>更具体的解释参看：</p>
+<ul>
+<li><a href="http://linux.cn/thread/11925/1/1/" target="_blank" rel="noopener">http://linux.cn/thread/11925/1/1/</a></li>
+<li><a href="http://linux.cn/thread/11931/1/1/" target="_blank" rel="noopener">http://linux.cn/thread/11931/1/1/</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.465Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/12/02/vim-is-the-god-of-all-editors/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          编辑器之神Vim
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/11/09/install-pam_mysql-on-suse-11-sp2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在SUSE 11 SP2 中安装pam_mysql</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sudo-命令"><span class="toc-number">1.</span> <span class="toc-text">sudo !! 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python命令"><span class="toc-number">2.</span> <span class="toc-text">python命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mtr命令"><span class="toc-number">3.</span> <span class="toc-text">mtr命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ctrl-x-e命令"><span class="toc-number">4.</span> <span class="toc-text">ctrl+x+e命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nl命令"><span class="toc-number">5.</span> <span class="toc-text">nl命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shuf命令"><span class="toc-number">6.</span> <span class="toc-text">shuf命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ss命令"><span class="toc-number">7.</span> <span class="toc-text">ss命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#last-命令"><span class="toc-number">8.</span> <span class="toc-text">last 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#curl-ifconfig-me"><span class="toc-number">9.</span> <span class="toc-text">curl ifconfig.me</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tree命令"><span class="toc-number">10.</span> <span class="toc-text">tree命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pstree命令"><span class="toc-number">11.</span> <span class="toc-text">pstree命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-空格-gt-命令"><span class="toc-number">12.</span> <span class="toc-text">&lt;空格&gt;命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stat命令"><span class="toc-number">13.</span> <span class="toc-text">stat命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-alt-gt-和-lt-esc-gt"><span class="toc-number">14.</span> <span class="toc-text">&lt;alt&gt;+.和&lt;esc&gt;+.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pv命令"><span class="toc-number">15.</span> <span class="toc-text">pv命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mount-colum-t"><span class="toc-number">16.</span> <span class="toc-text">mount | colum -t</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ctrl-l"><span class="toc-number">17.</span> <span class="toc-text">ctrl+l</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#screen命令"><span class="toc-number">18.</span> <span class="toc-text">screen命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#file"><span class="toc-number">19.</span> <span class="toc-text">file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#id"><span class="toc-number">20.</span> <span class="toc-text">id</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在bash和zsh中CTRL-R"><span class="toc-number">21.</span> <span class="toc-text">在bash和zsh中CTRL-R</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2013/11/17/lesser-known-useful-commands/';
+  this.page.identifier = '2013/11/17/lesser-known-useful-commands/';
+  this.page.title = '鲜为人知的Linux命令';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

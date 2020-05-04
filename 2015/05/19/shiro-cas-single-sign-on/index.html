@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Shiro &amp; CAS 实现单点登录 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Shiro; CAS; SSO; Shrio 单点登录；单点登出；单点登录 验证码；单点登录 记住密码；单点登陆 查询数据库; 单点登录 自定义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shiro &amp; CAS 实现单点登录">
+<meta property="og:url" content="http://howiefh.github.io/2015/05/19/shiro-cas-single-sign-on/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="Shiro; CAS; SSO; Shrio 单点登录；单点登出；单点登录 验证码；单点登录 记住密码；单点登陆 查询数据库; 单点登录 自定义">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-clip.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-noproxy.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-proxy.png">
+<meta property="article:published_time" content="2015-05-18T16:11:12.000Z">
+<meta property="article:modified_time" content="2020-05-04T11:15:02.139Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Shiro">
+<meta property="article:tag" content="CAS">
+<meta property="article:tag" content="SSO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-clip.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-shiro-cas-single-sign-on" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/05/19/shiro-cas-single-sign-on/" class="article-date">
+  <time class="dt-published" datetime="2015-05-18T16:11:12.000Z" itemprop="datePublished">2015-05-19</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Java/Shiro/">Shiro</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Shiro &amp; CAS 实现单点登录
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概览"><span class="toc-number">1.</span> <span class="toc-text">概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署服务器"><span class="toc-number">2.</span> <span class="toc-text">部署服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署客户端"><span class="toc-number">3.</span> <span class="toc-text">部署客户端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">4.</span> <span class="toc-text">进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用HTTPS协议"><span class="toc-number">4.1.</span> <span class="toc-text">使用HTTPS协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单点登出重定向"><span class="toc-number">4.2.</span> <span class="toc-text">单点登出重定向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单点登出"><span class="toc-number">4.3.</span> <span class="toc-text">单点登出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过数据库中的用户密码认证"><span class="toc-number">4.4.</span> <span class="toc-text">通过数据库中的用户密码认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加验证码"><span class="toc-number">4.5.</span> <span class="toc-text">添加验证码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加记住密码"><span class="toc-number">4.6.</span> <span class="toc-text">添加记住密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义primaryAuthenticationHandler"><span class="toc-number">4.7.</span> <span class="toc-text">自定义primaryAuthenticationHandler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义登录页面"><span class="toc-number">4.8.</span> <span class="toc-text">自定义登录页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其它"><span class="toc-number">4.9.</span> <span class="toc-text">其它</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-number">5.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#相关概念"><span class="toc-number">5.1.</span> <span class="toc-text">相关概念</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>单点登录主要用于多系统集成，即在多个系统中，用户只需要到一个中央服务器登录一次即可访问这些系统中的任何一个，无须多次登录。</p>
+<p>本文使用开源框架<a href="https://github.com/Jasig/cas/releases" target="_blank" rel="noopener">Jasig CAS</a>来完成单点登录。下载地址：<a href="https://www.apereo.org/cas/download" target="_blank" rel="noopener">https://www.apereo.org/cas/download</a>。在写本文时，使用的cas server版本为4.0.1</p>
+<a id="more"></a>
+
+<h2 id="部署服务器"><a href="#部署服务器" class="headerlink" title="部署服务器"></a>部署服务器</h2><p>本文服务器使用Tomcat7，下载了<a href="http://downloads.jasig.org/cas/cas-server-4.0.0-release.zip" target="_blank" rel="noopener">cas-server-4.0.0-release.zip</a>，将其解压，找到modules目录下面的cas-server-webapp-4.0.0.war直接复制到webapps文件夹下即可。启动Tomcat，访问<a href="http://localhost:8080/cas-server-webapp-4.0.0，使用casuser/Mellon登录，即可登录成功。" target="_blank" rel="noopener">http://localhost:8080/cas-server-webapp-4.0.0，使用casuser/Mellon登录，即可登录成功。</a></p>
+<p>Tomcat默认没有开启HTTPS协议，所以这里直接用了HTTP协议访问。为了能使客户端在HTTP协议下单点登录成功，需要修改一下配置：</p>
+<ul>
+<li><p>WEB-INF\spring-configuration\ticketGrantingTicketCookieGenerator.xml和WEB-INF\spring-configuration\warnCookieGenerator.xml：将<code>p:cookieSecure=&quot;true&quot;</code>改为<code>p:cookieSecure=&quot;false&quot;</code></p>
+</li>
+<li><p>WEB-INF\deployerConfigContext.xml：<code>&lt;bean class=&quot;org.jasig.cas.authentication.handler.support.HttpBasedServiceCredentialsAuthenticationHandler&quot; p:httpClient-ref=&quot;httpClient&quot; /&gt;</code>添加<code>p:requireSecure=&quot;false&quot;</code></p>
+</li>
+</ul>
+<p>至此，一个简单的单点登录服务器就基本部署好了。</p>
+<h2 id="部署客户端"><a href="#部署客户端" class="headerlink" title="部署客户端"></a>部署客户端</h2><p>客户端需要添加对<a href="http://shiro.apache.org/cas.html" target="_blank" rel="noopener">shiro-cas</a>和cas-client-core这两个包的依赖。这里主要讲跟CAS相关的配置。</p>
+<p>之后配置web.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 用于单点退出，该过滤器用于实现单点登出功能，可选配置。--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.jasig.cas.client.session.SingleSignOutHttpSessionListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 该过滤器用于实现单点登出功能，可选配置。 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Single Sign Out Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.jasig.cas.client.session.SingleSignOutFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Single Sign Out Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>自定义Realm：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyCasRealm</span> <span class="keyword">extends</span> <span class="title">CasRealm</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">UserService</span> userService;</span><br><span class="line"></span><br><span class="line">    public void setUserService(<span class="type">UserService</span> userService) &#123;</span><br><span class="line">        <span class="keyword">this</span>.userService = userService;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">AuthorizationInfo</span> doGetAuthorizationInfo(<span class="type">PrincipalCollection</span> principals) &#123;</span><br><span class="line">        <span class="type">String</span> username = (<span class="type">String</span>)principals.getPrimaryPrincipal();</span><br><span class="line">        <span class="type">SimpleAuthorizationInfo</span> authorizationInfo = <span class="keyword">new</span> <span class="type">SimpleAuthorizationInfo</span>();</span><br><span class="line">        authorizationInfo.setRoles(userService.findRoles(username));</span><br><span class="line">        authorizationInfo.setStringPermissions(userService.findPermissions(username));</span><br><span class="line">        <span class="keyword">return</span> authorizationInfo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"casRealm"</span> <span class="attr">class</span>=<span class="string">"package.for.your.MyCasRealm"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"userService"</span> <span class="attr">ref</span>=<span class="string">"userService"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"cachingEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"authenticationCachingEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"authenticationCacheName"</span> <span class="attr">value</span>=<span class="string">"authenticationCache"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"authorizationCachingEnabled"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"authorizationCacheName"</span> <span class="attr">value</span>=<span class="string">"authorizationCache"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="comment">&lt;!--该地址为cas server地址 --&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"casServerUrlPrefix"</span> <span class="attr">value</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;shiro.casServer.url&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="comment">&lt;!-- 该地址为是当前应用 CAS 服务 URL，即用于接收并处理登录成功后的 Ticket 的，</span></span></span><br><span class="line"><span class="xml">    必须和loginUrl中的service参数保持一致，否则服务器会判断service不匹配--&gt;</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"casService"</span> <span class="attr">value</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;shiro.client.cas&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>/&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>配置CAS过滤器</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean <span class="built_in">id</span>=<span class="string">"casFilter"</span> <span class="built_in">class</span>=<span class="string">"org.apache.shiro.cas.CasFilter"</span>&gt;</span><br><span class="line">    &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"failureUrl"</span> value=<span class="string">"/casFailure.jsp"</span>/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;bean <span class="built_in">id</span>=<span class="string">"shiroFilter"</span> <span class="built_in">class</span>=<span class="string">"org.apache.shiro.spring.web.ShiroFilterFactoryBean"</span>&gt;</span><br><span class="line">    &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"securityManager"</span> <span class="keyword">ref</span>=<span class="string">"securityManager"</span>/&gt;</span><br><span class="line">    &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"loginUrl"</span> value=<span class="string">"$&#123;shiro.login.url&#125;"</span>/&gt;</span><br><span class="line">    &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"successUrl"</span> value=<span class="string">"$&#123;shiro.login.success.url&#125;"</span>/&gt;</span><br><span class="line">    &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"filters"</span>&gt;</span><br><span class="line">        &lt;util:map&gt;</span><br><span class="line">            &lt;entry key=<span class="string">"cas"</span> value-<span class="keyword">ref</span>=<span class="string">"casFilter"</span>/&gt;</span><br><span class="line">            &lt;entry key=<span class="string">"logout"</span> value-<span class="keyword">ref</span>=<span class="string">"logoutFilter"</span> /&gt;</span><br><span class="line">        &lt;/util:map&gt;</span><br><span class="line">    &lt;/<span class="keyword">property</span>&gt;</span><br><span class="line">    &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"filterChainDefinitions"</span>&gt;</span><br><span class="line">        &lt;value&gt;</span><br><span class="line">            /casFailure.jsp = anon</span><br><span class="line">            /cas = cas</span><br><span class="line">            /logout = logout</span><br><span class="line">            /** = user</span><br><span class="line">        &lt;/value&gt;</span><br><span class="line">    &lt;/<span class="keyword">property</span>&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上面登录url我的配置的是<code>http://localhost:8080/cas-server/login?service=http://localhost:8080/cas-client/cas</code>，service参数是之后服务将会跳转的地址。</p>
+<p><code>/cas=cas</code>：即/cas 地址是服务器端回调地址，使用 CasFilter 获取 Ticket 进行登录。</p>
+<p>之后通过eclipse部署，访问<a href="http://localhost:8080/cas-client" target="_blank" rel="noopener">http://localhost:8080/cas-client</a> 即可测试。为了看到单点登录的效果，可以直接复制一份webapps中的client为client2，只需要修改上述配置中的地址即可。如果用户已经登录，那么访问<a href="http://localhost:8080/cas-client2发现不会再跳转到登录页面了，用户已经是登录状态了。" target="_blank" rel="noopener">http://localhost:8080/cas-client2发现不会再跳转到登录页面了，用户已经是登录状态了。</a></p>
+<p>还需要注意一个问题，就是cas server默认是开启单点登出的但是这里却没有这样的效果，APP1登出了，但是APP2仍能访问，如果查看浏览器的cookie的话，会发现有两个sessionid，一个是JSESSIONID，容器原生的，另一个是shiro中配置的:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 会话Cookie模板 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sessionIdCookie"</span> <span class="attr">class</span>=<span class="string">"org.apache.shiro.web.servlet.SimpleCookie"</span>&gt;</span></span><br><span class="line">SingleSignOutFilter发现是logoutRequest请求后，原来SingleSignOutHandler中创建的原生的session已经被销毁了，因为从a登出的，a的shiro session也会销毁，</span><br><span class="line">    但是b的shiro的session还没有被销毁，于是再访问b还是能访问，单点登出就有问题了--&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">value</span>=<span class="string">"JSESSIONID"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"httpOnly"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"maxAge"</span> <span class="attr">value</span>=<span class="string">"-1"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果我们把sid改为JSESSIONID会怎么样，答案是如果改为JSESSIONID会导致重定向循环，原因是当登录时，shiro发现浏览器发出的请求中的JSESSIONID没有或已经过期，于是生成一个JSESSIONID给浏览器，同时链接被重定向到服务器进行认证，认证成功后返回到客户端服务器的cas service url，并且带有一个ticket参数。因为有SingleSignOutFilter，当发现这是一个tocken请求时，SingleSignOutHandler会调用request.getSession()获取的是原生Session，如果没有原生session的话，又会创建并将JSESSIONID保存到浏览器cookie中，当客户端服务器向cas服务器验证ticket之后，客户端服务器重定向到之前的页面，这时shiro发现JSESSIONID是SingleSignOutHandler中生成的，在自己维护的session中查不到，又会重新生成新的session，然后login，然后又会重定向到cas服务器认证，然后再重定向到客户端服务器的cas service url，不同的是SingleSignOutHandler中这次调用session.getSession(true)不会新创建一个了，之后就如此循环。如果使用sid又会导致当单点登出时候，如果有a、b两个客户端服务器，从a登出，会跳转到cas服务器登出，cas服务器会对所有通过它认证的service调用销毁session的方法，但是b的shiro的session还没有被销毁，于是再访问b还是能访问，单点登出就有问题了</p>
+<p>之所以这样是因为我设置shiro的session管理器为DefaultWebSessionManager，这个管理器直接抛弃了容器的session管理器，自己来维护session，所以就会出现上述描述的问题了。如果我们不做设置，那么shiro将使用默认的session管理器ServletContainerSessionManager：Web 环境，其直接使用 Servlet 容器的会话。这样单点登出就可以正常使用了。</p>
+<p>此外如果我们非要使用DefaultWebSessionManager的话，我们就要重写一个SingleSignOutFilter、SingleSignOutHandler和SessionMappingStorage了。</p>
+<p>如果没有使用Spring框架，则可以参考如下配置web.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/javaee"</span> <span class="attr">xmlns:web</span>=<span class="string">"http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">id</span>=<span class="string">"WebApp_ID"</span> <span class="attr">version</span>=<span class="string">"2.5"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">display-name</span>&gt;</span>YPshop Authority Manage<span class="tag">&lt;/<span class="name">display-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>webAppRootKey<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>authority.root<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">&lt;!-- ======================== 单点登录开始 ======================== --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 说明：这种客户端的配置方式是不需要Spring支持的 --&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 参考资料：http://blog.csdn.net/yaoweijq/article/details/6003187 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.jasig.cas.client.session.SingleSignOutHttpSessionListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Single Sign Out Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.jasig.cas.client.session.SingleSignOutFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Single Sign Out Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Authentication Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.jasig.cas.client.authentication.AuthenticationFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">	        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>casServerLoginUrl<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">	        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>https://localhost:8443/cas-server/login<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">	        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>serverName<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">	        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>https://localhost:8443<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Authentication Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Validation Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">	        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>casServerUrlPrefix<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">	        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>https://localhost:8443/cas-server<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">	        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>serverName<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">	        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>https://localhost:8443<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Validation Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 该过滤器使得开发者可以通过org.jasig.cas.client.util.AssertionHolder来获取用户的登录名。 比如AssertionHolder.getAssertion().getPrincipal().getName()。 --&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Assertion Thread Local Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.jasig.cas.client.util.AssertionThreadLocalFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CAS Assertion Thread Local Filter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- ======================== 单点登录结束 ======================== --&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="tag">&lt;<span class="name">welcome-file-list</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>index.html<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>index.jsp<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">welcome-file-list</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">distributable</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><h3 id="使用HTTPS协议"><a href="#使用HTTPS协议" class="headerlink" title="使用HTTPS协议"></a>使用HTTPS协议</h3><p>首先我们需要生成数字证书</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkey -keystore "D:\localhost.keystore" -alias localhost -keyalg RSA</span><br><span class="line">输入密钥库口令:</span><br><span class="line">再次输入新口令:</span><br><span class="line">您的名字与姓氏是什么?</span><br><span class="line">[<span class="symbol">Unknown</span>]: <span class="link">localhost</span></span><br><span class="line">您的组织单位名称是什么?</span><br><span class="line">[<span class="symbol">Unknown</span>]: <span class="link">xa</span></span><br><span class="line">您的组织名称是什么?</span><br><span class="line">[<span class="symbol">Unknown</span>]: <span class="link">xa</span></span><br><span class="line">您所在的城市或区域名称是什么?</span><br><span class="line">[<span class="symbol">Unknown</span>]: <span class="link">xi'an</span></span><br><span class="line">您所在的省/市/自治区名称是什么?</span><br><span class="line">[<span class="symbol">Unknown</span>]: <span class="link">xi'an</span></span><br><span class="line">该单位的双字母国家/地区代码是什么?</span><br><span class="line">[<span class="symbol">Unknown</span>]: <span class="link">cn</span></span><br><span class="line">CN=localhost, OU=xa, O=xa, L=xi'an, ST=xi'an, C=cn 是否正确</span><br><span class="line">?</span><br><span class="line">[<span class="symbol">否</span>]: <span class="link">y</span></span><br><span class="line">输入 <span class="xml"><span class="tag">&lt;<span class="name">localhost</span>&gt;</span></span> 的密钥口令</span><br><span class="line">(如果和密钥库口令相同, 按回车):</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是 “您的名字与姓氏是什么?”这个地方不能随便填的，如果运行过程中提示“Caused by: java.security.cert.CertificateException: No name matching localhost found”那么就是因为这里设置错了，当然除了localhost也可以写其他的，如helloworld.com，但是需要能解析出来，可以直接在hosts中加<code>127.0.0.1 helloworld.com</code></p>
+<p>然后，由于Tomcat默认没有开HTTPS，所以我们需要在server.xml文件中找到8443出现的地方。然后修改如下</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Connector <span class="attribute">port</span>=<span class="string">"8443"</span> <span class="attribute">protocol</span>=<span class="string">"HTTP/1.1"</span> <span class="attribute">SSLEnabled</span>=<span class="string">"true"</span></span><br><span class="line">    <span class="attribute">maxThreads</span>=<span class="string">"150"</span> <span class="attribute">scheme</span>=<span class="string">"https"</span> <span class="attribute">secure</span>=<span class="string">"true"</span></span><br><span class="line">    <span class="attribute">clientAuth</span>=<span class="string">"false"</span> <span class="attribute">sslProtocol</span>=<span class="string">"TLS"</span></span><br><span class="line">    <span class="attribute">keystoreFile</span>=<span class="string">"D:\localhost.keystore"</span> <span class="attribute">keystorePass</span>=<span class="string">"123456"</span>/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>keystorePass 就是生成 keystore 时设置的密码。</p>
+<p>如果出现下面的问题，修改server.xml中的protocol为<code>org.apache.coyote.http11.Http11Protocol</code></p>
+<p>Failed to initialize end point associated with ProtocolHandler [“http-apr-8443”]<br>java.lang.Exception: Connector attribute SSLCertificateFile must be defined when using SSL with APR</p>
+<p>因为 CAS client 需要使用该证书进行验证，所以我们要使用 localhost.keystore 导出数字证书（公钥）到 D:\localhost.cer。再将将证书导入到 JDK 中。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">keytool -export -<span class="keyword">alias</span> localhost -file <span class="symbol">D:</span>\localhost.cer -keystore <span class="symbol">D:</span>\localhost.keystore</span><br><span class="line">cd <span class="symbol">D:</span>\jdk1.<span class="number">7.0_21</span>\jre\<span class="class"><span class="keyword">lib</span>\<span class="title">security</span></span></span><br><span class="line">keytool -import -<span class="keyword">alias</span> localhost -file <span class="symbol">D:</span>\localhost.cer -noprompt -trustcacerts -storetype jks -keystore cacerts -storepass <span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<p>如果导入失败，可以先把 security 目录下的 cacerts 删掉</p>
+<p>搞定证书之后，我们需要将之前client中配置的地址修改一下。然后还可以添加ssl过滤器。</p>
+<p>如果遇到以下异常，一般是证书导入错误造成的，请尝试重新导入，如果还是不行，有可能是运行应用的 JDK 和安装数字证书的 JDK 不是同一个造成的：</p>
+<p>Caused by: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target</p>
+<h3 id="单点登出重定向"><a href="#单点登出重定向" class="headerlink" title="单点登出重定向"></a>单点登出重定向</h3><p>客户端中配置logout过滤器</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean <span class="built_in">id</span>=<span class="string">"logoutFilter"</span> <span class="built_in">class</span>=<span class="string">"org.apache.shiro.web.filter.authc.LogoutFilter"</span>&gt;</span><br><span class="line">    &lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"redirectUrl"</span> value=<span class="string">"$&#123;shiro.logout.url&#125;"</span>/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+
+<p>WEB-INF/cas-servlet.xml中将 <code>cas.logout.followServiceRedirects</code>修改为true即可在登出后重定向到service参数提供的地址</p>
+<h3 id="单点登出"><a href="#单点登出" class="headerlink" title="单点登出"></a>单点登出</h3><p>单点登出重定向是很好解决了，但是在客户端与shiro集成过程中，如客户端部署部分所述，如果shiro没有使用 ServletContainerSessionManager 管理session，单点登出就会有问题了。最简单奏效的办法就是改用 ServletContainerSessionManager 了，但是我们偏要用 DefaultWebSessionManager 呢，那就应该要参考org.jasig.cas.client.session这个包中的几个类，重新实现单点登出了。我的思路是，添加一个shiro过滤器，继承自AdviceFilter在preHandle方法中实现逻辑：如果请求中包含了ticket参数，记录ticket和sessionID的映射；如果请求中包含logoutRequest参数，标记session为无效；如果session不为空，且被标记为无效，则登出。如果请求中包含了logoutRequest参数，那么这个请求是从cas服务器发出的，所以这里不能直接用subject.logout()，因为subject跟线程绑定，客户端对cas服务器端的请求会创建一个新的subject。</p>
+<p>那么CAS单点登出是怎么实现的呢，下面是我对CAS单点登出的简单理解：</p>
+<p>在TicketGrantingTicketImpl有一个HashMap&lt;String, Service&gt; services字段，以id和通过认证的客户端service为键值对。当我们要登出时LogoutManagerImpl通过for (final String ticketId : services.keySet())向每个service发送一个POST请求，请求中包含一个logoutRequest参数，参数的值由SamlCompliantLogoutMessageCreator创建。客户端的 SingleSignOutFilter会判断请求中是否包含了logoutRequest参数，如果包含，那么销毁session。SingleSignOutHttpSessionListener实现了javax.servlet.http.HttpSessionListener接口，用于监听session销毁事件。</p>
+<p>我在配置的过程中发现单点登出有问题，首先在服务端打开 debug log，cas 服务器默认是打开单点登出功能的，所以正常的话日志中会记录<code>&lt;Sending logout request for: [https://localhost:8443/cas-client1/cas]&gt;</code>之类的内容，有日志记录发送了请求，一般服务器应该不会有什么问题了。那么有可能会是客户端的问题，我重新配置了一个客户端，这个客户端没有使用spring也没有使用shiro，只用了在部署客户端中提到的无spring的web.xml文件，发现从其他客户端登出，这个客户端也是登出的，所以这个配置是没有什么问题。后来在浏览器打开控制台才发现有两个SESSIONID一个是sid是在shiro中配置的，另一个是JSESSIONID，应该是容器原生的。再然后就下了3.2.2版本的cas-client-core，通过maven构建，导入eclipse中，开始调试。我们的cas-client要依赖这个cas-client-core工程，怎么设置可以参考<a href="http://howiefh.github.io/2014/02/08/eclipse-tips/">eclipse小技巧</a>。然后调试，一定要保证在cas-client的propertie 设置中的Deployment Assembly中已经没有之前的版本的cas-client-core的jar包了。调试的过程中才发现，SingleSignOutFilter销毁的是容器原生的session，但是shiro的session还在，所以如果是从其他客户端登出的，那这个客户端还是能够登录。</p>
+<h3 id="通过数据库中的用户密码认证"><a href="#通过数据库中的用户密码认证" class="headerlink" title="通过数据库中的用户密码认证"></a>通过数据库中的用户密码认证</h3><p>服务器端需要添加cas-server-support-jdbc和mysql-connector-java依赖。</p>
+<p>cas-server-support-jdbc提供了org.jasig.cas.adaptors.jdbc.QueryDatabaseAuthenticationHandler、org.jasig.cas.adaptors.jdbc.SearchModeSearchDatabaseAuthenticationHandler 和org.jasig.cas.adaptors.jdbc.QueryAndEncodeDatabaseAuthenticationHandler。他们都继承自AbstractJdbcUsernamePasswordAuthenticationHandler 能够通过配置sql语句验证用户凭证，后者更复杂些，能够配置盐，散列函数迭代次数。</p>
+<p>下面说一下配置QueryDatabaseAuthenticationHandler，配置/src/main/webapp/WEB-INF/deployerConfigContext.xml，先注释掉原先的primaryAuthenticationHandler然后添加下面配置</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="comment">&lt;!-- 自定义数据库鉴权 --&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"primaryAuthenticationHandler"</span> <span class="attr">class</span>=<span class="string">"org.jasig.cas.adaptors.jdbc.QueryDatabaseAuthenticationHandler"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sql"</span>  <span class="attr">value</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;auth.sql&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"passwordEncoder"</span> <span class="attr">ref</span>=<span class="string">"MD5PasswordEncoder"</span>/&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="comment">&lt;!-- 数据源 --&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dataSource"</span> <span class="attr">class</span>=<span class="string">"org.springframework.jdbc.datasource.DriverManagerDataSource"</span>&gt;</span></span></span><br><span class="line"><span class="xml">     <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driverClassName"</span> <span class="attr">value</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;dataSource.driver&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span></span><br><span class="line"><span class="xml">     <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;dataSource.url&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">     <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;dataSource.username&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">     <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;dataSource.password&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>/&gt;</span></span></span><br><span class="line"><span class="xml"> <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span></span><br><span class="line"><span class="xml"> <span class="comment">&lt;!-- MD5加密 --&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"MD5PasswordEncoder"</span> <span class="attr">class</span>=<span class="string">"org.jasig.cas.authentication.handler.DefaultPasswordEncoder"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">value</span>=<span class="string">"MD5"</span>/&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>加密算法可以自定义。</p>
+<h3 id="添加验证码"><a href="#添加验证码" class="headerlink" title="添加验证码"></a>添加验证码</h3><p>验证码的实现使用了kaptcha，所以需要添加其依赖。</p>
+<p>web.xml添加如下配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>Kaptcha<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.google.code.kaptcha.servlet.KaptchaServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 设定宽度 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>kaptcha.image.width<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>100<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 设定高度 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>kaptcha.image.height<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>50<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 如果需要全部是数字 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>kaptcha.textproducer.char.string<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>0123456789<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 去掉干扰线 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>kaptcha.noise.impl<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>com.google.code.kaptcha.impl.NoNoise <span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>Kaptcha<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/captcha.jpg<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在login-webflow.xml中找到viewLoginForm，在binder节点下面添加<code>&lt;binding property=&quot;captcha&quot; /&gt;</code>，对应我们页面提交的验证码参数</p>
+<p>然后我们还要实现一个UsernamePasswordCaptchaCredential 类，继承UsernamePasswordCredential 在其中添加了captcha字段和相应setter和getter方法。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UsernamePasswordCaptchaCredential</span> <span class="keyword">extends</span> <span class="title">UsernamePasswordCredential</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> static <span class="keyword">final</span> long serialVersionUID = <span class="number">-2988130322912201986</span>L;</span><br><span class="line">    <span class="meta">@NotNull</span></span><br><span class="line">    <span class="meta">@Size</span>(min=<span class="number">1</span>,message = <span class="string">"required.captcha"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> captcha;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//set、get方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着回到 login-webflow.xml ，找到credential的声明处，将org.jasig.cas.authentication.UsernamePasswordCredential修改为刚刚实现的类全路径名。viewLoginForm 也需要修改</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;transition <span class="keyword">on</span>=<span class="string">"submit"</span> bind=<span class="string">"true"</span> validate=<span class="string">"true"</span> <span class="keyword">to</span>=<span class="string">"validatorCaptcha"</span>&gt;</span><br><span class="line">    &lt;evaluate expression=<span class="string">"authenticationViaFormAction.doBind(flowRequestContext, flowScope.credential)"</span> /&gt;</span><br><span class="line">&lt;/transition&gt;</span><br></pre></td></tr></table></figure>
+
+<p>再添加如下配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 添加一个 validatorCaptcha 校验验证码的操作 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">action-state</span> <span class="attr">id</span>=<span class="string">"validatorCaptcha"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">evaluate</span> <span class="attr">expression</span>=<span class="string">"authenticationViaFormAction.validatorCaptcha(flowRequestContext, flowScope.credential, messageContext)"</span>&gt;</span><span class="tag">&lt;/<span class="name">evaluate</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">transition</span> <span class="attr">on</span>=<span class="string">"error"</span> <span class="attr">to</span>=<span class="string">"generateLoginTicket"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">transition</span> <span class="attr">on</span>=<span class="string">"success"</span> <span class="attr">to</span>=<span class="string">"realSubmit"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">action-state</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们在配置中添加了一个 validatorCaptcha 的操作，同时可以看到 expression 是 authenticationViaFormAction.validatorCaptcha(…)，所以我们需要在  authenticationViaFormAction 中添加一个校验验证码的方法 validatorCaptcha()。authenticationViaFormAction 这个bean是配置在 cas-servlet.xml 中的：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean <span class="attribute">id</span>=<span class="string">"authenticationViaFormAction"</span> <span class="attribute">class</span>=<span class="string">"org.jasig.cas.web.flow.AuthenticationViaFormAction"</span></span><br><span class="line">    p:<span class="attribute">centralAuthenticationService-ref</span>=<span class="string">"centralAuthenticationService"</span></span><br><span class="line">    p:<span class="attribute">warnCookieGenerator-ref</span>=<span class="string">"warnCookieGenerator"</span></span><br><span class="line">    p:<span class="attribute">ticketRegistry-ref</span>=<span class="string">"ticketRegistry"</span>/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看看 org.jasig.cas.web.flow.AuthenticationViaFormAction 的源代码，里面有一个 submit 方法，这个就是我们提交表单时的方法了。继承AuthenticationViaFormAction实现一个新类</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyAuthenticationViaFormAction</span> <span class="keyword">extends</span> <span class="title">AuthenticationViaFormAction</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    public <span class="keyword">final</span> <span class="type">String</span> validatorCaptcha(<span class="keyword">final</span> <span class="type">RequestContext</span> context, <span class="keyword">final</span> <span class="type">Credential</span> credential,</span><br><span class="line">            <span class="keyword">final</span> <span class="type">MessageContext</span> messageContext)&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">final</span> <span class="type">HttpServletRequest</span> request = <span class="type">WebUtils</span>.getHttpServletRequest(context);</span><br><span class="line">            <span class="type">HttpSession</span> session = request.getSession();</span><br><span class="line">            <span class="type">String</span> captcha = (<span class="type">String</span>)session.getAttribute(com.google.code.kaptcha.<span class="type">Constants</span>.<span class="type">KAPTCHA_SESSION_KEY</span>);</span><br><span class="line">            session.removeAttribute(com.google.code.kaptcha.<span class="type">Constants</span>.<span class="type">KAPTCHA_SESSION_KEY</span>);</span><br><span class="line"></span><br><span class="line">            <span class="type">UsernamePasswordCaptchaCredential</span> upc = (<span class="type">UsernamePasswordCaptchaCredential</span>)credential;</span><br><span class="line">            <span class="type">String</span> submitAuthcodeCaptcha =upc.getCaptcha();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(!<span class="type">StringUtils</span>.hasText(submitAuthcodeCaptcha) || !<span class="type">StringUtils</span>.hasText(submitAuthcodeCaptcha))&#123;</span><br><span class="line">                messageContext.addMessage(<span class="keyword">new</span> <span class="type">MessageBuilder</span>().code(<span class="string">"required.captcha"</span>).build());</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"error"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(submitAuthcodeCaptcha.equals(captcha))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            messageContext.addMessage(<span class="keyword">new</span> <span class="type">MessageBuilder</span>().code(<span class="string">"error.authentication.captcha.bad"</span>).build());</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"error"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这边有抛出两个异常，这两个异常信息 required.captcha、error.authentication.captcha.bad 需要在 messages_zh_CN.properties 文件下添加</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">required.captcha</span>=必须输入验证码。</span><br><span class="line"><span class="attr">error.authentication.captcha.bad</span>=您输入的验证码有误。</span><br></pre></td></tr></table></figure>
+
+<p>然后把 authenticationViaFormAction 这个Bean路径修改为我们新添加的类的全路径名。</p>
+<p>当然最后，我们的页面也需要修改，找到casLoginView.jsp添加</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">spring:message</span> <span class="attr">code</span>=<span class="string">"screen.welcome.label.captcha.accesskey"</span> <span class="attr">var</span>=<span class="string">"captchaAccessKey"</span> /&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">spring:message</span> <span class="attr">code</span>=<span class="string">"screen.welcome.label.captcha"</span> <span class="attr">var</span>=<span class="string">"captchaHolder"</span> /&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">form:input</span> <span class="attr">cssClass</span>=<span class="string">"required"</span> <span class="attr">cssErrorClass</span>=<span class="string">"error"</span> <span class="attr">id</span>=<span class="string">"captcha"</span> <span class="attr">size</span>=<span class="string">"10"</span> <span class="attr">tabindex</span>=<span class="string">"3"</span>  <span class="attr">path</span>=<span class="string">"captcha"</span> <span class="attr">placeholder</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;captchaHolder &#125;</span><span class="xml"><span class="tag"><span class="string">"</span> <span class="attr">accesskey</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;captchaAccessKey&#125;</span><span class="xml"><span class="tag"><span class="string">"</span> <span class="attr">autocomplete</span>=<span class="string">"off"</span> <span class="attr">htmlEscape</span>=<span class="string">"true"</span> /&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">alt</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;captchaHolder &#125;</span><span class="xml"><span class="tag"><span class="string">"</span> <span class="attr">src</span>=<span class="string">"captcha.jpg"</span> <span class="attr">onclick</span>=<span class="string">"this.src='captcha.jpg?'+Math.random();"</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>以上添加验证码参考<a href="http://www.cnblogs.com/vhua/p/cas_3.html" target="_blank" rel="noopener">http://www.cnblogs.com/vhua/p/cas_3.html</a></p>
+<h3 id="添加记住密码"><a href="#添加记住密码" class="headerlink" title="添加记住密码"></a>添加记住密码</h3><p>可以参考<a href="http://jasig.github.io/cas/development/installation/Configuring-LongTerm-Authentication.html" target="_blank" rel="noopener">http://jasig.github.io/cas/development/installation/Configuring-LongTerm-Authentication.html</a></p>
+<p>在cas.properties中添加如下配置</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Long term authentication session length in seconds</span></span><br><span class="line"><span class="attr">rememberMeDuration</span>=<span class="number">1209600</span></span><br></pre></td></tr></table></figure>
+
+<p>spring-configuration文件夹下找到 ticketExpirationPolicies.xml 和 ticketGrantingTicketCookieGenerator.xml 需要在这两个配置文件中定义长期有效的session</p>
+<p>在 ticketExpirationPolicies.xml文件中更新如下配置</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean <span class="attribute">id</span>=<span class="string">"standardSessionTGTExpirationPolicy"</span></span><br><span class="line">      <span class="attribute">class</span>=<span class="string">"org.jasig.cas.ticket.support.TicketGrantingTicketExpirationPolicy"</span></span><br><span class="line">      p:<span class="attribute">maxTimeToLiveInSeconds</span>=<span class="string">"<span class="variable">$&#123;tgt.maxTimeToLiveInSeconds:28800&#125;</span>"</span></span><br><span class="line">      p:<span class="attribute">timeToKillInSeconds</span>=<span class="string">"<span class="variable">$&#123;tgt.timeToKillInSeconds:7200&#125;</span>"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--</span><br><span class="line">   | The following<span class="built_in"> policy </span>applies <span class="keyword">to</span> long term CAS SSO sessions.</span><br><span class="line">   |<span class="built_in"> Default </span>duration is two weeks (1209600s).</span><br><span class="line">   --&gt;</span><br><span class="line">&lt;bean <span class="attribute">id</span>=<span class="string">"longTermSessionTGTExpirationPolicy"</span></span><br><span class="line">      <span class="attribute">class</span>=<span class="string">"org.jasig.cas.ticket.support.TimeoutExpirationPolicy"</span></span><br><span class="line">      c:<span class="attribute">timeToKillInMilliSeconds</span>=<span class="string">"#&#123; <span class="variable">$&#123;rememberMeDuration:1209600&#125;</span> * 1000 &#125;"</span> /&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean <span class="attribute">id</span>=<span class="string">"grantingTicketExpirationPolicy"</span></span><br><span class="line">      <span class="attribute">class</span>=<span class="string">"org.jasig.cas.ticket.support.RememberMeDelegatingExpirationPolicy"</span></span><br><span class="line">      p:<span class="attribute">sessionExpirationPolicy-ref</span>=<span class="string">"standardSessionTGTExpirationPolicy"</span></span><br><span class="line">      p:<span class="attribute">rememberMeExpirationPolicy-ref</span>=<span class="string">"longTermSessionTGTExpirationPolicy"</span> /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>更新ticketGrantingTicketCookieGenerator.xml</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean <span class="attribute">id</span>=<span class="string">"ticketGrantingTicketCookieGenerator"</span> <span class="attribute">class</span>=<span class="string">"org.jasig.cas.web.support.CookieRetrievingCookieGenerator"</span></span><br><span class="line">      p:<span class="attribute">cookieSecure</span>=<span class="string">"true"</span></span><br><span class="line">      p:<span class="attribute">cookieMaxAge</span>=<span class="string">"-1"</span></span><br><span class="line">      p:<span class="attribute">rememberMeMaxAge</span>=<span class="string">"<span class="variable">$&#123;rememberMeDuration:1209600&#125;</span>"</span></span><br><span class="line">      p:<span class="attribute">cookieName</span>=<span class="string">"CASTGC"</span></span><br><span class="line">      p:<span class="attribute">cookiePath</span>=<span class="string">"/cas"</span> /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在 deployerConfigContext.xml 中找到 PolicyBasedAuthenticationManager 使其包含RememberMeAuthenticationMetaDataPopulator组件</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">property</span> <span class="built_in">name</span>=<span class="string">"authenticationMetaDataPopulators"</span>&gt;</span><br><span class="line">	&lt;<span class="built_in">list</span>&gt;</span><br><span class="line">		&lt;bean</span><br><span class="line">			<span class="built_in">class</span>=<span class="string">"org.jasig.cas.authentication.SuccessfulHandlerMetaDataPopulator"</span> /&gt;</span><br><span class="line">		&lt;bean</span><br><span class="line">			<span class="built_in">class</span>=<span class="string">"org.jasig.cas.authentication.principal.RememberMeAuthenticationMetaDataPopulator"</span> /&gt;</span><br><span class="line">	&lt;/<span class="built_in">list</span>&gt;</span><br><span class="line">&lt;/<span class="keyword">property</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>和添加验证码类似的，我们还需要修改login-webflow.xml</p>
+<p>找到credential 的声明修改如下</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">var</span> name=<span class="string">"credential"</span> <span class="keyword">class</span>=<span class="string">"org.jasig.cas.authentication.RememberMeUsernamePasswordCredential"</span> /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>由于之前已经实现了验证码，所以这里不需要修改了，只需让 UsernamePasswordCaptchaCredential继承RememberMeUsernamePasswordCredential即可</p>
+<p>找到viewLoginForm 在binder节点下添加<code>&lt;binding property=&quot;rememberMe&quot; /&gt;</code></p>
+<p>更新 casLoginView.jsp</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;section <span class="attribute">class</span>=<span class="string">"row check"</span>&gt;</span><br><span class="line">    &lt;input <span class="attribute">id</span>=<span class="string">"rememberMe"</span> <span class="attribute">name</span>=<span class="string">"rememberMe"</span> <span class="attribute">value</span>=<span class="string">"false"</span> <span class="attribute">tabindex</span>=<span class="string">"4"</span> <span class="attribute">accesskey</span>=<span class="string">"&lt;spring:message code="</span>screen.welcome.label.rememberMe.accesskey" /&gt;<span class="string">" type="</span>checkbox<span class="string">" /&gt;</span></span><br><span class="line"><span class="string">    &lt;label for="</span>rememberMe<span class="string">"&gt;&lt;spring:message code="</span>screen.welcome.label.rememberMe<span class="string">" /&gt;&lt;/label&gt;</span></span><br><span class="line"><span class="string">&lt;/section&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义primaryAuthenticationHandler"><a href="#自定义primaryAuthenticationHandler" class="headerlink" title="自定义primaryAuthenticationHandler"></a>自定义primaryAuthenticationHandler</h3><p>虽然已经有QueryDatabaseAuthenticationHandler和QueryAndEncodeDatabaseAuthenticationHandler两个类，能够通过配置sql语句验证用户凭证，后者还能配置盐，散列函数迭代次数。但是我们可能还需要判断用户是否被锁定或被禁用了，我们可以参考QueryAndEncodeDatabaseAuthenticationHandler自定义一个AuthenticationHandler，继承AbstractJdbcUsernamePasswordAuthenticationHandler。添加两个字段名lockedFieldName和disabledFieldName通过这两个字段判断用户是否被锁定或被禁用，关键代码如下</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> class ValidUserQueryDBAuthenticationHandler extends AbstractJdbcUsernamePasswordAuthenticationHandler&#123;</span><br><span class="line">    ......</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">String</span> DEFAULT_LOCKED_FIELD = <span class="string">"locked"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">String</span> DEFAULT_DISABLED_FIELD = <span class="string">"disabled"</span>;</span><br><span class="line">    ......</span><br><span class="line">    @NotNull</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">String</span> disabledFieldName = DEFAULT_DISABLED_FIELD;</span><br><span class="line">    @NotNull</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">String</span> lockedFieldName = DEFAULT_LOCKED_FIELD;</span><br><span class="line">    ......</span><br><span class="line">    <span class="keyword">public</span> ValidUserQueryDBAuthenticationHandler(<span class="keyword">final</span> DataSource datasource, <span class="keyword">final</span> <span class="keyword">String</span> sql, <span class="keyword">final</span> <span class="keyword">String</span> algorithmName) &#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        setDataSource(datasource);</span><br><span class="line">        <span class="keyword">this</span>.sql = sql;</span><br><span class="line">        <span class="keyword">this</span>.algorithmName = algorithmName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> HandlerResult authenticateUsernamePasswordInternal(<span class="keyword">final</span> UsernamePasswordCredential transformedCredential)</span><br><span class="line">            <span class="keyword">throws</span> GeneralSecurityException, PreventedException &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">String</span> username = getPrincipalNameTransformer().transform(transformedCredential.getUsername());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">final</span> Map&lt;<span class="keyword">String</span>, <span class="keyword">Object</span>&gt; values = getJdbcTemplate().queryForMap(<span class="keyword">this</span>.sql, username);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Boolean.TRUE.equals(values.<span class="built_in">get</span>(<span class="keyword">this</span>.disabledFieldName))) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> AccountDisabledException(username + <span class="string">"  has been disabled."</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (Boolean.TRUE.equals(values.<span class="built_in">get</span>(<span class="keyword">this</span>.lockedFieldName))) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> AccountLockedException(username + <span class="string">"  has been locked."</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">String</span> digestedPassword = digestEncodedPassword(transformedCredential.getPassword(), values);</span><br><span class="line">            <span class="keyword">if</span> (!values.<span class="built_in">get</span>(<span class="keyword">this</span>.passwordFieldName).equals(digestedPassword)) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> FailedLoginException(<span class="string">"Password does not match value on record."</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> createHandlerResult(transformedCredential,</span><br><span class="line">                    <span class="keyword">new</span> SimplePrincipal(username), <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> IncorrectResultSizeDataAccessException e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (e.getActualSize() == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> AccountNotFoundException(username + <span class="string">" not found with SQL query"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> FailedLoginException(<span class="string">"Multiple records found for "</span> + username);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> DataAccessException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> PreventedException(<span class="string">"SQL exception while executing query for "</span> + username, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">String</span> digestEncodedPassword(<span class="keyword">final</span> <span class="keyword">String</span> encodedPassword, <span class="keyword">final</span> Map&lt;<span class="keyword">String</span>, <span class="keyword">Object</span>&gt; values) &#123;</span><br><span class="line">        <span class="keyword">final</span> ConfigurableHashService hashService = <span class="keyword">new</span> DefaultHashService();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isNotBlank(<span class="keyword">this</span>.staticSalt)) &#123;</span><br><span class="line">            hashService.setPrivateSalt(ByteSource.Util.bytes(<span class="keyword">this</span>.staticSalt));</span><br><span class="line">        &#125;</span><br><span class="line">        hashService.setHashAlgorithmName(<span class="keyword">this</span>.algorithmName);</span><br><span class="line"></span><br><span class="line">        Long numOfIterations = <span class="keyword">this</span>.numberOfIterations;</span><br><span class="line">        <span class="keyword">if</span> (values.containsKey(<span class="keyword">this</span>.numberOfIterationsFieldName)) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">String</span> longAsStr = values.<span class="built_in">get</span>(<span class="keyword">this</span>.numberOfIterationsFieldName).toString();</span><br><span class="line">            numOfIterations = Long.valueOf(longAsStr);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        hashService.setHashIterations(numOfIterations.intValue());</span><br><span class="line">        <span class="keyword">if</span> (!values.containsKey(<span class="keyword">this</span>.saltFieldName)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Specified field name for salt does not exist in the results"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">String</span> dynaSalt = values.<span class="built_in">get</span>(<span class="keyword">this</span>.saltFieldName)==<span class="keyword">null</span>?<span class="string">""</span>:values.<span class="built_in">get</span>(<span class="keyword">this</span>.saltFieldName).toString();</span><br><span class="line">        <span class="keyword">final</span> HashRequest request = <span class="keyword">new</span> HashRequest.Builder()</span><br><span class="line">                                    .setSalt(dynaSalt)</span><br><span class="line">                                    .setSource(encodedPassword)</span><br><span class="line">                                    .build();</span><br><span class="line">        <span class="keyword">return</span> hashService.computeHash(request).toHex();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> setDisabledFieldName(<span class="keyword">final</span> <span class="keyword">String</span> disabledFieldName) &#123; <span class="keyword">this</span>.disabledFieldName = disabledFieldName; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> setLockedFieldName(<span class="keyword">final</span> <span class="keyword">String</span> lockedFieldName) &#123; <span class="keyword">this</span>.lockedFieldName = lockedFieldName; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后更新配置deployerConfigContext.xml</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"primaryAuthenticationHandler"</span> <span class="attr">class</span>=<span class="string">"io.github.howiefh.cas.authentication.ValidUserQueryDBAuthenticationHandler"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span> <span class="attr">index</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">value</span>=<span class="string">"$</span></span></span><span class="template-variable">&#123;auth.sql&#125;</span><span class="xml"><span class="tag"><span class="string">"</span> <span class="attr">index</span>=<span class="string">"1"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">value</span>=<span class="string">"MD5"</span> <span class="attr">index</span>=<span class="string">"2"</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义登录页面"><a href="#自定义登录页面" class="headerlink" title="自定义登录页面"></a>自定义登录页面</h3><ol>
+<li>在cas.properties 修改 cas.viewResolver.basename  值为 custom_view ，那样系统就会自动会查找 custom_view.properties 这个配置文件</li>
+<li>直接复制原来的 default_views.properties 就行了，重命名为custom_view.properties</li>
+<li>把 custom_view.properties 中的WEB-INF\view\jsp\default全部替换把这地址替换成 WEB-INF\view\jsp\custom</li>
+<li>接下来把 cas\WEB-INF\view\jsp\default 下面的所有文件复制，然后重命名为我们需要的名称，cas\WEB-INF\view\jsp\custom</li>
+</ol>
+<p>主要修改casLoginView.jsp和cas.css即可</p>
+<p>布局时遇到一个问题，就是将页脚固定在页面底部。可以参看<a href="http://www.w3cplus.com/css/css-sticky-foot-at-bottom-of-the-page" target="_blank" rel="noopener">如何将页脚固定在页面底部</a></p>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p><a href="http://www.cnblogs.com/vhua/p/cas_4.html" target="_blank" rel="noopener">【SSO单点系列】（4）：CAS4.0 SERVER登录后用户信息的返回</a><br><a href="http://www.cnblogs.com/huangbin/p/3282643.html" target="_blank" rel="noopener">在多点环境下使用cas实现单点登陆及登出</a><br><a href="http://blog.csdn.net/tch918/article/details/22316175" target="_blank" rel="noopener">关于单点登录中的用户信息存储问题的探讨</a></p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>从结构来看，CAS主要分为Server和Client。Server主要负责对用户的认证工作；Client负责处理客户端受保护资源的访问请求，登录时，重定向到Server进行认证。</p>
+<p>基础模式的SSO访问流程步骤：</p>
+<ol>
+<li>访问服务：客户端发送请求访问应用系统提供的服务资源。</li>
+<li>定向认证：客户端重定向用户请求到中心认证服务器。</li>
+<li>用户认证：用户进行身份认证</li>
+<li>发放票据：服务器会产生一个随机的 Service Ticket 。</li>
+<li>验证票据： SSO 服务器验证票据 Service Ticket 的合法性，验证通过后，允许客户端访问服务。</li>
+<li>传输用户信息： SSO 服务器验证票据通过后，传输用户认证结果信息给客户端。</li>
+</ol>
+<p>CAS最基本的协议过程：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-clip.jpg" alt="CAS 最基本的协议过程"></p>
+<p>如上图： CAS Client 与受保护的客户端应用部署在一起，以 Filter 方式保护 Web 应用的受保护资源，过滤从客户端过来的每一个 Web 请求，同时， CAS Client 会分析 HTTP 请求中是否包含请求 Service Ticket( ST 上图中的 Ticket) ，如果没有，则说明该用户是没有经过认证的；于是 CAS Client 会重定向用户请求到 CAS Server （ Step 2 ），并传递 Service （要访问的目的资源地址）。 Step 3 是用户认证过程，如果用户提供了正确的 Credentials ， CAS Server 随机产生一个相当长度、唯一、不可伪造的 Service Ticket ，并缓存以待将来验证，并且重定向用户到 Service 所在地址（附带刚才产生的 Service Ticket ） , 并为客户端浏览器设置一个 Ticket Granted Cookie （ TGC ） ； CAS Client 在拿到 Service 和新产生的 Ticket 过后，在 Step 5 和 Step6 中与 CAS Server 进行身份核实，以确保 Service Ticket 的合法性。</p>
+<p>在该协议中，所有与 CAS Server 的交互均采用 SSL 协议，以确保 ST 和 TGC 的安全性。协议工作过程中会有两次重定向的过程。但是 CAS Client 与 CAS Server 之间进行 Ticket 验证的过程对于用户是透明的（使用 HttpsURLConnection ）。</p>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><p>TGT、ST、PGT、PGTIOU、PT，其中TGT、ST是CAS1.0协议中就有的票据，PGT、PGTIOU、PT是CAS2.0协议中有的票据。</p>
+<p>CAS为用户签发登录票据，CAS认证成功后，将TGT对象放入自己的缓存，CAS生成cookie即TGC，自后登录时如果有TGC的话，则说明用户之前登录过，如果没有，则用户需要重新登录。</p>
+<ul>
+<li>TGC （Ticket-granting cookie）：存放用户身份认证凭证的cookie，在浏览器和CAS Server用来明确用户身份的凭证。</li>
+<li>ST（Service Ticket）：CAS服务器通过浏览器分发给客户端服务器的票据。一个特定服务只能有一个唯一的ST。</li>
+<li>PGT（Proxy Granting Ticket）：由 CAS Server 颁发给拥有 ST 凭证的服务， PGT 绑定一个用户的特定服务，使其拥有向 CAS Server 申请，获得 PT 的能力。</li>
+<li>PGTIOU（全称 Proxy Granting Ticket I Owe You）：作用是将通过凭证校验时的应答信息由 CAS Server 返回给 CAS Client ，同时，与该 PGTIOU 对应的 PGT 将通过回调链接传给 Web 应用。 Web 应用负责维护 PGTIOU 与 PGT 之间映射关系的内容表。PGTIOU是CAS的serviceValidate接口验证ST成功后，CAS会生成验证ST成功的xml消息，返回给Proxy Service，xml消息中含有PGTIOU，proxy service收到Xml消息后，会从中解析出PGTIOU的值，然后以其为key，在map中找出PGT的值，赋值给代表用户信息的Assertion对象的pgtId，同时在map中将其删除。</li>
+<li>PT（Proxy Ticket）：是应用程序代理用户身份对目标程序进行访问的凭证；</li>
+</ul>
+<p>CAS 基本流程图（没有使用PROXY代理）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-noproxy.png" alt="CAS 基本流程图（没有使用PROXY代理）"></p>
+<p>对于客户端来说会通过客户端session判断用户是否已认证，没有的话跳转到服务器认证，对于服务器，通过SSO session判断用户是否认证，没有的话跳到登录页面。</p>
+<p>CAS 基本流程图（使用PROXY代理）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-proxy.png" alt="CAS 基本流程图（使用PROXY代理）"></p>
+<p>这一节参考：</p>
+<p><a href="http://www.cnblogs.com/vhua/p/cas_6.html" target="_blank" rel="noopener">【SSO单点系列】（6）：CAS4.0 单点流程序列图（中文版）以及相关术语解释（TGT、ST、PGT、PT、PGTIOU）</a><br><a href="http://www.coin163.com/java/cas/cas.html" target="_blank" rel="noopener">CAS实现SSO单点登录原理</a></p>
+<p>代码:<a href="https://github.com/howiefh/framework/tree/shiro-cas-sso" target="_blank" rel="noopener">github</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CAS/" rel="tag">CAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSO/" rel="tag">SSO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-04T11:15:02.139Z" itemprop="dateModified">2020-05-04</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/05/22/vim-install-youcompleteme-plugin/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Vim 自动补全插件 YouCompleteMe 安装与配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/12/shiro-note/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Shiro笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概览"><span class="toc-number">1.</span> <span class="toc-text">概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署服务器"><span class="toc-number">2.</span> <span class="toc-text">部署服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署客户端"><span class="toc-number">3.</span> <span class="toc-text">部署客户端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶"><span class="toc-number">4.</span> <span class="toc-text">进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用HTTPS协议"><span class="toc-number">4.1.</span> <span class="toc-text">使用HTTPS协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单点登出重定向"><span class="toc-number">4.2.</span> <span class="toc-text">单点登出重定向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单点登出"><span class="toc-number">4.3.</span> <span class="toc-text">单点登出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过数据库中的用户密码认证"><span class="toc-number">4.4.</span> <span class="toc-text">通过数据库中的用户密码认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加验证码"><span class="toc-number">4.5.</span> <span class="toc-text">添加验证码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加记住密码"><span class="toc-number">4.6.</span> <span class="toc-text">添加记住密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义primaryAuthenticationHandler"><span class="toc-number">4.7.</span> <span class="toc-text">自定义primaryAuthenticationHandler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义登录页面"><span class="toc-number">4.8.</span> <span class="toc-text">自定义登录页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其它"><span class="toc-number">4.9.</span> <span class="toc-text">其它</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-number">5.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#相关概念"><span class="toc-number">5.1.</span> <span class="toc-text">相关概念</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2015/05/19/shiro-cas-single-sign-on/';
+  this.page.identifier = '2015/05/19/shiro-cas-single-sign-on/';
+  this.page.title = 'Shiro &amp; CAS 实现单点登录';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

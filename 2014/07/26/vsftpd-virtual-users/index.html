@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>vsftpd 配置虚拟用户 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="vsftpd 虚拟用户, vsftpd 配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vsftpd 配置虚拟用户">
+<meta property="og:url" content="http://howiefh.github.io/2014/07/26/vsftpd-virtual-users/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="vsftpd 虚拟用户, vsftpd 配置">
+<meta property="article:published_time" content="2014-07-26T03:46:40.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.471Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="FTP">
+<meta property="article:tag" content="Vsftpd">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-vsftpd-virtual-users" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/07/26/vsftpd-virtual-users/" class="article-date">
+  <time class="dt-published" datetime="2014-07-26T03:46:40.000Z" itemprop="datePublished">2014-07-26</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/FTP/">FTP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      vsftpd 配置虚拟用户
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础"><span class="toc-number">1.</span> <span class="toc-text">基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置"><span class="toc-number">2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vsftpd虚拟用户设置-通过MySQL"><span class="toc-number">3.</span> <span class="toc-text">Vsftpd虚拟用户设置(通过MySQL)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-libpam-mysql"><span class="toc-number">3.1.</span> <span class="toc-text">安装 libpam-mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加禁止登录系统的用户"><span class="toc-number">3.2.</span> <span class="toc-text">添加禁止登录系统的用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建用户名密码数据库"><span class="toc-number">3.3.</span> <span class="toc-text">创建用户名密码数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置PAM认证模块"><span class="toc-number">3.4.</span> <span class="toc-text">配置PAM认证模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为各个虚拟用户建立配置文件"><span class="toc-number">3.5.</span> <span class="toc-text">为各个虚拟用户建立配置文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vsftpd虚拟用户设置-通过数据文件"><span class="toc-number">4.</span> <span class="toc-text">Vsftpd虚拟用户设置(通过数据文件)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装db4-utils"><span class="toc-number">4.1.</span> <span class="toc-text">安装db4-utils</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建用户密码文件"><span class="toc-number">4.2.</span> <span class="toc-text">创建用户密码文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成虚拟用户数据文件"><span class="toc-number">4.3.</span> <span class="toc-text">生成虚拟用户数据文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置PAM认证文件"><span class="toc-number">4.4.</span> <span class="toc-text">配置PAM认证文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加禁止登录系统的用户-1"><span class="toc-number">4.5.</span> <span class="toc-text">添加禁止登录系统的用户</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chroot"><span class="toc-number">5.</span> <span class="toc-text">Chroot</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#限制所有"><span class="toc-number">5.1.</span> <span class="toc-text">限制所有</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开放所有，限制特定"><span class="toc-number">5.2.</span> <span class="toc-text">开放所有，限制特定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#限制所有，开放特定"><span class="toc-number">5.3.</span> <span class="toc-text">限制所有，开放特定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析日志文件"><span class="toc-number">6.</span> <span class="toc-text">分析日志文件</span></a></li></ol>
+		
+		</div>
+		
+        <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>安装，执行命令：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="builtin-name">get</span> install vsftpd</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>查看是否打开21端口:</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo netstat -npltu <span class="string">| grep 21</span></span><br></pre></td></tr></table></figure>
+
+<p>以standalone方式运行(另一种是super daemon): <code>sudo service vsftpd start</code></p>
+<p>重启： <code>sudo service vsftpd restart</code></p>
+<p>停止： <code>sudo service vsftpd stop</code></p>
+<p>ftp 默认目录位置: <code>/srv/ftp</code></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>查阅配置文件详细信息:</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">man</span> 5 vsftpd.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+
+<p>配置文件位置: <code>/etc/vsftpd.conf</code></p>
+<p>备份配置文件:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp <span class="regexp">/etc/</span>vsftpd.conf <span class="regexp">/etc/</span>vsftpd.conf_orig</span><br><span class="line">cat <span class="regexp">/dev/</span><span class="keyword">null</span> &gt; <span class="regexp">/etc/</span>vsftpd.conf</span><br><span class="line">vi <span class="regexp">/etc/</span>vsftpd.conf</span><br></pre></td></tr></table></figure>
+
+<p>将下面内容写入配置文件</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用当地时间</span></span><br><span class="line"><span class="attr">use_localtime</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#这个选项必须指定一个空的数据夹且任何登入者都不能有写入的权限，当vsftpd 不需要file system 的权限时，就会将使用者限制在此数据夹中。默认值为/var/run/vsftpd/empty</span></span><br><span class="line"><span class="attr">secure_chroot_dir</span>=/var/run/vsftpd/empty</span><br><span class="line"><span class="comment">#预设 RSA 加密的凭证档案所在</span></span><br><span class="line"><span class="attr">rsa_cert_file</span>=/etc/ssl/private/vsftpd.pem</span><br><span class="line"><span class="comment">#login时的欢迎信息</span></span><br><span class="line"><span class="attr">ftpd_banner</span>=Welcome to FTP service.</span><br><span class="line"><span class="comment">#显示欢迎信息</span></span><br><span class="line"><span class="attr">banner_file</span>=/etc/vsftpd/welcome.txt</span><br><span class="line"><span class="comment">#允许匿名访问？YES/NO</span></span><br><span class="line"><span class="attr">anonymous_enable</span>=<span class="literal">NO</span></span><br><span class="line"><span class="comment">#设定本地用户可以访问。默认.注意：主要是为虚拟宿主用户，如果该项目设定为NO那么所有虚拟用户将无法访问</span></span><br><span class="line"><span class="attr">local_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#可写</span></span><br><span class="line"><span class="attr">write_enable</span>=<span class="literal">NO</span></span><br><span class="line"><span class="comment">#上传后文件的权限掩码 默认</span></span><br><span class="line"><span class="attr">local_umask</span>=<span class="number">022</span></span><br><span class="line"><span class="comment">#开启目录标语，默认</span></span><br><span class="line"><span class="attr">dirmessage_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#开启日志，默认</span></span><br><span class="line"><span class="attr">xferlog_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#设定vsftpd的服务日志保存路径 将前面的#注释</span></span><br><span class="line"><span class="attr">xferlog_file</span>=/var/log/xferlog</span><br><span class="line"><span class="comment">#生成的日志格式 默认</span></span><br><span class="line"><span class="attr">xferlog_std_format</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#如果启用该选项，将生成两个相似的日志文件，默认在 /var/log/xferlog 和 /var/log/vsftpd.log 目录下。前者是 wu-ftpd 类型的传输日志，可以利用标准日志工具对其进行分析；后者是Vsftpd类型的日志。</span></span><br><span class="line"><span class="attr">dual_log_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#在用xferlog文件记录服务器上传下载情况的同时，vsftpd_log_file所指定的文件，即/var/log/vsftpd.log，也将用来记录服务器的传输情况。</span></span><br><span class="line"><span class="attr">vsftpd_log_file</span>=/var/log/vsftpd.log</span><br><span class="line"><span class="comment">#设定连接端口20 不是ftp端口</span></span><br><span class="line"><span class="attr">connect_from_port_20</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#会话超时，客户端连接到ftp但未操作</span></span><br><span class="line"><span class="attr">idle_session_timeout</span>=<span class="number">600</span></span><br><span class="line"><span class="comment">#支持异步传输功能，默认是注释掉的，去掉注释</span></span><br><span class="line"><span class="attr">async_abor_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#支持ASCII模式的下载功能，默认是注释掉的，去掉注释</span></span><br><span class="line"><span class="attr">ascii_upload_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#支持ASCII模式的上传功能，默认是注释掉的，去掉注释</span></span><br><span class="line"><span class="attr">ascii_download_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#在预设的情况下，是否要将使用者限制在自己的家目录之内(chroot)？如果是 YES 代表用户默认就会被 chroot，如果是 NO， 则预设是没有 chroot。不过，实际还是需要底下的两个参数互相参考才行。为了安全性，这里应该要设定成 YES 才好。</span></span><br><span class="line"><span class="attr">chroot_local_user</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#禁止本地用户登出自己的FTP主目录 去掉注释，这个非常重要</span></span><br><span class="line"><span class="comment"># chroot_list_enable=YES</span></span><br><span class="line"><span class="comment">#上个选项开启 这个文件才生效 不过不存在需要你手工创建</span></span><br><span class="line"><span class="comment"># chroot_list_file=/etc/vsftpd/chroot_list</span></span><br><span class="line"><span class="comment">#监听IPV4</span></span><br><span class="line"><span class="attr">listen</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#ftp监听端口 默认21 原始配置中没有</span></span><br><span class="line"><span class="attr">listen_port</span>=<span class="number">21</span></span><br><span class="line"><span class="comment">#设定pam服务下vsftpdd的验证配置文件名，不用改</span></span><br><span class="line"><span class="attr">pam_service_name</span>=vsftpd</span><br><span class="line"><span class="comment">#限制主机对VSFTP服务器的访问，不用改（通过/etc/hosts.deny和/etc/hosts.allow这两个文件来配置）原始配置中没有</span></span><br><span class="line"><span class="attr">tcp_wrappers</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#设定启用虚拟用户功能</span></span><br><span class="line"><span class="attr">guest_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#指定虚拟用户的宿主用户。-CentOS中已经有内置的ftp用户了</span></span><br><span class="line"><span class="attr">guest_username</span>=vsftpduser</span><br><span class="line"><span class="comment">#设定虚拟用户的权限符合他们的宿主用户(虚拟用户与宿主用户具有相同的权限)</span></span><br><span class="line"><span class="attr">virtual_use_local_privs</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#设定虚拟用户个人vsftp的配置文件存放路径。存放虚拟用户个性的配置文件(配置文件名=虚拟用户名)</span></span><br><span class="line"><span class="attr">user_config_dir</span>=/etc/vsftpd/vconf</span><br><span class="line"><span class="comment"># 是否藉助 vsftpd 的抵挡机制来处理某些不受欢迎的账号，与底下的参数设定有关；</span></span><br><span class="line"><span class="attr">userlist_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment"># 当 userlist_enable=YES 时才会生效的设定，若此设定值为 YES 时，则当使用者账号被列入到某个档案时， 在该档案内的使用者将无法登入 vsftpd 服务器！该档案文件名与下列设定项目有关。</span></span><br><span class="line"><span class="attr">userlist_deny</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment"># 若上面 userlist_deny=YES 时，则这个档案就有用处了！在这个档案内的账号都无法使用 vsftpd 喔！</span></span><br><span class="line"><span class="attr">userlist_file</span>=/etc/vsftpd/user_list</span><br><span class="line"><span class="comment">#可接受的最大client数目</span></span><br><span class="line"><span class="attr">max_clients</span>=<span class="number">100</span></span><br><span class="line"><span class="comment">#每个ip的最大client数目</span></span><br><span class="line"><span class="attr">max_per_ip</span>=<span class="number">5</span></span><br><span class="line"><span class="comment">#本地用户的传输比率(bytes/s)</span></span><br><span class="line"><span class="attr">local_max_rate</span>=<span class="number">1310720</span></span><br></pre></td></tr></table></figure>
+<p>更改配置后，重启vsftpd使配置生效。</p>
+<h2 id="Vsftpd虚拟用户设置-通过MySQL"><a href="#Vsftpd虚拟用户设置-通过MySQL" class="headerlink" title="Vsftpd虚拟用户设置(通过MySQL)"></a>Vsftpd虚拟用户设置(通过MySQL)</h2><h3 id="安装-libpam-mysql"><a href="#安装-libpam-mysql" class="headerlink" title="安装 libpam-mysql"></a>安装 libpam-mysql</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="builtin-name">get</span> install libpam-mysql</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加禁止登录系统的用户"><a href="#添加禁止登录系统的用户" class="headerlink" title="添加禁止登录系统的用户"></a>添加禁止登录系统的用户</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd vsftpduser -d <span class="regexp">/srv/</span>ftp -s <span class="regexp">/sbin/</span>nologin -g nogroup</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>/sbin/nologin和/bin/false的区别:</p>
+</blockquote>
+<blockquote>
+<p>都不允许登录系统，/bin/false不允许使用ftp等服务。如果要使/bin/false能不允许登录系统，同时允许ftp等服务，可以在/etc/shells里增加一行/bin/false。</p>
+</blockquote>
+<blockquote>
+<p>创建/etc/nologin文件，则除root用户外，其它用户无法登录，可以在维护服务器的时候使用。</p>
+</blockquote>
+<blockquote>
+<p>删除用户（userdel命令）: <code>userdel  [-r]  [要删除的用户的名称]</code></p>
+</blockquote>
+<p>设置密码: <code>passwd vsftpduser</code></p>
+<p>在配置文件 vsftpd.conf加入</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#设定启用虚拟用户功能</span></span><br><span class="line"><span class="attr">guest_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#指定虚拟用户的宿主用户。-CentOS中已经有内置的ftp用户了</span></span><br><span class="line"><span class="attr">guest_username</span>=vsftpduser</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建用户名密码数据库"><a href="#创建用户名密码数据库" class="headerlink" title="创建用户名密码数据库"></a>创建用户名密码数据库</h3><p>创建test数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> <span class="keyword">test</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="keyword">test</span>;</span><br></pre></td></tr></table></figure>
+<p>建用户表:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">user</span>(</span><br><span class="line"><span class="keyword">id</span> <span class="built_in">int</span> <span class="keyword">unsigned</span> <span class="keyword">not</span> <span class="literal">null</span> auto_increment,</span><br><span class="line"><span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">40</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line"><span class="keyword">password</span> <span class="built_in">varchar</span>(<span class="number">128</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">primary <span class="keyword">key</span>(<span class="keyword">id</span>),</span><br><span class="line"><span class="keyword">unique</span> <span class="keyword">key</span>(<span class="keyword">name</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>插入用户:</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">insert into<span class="built_in"> user </span>values (<span class="literal">null</span>,<span class="string">'user1'</span>,<span class="string">'123456'</span>);</span><br><span class="line">insert into<span class="built_in"> user </span>values (<span class="literal">null</span>,<span class="string">'user2'</span>,<span class="string">'123456'</span>);</span><br><span class="line">insert into<span class="built_in"> user </span>values (<span class="literal">null</span>,<span class="string">'user3'</span>,<span class="string">'123456'</span>);</span><br></pre></td></tr></table></figure>
+<p>分配权限,把123456换成你的密码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">INSERT</span>, <span class="keyword">UPDATE</span>, <span class="keyword">DELETE</span>, <span class="keyword">CREATE</span>, <span class="keyword">DROP</span> <span class="keyword">ON</span> test.* <span class="keyword">TO</span> <span class="string">'vsftpduser'</span>@<span class="string">'localhost'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span>, <span class="keyword">INSERT</span>, <span class="keyword">UPDATE</span>, <span class="keyword">DELETE</span>, <span class="keyword">CREATE</span>, <span class="keyword">DROP</span> <span class="keyword">ON</span> test.* <span class="keyword">TO</span> <span class="string">'vsftpduser'</span>@<span class="string">'localhost.localdomain'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'123456'</span>;</span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置PAM认证模块"><a href="#配置PAM认证模块" class="headerlink" title="配置PAM认证模块"></a>配置PAM认证模块</h3><p>先备份PAM认证文件</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp <span class="regexp">/etc/</span>pam.d<span class="regexp">/vsftpd /</span>etc<span class="regexp">/pam.d/</span>vsftpd_orig</span><br><span class="line">cat <span class="regexp">/dev/</span><span class="literal">null</span> &gt; <span class="regexp">/etc/</span>pam.d/vsftpd</span><br><span class="line">vi <span class="regexp">/etc/</span>pam.d/vsftpd</span><br></pre></td></tr></table></figure>
+<p>修改/etc/pam.d/vsftpd 内容如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auth required /lib/security/pam_mysql.so <span class="attribute">user</span>=vsftpduser <span class="attribute">passwd</span>=123456 <span class="attribute">host</span>=localhost <span class="attribute">db</span>=test <span class="attribute">table</span>=user <span class="attribute">usercolumn</span>=name <span class="attribute">passwdcolumn</span>=password <span class="attribute">crypt</span>=0</span><br><span class="line">account required /lib/security/pam_mysql.so <span class="attribute">user</span>=vsftpduser <span class="attribute">passwd</span>=123456 <span class="attribute">host</span>=localhost <span class="attribute">db</span>=test <span class="attribute">table</span>=user <span class="attribute">usercolumn</span>=name <span class="attribute">passwdcolumn</span>=password <span class="attribute">crypt</span>=0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>user=vsftpduser    刚才添加的mysql用户名</li>
+<li>passwd=123456 刚才添加的用户名密码</li>
+<li>host=localhost mysql服务器名，我是做在本机所以……。</li>
+<li>db=test 与这个对应create databases test，是存储用户名的mysql库名</li>
+<li>table=user    存储用户名的mysql库中的表名</li>
+<li>usercolumn=name 与mysql数据库中用户名对应的键</li>
+<li>passwdcolumn=password 与mysql数据库中用户密码对应的键</li>
+<li>crypt=0 加密方式，0表示明文，1表示unix方式crypt()函数加密，2表示mysql中的password函数加密,3表示md5加密的。MySQL和libpam-mysql有兼容问题,采用crypt=0</li>
+</ul>
+<h3 id="为各个虚拟用户建立配置文件"><a href="#为各个虚拟用户建立配置文件" class="headerlink" title="为各个虚拟用户建立配置文件"></a>为各个虚拟用户建立配置文件</h3><p>在配置文件中添加</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">user_config_dir</span>=/etc/vsftpd/vconf</span><br></pre></td></tr></table></figure>
+<p>现在，我们要把各个用户的配置文件放到目录/etc/vsftpd/vconf中</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir <span class="string">/etc/vsftpd/vconf</span></span><br><span class="line"><span class="keyword">cd</span> <span class="string">/etc/vsftpd/vconf</span></span><br><span class="line">sudo touch user1 user2 user3</span><br></pre></td></tr></table></figure>
+<p>用户的根目录不能对别的用户开放写权限</p>
+<p>user1文件中的内容如下</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">local_root</span>=/srv/ftp/user1</span><br><span class="line"><span class="attr">write_enable</span>=<span class="literal">YES</span></span><br></pre></td></tr></table></figure>
+<p>user2文件中的内容如下</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">local_root</span>=/srv/ftp/user2</span><br><span class="line"><span class="attr">write_enable</span>=<span class="literal">YES</span></span><br></pre></td></tr></table></figure>
+<p>user3文件中的内容如下</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">local_root</span>=/srv/ftp/user3</span><br><span class="line"><span class="attr">write_enable</span>=<span class="literal">YES</span></span><br></pre></td></tr></table></figure>
+<p>这里要注意不能有空格，不然登录的时候会提示出错。</p>
+<h2 id="Vsftpd虚拟用户设置-通过数据文件"><a href="#Vsftpd虚拟用户设置-通过数据文件" class="headerlink" title="Vsftpd虚拟用户设置(通过数据文件)"></a>Vsftpd虚拟用户设置(通过数据文件)</h2><h3 id="安装db4-utils"><a href="#安装db4-utils" class="headerlink" title="安装db4-utils"></a>安装db4-utils</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="builtin-name">get</span> install db4-utils</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建用户密码文件"><a href="#创建用户密码文件" class="headerlink" title="创建用户密码文件"></a>创建用户密码文件</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>vsftpd<span class="regexp">/users.txt</span></span><br></pre></td></tr></table></figure>
+<p>一行用户名，一行密码写入到文件中</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">user1</span><br><span class="line"><span class="number">123456</span></span><br><span class="line">user2</span><br><span class="line"><span class="number">123456</span></span><br><span class="line">user3</span><br><span class="line"><span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="生成虚拟用户数据文件"><a href="#生成虚拟用户数据文件" class="headerlink" title="生成虚拟用户数据文件"></a>生成虚拟用户数据文件</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db_load -T -t hash -f <span class="regexp">/etc/</span>vsftpd<span class="regexp">/users.txt /</span>etc<span class="regexp">/vsftpd/u</span>sers.db</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置PAM认证文件"><a href="#配置PAM认证文件" class="headerlink" title="配置PAM认证文件"></a>配置PAM认证文件</h3><p>编辑/etc/pam.d/vsftpd</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auth required <span class="regexp">/lib/</span>security<span class="regexp">/pam_userdb.so db=/</span>etc<span class="regexp">/vsftpd/u</span>sers</span><br><span class="line">account required <span class="regexp">/lib/</span>security<span class="regexp">/pam_userdb.so db=/</span>etc<span class="regexp">/vsftpd/u</span>sers</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加禁止登录系统的用户-1"><a href="#添加禁止登录系统的用户-1" class="headerlink" title="添加禁止登录系统的用户"></a>添加禁止登录系统的用户</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd vsftpduser -d <span class="regexp">/srv/</span>ftp -s <span class="regexp">/sbin/</span>nologin -g nogroup</span><br></pre></td></tr></table></figure>
+
+<p>在配置文件 vsftpd.conf加入</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#设定启用虚拟用户功能</span></span><br><span class="line"><span class="attr">guest_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="comment">#指定虚拟用户的宿主用户。-CentOS中已经有内置的ftp用户了</span></span><br><span class="line"><span class="attr">guest_username</span>=vsftpduser</span><br></pre></td></tr></table></figure>
+
+<h2 id="Chroot"><a href="#Chroot" class="headerlink" title="Chroot"></a>Chroot</h2><h3 id="限制所有"><a href="#限制所有" class="headerlink" title="限制所有"></a>限制所有</h3><p>限制登录用户访问其他目录，改之前登录显示的路径比如是 ~ ，改之后则是 /。<br>注：我的本地用户(local user为fenghao,home directory为/home/fenghao)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~<span class="comment"># ftp localhost</span></span><br><span class="line">Connected to localhost.</span><br><span class="line"><span class="number">220</span> (vsFTPd <span class="number">2.3</span><span class="number">.2</span>)</span><br><span class="line">Name (localhost:fenghao): fenghao</span><br><span class="line"></span><br><span class="line"><span class="number">331</span> Please specify the password.</span><br><span class="line">Password:</span><br><span class="line"><span class="number">230</span> Login successful.</span><br><span class="line">Remote system type <span class="keyword">is</span> UNIX.</span><br><span class="line">Using binary mode to transfer files.</span><br><span class="line">ftp&gt;</span><br><span class="line">ftp&gt; pwd</span><br><span class="line"><span class="string">'''257 "/"'''</span></span><br></pre></td></tr></table></figure>
+
+<p>看上边，正常情况下，输入pwd时，应该是显示/home/fenghao.<br>由于我做了chroot.所以，/home/fenghao变成 /</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">chroot_local_user</span>=<span class="literal">YES</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="开放所有，限制特定"><a href="#开放所有，限制特定" class="headerlink" title="开放所有，限制特定"></a>开放所有，限制特定</h3><p>可指定一组用户限制</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">chroot_local_user</span>=<span class="literal">NO</span></span><br><span class="line"><span class="attr">chroot_list_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="attr">chroot_list_file</span>=/etc/vsftpd/chroot_list</span><br></pre></td></tr></table></figure>
+
+<p>随后创建列表</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi  <span class="regexp">/etc/</span>vsftpd<span class="regexp">/chroot_list</span></span><br></pre></td></tr></table></figure>
+
+<p>一行一个用户名 重启vsftpd</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo<span class="built_in"> service </span>vsftpd restart</span><br></pre></td></tr></table></figure>
+<p>chroot_list中的用户将被限制登录的根目录</p>
+<h3 id="限制所有，开放特定"><a href="#限制所有，开放特定" class="headerlink" title="限制所有，开放特定"></a>限制所有，开放特定</h3><p>上面的规则是限制 /etc/vsftpd/chroot_list 中的用户，反过来限制一切，只解禁 /etc/vsftpd/chroot_list 的用户。这样：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">chroot_local_user</span>=<span class="literal">YES</span></span><br><span class="line"><span class="attr">chroot_list_enable</span>=<span class="literal">YES</span></span><br><span class="line"><span class="attr">chroot_list_file</span>=/etc/vsftpd/chroot_list</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析日志文件"><a href="#分析日志文件" class="headerlink" title="分析日志文件"></a>分析日志文件</h2><p>安装weblizer(类似软件还有awstats)</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="builtin-name">get</span> install weblizer</span><br></pre></td></tr></table></figure>
+<p>配置文件:</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit <span class="regexp">/etc/</span>webalizer<span class="regexp">/webalizer.conf</span></span><br></pre></td></tr></table></figure>
+<p>解决乱码:</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mv <span class="regexp">/usr/</span>share<span class="regexp">/locale/</span>zh<span class="regexp">/LC_MESSAGES/</span>webalizer.mo <span class="regexp">/home/</span>fenghao<span class="regexp">/back</span></span><br></pre></td></tr></table></figure>
+<p>分析日志:</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo webalizer /<span class="built_in">var</span>/<span class="built_in">log</span>/xferlog -F ftp</span><br></pre></td></tr></table></figure>
+<p>自动分析日志:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># update access statistics for ftp</span></span><br><span class="line"><span class="comment"># 需要设置/var/www/webalizer /var/log/xferlog</span></span><br><span class="line"><span class="keyword">if</span> [ -s /var/<span class="built_in">log</span>/xferlog ]; <span class="keyword">then</span></span><br><span class="line">   <span class="built_in">exec</span> /usr/bin/webalizer -Q -F ftp -o /var/www/webalizer /var/<span class="built_in">log</span>/xferlog</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>把上面的复制粘贴到<code>webalizer_daily.sh</code>中。</p>
+<p>编辑<code>/etc/crontab</code></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>crontab</span><br></pre></td></tr></table></figure>
+<p>加入下面内容，则每天四点零二执行脚本</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">02 </span> <span class="number">4</span>  *  *  *   root      <span class="keyword">run</span>-parts /home/fenghao/webalizer_daily.sh    # 每天</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FTP/" rel="tag">FTP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vsftpd/" rel="tag">Vsftpd</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.471Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/08/27/thinking-in-java-note-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java编程思想笔记一
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/06/15/clean-code-note-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">代码整洁之道(二)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础"><span class="toc-number">1.</span> <span class="toc-text">基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置"><span class="toc-number">2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vsftpd虚拟用户设置-通过MySQL"><span class="toc-number">3.</span> <span class="toc-text">Vsftpd虚拟用户设置(通过MySQL)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-libpam-mysql"><span class="toc-number">3.1.</span> <span class="toc-text">安装 libpam-mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加禁止登录系统的用户"><span class="toc-number">3.2.</span> <span class="toc-text">添加禁止登录系统的用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建用户名密码数据库"><span class="toc-number">3.3.</span> <span class="toc-text">创建用户名密码数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置PAM认证模块"><span class="toc-number">3.4.</span> <span class="toc-text">配置PAM认证模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为各个虚拟用户建立配置文件"><span class="toc-number">3.5.</span> <span class="toc-text">为各个虚拟用户建立配置文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vsftpd虚拟用户设置-通过数据文件"><span class="toc-number">4.</span> <span class="toc-text">Vsftpd虚拟用户设置(通过数据文件)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装db4-utils"><span class="toc-number">4.1.</span> <span class="toc-text">安装db4-utils</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建用户密码文件"><span class="toc-number">4.2.</span> <span class="toc-text">创建用户密码文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成虚拟用户数据文件"><span class="toc-number">4.3.</span> <span class="toc-text">生成虚拟用户数据文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置PAM认证文件"><span class="toc-number">4.4.</span> <span class="toc-text">配置PAM认证文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加禁止登录系统的用户-1"><span class="toc-number">4.5.</span> <span class="toc-text">添加禁止登录系统的用户</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chroot"><span class="toc-number">5.</span> <span class="toc-text">Chroot</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#限制所有"><span class="toc-number">5.1.</span> <span class="toc-text">限制所有</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开放所有，限制特定"><span class="toc-number">5.2.</span> <span class="toc-text">开放所有，限制特定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#限制所有，开放特定"><span class="toc-number">5.3.</span> <span class="toc-text">限制所有，开放特定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析日志文件"><span class="toc-number">6.</span> <span class="toc-text">分析日志文件</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/07/26/vsftpd-virtual-users/';
+  this.page.identifier = '2014/07/26/vsftpd-virtual-users/';
+  this.page.title = 'vsftpd 配置虚拟用户';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

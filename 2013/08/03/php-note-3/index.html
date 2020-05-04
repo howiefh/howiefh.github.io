@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>php学习笔记（三）-数组 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A blog of howiefh.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php学习笔记（三）-数组">
+<meta property="og:url" content="http://howiefh.github.io/2013/08/03/php-note-3/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="A blog of howiefh.">
+<meta property="article:published_time" content="2013-08-03T07:38:39.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.464Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-php-note-3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2013/08/03/php-note-3/" class="article-date">
+  <time class="dt-published" datetime="2013-08-03T07:38:39.000Z" itemprop="datePublished">2013-08-03</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/PHP/">PHP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      php学习笔记（三）-数组
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数字索引数组"><span class="toc-number">1.</span> <span class="toc-text">数字索引数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用不同索引的数组"><span class="toc-number">2.</span> <span class="toc-text">使用不同索引的数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组操作符"><span class="toc-number">3.</span> <span class="toc-text">数组操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多维数组"><span class="toc-number">4.</span> <span class="toc-text">多维数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排序"><span class="toc-number">5.</span> <span class="toc-text">排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多维数组排序"><span class="toc-number">6.</span> <span class="toc-text">多维数组排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bool-shuffle-array-amp-array-随机顺序"><span class="toc-number">7.</span> <span class="toc-text">bool shuffle ( array &amp;$array )随机顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组逆序"><span class="toc-number">8.</span> <span class="toc-text">数组逆序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按定界符分割字符串"><span class="toc-number">9.</span> <span class="toc-text">按定界符分割字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在数组中浏览：each-，current-，reset-，end-，next-，pos-和prev"><span class="toc-number">10.</span> <span class="toc-text">在数组中浏览：each()，current()，reset()，end()，next()，pos()和prev()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对数组的每一个元素应用任何函数：array-walk"><span class="toc-number">11.</span> <span class="toc-text">对数组的每一个元素应用任何函数：array_walk()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#统计数组元素个数：count-sizeof-和array-count-values"><span class="toc-number">12.</span> <span class="toc-text">统计数组元素个数：count(),sizeof()和array_count_values()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将数组转换成标量变量：extract"><span class="toc-number">13.</span> <span class="toc-text">将数组转换成标量变量：extract()</span></a></li></ol>
+		
+		</div>
+		
+        <h2 id="数字索引数组"><a href="#数字索引数组" class="headerlink" title="数字索引数组"></a>数字索引数组</h2><p>初始化</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$products = <span class="keyword">array</span>(<span class="string">'Tires'</span>, <span class="string">'Oil'</span>, <span class="string">'Spark Plugs'</span>);</span><br><span class="line">$numbers = range(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">$odd = range(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>);</span><br><span class="line">$letters = range(<span class="string">'a'</span>, <span class="string">'z'</span>);</span><br></pre></td></tr></table></figure>
+<p>访问</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> $products[<span class="number">0</span>]</span><br><span class="line">$products[<span class="number">3</span>] = <span class="string">'Fuses'</span>;  <span class="comment">//添加新元素</span></span><br></pre></td></tr></table></figure>
+<p>使用循环访问</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; <span class="number">3</span>; $i++)&#123;</span><br><span class="line">	<span class="keyword">echo</span> $products[$i] . <span class="string">" "</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>($products <span class="keyword">as</span> $current)&#123;</span><br><span class="line">	<span class="keyword">echo</span> $current . <span class="string">" "</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="使用不同索引的数组"><a href="#使用不同索引的数组" class="headerlink" title="使用不同索引的数组"></a>使用不同索引的数组</h2><p>初始化关联数组</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$prices = <span class="keyword">array</span>(<span class="string">'Tires'</span>=&gt;<span class="number">100</span>, <span class="string">'Oil'</span>=&gt;<span class="number">10</span>, <span class="string">'Spark Plugs'</span>=&gt;<span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<p>访问</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$prices = <span class="keyword">array</span>(<span class="string">'Tires'</span>=&gt;<span class="number">100</span>);</span><br><span class="line">$prices[<span class="string">'Oil'</span>] = <span class="number">10</span>;</span><br><span class="line">$prices[<span class="string">'Spark Plugs'</span>] = <span class="number">4</span>;</span><br><span class="line"><span class="comment">//等效于</span></span><br><span class="line">$prices[<span class="string">'Tires'</span>]= <span class="number">100</span>;</span><br><span class="line">$prices[<span class="string">'Oil'</span>] = <span class="number">10</span>;</span><br><span class="line">$prices[<span class="string">'Spark Plugs'</span>] = <span class="number">4</span>;</span><br></pre></td></tr></table></figure>
+<p>使用循环访问</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">foreach</span>($prices <span class="keyword">as</span> $key =&gt; $value) &#123;</span><br><span class="line">	<span class="keyword">echo</span> $key . <span class="string">'-'</span> . $value . <span class="string">'&lt;br&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span>($element = each($prices))&#123;</span><br><span class="line">	<span class="keyword">echo</span> $element[<span class="string">'key'</span>];</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">'-'</span>;</span><br><span class="line">	<span class="keyword">echo</span> $element[<span class="string">'value'</span>];</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">'&lt;br&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line">reset($prices);  <span class="comment">//再次遍历的时候需要重置</span></span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">list</span>($product, $price) = each($prices))&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"$product - $price&lt;br&gt;"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数组操作符"><a href="#数组操作符" class="headerlink" title="数组操作符"></a>数组操作符</h2><ul>
+<li><code>$a + $b</code>     联合     $a 和 $b 的联合。</li>
+<li><code>$a == $b</code>     相等     如果 $a 和 $b 具有相同的键／值对则为 TRUE。</li>
+<li><code>$a === $b</code>     全等     如果 $a 和 $b 具有相同的键／值对并且顺序和类型都相同则为 TRUE。</li>
+<li><code>$a != $b</code>     不等     如果 $a 不等于 $b 则为 TRUE。</li>
+<li><code>$a &lt;&gt; $b</code>     不等     如果 $a 不等于 $b 则为 TRUE。</li>
+<li><code>$a !== $b</code>     不全等     如果 $a 不全等于 $b 则为 TRUE。</li>
+</ul>
+<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><p>初始化</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$products = <span class="keyword">array</span>(<span class="keyword">array</span>(<span class="string">'TIR'</span>, <span class="string">'Tires'</span>, <span class="number">100</span>),</span><br><span class="line">                  <span class="keyword">array</span>(<span class="string">'OIL'</span>, <span class="string">'Oil'</span>, <span class="number">10</span>),</span><br><span class="line">                  <span class="keyword">array</span>(<span class="string">'SPK'</span>, <span class="string">'Spark Plugs'</span>, <span class="number">4</span>),</span><br><span class="line">                 );</span><br></pre></td></tr></table></figure>
+<p>访问</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ($row = <span class="number">0</span> ; $row &lt; <span class="number">3</span>; $row++)&#123;</span><br><span class="line">    <span class="keyword">for</span>($column = <span class="number">0</span>; $column &lt; <span class="number">3</span>; $column++)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'|'</span> . $products[$row][$column];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'|&lt;br&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>初始化</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$products = <span class="keyword">array</span>(<span class="keyword">array</span>(<span class="string">'Code'</span>=&gt;<span class="string">'TIR'</span>,</span><br><span class="line">                        <span class="string">'Description'</span>=&gt;<span class="string">'Tires'</span>,</span><br><span class="line">                        <span class="string">'PRice'</span>=&gt;<span class="number">100</span></span><br><span class="line">                        ),</span><br><span class="line">                  <span class="keyword">array</span>(<span class="string">'Code'</span>=&gt;<span class="string">'OIL'</span>,</span><br><span class="line">                        <span class="string">'Description'</span>=&gt;<span class="string">'Oil'</span>,</span><br><span class="line">                        <span class="string">'PRice'</span>=&gt;<span class="number">10</span></span><br><span class="line">                        ),</span><br><span class="line">                  <span class="keyword">array</span>(<span class="string">'Code'</span>=&gt;<span class="string">'SPK'</span>,</span><br><span class="line">                        <span class="string">'Description'</span>=&gt;<span class="string">'Spark Plugs'</span>,</span><br><span class="line">                        <span class="string">'PRice'</span>=&gt;<span class="number">4</span></span><br><span class="line">                        )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>访问</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>($row=<span class="number">0</span>; $row&lt;<span class="number">3</span>;$row++)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'|'</span> . $products[$rom][<span class="string">'Code'</span>] . <span class="string">'|'</span> . $products[$row][<span class="string">'Description'</span>] . <span class="string">'|'</span> . $products[$row][<span class="string">'Price'</span>] . <span class="string">'&lt;br&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>($row=<span class="number">0</span>; $row &lt; <span class="number">3</span>; $row++)&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">list</span>($key,$value) = each($products[$row]))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"|$value"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'|&lt;br&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><ul>
+<li><p>sort</p>
+  <figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bool sort (<span class="built_in"> array </span>&amp;$array [,<span class="built_in"> int </span>$sort_flags = SORT_REGULAR ] )</span><br></pre></td></tr></table></figure>
+<p>  按字母, 数字升序排序</p>
+<p>  可选的第二个参数 sort_flags 可以用以下值改变排序的行为：</p>
+<ul>
+<li>SORT_REGULAR - 正常比较单元（不改变类型）</li>
+<li>SORT_NUMERIC - 单元被作为数字来比较</li>
+<li>SORT_STRING - 单元被作为字符串来比较</li>
+<li>SORT_LOCALE_STRING - 根据当前的区域（locale）设置来把单元当作字符串比较，可以用 setlocale() 来改变。</li>
+<li>SORT_NATURAL - 和 natsort() 类似对每个单元以“自然的顺序”对字符串进行排序。 PHP 5.4.0 中新增的。</li>
+<li>SORT_FLAG_CASE - 能够与 SORT_STRING 或 SORT_NATURAL 合并（OR 位运算），不区分大小写排序字符串。</li>
+</ul>
+</li>
+<li><p>asort按每个元素值进行排序 ksort按键进行排序</p>
+</li>
+<li><p>反向排序 rsort arsort krsort</p>
+</li>
+</ul>
+<h2 id="多维数组排序"><a href="#多维数组排序" class="headerlink" title="多维数组排序"></a>多维数组排序</h2><p>按第二列（说明）字母进行排序</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compare</span><span class="params">($x,$y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($x[<span class="number">1</span>]==$y[<span class="number">1</span>])&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ($x[<span class="number">1</span>] &lt; $y[<span class="number">1</span>])&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">usort($products,<span class="string">'compare'</span>);</span><br></pre></td></tr></table></figure>
+<p>按第三列（价格）字母进行排序</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compare</span><span class="params">($x,$y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($x[<span class="number">2</span>]==$y[<span class="number">2</span>])&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ($x[<span class="number">2</span>] &lt; $y[<span class="number">2</span>])&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">usort($products,<span class="string">'compare'</span>);</span><br></pre></td></tr></table></figure>
+<p>usort()中的”u”代表”user”，因为这个函数要求传入用户自定义函数。asort、ksort有对应的uasort和uksort</p>
+<p>反向排序</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverse_compare</span><span class="params">($x,$y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ($x[<span class="number">2</span>]==$y[<span class="number">2</span>])&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ($x[<span class="number">2</span>] &lt; $y[<span class="number">2</span>])&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">usort($products,<span class="string">'reverse_compare'</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="bool-shuffle-array-amp-array-随机顺序"><a href="#bool-shuffle-array-amp-array-随机顺序" class="headerlink" title="bool shuffle ( array &amp;$array )随机顺序"></a>bool shuffle ( array &amp;$array )随机顺序</h2><h2 id="数组逆序"><a href="#数组逆序" class="headerlink" title="数组逆序"></a>数组逆序</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">array</span> array_reverse ( <span class="keyword">array</span> $array [, bool $preserve_keys = <span class="keyword">false</span> ] )</span><br><span class="line">$numbers = range(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">$numbers = array_reverse($numbers);</span><br><span class="line">$numbers = range(<span class="number">10</span>, <span class="number">1</span>, <span class="number">-1</span>);</span><br></pre></td></tr></table></figure>
+<p>array_push  将一个或多个单元压入数组的末尾</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int array_push ( <span class="keyword">array</span> &amp;$array , mixed $var [, mixed $... ] )</span><br></pre></td></tr></table></figure>
+<p>array_pop 将数组最后一个单元弹出</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mixed array_pop ( <span class="keyword">array</span> &amp;$array )</span><br></pre></td></tr></table></figure>
+
+<h2 id="按定界符分割字符串"><a href="#按定界符分割字符串" class="headerlink" title="按定界符分割字符串"></a>按定界符分割字符串</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">array</span> explode ( string $delimiter , string $string [, int $limit ] )</span><br></pre></td></tr></table></figure>
+<ul>
+<li>delimiter:边界上的分隔字符</li>
+<li>string:输入的字符串</li>
+<li>limit:<ul>
+<li>如果设置了 limit 参数并且是正数，则返回的数组包含最多 limit 个元素，而最后那个元素将包含 string 的剩余部分。</li>
+<li>如果 limit 参数是负数，则返回除了最后的 -limit 个元素外的所有元素。</li>
+<li>如果 limit 是 0，则会被当做 1。</li>
+</ul>
+</li>
+</ul>
+<h2 id="在数组中浏览：each-，current-，reset-，end-，next-，pos-和prev"><a href="#在数组中浏览：each-，current-，reset-，end-，next-，pos-和prev" class="headerlink" title="在数组中浏览：each()，current()，reset()，end()，next()，pos()和prev()"></a>在数组中浏览：each()，current()，reset()，end()，next()，pos()和prev()</h2><ul>
+<li>each()间接的使用了数组的指针，其他的函数都是直接使用操作这个指针。</li>
+<li>如果创建一个新数组，那么当前指针就被初始化，并指向第一个元素，调用current($array_name)将返回第一个元素。</li>
+<li>调用each()和next()都会使指针前移。调用each($array_name)会在指针前移一个位置之前返回当前元素。next()函数则不用，它会将指针前移，然后再返回新的当前元素。</li>
+<li>reset()函数将返回指向数组的第一个元素的指针（有时指针会移到数组中的某一个位置，我们想重置这个数组，就会使用这个函数）。调用end($array_name)可以将指针移到数据的末尾。reset()和end()将返回数组的第一个元素和最后一个元素。</li>
+<li>prev()函数正好和next()相反。</li>
+</ul>
+<h2 id="对数组的每一个元素应用任何函数：array-walk"><a href="#对数组的每一个元素应用任何函数：array-walk" class="headerlink" title="对数组的每一个元素应用任何函数：array_walk()"></a>对数组的每一个元素应用任何函数：array_walk()</h2><p>有时，会以相同的方式使用或者修改数组的每一个元素。那么array_walk就提供这样的操作。</p>
+<p>array_walk()函数的原型如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bool array_walk(<span class="keyword">array</span> arr,string func,[mixed userdata]);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一个参数是arr，也就是需要处理的数组。</li>
+<li>第二个参数是用户自定义函数，怎么处理这个数组中的每一个元素，就需要用户写自定义操作。</li>
+<li>第三个参数是可选的，如果使用它，它可以作为一个参数传递给我们的自定义函数。</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$numbers = range(<span class="number">1</span>,<span class="number">10</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">my_print</span><span class="params">($value)</span></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> $value.<span class="string">'&lt;br /&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line">array_walk($numbers,<span class="string">'my_print'</span>);</span><br></pre></td></tr></table></figure>
+<p>我们也可以对这个数组中的每一个元素进行修改等等之类的操作。如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$numbers = range(<span class="number">1</span>,<span class="number">10</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">replace_number</span><span class="params">(&amp;$value,$key,$userdata)</span></span>&#123;</span><br><span class="line">    $value = $value * $userdata;</span><br><span class="line">&#125;</span><br><span class="line">array_walk($numbers,<span class="string">'replace_number'</span>,<span class="number">2</span>);</span><br><span class="line"><span class="keyword">foreach</span>($numbers <span class="keyword">as</span> $value)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $value .<span class="string">'&lt;br /&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码就使用了array_walk()函数的第三个参数，乘法因子，可以不用在自定义函数的固定，可以根据业务逻辑随时更换。需要注意是我们在$value变量之前加了一个&amp;符号，表明传的是变量的引用，于C#中的ref或out类似。</p>
+<h2 id="统计数组元素个数：count-sizeof-和array-count-values"><a href="#统计数组元素个数：count-sizeof-和array-count-values" class="headerlink" title="统计数组元素个数：count(),sizeof()和array_count_values()"></a>统计数组元素个数：count(),sizeof()和array_count_values()</h2><p>count()和sizeof()函数都可以计算数组元素中的元素个数，如果数组为空数组或没有经过初始化的变量，都返回0；</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$numbers = range(<span class="number">1</span>,<span class="number">10</span>);</span><br><span class="line"><span class="keyword">echo</span> count($numbers); <span class="comment">//sizeof($numbers)</span></span><br></pre></td></tr></table></figure>
+<p>array_count_values()函数，返回数组中每一个元素，出现的频率数的一个相关数组。如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$numbers = <span class="keyword">array</span>(<span class="number">5</span>,<span class="number">1</span>,<span class="number">8</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">5</span>);</span><br><span class="line">$ac = array_count_values($numbers);</span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">list</span>($key,$value) = each($ac))&#123;</span><br><span class="line">    <span class="keyword">echo</span> $key.<span class="string">'--'</span>.$value.<span class="string">'&lt;br /&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span>-<span class="number">-3</span></span><br><span class="line"><span class="number">1</span>-<span class="number">-1</span></span><br><span class="line"><span class="number">8</span>-<span class="number">-1</span></span><br><span class="line"><span class="number">3</span>-<span class="number">-2</span></span><br><span class="line"><span class="number">0</span>-<span class="number">-1</span></span><br><span class="line"><span class="number">4</span>-<span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="将数组转换成标量变量：extract"><a href="#将数组转换成标量变量：extract" class="headerlink" title="将数组转换成标量变量：extract()"></a>将数组转换成标量变量：extract()</h2><p>extract()函数的作用是将一个数组转换成一系列的标量变量，这些变量的名称必须是数组中的Key，而变量值则是数组中的值。如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$phones = <span class="keyword">array</span>(<span class="string">'name'</span> =&gt; <span class="string">'xiaomi'</span>,<span class="string">'price'</span>=&gt;<span class="number">1999</span>,<span class="string">'os'</span> =&gt; <span class="string">'android'</span>);</span><br><span class="line">extract($phones);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"$name =&gt; $price =&gt; $os"</span>;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.464Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/08/03/php-note-4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          php学习笔记（四）-字符串与正则表达式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/08/01/php-note-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">php学习笔记（二）-数据存储与检索</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数字索引数组"><span class="toc-number">1.</span> <span class="toc-text">数字索引数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用不同索引的数组"><span class="toc-number">2.</span> <span class="toc-text">使用不同索引的数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组操作符"><span class="toc-number">3.</span> <span class="toc-text">数组操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多维数组"><span class="toc-number">4.</span> <span class="toc-text">多维数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#排序"><span class="toc-number">5.</span> <span class="toc-text">排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多维数组排序"><span class="toc-number">6.</span> <span class="toc-text">多维数组排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bool-shuffle-array-amp-array-随机顺序"><span class="toc-number">7.</span> <span class="toc-text">bool shuffle ( array &amp;$array )随机顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数组逆序"><span class="toc-number">8.</span> <span class="toc-text">数组逆序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按定界符分割字符串"><span class="toc-number">9.</span> <span class="toc-text">按定界符分割字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在数组中浏览：each-，current-，reset-，end-，next-，pos-和prev"><span class="toc-number">10.</span> <span class="toc-text">在数组中浏览：each()，current()，reset()，end()，next()，pos()和prev()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对数组的每一个元素应用任何函数：array-walk"><span class="toc-number">11.</span> <span class="toc-text">对数组的每一个元素应用任何函数：array_walk()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#统计数组元素个数：count-sizeof-和array-count-values"><span class="toc-number">12.</span> <span class="toc-text">统计数组元素个数：count(),sizeof()和array_count_values()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将数组转换成标量变量：extract"><span class="toc-number">13.</span> <span class="toc-text">将数组转换成标量变量：extract()</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2013/08/03/php-note-3/';
+  this.page.identifier = '2013/08/03/php-note-3/';
+  this.page.title = 'php学习笔记（三）-数组';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

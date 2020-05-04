@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>php学习笔记（一）-快速入门 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A blog of howiefh.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php学习笔记（一）-快速入门">
+<meta property="og:url" content="http://howiefh.github.io/2013/07/31/php-note-1/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="A blog of howiefh.">
+<meta property="article:published_time" content="2013-07-31T07:38:39.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.464Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-php-note-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2013/07/31/php-note-1/" class="article-date">
+  <time class="dt-published" datetime="2013-07-31T07:38:39.000Z" itemprop="datePublished">2013-07-31</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/PHP/">PHP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      php学习笔记（一）-快速入门
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#标记风格"><span class="toc-number">1.</span> <span class="toc-text">标记风格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#换行、制表符、空格都被认为是空格"><span class="toc-number">2.</span> <span class="toc-text">换行、制表符、空格都被认为是空格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用表单变量"><span class="toc-number">4.</span> <span class="toc-text">使用表单变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#点号是字符串连字符"><span class="toc-number">5.</span> <span class="toc-text">点号是字符串连字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3种字符串"><span class="toc-number">6.</span> <span class="toc-text">3种字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#php是弱类型的，变量类型取决于赋给它的值。类型转换和c语言类似"><span class="toc-number">7.</span> <span class="toc-text">php是弱类型的，变量类型取决于赋给它的值。类型转换和c语言类似</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可变变量"><span class="toc-number">8.</span> <span class="toc-text">可变变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常量"><span class="toc-number">9.</span> <span class="toc-text">常量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量作用域"><span class="toc-number">10.</span> <span class="toc-text">变量作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作符"><span class="toc-number">11.</span> <span class="toc-text">操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print和echo"><span class="toc-number">12.</span> <span class="toc-text">print和echo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可变函数"><span class="toc-number">13.</span> <span class="toc-text">可变函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从控制结构或脚本中跳出"><span class="toc-number">14.</span> <span class="toc-text">从控制结构或脚本中跳出</span></a></li></ol>
+		
+		</div>
+		
+        <h2 id="标记风格"><a href="#标记风格" class="headerlink" title="标记风格"></a>标记风格</h2><ul>
+<li>xml(推荐) <code>&lt;?php .... ?&gt;</code></li>
+<li>简短风格 <code>&lt;? .... ?&gt;</code></li>
+<li>script风格 <code>&lt;script language=&quot;php&quot;&gt;....&lt;/script&gt;</code></li>
+<li>asp风格 <code>&lt;% ... %&gt;</code></li>
+</ul>
+<a id="more"></a>
+
+<h2 id="换行、制表符、空格都被认为是空格"><a href="#换行、制表符、空格都被认为是空格" class="headerlink" title="换行、制表符、空格都被认为是空格"></a>换行、制表符、空格都被认为是空格</h2><h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">//</span> <span class="string">...</span></span><br><span class="line">/*<span class="string">...</span>*/</span><br><span class="line"><span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用表单变量"><a href="#使用表单变量" class="headerlink" title="使用表单变量"></a>使用表单变量</h2><ul>
+<li><p>简短风格</p>
+  <figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="meta-keyword">$tireqty</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>中等风格(推荐)</p>
+  <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$_POST[<span class="string">'tireqty'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>  取决于使用那种方法提交，如提交方法是POST，则使用$_POST[‘tireqty’]获取数据，通过POST和GET方法提交的数据都可以通过$_REQUEST数组获取。这些数组被称为超级全局变量。</p>
+</li>
+<li><p>冗长风格</p>
+  <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$HTTP_POST_VARS[<span class="string">'tireqty'</span>]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="点号是字符串连字符"><a href="#点号是字符串连字符" class="headerlink" title="点号是字符串连字符"></a>点号是字符串连字符</h2><p>双引号中，变量名称将被变量值替代，单引号中,变量名不会被替代</p>
+<h2 id="3种字符串"><a href="#3种字符串" class="headerlink" title="3种字符串"></a>3种字符串</h2><p>双引号的，单引号的和heredoc。heredoc:</p>
+<ul>
+<li>以<code>&lt;&lt;&lt;End</code>开始标记开始，以End结束标记结束，结束标记必须顶头写，不能有缩进和空格，且在结束标记末尾要有分号。结束标记和开始标记相同，比如常用大写的EOT、EOD、EOF来表示，但是不只限于这几个，只要保证开始标记和结束标记不在正文中出现即可。</li>
+<li>位于开始标记和结束标记之间的变量可以被正常解析，但是函数则不可以。在heredoc中，变量不需要用连接符.或,</li>
+<li>heredoc常用在输出包含大量HTML语法文档的时候</li>
+</ul>
+<h2 id="php是弱类型的，变量类型取决于赋给它的值。类型转换和c语言类似"><a href="#php是弱类型的，变量类型取决于赋给它的值。类型转换和c语言类似" class="headerlink" title="php是弱类型的，变量类型取决于赋给它的值。类型转换和c语言类似"></a>php是弱类型的，变量类型取决于赋给它的值。类型转换和c语言类似</h2><h2 id="可变变量"><a href="#可变变量" class="headerlink" title="可变变量"></a>可变变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$test</span> = <span class="string">'hello php'</span>;</span><br><span class="line"><span class="variable">$varname</span> = <span class="string">'test'</span>;</span><br><span class="line"><span class="built_in">echo</span> $<span class="variable">$varname</span>;</span><br></pre></td></tr></table></figure>
+<p><code>$$varname</code> 相当于 <code>$test</code></p>
+<h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">define</span></span>(<span class="string">'TIREPRICE'</span>, <span class="number">1000</span>);</span><br><span class="line"><span class="class"><span class="keyword">define</span></span>(<span class="string">'OILPRICE'</span>, <span class="number">10</span>);</span><br><span class="line"><span class="class"><span class="keyword">define</span></span>(<span class="string">'SPARKPRICE'</span>, <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<p>引用常量时不需要<code>$</code></p>
+<p>了解php自定义的常量用函数phpinfo()</p>
+<h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><ul>
+<li>内置超级全局变量可以在脚本的任何地方使用和可见。即如果我们在一个PHP页面中改变了其中的一个值，那么在其他PHP页面中使用时，它的值也会发生改变。</li>
+<li>常量一旦被声明将可以在全局可见，也就是说，它们可以函数内外使用，但是这仅仅限于一个页面之中（包含我们通过include和include_once包含进来的PHP脚本），但是在其他的页面中就不能使用了。</li>
+<li>在一个脚本中声明的全局变量在整个脚本中是可见的，但不是在函数内部，在函数内部的变量如果与全局变量名称相同，以函数内部的变量为准。</li>
+<li>函数内部使用的变量声明为全局变量时，其名称要与全局变量的名称一致，在这样的情况下，我们就可以在函数中使用函数外部的全局变量了，这样就可以避免上一种因为函数内部的变量与外部的全局变量名称相同而覆盖了外部变量这样的情况。</li>
+<li>在函数内部创建并声明为静态的变量无法在函数外部可见，但是可以在函数的多次执行过程中保持该值，最常见的情况就是在函数的递归执行的过程之中。</li>
+<li>在函数内部创建的变量对函数来说是本地的，而当函数终止时，该变量也就不存在了。</li>
+</ul>
+<p>超级全局变量的完整列表如下：</p>
+<ul>
+<li>$GOBALS 所有全局变量数组</li>
+<li>$_SERVER 服务器环境变量数组</li>
+<li>$_POST 通过POST方法传递给该脚本的变量数组</li>
+<li>$_GET 通过GET方法传递给该脚本的变量数组</li>
+<li>$_COOKIE cookie变量数组</li>
+<li>$_FILES 与文件上传相关的变量数组</li>
+<li>$_ENV 环境变量数组</li>
+<li>$_REQUEST 所有用户输入的变量数组包括$_GET $_POST $_COOKIE 所包含的输入内容</li>
+<li>$_SESSION 会话变量数组</li>
+</ul>
+<h2 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h2><ul>
+<li><p>引用 <code>&amp;</code></p>
+  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$a = <span class="number">5</span>;</span><br><span class="line">$b = &amp;$a;</span><br></pre></td></tr></table></figure>
+
+<p>  引用就像是一个别名 类似c++</p>
+</li>
+<li><p>恒等操作符 <code>===</code><br>  只有当恒等操作符两边的操作数相等并且具有相同的数据类型时才为true。例如： <code>0==&#39;0&#39;</code>为<code>true</code>，但是<code>0===&#39;0&#39;</code>为false。不恒等操作符 <code>!==</code></p>
+</li>
+<li><p>与、或、异或 <code>and</code> <code>or</code> <code>xor</code><br>  <code>and</code> 和 <code>or</code>的优先级比<code>&amp;&amp;</code>和<code>||</code>低</p>
+</li>
+<li><p>错误抑制操作符 <code>@</code><br>  可以在任何表达式前面使用</p>
+  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$a=@(<span class="number">57</span>/<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>  如果没有<code>@</code>操作符，这一行代码将产生一个除0警告，使用这个操作符，这个警告就会被抑制。如果通过这种方法抑制了一些警告，一旦遇到一个警告，就要写一些错误处理代码。</p>
+</li>
+<li><p>执行操作符 反向单引号`<br>  反向单引号之间的命令将被当做命令行命令来执行</p>
+</li>
+<li><p>数组操作符</p>
+  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$a + $b 	联合 	$a 和 $b 的联合。</span><br><span class="line">$a == $b 	相等 	如果 $a 和 $b 具有相同的键／值对则为 <span class="keyword">TRUE</span>。</span><br><span class="line">$a === $b 	全等 	如果 $a 和 $b 具有相同的键／值对并且顺序和类型都相同则为 <span class="keyword">TRUE</span>。</span><br><span class="line">$a != $b 	不等 	如果 $a 不等于 $b 则为 <span class="keyword">TRUE</span>。</span><br><span class="line">$a &lt;&gt; $b 	不等 	如果 $a 不等于 $b 则为 <span class="keyword">TRUE</span>。</span><br><span class="line">$a !== $b 	不全等 	如果 $a 不全等于 $b 则为 <span class="keyword">TRUE</span>。</span><br></pre></td></tr></table></figure></li>
+<li><p>类型操作符<br>  instanceof</p>
+</li>
+</ul>
+<h2 id="print和echo"><a href="#print和echo" class="headerlink" title="print和echo"></a>print和echo</h2><ul>
+<li>以函数形式调用print会返回1</li>
+<li>echo执行速度比print快</li>
+</ul>
+<h2 id="可变函数"><a href="#可变函数" class="headerlink" title="可变函数"></a>可变函数</h2><ul>
+<li>测试和设置变量类型  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string gettype(mixed <span class="keyword">var</span>);</span><br></pre></td></tr></table></figure>
+  传递一个变量，返回类型名称字符串：bool, int, double, string, array, object, resource  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bool settype(mixed <span class="keyword">var</span>, string type);</span><br><span class="line">is_array():检测是否是字符串</span><br><span class="line">is_long():检查是否是整数</span><br></pre></td></tr></table></figure></li>
+<li>测试变量状态<br>  判断变量是否存在  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bool <span class="keyword">isset</span>(mixed <span class="keyword">var</span>);</span><br><span class="line">bool <span class="keyword">isset</span>(mixed <span class="keyword">var</span>[...]);</span><br></pre></td></tr></table></figure>
+  销毁变量  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">void <span class="keyword">unset</span>(mixed <span class="keyword">var</span>);</span><br><span class="line">void <span class="keyword">unset</span>(mixed <span class="keyword">var</span>[...]);</span><br></pre></td></tr></table></figure>
+  判断变量是否存在，其值是否为非空或非0  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bool <span class="keyword">empty</span>(mixed <span class="keyword">var</span>);</span><br></pre></td></tr></table></figure></li>
+<li>变量重解释  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int intval(mixed <span class="keyword">var</span>[,int base]);</span><br><span class="line">float floatval(mixed <span class="keyword">var</span>);</span><br><span class="line">string strval(mixed <span class="keyword">var</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="从控制结构或脚本中跳出"><a href="#从控制结构或脚本中跳出" class="headerlink" title="从控制结构或脚本中跳出"></a>从控制结构或脚本中跳出</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">break</span></span><br><span class="line"><span class="keyword">continue</span></span><br><span class="line"><span class="keyword">exit</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.464Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/08/01/php-note-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          php学习笔记（二）-数据存储与检索
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/07/30/repeat-one-song-rhythmbox/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Rhythmbox单曲循环</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#标记风格"><span class="toc-number">1.</span> <span class="toc-text">标记风格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#换行、制表符、空格都被认为是空格"><span class="toc-number">2.</span> <span class="toc-text">换行、制表符、空格都被认为是空格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用表单变量"><span class="toc-number">4.</span> <span class="toc-text">使用表单变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#点号是字符串连字符"><span class="toc-number">5.</span> <span class="toc-text">点号是字符串连字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3种字符串"><span class="toc-number">6.</span> <span class="toc-text">3种字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#php是弱类型的，变量类型取决于赋给它的值。类型转换和c语言类似"><span class="toc-number">7.</span> <span class="toc-text">php是弱类型的，变量类型取决于赋给它的值。类型转换和c语言类似</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可变变量"><span class="toc-number">8.</span> <span class="toc-text">可变变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常量"><span class="toc-number">9.</span> <span class="toc-text">常量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变量作用域"><span class="toc-number">10.</span> <span class="toc-text">变量作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作符"><span class="toc-number">11.</span> <span class="toc-text">操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print和echo"><span class="toc-number">12.</span> <span class="toc-text">print和echo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可变函数"><span class="toc-number">13.</span> <span class="toc-text">可变函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从控制结构或脚本中跳出"><span class="toc-number">14.</span> <span class="toc-text">从控制结构或脚本中跳出</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2013/07/31/php-note-1/';
+  this.page.identifier = '2013/07/31/php-note-1/';
+  this.page.title = 'php学习笔记（一）-快速入门';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

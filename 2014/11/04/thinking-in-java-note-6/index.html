@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Java编程思想笔记六 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="thinking in java; java编程思想; Java I&#x2F;O系统;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java编程思想笔记六">
+<meta property="og:url" content="http://howiefh.github.io/2014/11/04/thinking-in-java-note-6/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="thinking in java; java编程思想; Java I&#x2F;O系统;">
+<meta property="article:published_time" content="2014-11-04T12:53:54.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.473Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Thinking in Java">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-thinking-in-java-note-6" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/11/04/thinking-in-java-note-6/" class="article-date">
+  <time class="dt-published" datetime="2014-11-04T12:53:54.000Z" itemprop="datePublished">2014-11-04</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Java编程思想笔记六
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-I-O-系统"><span class="toc-number">1.</span> <span class="toc-text">Java I&#x2F;O 系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#File类"><span class="toc-number">1.1.</span> <span class="toc-text">File类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#目录列表器"><span class="toc-number">1.1.1.</span> <span class="toc-text">目录列表器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#目录使用工具"><span class="toc-number">1.1.2.</span> <span class="toc-text">目录使用工具</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#目录的检查及创建"><span class="toc-number">1.1.3.</span> <span class="toc-text">目录的检查及创建</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出和输入"><span class="toc-number">1.2.</span> <span class="toc-text">输出和输入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#InputStream类型"><span class="toc-number">1.2.1.</span> <span class="toc-text">InputStream类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OutputStream类型"><span class="toc-number">1.2.2.</span> <span class="toc-text">OutputStream类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加属性和有用的接口"><span class="toc-number">1.3.</span> <span class="toc-text">添加属性和有用的接口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#通过-FilterInputStream-从-InputStream-里读入数据"><span class="toc-number">1.3.1.</span> <span class="toc-text">通过 FilterInputStream 从 InputStream 里读入数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通过-FilterOutputStream-向-OutputStream-里写入数据"><span class="toc-number">1.3.2.</span> <span class="toc-text">通过 FilterOutputStream 向 OutputStream 里写入数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reader-和-Writer"><span class="toc-number">1.4.</span> <span class="toc-text">Reader 和 Writer</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数据的来源和去处"><span class="toc-number">1.4.1.</span> <span class="toc-text">数据的来源和去处</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#更改数据流的行为"><span class="toc-number">1.4.2.</span> <span class="toc-text">更改数据流的行为</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#未发生改变的类"><span class="toc-number">1.4.3.</span> <span class="toc-text">未发生改变的类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自我独立的类：RandomAccessFile"><span class="toc-number">1.5.</span> <span class="toc-text">自我独立的类：RandomAccessFile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#I-O流的经典适用方式"><span class="toc-number">1.6.</span> <span class="toc-text">I&#x2F;O流的经典适用方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件读写的实用工具"><span class="toc-number">1.7.</span> <span class="toc-text">文件读写的实用工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标准I-O"><span class="toc-number">1.8.</span> <span class="toc-text">标准I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#从标准输入中读取"><span class="toc-number">1.8.1.</span> <span class="toc-text">从标准输入中读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#将System-out转换成PrintWriter"><span class="toc-number">1.8.2.</span> <span class="toc-text">将System.out转换成PrintWriter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#标准I-O重定向"><span class="toc-number">1.8.3.</span> <span class="toc-text">标准I&#x2F;O重定向</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进程控制"><span class="toc-number">1.9.</span> <span class="toc-text">进程控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新I-O"><span class="toc-number">1.10.</span> <span class="toc-text">新I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#转换数据"><span class="toc-number">1.10.1.</span> <span class="toc-text">转换数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取基本类型"><span class="toc-number">1.10.2.</span> <span class="toc-text">获取基本类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#视图缓冲器"><span class="toc-number">1.10.3.</span> <span class="toc-text">视图缓冲器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用缓冲器操纵数据"><span class="toc-number">1.10.4.</span> <span class="toc-text">用缓冲器操纵数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缓冲器的细节"><span class="toc-number">1.10.5.</span> <span class="toc-text">缓冲器的细节</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内存映射文件"><span class="toc-number">1.10.6.</span> <span class="toc-text">内存映射文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#文件加锁"><span class="toc-number">1.10.7.</span> <span class="toc-text">文件加锁</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#压缩"><span class="toc-number">1.11.</span> <span class="toc-text">压缩</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#用GZIP进行简单压缩"><span class="toc-number">1.11.1.</span> <span class="toc-text">用GZIP进行简单压缩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用Zip进行简单压缩"><span class="toc-number">1.11.2.</span> <span class="toc-text">用Zip进行简单压缩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Java档案文件"><span class="toc-number">1.11.3.</span> <span class="toc-text">Java档案文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象序列化"><span class="toc-number">1.12.</span> <span class="toc-text">对象序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#寻找类"><span class="toc-number">1.12.1.</span> <span class="toc-text">寻找类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#序列化的控制"><span class="toc-number">1.12.2.</span> <span class="toc-text">序列化的控制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用持久性"><span class="toc-number">1.12.3.</span> <span class="toc-text">使用持久性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XML"><span class="toc-number">1.13.</span> <span class="toc-text">XML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Preferences"><span class="toc-number">1.14.</span> <span class="toc-text">Preferences</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="Java-I-O-系统"><a href="#Java-I-O-系统" class="headerlink" title="Java I/O 系统"></a>Java I/O 系统</h2><h3 id="File类"><a href="#File类" class="headerlink" title="File类"></a>File类</h3><p>File类是文件和目录路径名的抽象表示形式。</p>
+<a id="more"></a>
+
+<h4 id="目录列表器"><a href="#目录列表器" class="headerlink" title="目录列表器"></a>目录列表器</h4><p>若在不含自变量（参数）的情况下调用list()，会获得 File 对象包含的一个完整列表。然而，若想对这个列表进行某些限制，就需要使用一个“目录过滤器”，该类的作用是指出应如何选择 File 对象来完成显示。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public<span class="built_in"> interface </span>FilenameFilter &#123;</span><br><span class="line">    boolean accept(File dir, String name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>File类的list()的重载方法接收一个FilenameFilter对象，并且会为此目录对象下的每个文件调用accept()方法，来判断该文件是否包含在内。这是一个策略模式的例子，因为list()实现了基本的功能，而且按照FilenameFilter的形式提供这个策略，以便完善list()在提供服务时所需的算法。</p>
+<p>书中用实现接口，和匿名内部类的方式实现了FilenameFilter接口。Java SE8中引入了Lambda表达式，而FilenameFilter是“函数式接口”（只有一个方法）。我们还可以使用Lambda表达式实现，代码更加简洁。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.regex.*;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DirList4</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">final</span> <span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">File</span> path = <span class="keyword">new</span> <span class="built_in">File</span>(<span class="string">"."</span>);</span><br><span class="line">        <span class="keyword">String</span>[] <span class="built_in">list</span>;</span><br><span class="line">        <span class="keyword">if</span>(args.length == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">list</span> = path.<span class="built_in">list</span>();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">final</span> Pattern pattern = Pattern.compile(args[<span class="number">0</span>]);</span><br><span class="line">            <span class="built_in">list</span> = path.<span class="built_in">list</span>((dir, name) -&gt; &#123;</span><br><span class="line">                <span class="keyword">return</span> pattern.matcher(name).matches();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        Arrays.sort(<span class="built_in">list</span>, <span class="keyword">String</span>.CASE_INSENSITIVE_ORDER);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">String</span> dirItem : <span class="built_in">list</span>)</span><br><span class="line">            System.out.<span class="built_in">println</span>(dirItem);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="目录使用工具"><a href="#目录使用工具" class="headerlink" title="目录使用工具"></a>目录使用工具</h4><p>书中提供了目录使用工具类net.mindview.util.Directory，local()方法产生由本地目录中文件构成的File对象数组，walk()方法产生给定目录下的有整个目录树中所有文件构成的List<File>。</p>
+<h4 id="目录的检查及创建"><a href="#目录的检查及创建" class="headerlink" title="目录的检查及创建"></a>目录的检查及创建</h4><p>File类保存文件或目录的各种元数据信息，包括文件名、文件长度、最后修改时间、是否可读、获取当前文件的路径名，判断指定文件是否存在、获得当前目录中的文件列表，创建、删除文件和目录等方法。</p>
+<h3 id="输出和输入"><a href="#输出和输入" class="headerlink" title="输出和输入"></a>输出和输入</h3><p>我们很少用单个类创建自己的系统对象。一般情况下，我们都是将多个对象重叠在一起，提供期望的功能（这是装饰器设计模式）。</p>
+<h4 id="InputStream类型"><a href="#InputStream类型" class="headerlink" title="InputStream类型"></a>InputStream类型</h4><p>InputStream 的作用是标志那些从不同起源地产生输入的类。这些起源地包括（每个都有一个相关的InputStream 子类）：</p>
+<ul>
+<li>字节数组</li>
+<li>String 对象</li>
+<li>文件</li>
+<li>“管道”，它的工作原理与现实生活中的管道类似：将一些东西置入一端，它们在另一端出来。</li>
+<li>一系列其他流，以便我们将其统一收集到单独一个流内。</li>
+<li>其他起源地，如 Internet 连接等</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th>功能</th>
+<th>构建器参数／如何使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ByteArrayInputStream</td>
+<td>允许内存中的一个缓冲区作为 InputStream 使用</td>
+<td>从中提取字节的缓冲区／作为一个数据源使用。通过将其同一个 FilterInputStream 对象连接，可提供一个有用的接口</td>
+</tr>
+<tr>
+<td>StringBufferInputStream</td>
+<td>将一个 String 转换成 InputStream  一个 String（字串）。</td>
+<td>基础的实施方案实际采用一个 StringBuffer（字串缓冲）／作为一个数据源使用。通过将其同一个 FilterInputStream 对象连接，可提供一个有用的接口</td>
+</tr>
+<tr>
+<td>FileInputStream</td>
+<td>用于从文件读取信息</td>
+<td>代表文件名的一个 String，或者一个 File 或 FileDescriptor 对象 ／作为一个数据源使用。通过将其同一个 FilterInputStream 对象连接，可提供一个有用的接口</td>
+</tr>
+<tr>
+<td>PipedInputStream</td>
+<td>产生为相关的 PipedOutputStream 写的数据。实现了“管道化”的概念</td>
+<td>PipedOutputStream／作为一个数据源使用。通过将其同一个 FilterInputStream 对象连接，可提供一个有用的接口</td>
+</tr>
+<tr>
+<td>SequenceInputStream</td>
+<td>将两个或更多的 InputStream 对象转换成单个 InputStream 使用</td>
+<td>两个InputStream 对象或者一个 Enumeration，用于 InputStream 对象的一个容器／作为一个数据源使用。通过将其同一个FilterInputStream 对象连接，可提供一个有用的接口</td>
+</tr>
+<tr>
+<td>FilterInputStream</td>
+<td>抽象类，作为装饰器的接口，装饰器为其他InputStream 类提供了有用的功能。</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="OutputStream类型"><a href="#OutputStream类型" class="headerlink" title="OutputStream类型"></a>OutputStream类型</h4><table>
+<thead>
+<tr>
+<th>类</th>
+<th>功能</th>
+<th>构建器参数／如何使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ByteArrayOutputStream</td>
+<td>在内存中创建一个缓冲区。我们发送给流的所有数据都会置入这个缓冲区。</td>
+<td>可选缓冲区的初始大小／用于指出数据的目的地。若将其同 FilterOutputStream 对象连接到一起，可提供一个有用的接口</td>
+</tr>
+<tr>
+<td>FileOutputStream</td>
+<td>将信息发给一个文件</td>
+<td>用一个 String 代表文件名，或选用一个 File 或 FileDescriptor 对象／用于指出数据的目的地。若将其同 FilterOutputStream 对象连接到一起，可提供一个有用的接口</td>
+</tr>
+<tr>
+<td>PipedOutputStream</td>
+<td>我们写给它的任何信息都会自动成为相关的 PipedInputStream 的输出。</td>
+<td>实现了“管道化”的概念PipedInputStream／为多线程处理指出自己数据的目的地／将其同 FilterOutputStream 对象连接到一起，便可提供一个有用的接口</td>
+</tr>
+<tr>
+<td>FilterOutputStream</td>
+<td>抽象类，作为装饰器的接口；装饰器为其他 OutputStream 类提供了有用的功能。</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="添加属性和有用的接口"><a href="#添加属性和有用的接口" class="headerlink" title="添加属性和有用的接口"></a>添加属性和有用的接口</h3><p>装饰器必须拥有与它装饰的那个对象相同的接口，但装饰器亦可对接口作出扩展，这种情况见诸于几个特殊的“过滤器”类中</p>
+<p>装饰器为我们提供了大得多的灵活性（因为可以方便地混合与匹配属性），但它们也使自己的代码变得更加复杂。原因在于 Java IO 库操作不便，我们必须创建许多类——“核心”IO 类型加上所有装饰器——才能得到自己希望的单个 IO 对象。</p>
+<h4 id="通过-FilterInputStream-从-InputStream-里读入数据"><a href="#通过-FilterInputStream-从-InputStream-里读入数据" class="headerlink" title="通过 FilterInputStream 从 InputStream 里读入数据"></a>通过 FilterInputStream 从 InputStream 里读入数据</h4><p>基本都是使用基本的InputStream类型作为构造器参数创建这些类对象。下面的最后两个类我们基本不会用到</p>
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th>功能</th>
+<th>构建器参数／如何使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DataInputStream</td>
+<td>与 DataOutputStream 联合使用，使自己能以机动方式读取一个流中的基本数据类型（int，char ，long 等等）</td>
+<td>InputStream/ 包含了一个完整的接口，以便读取基本数据类型</td>
+</tr>
+<tr>
+<td>BufferedInputStream</td>
+<td>避免每次想要更多数据时都进行物理性的读取，告诉它“请先在缓冲区里找”</td>
+<td>InputStream，没有可选的缓冲区大小／本身并不能提供一个接口，只是发出使用缓冲区的要求。要求同一个接口对象连接到一起</td>
+</tr>
+<tr>
+<td>LineNumberInputStream</td>
+<td>跟踪输入流中的行号；可调用 getLineNumber()以及 setLineNumber(int)</td>
+<td>只是添加对数据行编号的能力，所以可能需要同一个真正的接口对象连接</td>
+</tr>
+<tr>
+<td>PushbackInputStream</td>
+<td>有一个字节的后推缓冲区，以便后推读入的上一个字符</td>
+<td>InputStream／通常由编译器在扫描器中使用，因为 Java 编译器需要它。一般不在自己的代码中使用</td>
+</tr>
+</tbody></table>
+<h4 id="通过-FilterOutputStream-向-OutputStream-里写入数据"><a href="#通过-FilterOutputStream-向-OutputStream-里写入数据" class="headerlink" title="通过 FilterOutputStream 向 OutputStream 里写入数据"></a>通过 FilterOutputStream 向 OutputStream 里写入数据</h4><table>
+<thead>
+<tr>
+<th>类</th>
+<th>功能</th>
+<th>构建器参数／如何使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DataOutputStream</td>
+<td>与 DataInputStream 配合使用，以便采用方便的形式将基本数据类型（int，char，long等）写入一个数据流</td>
+<td>OutputStream ／包含了完整接口，以便我们写入基本数据类型</td>
+</tr>
+<tr>
+<td>PrintStream</td>
+<td>用于产生格式化输出。DataOutputStream 控制的是数据的“存储”，而 PrintStream 控制的是“显示”</td>
+<td>OutputStream ，可选一个布尔参数，指示缓冲区是否与每个新行一同刷新／对于自己的OutputStream 对象，应该用“final”将其封闭在内。可能经常都要用到它</td>
+</tr>
+<tr>
+<td>BufferedOutputStream</td>
+<td>用它避免每次发出数据的时候都要进行物理性的写入，要求它“请先在缓冲区里找”。可调用 flush()，对缓冲区进行刷新</td>
+<td>OutputStream ，可选缓冲区大小／本身并不能提供一个接口，只是发出使用缓冲区的要求。需要同一个接口对象连接到一起</td>
+</tr>
+</tbody></table>
+<p>PrintStream 内两个重要的方法是 print()和 println() 。另外，PrintStream也未完全国际化，不能以平台无关的方式处理换行动作。</p>
+<h3 id="Reader-和-Writer"><a href="#Reader-和-Writer" class="headerlink" title="Reader 和 Writer"></a>Reader 和 Writer</h3><p>InputStream和OutputStream在以面向字节形式的I/O中扔可以提供极有价值的功能，Reader和Writer则提供兼容Unicode与面向字符的I/O功能。</p>
+<p>“适配器”类：InputStreamReader 将一个 InputStream 转换成 Reader，OutputStreamWriter 将一个 OutputStream 转换成 Writer。</p>
+<p>新类库的设计使得它的操作比旧类库更快。</p>
+<h4 id="数据的来源和去处"><a href="#数据的来源和去处" class="headerlink" title="数据的来源和去处"></a>数据的来源和去处</h4><p>最明智的做法是尽量尝试使用 Reader 和 Writer 类。若代码不能通过编译，便知道必须面向字节的类库。</p>
+<table>
+<thead>
+<tr>
+<th>来源和去处: Java 1.0 类</th>
+<th>相应的 Java 1.1 类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>InputStream</td>
+<td>Reader 适配器: InputStreamReader</td>
+</tr>
+<tr>
+<td>OutputStream</td>
+<td>Writer 适配器: OutputStreamWriter</td>
+</tr>
+<tr>
+<td>FilelnputStream</td>
+<td>FileReader</td>
+</tr>
+<tr>
+<td>FileOutputStream</td>
+<td>FileWriter</td>
+</tr>
+<tr>
+<td>StringBufferlnputStream (已弃用)</td>
+<td>StringReader</td>
+</tr>
+<tr>
+<td>(没有相应的类)</td>
+<td>StringWriter</td>
+</tr>
+<tr>
+<td>ByteArrayInputStream</td>
+<td>CharArrayReader</td>
+</tr>
+<tr>
+<td>ByteArrayOutputStream</td>
+<td>CharArrayWriter</td>
+</tr>
+<tr>
+<td>PipedInputStream</td>
+<td>PipedReader</td>
+</tr>
+<tr>
+<td>PipedOutputStream</td>
+<td>PipedWriter</td>
+</tr>
+</tbody></table>
+<h4 id="更改数据流的行为"><a href="#更改数据流的行为" class="headerlink" title="更改数据流的行为"></a>更改数据流的行为</h4><p>尽管 BufferedOutputStream 是 FilterOutputStream 的一个子类，但是 BufferedWriter 并不是 FilterWriter 的子类（尽管FilterWriter是一个抽象类，但没有任何子类，把它放在那里也只是把它作为一个占位符））。然而，两个类的接口是非常相似的</p>
+<table>
+<thead>
+<tr>
+<th>过滤器：Java 1.0 类</th>
+<th>对应的 Java 1.1 类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FilterInputStream</td>
+<td>FilterReader</td>
+</tr>
+<tr>
+<td>FilterOutputStream</td>
+<td>FilterWriter （没有子类的抽象类）</td>
+</tr>
+<tr>
+<td>BufferedInputStream</td>
+<td>BufferedReader（也有 readLine()）</td>
+</tr>
+<tr>
+<td>BufferedOutputStream</td>
+<td>BufferedWriter</td>
+</tr>
+<tr>
+<td>DataInputStream</td>
+<td>使用 DataInputStream（除非要使用 readLine()，这时需要使用一个 BufferedReader）</td>
+</tr>
+<tr>
+<td>PrintStream</td>
+<td>PrintWriter</td>
+</tr>
+<tr>
+<td>LineNumberInputStream</td>
+<td>LineNumberReader</td>
+</tr>
+<tr>
+<td>StreamTokenizer</td>
+<td>StreamTokenizer （使用接收Reader的构造器）</td>
+</tr>
+<tr>
+<td>PushBackInputStream</td>
+<td>PushBackReader</td>
+</tr>
+</tbody></table>
+<p>为了将向 PrintWriter 的过渡变得更加自然，它提供了能接受任何Writer对象又能接受任何 OutputStream 对象的构造器。<br>有一种PrintWriter构造器还有一个选项，就是“自动执行清空”选项(自动刷新缓存区)。如果构造器设置此选项，则在每个println()执行后，便会自动清空。</p>
+<h4 id="未发生改变的类"><a href="#未发生改变的类" class="headerlink" title="未发生改变的类"></a>未发生改变的类</h4><p>没有对应 Java 1.1 类的 Java 1.0 类</p>
+<ul>
+<li>DataOutputStream</li>
+<li>File</li>
+<li>RandomAccessFile</li>
+<li>SequenceInputStream</li>
+</ul>
+<h3 id="自我独立的类：RandomAccessFile"><a href="#自我独立的类：RandomAccessFile" class="headerlink" title="自我独立的类：RandomAccessFile"></a>自我独立的类：RandomAccessFile</h3><p><strong>RandomAccessFile 适用于由大小已知的记录组成的文件，所以我们能用 seek()从一条记录移至另一条，然后读取或修改那些记录</strong>。</p>
+<p>RandomAccessFile 类似 DataInputStream 和 DataOutputStream 的联合使用。其中，getFilePointer()用于了解当前在文件的什么地方，seek()用于移至文件内的一个新地点，length() 用于判断文件的最大长度。此外，构建器要求使用另一个变量（与 C 的 fopen()完全一样），指出是读（”r”），还是读写（”rw” ）。</p>
+<p>BufferedInputStream 确实允许我们标记一个位置（使用 mark()，它的值容纳于单个内部变量中），并用 reset()重设那个位置。</p>
+<h3 id="I-O流的经典适用方式"><a href="#I-O流的经典适用方式" class="headerlink" title="I/O流的经典适用方式"></a>I/O流的经典适用方式</h3><ul>
+<li>缓冲输入文件  <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BufferedReader <span class="keyword">in</span> = <span class="keyword">new</span> <span class="type">BufferedReader</span>(<span class="keyword">new</span> <span class="type">FileReader</span>(filename));</span><br><span class="line">StringBuffer sb = <span class="keyword">new</span> <span class="type">StringBuffer</span>();</span><br><span class="line"><span class="keyword">while</span>((s=<span class="keyword">in</span>.readLine())!=<span class="literal">null</span>)</span><br><span class="line">    sb.append(s+<span class="string">"\n"</span>);</span><br><span class="line"><span class="keyword">in</span>.close();</span><br></pre></td></tr></table></figure>
+  readLine()方法会去掉换行符</li>
+<li>从内存输入  <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String</span> <span class="built_in">str</span> = <span class="string">"hello world"</span>;</span><br><span class="line">StringReader in = <span class="keyword">new</span> StringReader(<span class="built_in">str</span>);</span><br><span class="line"><span class="built_in">int</span> c;</span><br><span class="line"><span class="keyword">while</span>((c=in.read())!=<span class="number">-1</span>)</span><br><span class="line">    System.out.<span class="built_in">println</span>((<span class="built_in">char</span>)c);</span><br></pre></td></tr></table></figure></li>
+<li>格式化的内存输入  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DataInputStream <span class="keyword">in</span> = <span class="keyword">new</span> <span class="constructor">DataInputStream(<span class="params">new</span> ByteArrayInputStream(<span class="string">"FormattedMemoryInput.java"</span>.<span class="params">getBytes</span>()</span>));</span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">in</span>.available<span class="literal">()</span> != <span class="number">0</span>)</span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.print((<span class="built_in">char</span>)<span class="keyword">in</span>.read<span class="constructor">Byte()</span>);</span><br></pre></td></tr></table></figure>
+  <strong>可以使用available()方法查看还有多少可供存取的字符。必须为ByteArrayInputStream提供字节数组。available()的工作方式会随着所读取的媒介类型的不同而有所不同，字面意思就是“在没有阻塞的情况下所能读取的字节数”</strong>。</li>
+<li>基本的文件输出  <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">BufferedReader <span class="keyword">in</span> = <span class="built_in">new</span> BufferedReader(<span class="built_in">new</span> FileReader(filename));</span><br><span class="line">PrintWriter <span class="keyword">out</span> = <span class="built_in">new</span> PrintWriter(<span class="built_in">new</span> BufferedWriter(<span class="built_in">new</span> FileWriter("file.out")));</span><br><span class="line">//PrintWriter <span class="keyword">out</span> = <span class="built_in">new</span> PrintWriter("file.out");  //Java SE5提供了更加快捷的构造器，仍然使用缓存，但是不用自己实现</span><br><span class="line"><span class="type">int</span> lineCount = <span class="number">1</span>;</span><br><span class="line">String s;</span><br><span class="line"><span class="keyword">while</span>((s = <span class="keyword">in</span>.readLine()) != <span class="keyword">null</span> )</span><br><span class="line">    <span class="keyword">out</span>.println(lineCount++ + ": " + s);</span><br><span class="line"><span class="keyword">out</span>.<span class="keyword">close</span>();</span><br><span class="line"><span class="keyword">in</span>.<span class="keyword">close</span>();</span><br></pre></td></tr></table></figure></li>
+<li>存储和恢复数据<br>  为了输出可供另一个流恢复的数据，我们需要用DataInputStream写入数据，并用DataInputStream恢复数据。当使用DataOutputStream时，写字符串并且让DataInputStream能够恢复它的唯一可靠的做法就是使用UTF-8，在这个示例中是用writeUTF()和readUTF()来实现的。Java使用的UTF-8的变体，所以使用其他语言恢复数据时，需要编写一些特殊的代码。  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">DataOutputStream out = <span class="keyword">new</span> <span class="constructor">DataOutputStream(<span class="params">new</span> BufferedOutputStream(<span class="params">new</span> FileOutputStream(<span class="string">"Data.txt"</span>)</span>));</span><br><span class="line">out.write<span class="constructor">Double(3.14159)</span>;</span><br><span class="line">out.write<span class="constructor">UTF(<span class="string">"That was pi"</span>)</span>;</span><br><span class="line">out.write<span class="constructor">Double(1.41413)</span>;</span><br><span class="line">out.write<span class="constructor">UTF(<span class="string">"Square root of 2"</span>)</span>;</span><br><span class="line">out.close<span class="literal">()</span>;</span><br><span class="line">DataInputStream <span class="keyword">in</span> = <span class="keyword">new</span> <span class="constructor">DataInputStream(<span class="params">new</span> BufferedInputStream(<span class="params">new</span> FileInputStream(<span class="string">"Data.txt"</span>)</span>));</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">in</span>.read<span class="constructor">Double()</span>);</span><br><span class="line"><span class="comment">// Only readUTF() will recover the</span></span><br><span class="line"><span class="comment">// Java-UTF String properly:</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">in</span>.read<span class="constructor">UTF()</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">in</span>.read<span class="constructor">Double()</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">in</span>.read<span class="constructor">UTF()</span>);</span><br></pre></td></tr></table></figure></li>
+<li>读写随机访问文件  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UsingRandomAccessFile</span> &#123;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">String</span> file = <span class="string">"rtest.dat"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> throws IOException </span>&#123;</span><br><span class="line">        RandomAccessFile rf = <span class="keyword">new</span> RandomAccessFile(file, <span class="string">"r"</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">7</span>; i++)</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"Value "</span> + i + <span class="string">": "</span> + rf.readDouble());</span><br><span class="line">        System.out.<span class="built_in">println</span>(rf.readUTF());</span><br><span class="line">        rf.<span class="built_in">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws IOException </span>&#123;</span><br><span class="line">        RandomAccessFile rf = <span class="keyword">new</span> RandomAccessFile(file, <span class="string">"rw"</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">7</span>; i++)</span><br><span class="line">            rf.writeDouble(i*<span class="number">1.414</span>);</span><br><span class="line">        rf.writeUTF(<span class="string">"The end of the file"</span>);</span><br><span class="line">        rf.<span class="built_in">close</span>();</span><br><span class="line">        <span class="built_in">display</span>();</span><br><span class="line">        rf = <span class="keyword">new</span> RandomAccessFile(file, <span class="string">"rw"</span>);</span><br><span class="line">        rf.<span class="built_in">seek</span>(<span class="number">5</span>*<span class="number">8</span>);</span><br><span class="line">        rf.writeDouble(<span class="number">47.0001</span>);</span><br><span class="line">        rf.<span class="built_in">close</span>();</span><br><span class="line">        <span class="built_in">display</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>管道流  <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PipedInputStream pin = <span class="keyword">new</span> <span class="type">PipedInputStream</span>();</span><br><span class="line">PipedOutputStream pout = <span class="keyword">new</span> <span class="type">PipedOutputStream</span>();</span><br><span class="line">pin.connect(pout); <span class="comment">// 输入流与输出流连接</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="文件读写的实用工具"><a href="#文件读写的实用工具" class="headerlink" title="文件读写的实用工具"></a>文件读写的实用工具</h3><p>书中提供了工具类net.mindview.util.TextFile。可以使用java.util.Scanner类。但是只能用于读取文件，而不能用于写入文件。</p>
+<h3 id="标准I-O"><a href="#标准I-O" class="headerlink" title="标准I/O"></a>标准I/O</h3><h4 id="从标准输入中读取"><a href="#从标准输入中读取" class="headerlink" title="从标准输入中读取"></a>从标准输入中读取</h4><p>Java 提供了System.in，System.out 以及 System.err。System.out 已预封装成一个 PrintStream 对象。System.err 同样是一个 PrintStream，但 System.in 是一个原始的 InputStream ，未进行任何封装处理。这意味着尽管能直接使用 System.out 和 System.err，但必须事先封装 System.in，否则不能从中读取数据。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BufferedReader</span> stdin = <span class="keyword">new</span> <span class="keyword">BufferedReader</span>(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line"><span class="keyword">String</span> s;</span><br><span class="line"><span class="keyword">while</span>((s = stdin.readLine()) != <span class="keyword">null</span> &amp;&amp; s.length()!= <span class="number">0</span>)</span><br><span class="line">    System.out.<span class="built_in">println</span>(s);</span><br><span class="line"><span class="comment">// An empty line or Ctrl-Z terminates the program</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Scanner scanner = new Scanner(System.in);</code>也可以从标准输入中读取，System.in和大多数流一样，通常应该对它缓存。</p>
+<h4 id="将System-out转换成PrintWriter"><a href="#将System-out转换成PrintWriter" class="headerlink" title="将System.out转换成PrintWriter"></a>将System.out转换成PrintWriter</h4><p><code>PrintWriter(OutputStream out, boolean autoFlush)</code>，此构造器可以实现，第一个参数设置为System.out，第二个参数设为true，以便开启自动刷新缓存区的功能，否则，你可能看不到输出。</p>
+<h4 id="标准I-O重定向"><a href="#标准I-O重定向" class="headerlink" title="标准I/O重定向"></a>标准I/O重定向</h4><p>System类提供了<code>setIn(InputStream)</code>，<code>setOut(PrintStream)</code>，<code>setErr(PrintStream)</code>三个静态方法重定向标准I/O，我们可以将其重定向到文件中，以便查看。I/O 重定向操纵的是字节流，而不是字符流。</p>
+<h3 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h3><p>工具类net.mindview.util.OSExecute可以运行外部程序，并将产生的输出发送到控制台。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">String command = <span class="string">"ls"</span>;</span><br><span class="line">Process process = <span class="keyword">new</span> <span class="constructor">ProcessBuilder(<span class="params">command</span>.<span class="params">split</span>(<span class="string">" "</span>)</span>).start<span class="literal">()</span>;</span><br><span class="line">BufferedReader results = <span class="keyword">new</span> <span class="constructor">BufferedReader(<span class="params">new</span> InputStreamReader(<span class="params">process</span>.<span class="params">getInputStream</span>()</span>));</span><br><span class="line">String s;</span><br><span class="line"><span class="keyword">while</span>((s = results.read<span class="constructor">Line()</span>)!= null)</span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(s);</span><br><span class="line">BufferedReader errors = <span class="keyword">new</span> <span class="constructor">BufferedReader(<span class="params">new</span> InputStreamReader(<span class="params">process</span>.<span class="params">getErrorStream</span>()</span>));</span><br><span class="line"><span class="comment">// Report errors and return nonzero value</span></span><br><span class="line"><span class="comment">// to calling process if there are problems:</span></span><br><span class="line"><span class="keyword">while</span>((s = errors.read<span class="constructor">Line()</span>)!= null) &#123;</span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>err.println(s);</span><br><span class="line">    err = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="新I-O"><a href="#新I-O" class="headerlink" title="新I/O"></a>新I/O</h3><p>JDK 1.4的<code>java.nio.*</code>包中引入了新的Java I/O类库，其目的在于提高速度。实际上，旧的I/O包已经使用nio重新实现过，以便充分利用这种速度提高。</p>
+<p>速度的提高来自于所使用的结构更接近于操作系统执行I/O的方式：通道和缓冲器。我们没有和通道交互，只是和缓冲器交互，并把缓冲器派送到通道。通道要么从缓冲器获得数据，要么向缓冲器发送数据。</p>
+<p>唯一直接与通道交互的缓冲器是<code>ByteBuffer</code>，可以存储未加工字节的缓冲器。通过告知分配多少存储空间来创建一个<code>ByteBuffer</code>对象，并且还有一个方法选择集，用于以原始的字节形式或基本数据类型输出和读取数据。但是，没办法输出或读取对象，即使是字符串对象也不行。这是大多数操作系统中更有效的映射方式。</p>
+<p>旧I/O类库中有三个类（<code>FileInputStream</code>、<code>FileOutputStream</code>、<code>RandomAccessFile</code>）被修改了，用以产生<code>FileChannel</code>。注意这些都是字节操纵流，与底层的nio性质一致。<code>Reader</code>和<code>Writer</code>这种字符模式类不能用于产生通道；但是<code>java.nio.channels.Channels</code>类提供了实用方法，用以在通道中产生<code>Reader</code>和<code>Writer</code>。</p>
+<p><code>getChannel()</code>将会产生一个<code>FileChannel</code>。通道是一种相当基础的东西：可以向它传送用于读写的<code>ByteBuffer</code>，并且可以锁定文件的某些区域用于独占式访问。</p>
+<p>将字节存放在<code>ByteBuffer</code>的方法之一是：使用一种“put”方法直接对它们进行填充，填入一个或多个字节，或基本数据类型的值。也可以使用<code>wrap()</code>方法将已存在的字节数组“包装”到ByteBuffer中。一旦如此，就不再复制底层的数组，而是把它作为所产生的ByteBuffer的存储器，称之为数组支持的<code>ByteBuffer</code>。</p>
+<p>对于只读操作，必须显式的使用静态的<code>allocate()</code>方法来分配<code>ByteBuffer</code>，分配的大小单位是字节。nio的目标就是快速移动大量数据，因此<code>ByteBuffer</code>的大小就显得尤为重要–实际上，这里使用的1K可能比通常使用的小一点（必须通过实际运行应用程序来找到最佳尺寸）。</p>
+<p>甚至达到更高的速度也有可能，方法就是使用<code>allocateDirect()</code>而不是<code>allocate()</code>，以产生一个与操作系统有更高耦合性的“直接”缓冲器。但是，这种分配的开支会更大，并且具体实现也随操作系统的不同而不同，因此必须再次实际运行应用程序来查看直接缓冲是否可以使程序获得速度上的优势。</p>
+<p>一旦调用<code>read()</code>来告知<code>FileChannel</code>向<code>ByteBuffer</code>存储字节，就必须调用缓冲器上的<code>flip()</code>,让它做好让别人读取字节的准备。（适用于获取最大速度）如果打算使用缓冲器执行进一步的<code>read()</code>操作，也必须得调用<code>clear()</code>来为每个<code>read()</code>做好准备。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BSIZE = <span class="number">1024</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws IOException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(args.length != <span class="number">2</span>)&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"arguments: sourcefile destfile"</span>);</span><br><span class="line">        System.<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    FileChannel in = <span class="keyword">new</span> FileInputStream(args[<span class="number">0</span>]).getChannel(),</span><br><span class="line">            out = <span class="keyword">new</span> FileOutputStream(args[<span class="number">1</span>]).getChannel();</span><br><span class="line">    ByteBuffer <span class="built_in">buffer</span> = ByteBuffer.allocate(BSIZE);</span><br><span class="line">    <span class="keyword">while</span>(in.<span class="built_in">read</span>(<span class="built_in">buffer</span>) != <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">buffer</span>.flip();<span class="comment">//Prepare for writing</span></span><br><span class="line">        out.<span class="built_in">write</span>(<span class="built_in">buffer</span>);</span><br><span class="line">        <span class="built_in">buffer</span>.<span class="built_in">clear</span>();<span class="comment">//Prepare for reading</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>当<code>FileChannel.read()</code>返回-1时（一个分界符，源于Unix和C），表示已经到达了输入的末尾。每次<code>read()</code>操作之后，就会将数据输入到缓冲器中，<code>flip()</code>则是准备缓冲器以便它的信息可以由<code>write()</code>提取。<code>write()</code>操作之后，信息仍在缓冲器中，接着<code>clear()</code>操作则对所有的内部指针重新安排，以便缓冲器在另一个<code>read()</code>操作期间能够做好接收数据的准备</strong>。</p>
+<p>特殊方法<code>transferTo()</code>和<code>transferFrom()</code>允许将一个通道和另一个通道直接相连。与传统的访问文件方式相比可以减少数据从内核到用户空间的复制，数据直接在内核空间中移动，在Linux中使用sendfile系统调用。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FileChannel <span class="keyword">in</span> = <span class="keyword">new</span> <span class="constructor">FileInputStream(<span class="params">args</span>[0])</span>.get<span class="constructor">Channel()</span>,</span><br><span class="line">        out = <span class="keyword">new</span> <span class="constructor">FileOutputStream(<span class="params">args</span>[1])</span>.get<span class="constructor">Channel()</span>;</span><br><span class="line"><span class="keyword">in</span>.transfer<span class="constructor">To(0, <span class="params">in</span>.<span class="params">size</span>()</span>, out);</span><br><span class="line"><span class="comment">//Or:</span></span><br><span class="line"><span class="comment">//out.transferFrom(in, 0, in.size());</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="转换数据"><a href="#转换数据" class="headerlink" title="转换数据"></a>转换数据</h4><p><code>java.nio.CharBuffer</code>的<code>toString()</code>方法返回一个包含缓冲器中所有字符的字符串。Bytebuffer可以看做是具有<code>asCharBuffer()</code>方法的<code>CharBuffer</code></p>
+<p>缓冲器容纳的是普通的字节，为了把它们转换成字符，要么在输入它们的时候对其进行编码（这样，它们输出时才具有意义，否则会有乱码），要么在将其从缓冲器输出时对它们进行解码。java.nio.charset.Charset类提供了把数据编码成多种不同类型的字符集的工具</p>
+<p><strong>缓存器的<code>rewind()</code>方法：返回到数据开始部分</strong><br><code>System.getProperty(“file.encoding”)</code>发现默认字符集，产生代表字符集名称的字符串。</p>
+<h4 id="获取基本类型"><a href="#获取基本类型" class="headerlink" title="获取基本类型"></a>获取基本类型</h4><p><code>ByteBuffer</code>只能保存字节类型的数据，但是它具有从其所容纳的字节中产生出各种不同基本类型值的方法。</p>
+<p>分配一个<code>ByteBuffer</code>之后，缓冲器（ByteBuffer）自动把自己的内容置为零。</p>
+<p>向<code>ByteBuffer</code>插入基本类型数据的最简单的方法是：利用<code>asCharBuffer()</code>、<code>asShortBuffer()</code>等获得该缓冲器上的视图，然后使用视图的<code>put()</code>方法。此方法适用于所有基本数据类型。使用<code>ShorBuffer</code>的<code>put()</code>方法时，需要进行类型转换（注意类型转换会截取或改变结果）。而其他所有的视图缓冲器在使用<code>put()</code>方法时，不需要进行类型转换。</p>
+<h4 id="视图缓冲器"><a href="#视图缓冲器" class="headerlink" title="视图缓冲器"></a>视图缓冲器</h4><p>视图缓冲器（view buffer）可以让我们通过某个特定的基本数据类型的视窗查看其底层的<code>ByteBuffer</code>。<code>ByteBuffer</code>依然是实际存储数据的地方，“支持”着前面的视图，因此，<strong>对视图的任何修改都会映射成为对<code>ByteBuffer</code>中数据的修改</strong>。视图还允许从<code>ByteBuffer</code>一次一个地（与<code>ByteBuffer</code>所支持的方式相同）或者成批地（放入数组中）读取基本类型值。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer bb = ByteBuffer.allocate(BSIZE);</span><br><span class="line">IntBuffer ib = bb.asIntBuffer();</span><br><span class="line"><span class="comment">//Store an array of int:</span></span><br><span class="line">ib.put(new <span class="built_in">int</span>[]&#123;<span class="number">11</span>,<span class="number">42</span>,<span class="number">47</span>,<span class="number">99</span>,<span class="number">143</span>,<span class="number">811</span>,<span class="number">1016</span>&#125;);</span><br><span class="line"><span class="comment">//Absolute location read and write:</span></span><br><span class="line">System.<span class="keyword">out</span>.println(ib.<span class="keyword">get</span>(<span class="number">3</span>));</span><br><span class="line">ib.put(<span class="number">3</span>,<span class="number">1811</span>);</span><br><span class="line"><span class="comment">//Setting a new limit before rewinding the buffer.</span></span><br><span class="line">ib.flip();</span><br><span class="line"><span class="keyword">while</span>(ib.hasRemaining())&#123;</span><br><span class="line">    <span class="built_in">int</span> i = ib.<span class="keyword">get</span>();</span><br><span class="line">    System.<span class="keyword">out</span>.println(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>get()</code>和<code>put()</code>方法调用直接访问底层<code>ByteBuffer</code>中的某个整数位置。注意，这些通过直接与<code>ByteBuffer</code>对话访问绝对位置的方式也同样适用于基本类型。</p>
+<p>一旦底层的<code>ByteBuffer</code>通过视图缓冲器填满了整数或其他类型数据时，就可以直接被写到通道中了。使用视图缓冲器可以把任何数据都转化成某一特定的基本类型。</p>
+<p><strong>字节存放次序</strong></p>
+<p>不同的机器可能会使用不同的字节排序方法来存储数据。“big endian”（高位字节优先）将高位字节存放在地址最低的存储器单元。“litter endian”（低位字节优先）则是将高位字节放在地址最高的存储器单元。当存储量大于一个字节时，像<code>int</code>、<code>float</code>等，就要考虑字节的顺序问题了。<code>ByteBuffer</code>是以高字节优先的形式存储数据的，并且数据在网上传送时也常常使用高位优先的形式。可以使用带有参数的<code>ByteOrder.BIG_ENDIAN</code>或<code>ByteOrder.LITTLE_ENDIAN</code>的<code>order()</code>方法改变<code>ByteBuffer</code>的字节排序方式。</p>
+<p>如果以<code>short</code>(<code>ByteBuffer.asShortBuffer</code>)形式读取数据，得到的数字是97（二进制的形式为00000000 01100001）；但是如果将<code>ByteBuffer</code>更改成低位优先形式，得到的数字却是24832（01100001 00000000）</p>
+<p><code>ByteBuffer</code>有足够的空间，以存储作为外部缓冲器的<code>charArray</code>中的所有字节，因此可以调用<code>array()</code>方法显示视图底层的字节。<code>array()</code>方法是“可选的”，并且只能对由数组支持的缓冲器调用此方法；否则，将会抛出<code>UnsupportedOperationException</code>。</p>
+<h4 id="用缓冲器操纵数据"><a href="#用缓冲器操纵数据" class="headerlink" title="用缓冲器操纵数据"></a>用缓冲器操纵数据</h4><p>注意，<strong><code>ByteBuffer</code>是将数据移进移出通道的唯一方式，并且只能创建一个独立的基本类型缓冲器，或者使用“as”方法从<code>ByteBuffer</code>中获得</strong>。也就是说，不能把基本类型的缓冲器转换成<code>ByteBuffer</code>。然而，由于可以经由视图缓冲器将基本类型数据移进移出ByteBuffer，所以这也不是什么真正的限制了。</p>
+<h4 id="缓冲器的细节"><a href="#缓冲器的细节" class="headerlink" title="缓冲器的细节"></a>缓冲器的细节</h4><p>Buffer由数据和可以高效地访问及操纵这些数据的四个索引（mark（标记）、position（位置）、limit（界限）、capacity（容量））组成。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>capacity( )</td>
+<td>返回缓冲区容量</td>
+</tr>
+<tr>
+<td>clear( )</td>
+<td>清空缓冲区，将position设置为0，limit设置为容量。我们可以调用此方法覆写缓冲区。</td>
+</tr>
+<tr>
+<td>flip( )</td>
+<td>将position和limit设置为0，此方法用于准备从缓冲区读取已经写入的数据。</td>
+</tr>
+<tr>
+<td>limit( )</td>
+<td>返回limit值</td>
+</tr>
+<tr>
+<td>limit(int lim)</td>
+<td>设置limit值</td>
+</tr>
+<tr>
+<td>mark( )</td>
+<td>将mark设置为position</td>
+</tr>
+<tr>
+<td>reset()</td>
+<td>将position设置为mark</td>
+</tr>
+<tr>
+<td>rewind()</td>
+<td>将position设置为0，mark设置为-1</td>
+</tr>
+<tr>
+<td>position( )</td>
+<td>返回position值</td>
+</tr>
+<tr>
+<td>position(int pos)</td>
+<td>设置position值</td>
+</tr>
+<tr>
+<td>remaining( )</td>
+<td>返回(limit - position)</td>
+</tr>
+<tr>
+<td>hasRemaining( )</td>
+<td>若有介于position和limit之间的元素，则返回true</td>
+</tr>
+</tbody></table>
+<p>io.UsingBuffers的例子可以很好的理解这些方法。尽管可以通过对某个char数组调用<code>wrap()</code>方法（<code>CharBuffer java.nio.CharBuffer.wrap(CharSequence csq)</code>）来直接产生一个<code>CharBuffer</code>，但是在本例中取而代之的是分配一个底层的<code>ByteBuffer</code>，产生的<code>CharBuffer</code>只是<code>ByteBuffer</code>上的一个视图而已。这里要强调的是，我们总是以操纵<code>ByteBuffer</code>为目标，因为它可以和通道进行交互。</p>
+<h4 id="内存映射文件"><a href="#内存映射文件" class="headerlink" title="内存映射文件"></a>内存映射文件</h4><p>内存映射文件允许我们创建和修改那些因为太大而不能放入内存的文件。有了内存映射文件，我们就可以假定整个文件都放在内存中，而且可以完全把它当作非常大的数组来访问。这种方法极大地简化了用于修改文件的代码。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.RandomAccessFile;</span><br><span class="line"><span class="keyword">import</span> java.nio.MappedByteBuffer;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.FileChannel;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LargeMappedFiles</span> &#123;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> length = <span class="number">0X8FFFFFF</span>;<span class="comment">// 128MB</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws Exception </span>&#123;</span><br><span class="line">        MappedByteBuffer out = <span class="keyword">new</span> RandomAccessFile(<span class="string">"test.data"</span>, <span class="string">"rw"</span>)</span><br><span class="line">                .getChannel().<span class="built_in">map</span>(FileChannel.MapMode.READ_WRITE, <span class="number">0</span>, length);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++)&#123;</span><br><span class="line">            out.<span class="built_in">put</span>((<span class="keyword">byte</span>)<span class="string">'x'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Finished writing"</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = length/<span class="number">2</span>; i &lt; length/<span class="number">2</span> + <span class="number">6</span>;i++)&#123;</span><br><span class="line">            System.out.<span class="built_in">print</span>((<span class="keyword">char</span>)out.<span class="built_in">get</span>(i));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了既能写又能读，先由RandomAccessFile开始，获得该文件上的通道，然后调用map()产生MappedByteBuffer，这是一种特殊类型的直接缓冲器。注意必须指定映射文件的初始位置和映射区域的长度，这意味着可以映射某个大文件的较小的部分。</p>
+<p>MappedByteBuffer由ByteBuffer继承而来，因此它具有ByteBuffer的所有方法（包括asCharBuffer()）。<br>只有一部份文件放入了内存，文件的其他部分被交换了出去，用这种方式，很大的文件（可达2GB）也可以很容易地修改。注意底层操作系统的文件映射工具是用来最大化地提高性能。</p>
+<p><strong>性能</strong></p>
+<p><strong>尽管“映射写”似乎要用到FileOutputStream，但是映射文件中的所有输出必须使用RandomAccessFile</strong>。<br>即使建立映射文件的花费很大，但是整体受益比起I/O流来说还是很显著的。</p>
+<h4 id="文件加锁"><a href="#文件加锁" class="headerlink" title="文件加锁"></a>文件加锁</h4><p>文件锁对其他的操作系统进程是可见的，因为Java的文件加锁直接映射到了本地操作系统的加锁工具。</p>
+<p><strong>通过对FileChannel调用tryLock()或lock()，就可以获得整个文件的FileLock。（SocketChannel、DatagramChannel和ServerSocketChannel不需要加锁，因为它们是从单进程实体继承而来，我们通常不再两个进程之间共享网络socket）。tryLock()是非阻塞式的，它设法获得锁，但是如果不能获得（当其他一些进程已经持有相同的锁，并且不共享时），它将直接从方法调用返回。lock()则是阻塞式的，它要阻塞进程直至锁可以获得，或调用lock()的线程中断，或调用lock()的通道关闭。使用FileLock.release()可以释放锁</strong>。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tryLock(<span class="keyword">long</span> <span class="built_in">position</span>, <span class="keyword">long</span> <span class="built_in">size</span>, <span class="keyword">boolean</span> shared)</span><br><span class="line">lock(<span class="keyword">long</span> <span class="built_in">position</span>, <span class="keyword">long</span> <span class="built_in">size</span>, <span class="keyword">boolean</span> shared)</span><br></pre></td></tr></table></figure>
+
+<p>加锁的区域有size-position决定。第三个参数指定是否是共享锁。<br>锁的类型可以通过FileLock.isShared()进行查询。</p>
+<p><strong>对映射文件的部分加锁</strong><br>文件映射通常用于极大的文件。我们需要对这种巨大的文件进行部分加锁，以便其他进程可以修改文件中未被加锁的部分。</p>
+<h3 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h3><table>
+<thead>
+<tr>
+<th>压缩类</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CheckedInputStream</td>
+<td>GetCheckSum()为任何 InputStream 产生校验和（不仅是解压）</td>
+</tr>
+<tr>
+<td>CheckedOutputStream</td>
+<td>GetCheckSum()为任何 OutputStream 产生校验和（不仅是解压）</td>
+</tr>
+<tr>
+<td>DeflaterOutputStream</td>
+<td>用于压缩类的基础类</td>
+</tr>
+<tr>
+<td>ZipOutputStream</td>
+<td>一个 DeflaterOutputStream，将数据压缩成 Zip 文件格式</td>
+</tr>
+<tr>
+<td>GZIPOutputStream</td>
+<td>一个 DeflaterOutputStream，将数据压缩成 GZIP 文件格式</td>
+</tr>
+<tr>
+<td>InflaterInputStream</td>
+<td>用于解压类的基础类</td>
+</tr>
+<tr>
+<td>ZipInputStream</td>
+<td>一个 DeflaterInputStream，解压用 Zip 文件格式保存的数据</td>
+</tr>
+<tr>
+<td>GZIPInputStream</td>
+<td>一个 DeflaterInputStream，解压用 GZIP 文件格式保存的数据</td>
+</tr>
+</tbody></table>
+<h4 id="用GZIP进行简单压缩"><a href="#用GZIP进行简单压缩" class="headerlink" title="用GZIP进行简单压缩"></a>用GZIP进行简单压缩</h4><p>GZIP接口非常简单，因此如果我们只想对单个数据流（而不是一系列互异数据）进行压缩，那么它可能是比较适合的选择。</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BufferedReader <span class="keyword">in</span> = <span class="keyword">new</span> <span class="type">BufferedReader</span>(<span class="keyword">new</span> <span class="type">FileReader</span>(args[<span class="number">0</span>]));</span><br><span class="line">BufferedOutputStream out = <span class="keyword">new</span> <span class="type">BufferedOutputStream</span>(<span class="keyword">new</span> <span class="type">GZIPOutputStream</span>(<span class="keyword">new</span> <span class="type">FileOutputStream</span>(<span class="string">"test.gz"</span>)));</span><br><span class="line">BufferedReader in2 = <span class="keyword">new</span> <span class="type">BufferedReader</span>(<span class="keyword">new</span> <span class="type">InputStreamReader</span>(<span class="keyword">new</span> <span class="type">GZIPInputStream</span>(<span class="keyword">new</span> <span class="type">FileInputStream</span>(<span class="string">"test.gz"</span>))));</span><br></pre></td></tr></table></figure>
+<h4 id="用Zip进行简单压缩"><a href="#用Zip进行简单压缩" class="headerlink" title="用Zip进行简单压缩"></a>用Zip进行简单压缩</h4><p>java对zip支持更加全面，利用该库可以方便保存多个文件。使用的是标准zip格式，所以能与当前那些可通过因特网下载的压缩工具很好地协作。<br>两种Checksum类型：Adler32（快一些）和CRC32（慢一些，但是更准确）</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">import java.util.zip.*;</span><br><span class="line">import java.io.*;</span><br><span class="line">import java.util.*;</span><br><span class="line">import static net.mindview.util.Print.*;</span><br><span class="line">public <span class="keyword">class</span> ZipCompress &#123;</span><br><span class="line">    public static void main(String<span class="literal">[]</span> args)</span><br><span class="line">        throws IOException &#123;</span><br><span class="line">        FileOutputStream f = <span class="keyword">new</span> <span class="constructor">FileOutputStream(<span class="string">"test.zip"</span>)</span>;</span><br><span class="line">        CheckedOutputStream csum =</span><br><span class="line">            <span class="keyword">new</span> <span class="constructor">CheckedOutputStream(<span class="params">f</span>, <span class="params">new</span> Adler32()</span>);</span><br><span class="line">        ZipOutputStream zos = <span class="keyword">new</span> <span class="constructor">ZipOutputStream(<span class="params">csum</span>)</span>;</span><br><span class="line">        BufferedOutputStream out =</span><br><span class="line">            <span class="keyword">new</span> <span class="constructor">BufferedOutputStream(<span class="params">zos</span>)</span>;</span><br><span class="line">        zos.set<span class="constructor">Comment(<span class="string">"A test of Java Zipping"</span>)</span>;</span><br><span class="line">        <span class="comment">// No corresponding getComment(), though.</span></span><br><span class="line">        for(String arg : args) &#123;</span><br><span class="line">            print(<span class="string">"Writing file "</span> + arg);</span><br><span class="line">            BufferedReader <span class="keyword">in</span> =</span><br><span class="line">                <span class="keyword">new</span> <span class="constructor">BufferedReader(<span class="params">new</span> FileReader(<span class="params">arg</span>)</span>);</span><br><span class="line">            zos.put<span class="constructor">NextEntry(<span class="params">new</span> ZipEntry(<span class="params">arg</span>)</span>);</span><br><span class="line">            <span class="built_in">int</span> c;</span><br><span class="line">            <span class="keyword">while</span>((c = <span class="keyword">in</span>.read<span class="literal">()</span>) != -<span class="number">1</span>)</span><br><span class="line">                out.write(c);</span><br><span class="line">            <span class="keyword">in</span>.close<span class="literal">()</span>;</span><br><span class="line">            out.flush<span class="literal">()</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        out.close<span class="literal">()</span>;</span><br><span class="line">        <span class="comment">// Checksum valid only after the file has been closed!</span></span><br><span class="line">        print(<span class="string">"Checksum: "</span> + csum.get<span class="constructor">Checksum()</span>.get<span class="constructor">Value()</span>);</span><br><span class="line">        <span class="comment">// Now extract the files:</span></span><br><span class="line">        print(<span class="string">"Reading file"</span>);</span><br><span class="line">        FileInputStream fi = <span class="keyword">new</span> <span class="constructor">FileInputStream(<span class="string">"test.zip"</span>)</span>;</span><br><span class="line">        CheckedInputStream csumi =</span><br><span class="line">            <span class="keyword">new</span> <span class="constructor">CheckedInputStream(<span class="params">fi</span>, <span class="params">new</span> Adler32()</span>);</span><br><span class="line">        ZipInputStream in2 = <span class="keyword">new</span> <span class="constructor">ZipInputStream(<span class="params">csumi</span>)</span>;</span><br><span class="line">        BufferedInputStream bis = <span class="keyword">new</span> <span class="constructor">BufferedInputStream(<span class="params">in2</span>)</span>;</span><br><span class="line">        ZipEntry ze;</span><br><span class="line">        <span class="keyword">while</span>((ze = in2.get<span class="constructor">NextEntry()</span>) != null) &#123;</span><br><span class="line">            print(<span class="string">"Reading file "</span> + ze);</span><br><span class="line">            <span class="built_in">int</span> x;</span><br><span class="line">            <span class="keyword">while</span>((x = bis.read<span class="literal">()</span>) != -<span class="number">1</span>)</span><br><span class="line">                <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.write(x);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(args.length<span class="operator"> == </span><span class="number">1</span>)</span><br><span class="line">            print(<span class="string">"Checksum: "</span> + csumi.get<span class="constructor">Checksum()</span>.get<span class="constructor">Value()</span>);</span><br><span class="line">        bis.close<span class="literal">()</span>;</span><br><span class="line">        <span class="comment">// Alternative way to open and read Zip files:</span></span><br><span class="line">        ZipFile zf = <span class="keyword">new</span> <span class="constructor">ZipFile(<span class="string">"test.zip"</span>)</span>;</span><br><span class="line">        Enumeration e = zf.entries<span class="literal">()</span>;</span><br><span class="line">        <span class="keyword">while</span>(e.has<span class="constructor">MoreElements()</span>) &#123;</span><br><span class="line">            ZipEntry ze2 = (ZipEntry)e.next<span class="constructor">Element()</span>;</span><br><span class="line">            print(<span class="string">"File: "</span> + ze2);</span><br><span class="line">            <span class="comment">// ... and extract the data as before</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/* if(args.length == 1) */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="comment">/* (Execute to see output) */</span><span class="comment">//:~</span></span><br></pre></td></tr></table></figure>
+<p>对于要加入压缩档的每一个文件，都必须调用 putNextEntry()，并将其传递给一个 ZipEntry 对象。ZipEntry 对象包含了一个功能全面的接口，利用它可以获取和设置 Zip 文件内那个特定的 Entry（入口）上能够接受的所有数据：名字、压缩后和压缩前的长度、日期、CRC 校验和、额外字段的数据、注释、压缩方法以及它是否一个目录入口等等。然而，虽然 Zip 格式提供了设置密码的方法，但 Java 的 Zip 库没有提供这方面的支持。而且尽管 CheckedInputStream 和 CheckedOutputStream 同时提供了对 Adler32 和CRC32 校验和的支持，但是 ZipEntry 只支持 CRC 的接口。这虽然属于基层 Zip 格式的限制，但却限制了我们使用速度更快的 Adler32。</p>
+<p>为解压文件，ZipInputStream 提供了一个 getNextEntry()方法，能在有的前提下返回下一个 ZipEntry 。作为一个更简洁的方法，可以用 ZipFile 对象读取文件。该对象有一个 entries()方法，可以为 ZipEntry 返回一个 Enumeration（枚举）。</p>
+<p>使用 GZIP 或 Zip 库时并不仅仅限于文件——可以压缩任何东西，包括要通过网络连接发送的数据。</p>
+<h4 id="Java档案文件"><a href="#Java档案文件" class="headerlink" title="Java档案文件"></a>Java档案文件</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">jar</span> <span class="selector-attr">[选项]</span> 说明<span class="selector-attr">[详情单]</span> 输入文件</span><br></pre></td></tr></table></figure>
+<p>其中，“选项”用一系列字母表示（不必输入连字号或其他任何指示符）和tar命令类似。如下所示：</p>
+<ul>
+<li>c 创建新的或空的压缩档</li>
+<li>t 列出目录表</li>
+<li>x 解压所有文件</li>
+<li>x file 解压指定文件</li>
+<li>f 指出“我准备向你提供文件名”。若省略此参数，jar 会假定它的输入来自标准输入；或者在它创建文件时，输出会进入标准输出内</li>
+<li>m 指出第一个参数将是用户自建的详情表文件的名字</li>
+<li>v 产生详细输出，对 jar 做的工作进行巨细无遗的描述</li>
+<li>O 只保存文件；不压缩文件（用于创建一个 JAR 文件，以便我们将其置入自己的类路径中）</li>
+<li>M 不自动生成详情表文件</li>
+</ul>
+<h3 id="对象序列化"><a href="#对象序列化" class="headerlink" title="对象序列化"></a>对象序列化</h3><p>如果需要一个更严格的持久性机制，可以考虑像Hibernate之类的工具。对象序列化加入到语言中是为了支持两种主要特性，一是Java的远程方法调用（Remote Method Invocation，RMI）；二是Java Beans，后者由 Java 1.1 引入。使用一个 Bean 时，它的状态信息通常在设计期间配置好。</p>
+<p><strong>对象实现了Serializable接口，序列化对象就会很简单。首先要创建某些 OutputStream 对象，然后将其封装到 ObjectOutputStream 对象内。此时，只需调用 writeObject() 即可完成对象的序列化，并将其发送给 OutputStream。相反的过程是将一个InputStream 封装到 ObjectInputStream 内，然后调用 readObject()。和往常一样，我们最后获得的是指向一个上溯造型 Object 的句柄，所以必须下溯造型，以便能够直接设置</strong>。</p>
+<p>每个类都持有一个特定的serialVersionUID，如果待序列化的对象和目标对象的serialVersionUID不同，那么在反序列化时就会抛出InvalidClassException异常。</p>
+<p>对象序列化特别“聪明”的一个地方是它不仅保存了对象的“全景图”，而且能追踪对象内包含的所有句柄并保存那些对象；接着又能对每个对象内包含的句柄进行追踪；以此类推。我们有时将这种情况称为“对象网”</p>
+<h4 id="寻找类"><a href="#寻找类" class="headerlink" title="寻找类"></a>寻找类</h4><p>另一台计算机上的程序要想利用序列化的文件内容还原对象，必须保证Java虚拟机能找到相关class文件。</p>
+<h4 id="序列化的控制"><a href="#序列化的控制" class="headerlink" title="序列化的控制"></a>序列化的控制</h4><p>通过实现 Externalizable 接口，用它代替 Serializable 接口，便可控制序列化的具体过程。这个 Externalizable 接口扩展了 Serializable，并增添了两个方法：writeExternal()和 readExternal() 。在序列化和重新装配的过程中，会自动调用这两个方法，以便我们执行一些特殊操作。</p>
+<p><strong>与恢复一个 Serializable（可序列化）对象不同。在后者的情况下，对象完全以它保存下来的二进制位为基础恢复，不存在构建器调用。而对一个 Externalizable 对象，所有普通的默认构建行为都会发生（包括在字段定义时的初始化），而且会调用 readExternal()。必须注意这一事实——特别注意所有默认的构建行为都会进行——否则很难在自己的 Externalizable 对象中产生正确的行为。所以默认构造器得是public的，否则会抛出异常</strong>。</p>
+<p>为了让一切正常运作起来，千万不可仅在 writeExternal()方法执行期间写入对象的重要数据（没有默认的行为可用来为一个 Externalizable 对象写入所有成员对象）的，而是必须在 readExternal()方法中也恢复那些数据。</p>
+<p><strong>transient（临时）关键字</strong></p>
+<p>即使那种信息在对象中具有“private”（私有）属性，但一旦经序列化处理，人们就可以通过读取一个文件，或者拦截网络传输得到它。为解决这个问题，可以用transient（临时）逐个字段地关闭序列化</p>
+<p>static 代表类成员，也不会被序列化</p>
+<p><strong>Externalizable 的替代方法</strong></p>
+<p>我们可以实现 Serializable 接口，并添加（注意是“添加”，而非“覆盖”或者“实现”）名为 writeObject() 和 readObject()的方法。一旦对象被序列化或者重新装配，就会分别调用那两个方法。也就是说，只要提供了这两个方法，就会优先使用它们，而不考虑默认的序列化机制。<br>这些方法必须含有下列准确的签名：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(ObjectOutputStream stream)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> readObject(ObjectInputStream stream) <span class="keyword">throws</span> IOException, ClassNotFoundException</span><br></pre></td></tr></table></figure>
+<p><strong>从设计的角度出发，情况变得有些扑朔迷离。首先，大家可能认为这些方法不属于基础类或者 Serializable接口的一部分，它们应该在自己的接口中得到定义。但请注意它们被定义成“private”，这意味着它们只能由这个类的其他成员调用。然而，我们实际并不从这个类的其他成员中调用它们，而是由ObjectOutputStream 和 ObjectInputStream 的 writeObject() 及 readObject()方法来调用我们对象的writeObject() 和 readObject()方法</strong>。</p>
+<p>我们调用 ObjectOutputStream.writeObject()的时候，我们传递给它的 Serializable 对象似乎会被检查是否实现了自己的 writeObject() 。若答案是肯定的是，便会跳过常规的序列化过程，并调用writeObject() 。readObject()也同样。</p>
+<p><strong>在我们的 writeObject() 内部，可以调用 defaultWriteObject()，从而决定执行默认的writeObject()。准备通过默认机制写入对象的非 transient 部分，那么必须调用 defaultWriteObject()，令其作为writeObject() 中的第一个操作；并调用 defaultReadObject()，令其作为 readObject()的第一个操作</strong>。</p>
+<h4 id="使用持久性"><a href="#使用持久性" class="headerlink" title="使用持久性"></a>使用持久性</h4><p>针对一个字节数组应用对象的序列化，从而实现对任何 Serializable（可序列化）对象的一个“全面复制”（全面复制意味着复制的是整个对象网，而不仅是基本对象和它的句柄）。</p>
+<p>只要将所有东西都序列化到单独一个数据流里，就能恢复获得与以前写入时完全一样的对象网，不会不慎造成对象的重复（实际两个引用都是指向同一个对象，但是如果分开写入不同的流，恢复时，会重复恢复出不同的对象）。</p>
+<p>如果想保存系统状态，最安全的做法是当作一种“原子”操作序列化。应将构成系统状态的所有对象都置入单个容器内，并在一次操作里完成那个容器的写入。这样一来，同样只需一次方法调用，即可成功恢复之。</p>
+<p>如将一个 static 字段置入基础类，结果只会产生一个字段，因为 static 字段未在衍生类中复制。假如想序列化 static 值，必须亲自动手。</p>
+<h3 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h3><p>书中提到了<code>javax.xml.*</code>类库，XOM类库。此外还有dom4j。</p>
+<h3 id="Preferences"><a href="#Preferences" class="headerlink" title="Preferences"></a>Preferences</h3><p>userNodeForPackage()用于个别用户偏好，systemNodeForPackage()用于通用的安装配置。在非静态方法内部，通常用getClass() 标识节点，静态方法中可以用.class。<br>keys()方法以String[]的形式返回。<br>put()，get()有系列针对基本类型的方法<br>get()如果没有这个条目，将使用第二个参数设置该条目。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Preferences prefs = <span class="module-access"><span class="module"><span class="identifier">Preferences</span>.</span></span>user<span class="constructor">NodeForPackage(PreferencesDemo.<span class="params">class</span>)</span>;</span><br><span class="line"><span class="built_in">int</span> usageCount = prefs.get<span class="constructor">Int(<span class="string">"UsageCount"</span>, 0)</span>;</span><br><span class="line">usageCount++;</span><br><span class="line">prefs.put<span class="constructor">Int(<span class="string">"UsageCount"</span>, <span class="params">usageCount</span>)</span>;</span><br></pre></td></tr></table></figure>
+<p>第一次运行程序时，UsageCount值为0，随后引用中，他将会是非零值。</p>
+<p>数据存储在哪里，不同的系统会不同，例如在windows中，就使用注册表。</p>
+<p><strong>Properties</strong></p>
+<p>Properties 类表示了一个持久的属性集。Properties 可保存在流中或从流中加载。属性列表中每个键及其对应值都是一个字符串。</p>
+<p>一个属性列表可包含另一个属性列表作为它的“默认值”；如果未能在原有的属性列表中搜索到属性键，则搜索第二个属性列表。（重载的构造器提供了这种功能）</p>
+<p>因为 Properties 继承于 Hashtable，所以可对 Properties 对象应用 put 和 putAll 方法。但不建议使用这两个方法，因为它们允许调用者插入其键或值不是 String 的项。相反，应该使用 setProperty 方法。如果在“不安全”的 Properties 对象（即包含非 String 的键或值）上调用 store 或 save 方法，则该调用将失败。类似地，如果在“不安全”的 Properties 对象（即包含非 String 的键）上调用 propertyNames 或 list 方法，则该调用将失败。</p>
+<p>load(Reader) / store(Writer, String) 方法按下面所指定的、简单的面向行的格式在基于字符的流中加载和存储属性。除了输入/输出流使用 ISO 8859-1 字符编码外，load(InputStream) / store(OutputStream, String) 方法与 load(Reader)/store(Writer, String) 对的工作方式完全相同。可以使用 Unicode 转义来编写此编码中无法直接表示的字符；转义序列中只允许单个 ‘u’ 字符。可使用 native2ascii 工具对属性文件和其他字符编码进行相互转换。</p>
+<p>loadFromXML(InputStream) 和 storeToXML(OutputStream, String, String) 方法按简单的 XML 格式加载和存储属性。默认使用 UTF-8 字符编码，但如果需要，可以指定某种特定的编码。XML 属性文档具有以下 DOCTYPE 声明：</p>
+ <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<p> 注意，导入或导出属性时不 访问系统 URI (<a href="http://java.sun.com/dtd/properties.dtd)；该系统" target="_blank" rel="noopener">http://java.sun.com/dtd/properties.dtd)；该系统</a> URI 仅作为一个唯一标识 DTD 的字符串：</p>
+<p><strong>JSON</strong></p>
+<p>json类库将在Java SE9中加入</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.473Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/11/06/thinking-in-java-note-7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java编程思想笔记七
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/10/30/thinking-in-java-note-5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Java编程思想笔记五</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-I-O-系统"><span class="toc-number">1.</span> <span class="toc-text">Java I&#x2F;O 系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#File类"><span class="toc-number">1.1.</span> <span class="toc-text">File类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#目录列表器"><span class="toc-number">1.1.1.</span> <span class="toc-text">目录列表器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#目录使用工具"><span class="toc-number">1.1.2.</span> <span class="toc-text">目录使用工具</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#目录的检查及创建"><span class="toc-number">1.1.3.</span> <span class="toc-text">目录的检查及创建</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出和输入"><span class="toc-number">1.2.</span> <span class="toc-text">输出和输入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#InputStream类型"><span class="toc-number">1.2.1.</span> <span class="toc-text">InputStream类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OutputStream类型"><span class="toc-number">1.2.2.</span> <span class="toc-text">OutputStream类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加属性和有用的接口"><span class="toc-number">1.3.</span> <span class="toc-text">添加属性和有用的接口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#通过-FilterInputStream-从-InputStream-里读入数据"><span class="toc-number">1.3.1.</span> <span class="toc-text">通过 FilterInputStream 从 InputStream 里读入数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通过-FilterOutputStream-向-OutputStream-里写入数据"><span class="toc-number">1.3.2.</span> <span class="toc-text">通过 FilterOutputStream 向 OutputStream 里写入数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reader-和-Writer"><span class="toc-number">1.4.</span> <span class="toc-text">Reader 和 Writer</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数据的来源和去处"><span class="toc-number">1.4.1.</span> <span class="toc-text">数据的来源和去处</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#更改数据流的行为"><span class="toc-number">1.4.2.</span> <span class="toc-text">更改数据流的行为</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#未发生改变的类"><span class="toc-number">1.4.3.</span> <span class="toc-text">未发生改变的类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自我独立的类：RandomAccessFile"><span class="toc-number">1.5.</span> <span class="toc-text">自我独立的类：RandomAccessFile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#I-O流的经典适用方式"><span class="toc-number">1.6.</span> <span class="toc-text">I&#x2F;O流的经典适用方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件读写的实用工具"><span class="toc-number">1.7.</span> <span class="toc-text">文件读写的实用工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标准I-O"><span class="toc-number">1.8.</span> <span class="toc-text">标准I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#从标准输入中读取"><span class="toc-number">1.8.1.</span> <span class="toc-text">从标准输入中读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#将System-out转换成PrintWriter"><span class="toc-number">1.8.2.</span> <span class="toc-text">将System.out转换成PrintWriter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#标准I-O重定向"><span class="toc-number">1.8.3.</span> <span class="toc-text">标准I&#x2F;O重定向</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进程控制"><span class="toc-number">1.9.</span> <span class="toc-text">进程控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新I-O"><span class="toc-number">1.10.</span> <span class="toc-text">新I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#转换数据"><span class="toc-number">1.10.1.</span> <span class="toc-text">转换数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取基本类型"><span class="toc-number">1.10.2.</span> <span class="toc-text">获取基本类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#视图缓冲器"><span class="toc-number">1.10.3.</span> <span class="toc-text">视图缓冲器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用缓冲器操纵数据"><span class="toc-number">1.10.4.</span> <span class="toc-text">用缓冲器操纵数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缓冲器的细节"><span class="toc-number">1.10.5.</span> <span class="toc-text">缓冲器的细节</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内存映射文件"><span class="toc-number">1.10.6.</span> <span class="toc-text">内存映射文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#文件加锁"><span class="toc-number">1.10.7.</span> <span class="toc-text">文件加锁</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#压缩"><span class="toc-number">1.11.</span> <span class="toc-text">压缩</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#用GZIP进行简单压缩"><span class="toc-number">1.11.1.</span> <span class="toc-text">用GZIP进行简单压缩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用Zip进行简单压缩"><span class="toc-number">1.11.2.</span> <span class="toc-text">用Zip进行简单压缩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Java档案文件"><span class="toc-number">1.11.3.</span> <span class="toc-text">Java档案文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象序列化"><span class="toc-number">1.12.</span> <span class="toc-text">对象序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#寻找类"><span class="toc-number">1.12.1.</span> <span class="toc-text">寻找类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#序列化的控制"><span class="toc-number">1.12.2.</span> <span class="toc-text">序列化的控制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用持久性"><span class="toc-number">1.12.3.</span> <span class="toc-text">使用持久性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XML"><span class="toc-number">1.13.</span> <span class="toc-text">XML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Preferences"><span class="toc-number">1.14.</span> <span class="toc-text">Preferences</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/11/04/thinking-in-java-note-6/';
+  this.page.identifier = '2014/11/04/thinking-in-java-note-6/';
+  this.page.title = 'Java编程思想笔记六';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

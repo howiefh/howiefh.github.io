@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>代码整洁之道(二) | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Clean Code, 代码整洁之道">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码整洁之道(二)">
+<meta property="og:url" content="http://howiefh.github.io/2014/06/15/clean-code-note-2/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="Clean Code, 代码整洁之道">
+<meta property="article:published_time" content="2014-06-15T15:08:00.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.470Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Clean Code">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-clean-code-note-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/06/15/clean-code-note-2/" class="article-date">
+  <time class="dt-published" datetime="2014-06-15T15:08:00.000Z" itemprop="datePublished">2014-06-15</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      代码整洁之道(二)
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象和数据结构"><span class="toc-number">1.</span> <span class="toc-text">对象和数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据抽象"><span class="toc-number">1.1.</span> <span class="toc-text">数据抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据、对象的反对称性"><span class="toc-number">1.2.</span> <span class="toc-text">数据、对象的反对称性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#得墨忒耳律"><span class="toc-number">1.3.</span> <span class="toc-text">得墨忒耳律</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#火车失事"><span class="toc-number">1.3.1.</span> <span class="toc-text">火车失事</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#混杂"><span class="toc-number">1.3.2.</span> <span class="toc-text">混杂</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#隐藏结构"><span class="toc-number">1.3.3.</span> <span class="toc-text">隐藏结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据传送对象"><span class="toc-number">1.4.</span> <span class="toc-text">数据传送对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#错误处理"><span class="toc-number">2.</span> <span class="toc-text">错误处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用异常而非返回码"><span class="toc-number">2.1.</span> <span class="toc-text">使用异常而非返回码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#先写Try-Catch-Finally语句"><span class="toc-number">2.2.</span> <span class="toc-text">先写Try-Catch-Finally语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用不可控异常"><span class="toc-number">2.3.</span> <span class="toc-text">使用不可控异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#给出异常发生的环境说明"><span class="toc-number">2.4.</span> <span class="toc-text">给出异常发生的环境说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#依调用者需要定义异常类"><span class="toc-number">2.5.</span> <span class="toc-text">依调用者需要定义异常类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义常规流程"><span class="toc-number">2.6.</span> <span class="toc-text">定义常规流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#别返回null值"><span class="toc-number">2.7.</span> <span class="toc-text">别返回null值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#别传递null值"><span class="toc-number">2.8.</span> <span class="toc-text">别传递null值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边界"><span class="toc-number">3.</span> <span class="toc-text">边界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用第三方代码"><span class="toc-number">3.1.</span> <span class="toc-text">使用第三方代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览和学习边界"><span class="toc-number">3.2.</span> <span class="toc-text">浏览和学习边界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#学习log4j"><span class="toc-number">3.3.</span> <span class="toc-text">学习log4j</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#学习性测试的好处不只是免费"><span class="toc-number">3.4.</span> <span class="toc-text">学习性测试的好处不只是免费</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用尚不存在的代码"><span class="toc-number">3.5.</span> <span class="toc-text">使用尚不存在的代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元测试"><span class="toc-number">4.</span> <span class="toc-text">单元测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TDD三定律"><span class="toc-number">4.1.</span> <span class="toc-text">TDD三定律</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保持测试整洁"><span class="toc-number">4.2.</span> <span class="toc-text">保持测试整洁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#整洁的测试"><span class="toc-number">4.3.</span> <span class="toc-text">整洁的测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#面向特定领域的测试语言"><span class="toc-number">4.3.1.</span> <span class="toc-text">面向特定领域的测试语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#双重标准"><span class="toc-number">4.3.2.</span> <span class="toc-text">双重标准</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#每个测试一个断言"><span class="toc-number">4.4.</span> <span class="toc-text">每个测试一个断言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#F-I-R-S-T"><span class="toc-number">4.5.</span> <span class="toc-text">F.I.R.S.T</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类"><span class="toc-number">5.</span> <span class="toc-text">类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类的组织"><span class="toc-number">5.1.</span> <span class="toc-text">类的组织</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类应该短小"><span class="toc-number">5.2.</span> <span class="toc-text">类应该短小</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#单一权责原则"><span class="toc-number">5.2.1.</span> <span class="toc-text">单一权责原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内聚"><span class="toc-number">5.2.2.</span> <span class="toc-text">内聚</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#保持内聚性就会得到许多短小的类"><span class="toc-number">5.2.3.</span> <span class="toc-text">保持内聚性就会得到许多短小的类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为了修改而组织"><span class="toc-number">5.3.</span> <span class="toc-text">为了修改而组织</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统"><span class="toc-number">6.</span> <span class="toc-text">系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#将系统的构造与使用分开"><span class="toc-number">6.1.</span> <span class="toc-text">将系统的构造与使用分开</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分解main"><span class="toc-number">6.1.1.</span> <span class="toc-text">分解main</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#工厂"><span class="toc-number">6.1.2.</span> <span class="toc-text">工厂</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖注入"><span class="toc-number">6.1.3.</span> <span class="toc-text">依赖注入</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扩容"><span class="toc-number">6.2.</span> <span class="toc-text">扩容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-代理"><span class="toc-number">6.3.</span> <span class="toc-text">Java 代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#纯-Java-AOP-框架"><span class="toc-number">6.4.</span> <span class="toc-text">纯 Java AOP 框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AspectJ-的方面"><span class="toc-number">6.5.</span> <span class="toc-text">AspectJ 的方面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试驱动系统框架"><span class="toc-number">6.6.</span> <span class="toc-text">测试驱动系统框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优化决策"><span class="toc-number">6.7.</span> <span class="toc-text">优化决策</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#明智使用添加了可论价值的标准"><span class="toc-number">6.8.</span> <span class="toc-text">明智使用添加了可论价值的标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统需要领域特定语言"><span class="toc-number">6.9.</span> <span class="toc-text">系统需要领域特定语言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#迭进"><span class="toc-number">7.</span> <span class="toc-text">迭进</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通过跌进设计达到整洁目的"><span class="toc-number">7.1.</span> <span class="toc-text">通过跌进设计达到整洁目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行所有测试"><span class="toc-number">7.2.</span> <span class="toc-text">运行所有测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重构"><span class="toc-number">7.3.</span> <span class="toc-text">重构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不可重复"><span class="toc-number">7.4.</span> <span class="toc-text">不可重复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表达力"><span class="toc-number">7.5.</span> <span class="toc-text">表达力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#尽可能少的类和方法"><span class="toc-number">7.6.</span> <span class="toc-text">尽可能少的类和方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#并发编程"><span class="toc-number">8.</span> <span class="toc-text">并发编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要并发"><span class="toc-number">8.1.</span> <span class="toc-text">为什么要并发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#并发防御原则"><span class="toc-number">8.2.</span> <span class="toc-text">并发防御原则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#单一权责原则-1"><span class="toc-number">8.2.1.</span> <span class="toc-text">单一权责原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#推论：限制数据作用域"><span class="toc-number">8.2.2.</span> <span class="toc-text">推论：限制数据作用域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#推论：使用数据复本"><span class="toc-number">8.2.3.</span> <span class="toc-text">推论：使用数据复本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#推论：线程应尽可能地独立"><span class="toc-number">8.2.4.</span> <span class="toc-text">推论：线程应尽可能地独立</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#了解Java库"><span class="toc-number">8.3.</span> <span class="toc-text">了解Java库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#了解执行模型"><span class="toc-number">8.4.</span> <span class="toc-text">了解执行模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#生产者-消费者模型"><span class="toc-number">8.4.1.</span> <span class="toc-text">生产者-消费者模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#读者-作者模型"><span class="toc-number">8.4.2.</span> <span class="toc-text">读者-作者模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#宴席哲学家"><span class="toc-number">8.4.3.</span> <span class="toc-text">宴席哲学家</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#警惕同步方法之间的依赖"><span class="toc-number">8.5.</span> <span class="toc-text">警惕同步方法之间的依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保持同步区域微小"><span class="toc-number">8.6.</span> <span class="toc-text">保持同步区域微小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#很难编写正确的关闭代码"><span class="toc-number">8.7.</span> <span class="toc-text">很难编写正确的关闭代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试线程代码"><span class="toc-number">8.8.</span> <span class="toc-text">测试线程代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#将伪失败看作可能的线程问题"><span class="toc-number">8.8.1.</span> <span class="toc-text">将伪失败看作可能的线程问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#先使非线程代码可工作"><span class="toc-number">8.8.2.</span> <span class="toc-text">先使非线程代码可工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#编写可插拔的线程代码"><span class="toc-number">8.8.3.</span> <span class="toc-text">编写可插拔的线程代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#编写可调整的线程代码"><span class="toc-number">8.8.4.</span> <span class="toc-text">编写可调整的线程代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#运行多于处理器数量的线程"><span class="toc-number">8.8.5.</span> <span class="toc-text">运行多于处理器数量的线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在不同平台上运行"><span class="toc-number">8.8.6.</span> <span class="toc-text">在不同平台上运行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#装置试错代码"><span class="toc-number">8.8.7.</span> <span class="toc-text">装置试错代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逐渐改进"><span class="toc-number">9.</span> <span class="toc-text">逐渐改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#味道与启发"><span class="toc-number">10.</span> <span class="toc-text">味道与启发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注释"><span class="toc-number">10.1.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境"><span class="toc-number">10.2.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数"><span class="toc-number">10.3.</span> <span class="toc-text">函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一般性问题"><span class="toc-number">10.4.</span> <span class="toc-text">一般性问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JAVA"><span class="toc-number">10.5.</span> <span class="toc-text">JAVA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#名称"><span class="toc-number">10.6.</span> <span class="toc-text">名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试"><span class="toc-number">10.7.</span> <span class="toc-text">测试</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="对象和数据结构"><a href="#对象和数据结构" class="headerlink" title="对象和数据结构"></a>对象和数据结构</h2><h3 id="数据抽象"><a href="#数据抽象" class="headerlink" title="数据抽象"></a>数据抽象</h3><p>隐藏实现并非只是在变量之间放上一个函数层那么简单。隐藏实现关乎抽象！类并不简单地用取值器或赋值器将其变量推向外界，而是暴露抽象接口，以便用户无需了解数据的实现就能操作数据本体。</p>
+<a id="more"></a>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Vehicle</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getFuelTankCapacityInGallons</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getGallonsOfGasoline</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Vehicle</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">getPercentFuelRemaining</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码可以确定前者里面都是些变量存取器，而却无法得知后者中的数据形态。</p>
+<h3 id="数据、对象的反对称性"><a href="#数据、对象的反对称性" class="headerlink" title="数据、对象的反对称性"></a>数据、对象的反对称性</h3><p>对象与数据结构之间的二分原理：<br>过程式代码(使用数据结构的代码)便于在不改动既有数据结构的前提下添加新函数。面向对象代码便于在不改动既有函数的前提下添加新类。</p>
+<p>反过来讲，过程式代码难以添加新数据结构，因为必须修改所有函数。面向对象代码难以添加新函数，因为必须修改所有类。</p>
+<p>过程式代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Square</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Point topLeft;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">double</span> side;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Point topLeft;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">double</span> height;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">double</span> width;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Circle</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Point center;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">double</span> radius;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Geometry</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">double</span> PI = <span class="number">3.141592653589793</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">area</span><span class="params">(Object shape)</span> <span class="keyword">throws</span> NoSuchShapeException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (shape <span class="keyword">instanceof</span> Square) &#123;</span><br><span class="line">            Square s = (Square)shape;</span><br><span class="line">            <span class="keyword">return</span> s.side * s.side;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (shape <span class="keyword">instanceof</span> Rectangle) &#123;</span><br><span class="line">            Rectangle r = (Rectangle)shape;</span><br><span class="line">            <span class="keyword">return</span> r.height * r.width;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (shape <span class="keyword">instanceof</span> Circle) &#123;</span><br><span class="line">            Circle c = (Circle)shape;</span><br><span class="line">            <span class="keyword">return</span> PI * c.radius * c.radius;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchShapeException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>多态式形状代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Square</span> <span class="keyword">implements</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Point topLeft;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> side;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">area</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> side*side;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">implements</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Point topLeft;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> height;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> width;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">area</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> height * width;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Circle</span> <span class="keyword">implements</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Point center;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> radius;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">double</span> PI = <span class="number">3.141592653589793</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">area</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> PI * radius * radius;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果需要添加新数据类型而不是新函数的时候。对象和面向对象就比较合适。需要添加新函数而不是数据类型的时候，过程式代码和数据结构更合适。</p>
+<h3 id="得墨忒耳律"><a href="#得墨忒耳律" class="headerlink" title="得墨忒耳律"></a>得墨忒耳律</h3><p>对象应该隐藏数据，暴露操作。类C的方法f只应该调用以下对象的方法</p>
+<ul>
+<li>C</li>
+<li>由f创建的对象</li>
+<li>作为参数传递给f的对象</li>
+<li>由C的实体变量持有的对象</li>
+</ul>
+<p>方法不应调用由任何函数返回的对象的方法；下列代码违反了得墨忒耳律：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> String outputDir = ctxt.getOptions().getStratchDir().getAbsolutePath()</span><br></pre></td></tr></table></figure>
+
+<h4 id="火车失事"><a href="#火车失事" class="headerlink" title="火车失事"></a>火车失事</h4><p>上面的代码看上去像是一列火车。这样的代码应该避免。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Options opts = ctxt.getOptions();</span><br><span class="line">File scratchDir = opts.getScratchDir();</span><br><span class="line"><span class="keyword">final</span> String outputDir = scratchDir.getAbsolutePath();</span><br></pre></td></tr></table></figure>
+
+<p>如果ctxt, Options, ScratchDir 只是数据结构，没有任何操作，得墨忒耳律就不适用了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> String outputDir = ctxt.options.scratchDir.absolutePath;</span><br></pre></td></tr></table></figure>
+
+<h4 id="混杂"><a href="#混杂" class="headerlink" title="混杂"></a>混杂</h4><p>避免创造混合的结构，一半是对象，一半是数据结构。</p>
+<h4 id="隐藏结构"><a href="#隐藏结构" class="headerlink" title="隐藏结构"></a>隐藏结构</h4><p>通过隐藏内部结构，避免违反得墨忒耳律。</p>
+<h3 id="数据传送对象"><a href="#数据传送对象" class="headerlink" title="数据传送对象"></a>数据传送对象</h3><p>最为精炼的数据结构，是一个只有公共变量、没有函数的类。这种数据结构有时被称为数据传送对象，或DTO(Data Transfer Objects)。DTO是非常有用的结构，尤其是在与数据库通信，或解析套接字传递的消息之类场景中。在应用程序代码里一系列将原始数据转换为数据库的翻译过程，它们往往是排头兵。</p>
+<p>Active Record 是一种特殊的DTO 形式。他是拥有公共变量的数据结构，但通常会拥有save和find这样的可浏览方法。一般是对数据库表或其他数据源的直接翻译。</p>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><h3 id="使用异常而非返回码"><a href="#使用异常而非返回码" class="headerlink" title="使用异常而非返回码"></a>使用异常而非返回码</h3><h3 id="先写Try-Catch-Finally语句"><a href="#先写Try-Catch-Finally语句" class="headerlink" title="先写Try-Catch-Finally语句"></a>先写Try-Catch-Finally语句</h3><p>某种意义上说，try代码块就像是事务，catch代码块将程序维持在一种持续状态，无论try代码块发生什么均如此。最好先写出try-catch-finally 语句。这能帮你定义代码的用户应该期待什么，无论try代码块中执行的代码出什么错都一样。</p>
+<h3 id="使用不可控异常"><a href="#使用不可控异常" class="headerlink" title="使用不可控异常"></a>使用不可控异常</h3><p>可控异常：每个方法的签名都要列出它可能传递给调用者的所有异常。并且这些异常是函数类型的一部分，如果签名与代码所做的实际之事不合，则不能通过编译。可控异常不好的地方就是你对一个异常要层层声明，会破坏开放封闭原则。</p>
+<h3 id="给出异常发生的环境说明"><a href="#给出异常发生的环境说明" class="headerlink" title="给出异常发生的环境说明"></a>给出异常发生的环境说明</h3><p>应创建信息充分的错误消息，消息中，包括失败的操作和失败类型。</p>
+<h3 id="依调用者需要定义异常类"><a href="#依调用者需要定义异常类" class="headerlink" title="依调用者需要定义异常类"></a>依调用者需要定义异常类</h3><p>依据来源分类(组件或其他)或依据类型分类(设备、网络、编程)，最重要的是考虑它们如何被捕获。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ACMEPort port = <span class="keyword">new</span> ACMEPort(<span class="number">12</span>);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    port.<span class="built_in">open</span>();</span><br><span class="line">&#125; <span class="keyword">catch</span> (DeviceResponseException e) &#123;</span><br><span class="line">    reportPortError(e);</span><br><span class="line">    logger.<span class="built_in">log</span>(<span class="string">"Device response exception"</span>, e);</span><br><span class="line">&#125; <span class="keyword">catch</span> (ATM1212UnlockedException e) &#123;</span><br><span class="line">    reportPortError(e);</span><br><span class="line">    logger.<span class="built_in">log</span>(<span class="string">"Unlock exception"</span>, e);</span><br><span class="line">&#125; <span class="keyword">catch</span> (GMXError e) &#123;</span><br><span class="line">    reportPortError(e);</span><br><span class="line">    logger.<span class="built_in">log</span>(<span class="string">"Device response exception"</span>);</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面例子中有很多重复代码。可以通过打包来避免。事实上，对第三方的API打包是个良好习惯，这样可以降低对它的依赖，未来可以轻松地改用其他代码库。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">LocalPort port = <span class="keyword">new</span> LocalPort(<span class="number">12</span>);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    port.open();</span><br><span class="line">&#125; <span class="keyword">catch</span> (PortDeviceFailure e) &#123;</span><br><span class="line">    reportError(e);</span><br><span class="line">    logger.log(e.getMessage(), e);</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LocalPort</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> ACMEPort innerPort;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LocalPort</span><span class="params">(<span class="keyword">int</span> portNumber)</span> </span>&#123;</span><br><span class="line">        innerPort = <span class="keyword">new</span> ACMEPort(portNumber);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            innerPort.open();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (DeviceResponseException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> PortDeviceFailure(e);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ATM1212UnlockedException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> PortDeviceFailure(e);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (GMXError e) &#123;</span><br><span class="line">            <span class="number">109</span> Define the Normal Flow</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> PortDeviceFailure(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义常规流程"><a href="#定义常规流程" class="headerlink" title="定义常规流程"></a>定义常规流程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    MealExpenses expenses = expenseReportDAO.getMeals(employee.getID());</span><br><span class="line">    m_total += expenses.getTotal();</span><br><span class="line">&#125; <span class="keyword">catch</span>(MealExpensesNotFound e) &#123;</span><br><span class="line">    m_total += getMealPerDiem();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果消耗事物就计入总额，如果没有，则员工得到补贴。但是使用异常打断了业务逻辑。</p>
+<p>通过修改 ExpensereportDao 类，使方法getMeals()总返回MealExpense对象。如果没有消耗餐食，就返回一个餐食补贴的MealExpense对象。下面代码使用特例模式(创建一个类或配置一个对象来处理特例)。创建 PerDiemmealExpenses 类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MealExpenses expenses = expenseReportDAO.getMeals(employee.getID());</span><br><span class="line">m_total += expenses.getTotal();</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerDiemMealExpenses</span> <span class="keyword">implements</span> <span class="title">MealExpenses</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getTotal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// return the per diem default</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="别返回null值"><a href="#别返回null值" class="headerlink" title="别返回null值"></a>别返回null值</h3><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Employee&gt; employees = getEmployees<span class="comment">()</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="comment">(employees != null)</span> &#123;</span><br><span class="line">    for<span class="comment">(Employee e : employees)</span> &#123;</span><br><span class="line">        totalPay += e.getPay<span class="comment">()</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>避免返回null。对于上例可以返回空列表。</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">List</span>&lt;Employee&gt; employees = getEmployees();</span><br><span class="line">for(Employee e : employees) &#123;</span><br><span class="line">    totalPay += e.getPay();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">List</span>&lt;Employee&gt; getEmployees() &#123;</span><br><span class="line">    <span class="keyword">if</span>( .. there are no employees .. )</span><br><span class="line">        <span class="keyword">return</span> Collections.emptyList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="别传递null值"><a href="#别传递null值" class="headerlink" title="别传递null值"></a>别传递null值</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MetricsCalculator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">xProjection</span><span class="params">(Point p1, Point p2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (p1 == <span class="keyword">null</span> || p2 == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> InvalidArgumentException(</span><br><span class="line">                    <span class="string">"Invalid argument for MetricsCalculator.xProjection"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (p2.x – p1.x) * <span class="number">1.5</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MetricsCalculator</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">xProjection</span><span class="params">(Point p1, Point p2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">assert</span> p1 != <span class="keyword">null</span> : <span class="string">"p1 should not be null"</span>;</span><br><span class="line">        <span class="keyword">assert</span> p2 != <span class="keyword">null</span> : <span class="string">"p2 should not be null"</span>;</span><br><span class="line">        <span class="keyword">return</span> (p2.x – p1.x) * <span class="number">1.5</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过异常和断言可以检测参数为null。对于断言，会得到运行时错误。恰当的方法是禁止传入null值。</p>
+<h2 id="边界"><a href="#边界" class="headerlink" title="边界"></a>边界</h2><h3 id="使用第三方代码"><a href="#使用第三方代码" class="headerlink" title="使用第三方代码"></a>使用第三方代码</h3><p>第三方代码与我们的代码，这是一种边界。学会封装第三方代码。</p>
+<h3 id="浏览和学习边界"><a href="#浏览和学习边界" class="headerlink" title="浏览和学习边界"></a>浏览和学习边界</h3><p>通过编写测试来遍览和理解第三方代码，即进行学习性测试。</p>
+<h3 id="学习log4j"><a href="#学习log4j" class="headerlink" title="学习log4j"></a>学习log4j</h3><h3 id="学习性测试的好处不只是免费"><a href="#学习性测试的好处不只是免费" class="headerlink" title="学习性测试的好处不只是免费"></a>学习性测试的好处不只是免费</h3><p>当第三方代码更新时，可以通过学习性测试修改与测试不兼容。</p>
+<h3 id="使用尚不存在的代码"><a href="#使用尚不存在的代码" class="headerlink" title="使用尚不存在的代码"></a>使用尚不存在的代码</h3><p>还有一种边界，那种把已知和未知分隔开的边界。有时候接口还没有定义，但是我们可从离未知部分很远处开始工作。</p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><h3 id="TDD三定律"><a href="#TDD三定律" class="headerlink" title="TDD三定律"></a>TDD三定律</h3><ol>
+<li>在编写不能通过的单元测试前，不可编写生产代码</li>
+<li>只可编写刚好无法通过的单元测试，不能编译也算不通过</li>
+<li>只可编写刚好足以通过当前失败测试的生产代码</li>
+</ol>
+<h3 id="保持测试整洁"><a href="#保持测试整洁" class="headerlink" title="保持测试整洁"></a>保持测试整洁</h3><h3 id="整洁的测试"><a href="#整洁的测试" class="headerlink" title="整洁的测试"></a>整洁的测试</h3><p>整洁的测试应该具有可读性。</p>
+<p>“构造-操作-检验”模式，测试被分为三个环节。第一个环节构造测试数据，第二个环节操作测试数据，第三个环节检验操作是否得到预期的结果。</p>
+<h4 id="面向特定领域的测试语言"><a href="#面向特定领域的测试语言" class="headerlink" title="面向特定领域的测试语言"></a>面向特定领域的测试语言</h4><p>包装API，构造特定领域的语言，便于阅读。</p>
+<h4 id="双重标准"><a href="#双重标准" class="headerlink" title="双重标准"></a>双重标准</h4><p>测试环境和生产环境采用不同的标准。</p>
+<h3 id="每个测试一个断言"><a href="#每个测试一个断言" class="headerlink" title="每个测试一个断言"></a>每个测试一个断言</h3><p><strong>每个测试一个概念</strong> ，一个测试中制作一件事。</p>
+<h3 id="F-I-R-S-T"><a href="#F-I-R-S-T" class="headerlink" title="F.I.R.S.T"></a>F.I.R.S.T</h3><ul>
+<li>快速(Fast) 测试能够快速运行。</li>
+<li>独立(Independent) 测试应该相互独立。</li>
+<li>可重用(Repeatable) 测试应当可在任何环境中重复通过。</li>
+<li>自足验证(Self-Validating) 测试应该有布尔值输出。</li>
+<li>及时(Timely) 测试应该及时编写。</li>
+</ul>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><h3 id="类的组织"><a href="#类的组织" class="headerlink" title="类的组织"></a>类的组织</h3><p>先是公共静态变量，然后私有静态变量，跟着是私有实体变量，很少会有公共变量。公共函数出现在变量列表之后，被公共函数调用的私有工具函数紧跟公共函数后。</p>
+<p><strong>封装</strong>保持变量和工具函数的私有性，有时为了测试能够访问到，需要受保护的变量和工具函数。</p>
+<h3 id="类应该短小"><a href="#类应该短小" class="headerlink" title="类应该短小"></a>类应该短小</h3><p>根据类的权责来衡量长短，类的权责过多，类的长度就可能过长。</p>
+<h4 id="单一权责原则"><a href="#单一权责原则" class="headerlink" title="单一权责原则"></a>单一权责原则</h4><p>单一权责原则(SRP)，类或模块应有且只有一条加以修改的理由。类只应有一个权责–只有一条修改的理由。</p>
+<h4 id="内聚"><a href="#内聚" class="headerlink" title="内聚"></a>内聚</h4><p>一个类中每个变量都被每个方法所使用，则该类具有最大的内聚性。</p>
+<p>一般希望类有较高内聚性，保持函数和参数列表短小会使实体变量增多，这时需要将原有类拆分，使新类更为内聚。</p>
+<h4 id="保持内聚性就会得到许多短小的类"><a href="#保持内聚性就会得到许多短小的类" class="headerlink" title="保持内聚性就会得到许多短小的类"></a>保持内聚性就会得到许多短小的类</h4><h3 id="为了修改而组织"><a href="#为了修改而组织" class="headerlink" title="为了修改而组织"></a>为了修改而组织</h3><p>通过扩展系统而不是修改现有代码来添加新特性。按照开放-闭合原则重新架构原有代码，在对原有代码重新拆分组织的时候，也使其同时满足单一权责原则。</p>
+<p><strong>隔离修改</strong> 依赖倒置原则(Dependency Inversion Principle, DIP)。类应当依赖于抽象而不是依赖于具体细节，使用抽象类和接口。</p>
+<p>依赖于具体细节的客户类，当细节改变时，就会有风险。可以借助接口和抽象类来隔离这些细节带来的影响。</p>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><h3 id="将系统的构造与使用分开"><a href="#将系统的构造与使用分开" class="headerlink" title="将系统的构造与使用分开"></a>将系统的构造与使用分开</h3><p>软件系统应将起始过程和启动过程之后的运行时逻辑分离开，在起始过程中构建应用对象，也会存在互相缠结的依赖关系。</p>
+<h4 id="分解main"><a href="#分解main" class="headerlink" title="分解main"></a>分解main</h4><p>将构造过程搬迁到main</p>
+<h4 id="工厂"><a href="#工厂" class="headerlink" title="工厂"></a>工厂</h4><p>使用抽象工厂模式</p>
+<h4 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h4><p>控制反转(Inversion of Control, IoC)的一种手段，另一种是依赖查找。Spring框架</p>
+<h3 id="扩容"><a href="#扩容" class="headerlink" title="扩容"></a>扩容</h3><p>“一开始就作对系统”纯属神话。我们应该只去实现今天的用户故事，然后重构，明天再扩展系统，实现新的用户故事</p>
+<p>软件系统和物理系统可以类比，它们的架构都可以递增式的增长，只要我们持续将关注面恰当的切分</p>
+<ul>
+<li>横贯式关注面</li>
+<li>面向方面编程</li>
+</ul>
+<h3 id="Java-代理"><a href="#Java-代理" class="headerlink" title="Java 代理"></a>Java 代理</h3><h3 id="纯-Java-AOP-框架"><a href="#纯-Java-AOP-框架" class="headerlink" title="纯 Java AOP 框架"></a>纯 Java AOP 框架</h3><h3 id="AspectJ-的方面"><a href="#AspectJ-的方面" class="headerlink" title="AspectJ 的方面"></a>AspectJ 的方面</h3><h3 id="测试驱动系统框架"><a href="#测试驱动系统框架" class="headerlink" title="测试驱动系统框架"></a>测试驱动系统框架</h3><h3 id="优化决策"><a href="#优化决策" class="headerlink" title="优化决策"></a>优化决策</h3><h3 id="明智使用添加了可论价值的标准"><a href="#明智使用添加了可论价值的标准" class="headerlink" title="明智使用添加了可论价值的标准"></a>明智使用添加了可论价值的标准</h3><h3 id="系统需要领域特定语言"><a href="#系统需要领域特定语言" class="headerlink" title="系统需要领域特定语言"></a>系统需要领域特定语言</h3><p>领域特定语言允许所有抽象层级和应用程序中的所有领域，从高级策略到底层细节，使用POJO(Plain Old Java Object, 简单的Java对象)来表达。</p>
+<h2 id="迭进"><a href="#迭进" class="headerlink" title="迭进"></a>迭进</h2><h3 id="通过跌进设计达到整洁目的"><a href="#通过跌进设计达到整洁目的" class="headerlink" title="通过跌进设计达到整洁目的"></a>通过跌进设计达到整洁目的</h3><p>简单设计四条规则：</p>
+<ul>
+<li>运行所有测试</li>
+<li>不可重复</li>
+<li>表达了程序员的意图</li>
+<li>尽可能减少类和方法的数量</li>
+</ul>
+<h3 id="运行所有测试"><a href="#运行所有测试" class="headerlink" title="运行所有测试"></a>运行所有测试</h3><p>全面测试并通过所有测试的系统，就是可测试的系统。测试越多，就越能使代码遵循DIP，SRP原则。通过依赖注入，接口和抽象等工具可以尽可能减少耦合。</p>
+<h3 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h3><p>在重构过程中，可以应用有关优秀软件设计的一切知识。提升内聚性，降低耦合度，切分关注面，模块化系统性关注面，缩小函数和类的尺寸，选用更好的名称，如此等等。</p>
+<h3 id="不可重复"><a href="#不可重复" class="headerlink" title="不可重复"></a>不可重复</h3><p>消除重复代码。模板方法模式是一种移除高层级重复的通用技巧。</p>
+<h3 id="表达力"><a href="#表达力" class="headerlink" title="表达力"></a>表达力</h3><ul>
+<li>选好名称</li>
+<li>保持函数和类尺寸短小来表达</li>
+<li>通过采用标准命名法来表达。例如采用设计模式中的标准模式名，COMMAND或VISTOR。</li>
+</ul>
+<h3 id="尽可能少的类和方法"><a href="#尽可能少的类和方法" class="headerlink" title="尽可能少的类和方法"></a>尽可能少的类和方法</h3><p>这条规则是优先级最低的。</p>
+<h2 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h2><h3 id="为什么要并发"><a href="#为什么要并发" class="headerlink" title="为什么要并发"></a>为什么要并发</h3><p>并发是一种解耦策略。把做什么(目的)和何时(时机)做分解开。</p>
+<h3 id="并发防御原则"><a href="#并发防御原则" class="headerlink" title="并发防御原则"></a>并发防御原则</h3><h4 id="单一权责原则-1"><a href="#单一权责原则-1" class="headerlink" title="单一权责原则"></a>单一权责原则</h4><p>方法/类/组件应当只有一个修改的理由。分离并发相关代码与其他代码。</p>
+<h4 id="推论：限制数据作用域"><a href="#推论：限制数据作用域" class="headerlink" title="推论：限制数据作用域"></a>推论：限制数据作用域</h4><p>两个线程修改共享对象的同一字段时，可能互相干扰。解决方案是采用synchronized关键字在代码中保护一块使用共享对象的临界区。更好的办法是限制临界区的数量。</p>
+<h4 id="推论：使用数据复本"><a href="#推论：使用数据复本" class="headerlink" title="推论：使用数据复本"></a>推论：使用数据复本</h4><p>使用对象复本避免共享数据。</p>
+<h4 id="推论：线程应尽可能地独立"><a href="#推论：线程应尽可能地独立" class="headerlink" title="推论：线程应尽可能地独立"></a>推论：线程应尽可能地独立</h4><p>尽量不与其它线程共享数据。尝试将数据分解到可被独立线程(可能在不同处理器上)操作的独立子集。</p>
+<h3 id="了解Java库"><a href="#了解Java库" class="headerlink" title="了解Java库"></a>了解Java库</h3><p>掌握java.util.concurrent,java.util.concurrent.atomic,java.util.concurrent.locks。</p>
+<p>类 CuncurrentHashMap,ReentrantLock,Semaphore,CountDownLatch。</p>
+<h3 id="了解执行模型"><a href="#了解执行模型" class="headerlink" title="了解执行模型"></a>了解执行模型</h3><p>基础定义</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>限定资源</td>
+<td>并发环境中有固定尺寸或数量的资源。例如数据库连接和固定尺寸读/写缓存等</td>
+</tr>
+<tr>
+<td>互斥</td>
+<td>每一时刻仅有一个线程能访问共享数据或共享资源</td>
+</tr>
+<tr>
+<td>线程饥饿</td>
+<td>一个或一组线程在很长时间内或永久被停止。例如，总是让执行得快的线程先执行，假如执行得快的线程没完没了，则执行时间长的线程就会”挨饿”</td>
+</tr>
+<tr>
+<td>死锁</td>
+<td>两个或多个线程互相等待执行结束。每个线程都拥有其他线程需要的资源，得不到其他线程拥有的资源，就无法终止。</td>
+</tr>
+<tr>
+<td>活锁</td>
+<td>执行次序一致的线程，每个都想要起步，但发现其他线程已经”在路上”，由于竞步的原因，线程会持续尝试起步，但在很长时间内却无法如愿，甚至永远无法启动</td>
+</tr>
+</tbody></table>
+<h4 id="生产者-消费者模型"><a href="#生产者-消费者模型" class="headerlink" title="生产者-消费者模型"></a>生产者-消费者模型</h4><p>一个或多个生产者线程创建某些工作，并置于缓存或队列中。一个或多个消费者线程从队列中获取并完成这些工作。生产者和消费者之间的队列是一种限定资源。</p>
+<h4 id="读者-作者模型"><a href="#读者-作者模型" class="headerlink" title="读者-作者模型"></a>读者-作者模型</h4><p>有一个写者很多读者，多个读者可以同时读文件，但写者在写文件时不允许有读者在读文件，同样有读者在读文件时写者也不去能写文件。</p>
+<h4 id="宴席哲学家"><a href="#宴席哲学家" class="headerlink" title="宴席哲学家"></a>宴席哲学家</h4><p>假设有五位哲学家围坐在一张圆形餐桌旁，做以下两件事情之一：吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。餐桌中间有一大碗意大利面，每两个哲学家之间有一只餐叉。因为用一只餐叉很难吃到意大利面，所以假设哲学家必须用两只餐叉吃东西。他们只能使用自己左右手边的那两只餐叉。</p>
+<h3 id="警惕同步方法之间的依赖"><a href="#警惕同步方法之间的依赖" class="headerlink" title="警惕同步方法之间的依赖"></a>警惕同步方法之间的依赖</h3><h3 id="保持同步区域微小"><a href="#保持同步区域微小" class="headerlink" title="保持同步区域微小"></a>保持同步区域微小</h3><p>尽可能减小同步区域</p>
+<h3 id="很难编写正确的关闭代码"><a href="#很难编写正确的关闭代码" class="headerlink" title="很难编写正确的关闭代码"></a>很难编写正确的关闭代码</h3><p>尽早考虑关闭问题，尽早令其工作正常。这会花费比你预期更多的时间。检查既有算法，因为这可能比想象的难得多。</p>
+<h3 id="测试线程代码"><a href="#测试线程代码" class="headerlink" title="测试线程代码"></a>测试线程代码</h3><h4 id="将伪失败看作可能的线程问题"><a href="#将伪失败看作可能的线程问题" class="headerlink" title="将伪失败看作可能的线程问题"></a>将伪失败看作可能的线程问题</h4><h4 id="先使非线程代码可工作"><a href="#先使非线程代码可工作" class="headerlink" title="先使非线程代码可工作"></a>先使非线程代码可工作</h4><h4 id="编写可插拔的线程代码"><a href="#编写可插拔的线程代码" class="headerlink" title="编写可插拔的线程代码"></a>编写可插拔的线程代码</h4><h4 id="编写可调整的线程代码"><a href="#编写可调整的线程代码" class="headerlink" title="编写可调整的线程代码"></a>编写可调整的线程代码</h4><h4 id="运行多于处理器数量的线程"><a href="#运行多于处理器数量的线程" class="headerlink" title="运行多于处理器数量的线程"></a>运行多于处理器数量的线程</h4><h4 id="在不同平台上运行"><a href="#在不同平台上运行" class="headerlink" title="在不同平台上运行"></a>在不同平台上运行</h4><h4 id="装置试错代码"><a href="#装置试错代码" class="headerlink" title="装置试错代码"></a>装置试错代码</h4><p>两种装置方法</p>
+<ul>
+<li>硬编码。手工向代码中插入wait(),sleep(),yield()和priority()方法。</li>
+<li>自动化。使用Aspect-Oriented Framework、CGLIB或ASM之类工具通过编程来装置代码。</li>
+</ul>
+<h2 id="逐渐改进"><a href="#逐渐改进" class="headerlink" title="逐渐改进"></a>逐渐改进</h2><p>单元测试使用JUnit，验收测试用FitNesse以wiki页形式写成。<br>Clover检查单元测试覆盖了哪些代码。</p>
+<h2 id="味道与启发"><a href="#味道与启发" class="headerlink" title="味道与启发"></a>味道与启发</h2><h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>C1. 不恰当的信息</p>
+<p>作者、最后修改时间等信息应该在版本控制系统中，而不是注释中。</p>
+<p>C2. 废弃的注释</p>
+<p>过时、无关或不正确的注释就是废弃的注释，必须马上更新或者删除。</p>
+<p>C3. 冗余注释</p>
+<p>注释应该谈及代码自身没提到的东西，否则就是冗余的。如果代码已经能够充分自描述，就没有必要再添加注释。</p>
+<p>C4. 糟糕的注释</p>
+<p>值得编写的注释必须正确写出最好的注释，如果不是就不要写。</p>
+<p>C5. 注释掉的代码</p>
+<p>注释掉的代码必须删除。</p>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>E1. 需要多步才能实现的构建</p>
+<p>构建系统应该是单步的小操作。应当能用单个命令签出系统，并用单个指令构建它。</p>
+<p>E2. 需要多步才能实现的测试</p>
+<p>应当只需要单个指令就可以运行所有单元测试。</p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>F1. 过多的参数</p>
+<p>函数参数应该越少越好，没参数最好，一个次之，两个、三个再次之，坚决避免有3个参数的函数。</p>
+<p>F2. 输出参数</p>
+<p>输出参数违反直觉，抵制输出参数。如果函数非要修改什么东西的状态，修改它所在对象的状态就好了。</p>
+<p>F3. 标识参数</p>
+<p>布尔值参数一般宣告函数做了不止一件事，应该消灭掉。</p>
+<p>F4. 死函数</p>
+<p>永不被调用函数应该删除掉。</p>
+<h3 id="一般性问题"><a href="#一般性问题" class="headerlink" title="一般性问题"></a>一般性问题</h3><p>G1. 一个源文件存在多个语言</p>
+<p>尽量减少源文件语言的数量和范围。</p>
+<p>G2. 明显的行为未被实现</p>
+<p>遵循“最少惊异原则”，函数或者类应该实现其他程序员有理由期待的行为，不要让其他程序员看代码才清楚函数的作用。</p>
+<p>G3. 不正确的边界行为</p>
+<p>代码应该有正确的行为，追索每种边界条件并进行全面测试。</p>
+<p>G4. 忽视安全</p>
+<p>关注可能引起问题的代码，注重安全与稳定。</p>
+<p>G5. 重复</p>
+<p>消除重复代码，多使用多态，模板，设计模式等手段。</p>
+<p>G6. 在错误的抽象层级上的代码</p>
+<p>抽象类和派生类概念模型必须完整分离，与实现细节有关的代码不应该在基类中出现。这条规则同样适用于源文件、组件和模块，较低层级的概念应该和较高层级的概念分离。</p>
+<p>G7. 基类依赖于派生类</p>
+<p>通常基类应该对派生类一无所知。</p>
+<p>G8. 信息过多</p>
+<p>类中的方法、变量越少越好，函数知道的变量越少越好，隐藏所有实现，公开接口越少越好，保持低耦合度。</p>
+<p>G9. 死代码</p>
+<p>删除不被执行的代码，这类代码可以在if,try/catch,switch/case中找到，以及不会被调用的代码</p>
+<p>G10. 垂直分隔</p>
+<p>变量和函数的定义应该靠近被调用代码。</p>
+<p>G11. 前后不一致</p>
+<p>变量方法命名应该从一而终，保持一致，让代码便于阅读和修改。</p>
+<p>G12. 混淆视听</p>
+<p>没有实现的默认构造器，没用的变量，从不被调用的函数，没有信息量的注释应该清理掉。</p>
+<p>G13. 人为耦合</p>
+<p>不互相依赖的东西不该耦合。不要随便放置函数、常量和变量的声明。</p>
+<p>G14. 特性依恋</p>
+<p>类的方法应该只对自身的方法和变量感兴趣，不应该垂青其他类的方法和变量。当方法通过某个对象的访问器和修改器操作该对象内部数据，则它依恋于该对象所属类的范围。</p>
+<p>G15. 选择算子参数</p>
+<p>避免布尔类型参数，及其他用于选择函数行为的参数，使用多个函数，多态代替。</p>
+<p>G16. 晦涩的意图</p>
+<p>代码要尽可能具有表达力，明白的意图比高效和性能重要。不使用联排表达式、匈牙利语标记法和魔术数。</p>
+<p>G17. 位置错误的权责</p>
+<p>“最少惊异原则”，把代码放在读者想到的地方，而不是对自己方便的地方。</p>
+<p>G18. 不恰当的静态方法</p>
+<p>通常应该倾向使用非静态方法。如果要使用静态方法，必须确保没机会打算让它有多态行为。</p>
+<p>G19. 使用解释性变量</p>
+<p>把计算过程打散成一系列命名良好的中间值使程序更加可读性。</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> key = <span class="keyword">match</span>.<span class="keyword">group</span>(<span class="number">1</span>);</span><br><span class="line"><span class="built_in">String</span> value = <span class="keyword">match</span>.<span class="keyword">group</span>(<span class="number">2</span>);</span><br><span class="line">headers.put(key.toLowerCase(),value);</span><br></pre></td></tr></table></figure>
+<p>key和value就解释了第一个，第二个解释组是什么。</p>
+<p>G20. 函数名称应该表达其行为</p>
+<p>如果必须查看源代码才能知道函数的行为，函数名就应该改变。</p>
+<p>G21. 理解算法</p>
+<p>在完成函数之前，确认已经理解了它是怎么工作的。</p>
+<p>G22. 把逻辑依赖改为物理依赖</p>
+<p>依赖应该是明显而不应该是假设的依赖。</p>
+<p>G23. 用多态替代if/else或switch/case</p>
+<p>G24. 遵循标准约定</p>
+<p>G25. 用命名常量替代魔术数</p>
+<p>魔术数不仅是说数字，也泛指不能自我描述的符号。</p>
+<p>G26. 准确</p>
+<p>代码中的含糊和不准确要么是意见不同的结果，要么源于懒散，都必须消除。</p>
+<p>G27. 结构甚于约定</p>
+<p>G28. 封装条件</p>
+<p>把if或while语句的条件封装成方法。</p>
+<p>G29. 避免否定性条件</p>
+<p>尽可能使用肯定性条件。</p>
+<p>G30. 函数只该做一件事</p>
+<p>拆分做了多件事的函数</p>
+<p>G31. 掩蔽时序耦合</p>
+<p>创建顺序队列暴露时序耦合，每个函数都产生一下函数所需参数，就可保障正确的时序。</p>
+<p>G32. 别随意</p>
+<p>代码不能随意，需要谨慎考虑。</p>
+<p>G33. 封装边界条件</p>
+<p>例如：+1或-1操作封装起来。</p>
+<p>G34. 函数应该只在一个抽象层级上</p>
+<p>封装不在一个抽象层级上的代码，保持每个函数只在一个抽象层级上。</p>
+<p>G35. 在较高层级放置可配置数据</p>
+<p>把配置数据和常量放到较高抽象层级</p>
+<p>G36. 避免传递浏览</p>
+<p>“得墨忒耳律”，也称编写害羞代码，让直接协作者提供所需的服务，而不要逛遍整个系统。</p>
+<h3 id="JAVA"><a href="#JAVA" class="headerlink" title="JAVA"></a>JAVA</h3><p>J1. 通过使用通配符避免过长的导入清单</p>
+<p>J2. 不要继承常量</p>
+<p>J3. 常量VS.枚举</p>
+<p>使用枚举enum代替常量。</p>
+<h3 id="名称"><a href="#名称" class="headerlink" title="名称"></a>名称</h3><p>N1. 采用描述性名称</p>
+<p>名称对应可读性有90%的作用，必须认真命名。</p>
+<p>N2. 名称应与抽象层级相符</p>
+<p>不要取沟通实现的名称：取反映类或函数抽象层级的名称。</p>
+<p>N3. 尽可能使用标准命名法</p>
+<p>N4. 无歧义的名称</p>
+<p>N5. 为较大作用范围选用较长名称</p>
+<p>N6. 避免编码</p>
+<p>不要使用匈牙利语命名法，不应该在名称中包含类型或范围的信息，例如：m_，f等前缀。</p>
+<p>N7. 名称应该说明副作用</p>
+<p>名称应该说明类、变量或函数的所有信息，不应该隐藏副作用。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>T1. 测试不足</p>
+<p>保证足够的测试。确保所有条件和计算都被测试到。</p>
+<p>T2. 使用覆盖率工具</p>
+<p>覆盖率工具可以更好地找到测试不足的模块、类、函数。</p>
+<p>T3. 别略过小测试</p>
+<p>T4. 被忽略的测试就是对不确定事物的疑问</p>
+<p>用@Ignore表达我们对需求的疑问。</p>
+<p>T5. 测试边界条件</p>
+<p>边界判读错误很常见，必须测试边界条件。</p>
+<p>T6. 全面测试相近的缺陷</p>
+<p>缺陷趋向于扎堆，如果在函数中发现一个缺陷，那么就全面测试这个函数。</p>
+<p>T7. 测试失败的模式有启发性</p>
+<p>你可以通过测试失败找到问题所在。</p>
+<p>T8. 测试覆盖率的模式有启发性</p>
+<p>通过测试覆盖率检查，往往可以找到测试失败的线索。</p>
+<p>T9. 测试应该快速</p>
+<p>慢测试会导致时间紧时会跳过，导致可能出现问题。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Clean-Code/" rel="tag">Clean Code</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.470Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/07/26/vsftpd-virtual-users/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          vsftpd 配置虚拟用户
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/06/10/clean-code-note-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">代码整洁之道(一)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象和数据结构"><span class="toc-number">1.</span> <span class="toc-text">对象和数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据抽象"><span class="toc-number">1.1.</span> <span class="toc-text">数据抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据、对象的反对称性"><span class="toc-number">1.2.</span> <span class="toc-text">数据、对象的反对称性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#得墨忒耳律"><span class="toc-number">1.3.</span> <span class="toc-text">得墨忒耳律</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#火车失事"><span class="toc-number">1.3.1.</span> <span class="toc-text">火车失事</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#混杂"><span class="toc-number">1.3.2.</span> <span class="toc-text">混杂</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#隐藏结构"><span class="toc-number">1.3.3.</span> <span class="toc-text">隐藏结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据传送对象"><span class="toc-number">1.4.</span> <span class="toc-text">数据传送对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#错误处理"><span class="toc-number">2.</span> <span class="toc-text">错误处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用异常而非返回码"><span class="toc-number">2.1.</span> <span class="toc-text">使用异常而非返回码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#先写Try-Catch-Finally语句"><span class="toc-number">2.2.</span> <span class="toc-text">先写Try-Catch-Finally语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用不可控异常"><span class="toc-number">2.3.</span> <span class="toc-text">使用不可控异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#给出异常发生的环境说明"><span class="toc-number">2.4.</span> <span class="toc-text">给出异常发生的环境说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#依调用者需要定义异常类"><span class="toc-number">2.5.</span> <span class="toc-text">依调用者需要定义异常类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义常规流程"><span class="toc-number">2.6.</span> <span class="toc-text">定义常规流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#别返回null值"><span class="toc-number">2.7.</span> <span class="toc-text">别返回null值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#别传递null值"><span class="toc-number">2.8.</span> <span class="toc-text">别传递null值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边界"><span class="toc-number">3.</span> <span class="toc-text">边界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用第三方代码"><span class="toc-number">3.1.</span> <span class="toc-text">使用第三方代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览和学习边界"><span class="toc-number">3.2.</span> <span class="toc-text">浏览和学习边界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#学习log4j"><span class="toc-number">3.3.</span> <span class="toc-text">学习log4j</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#学习性测试的好处不只是免费"><span class="toc-number">3.4.</span> <span class="toc-text">学习性测试的好处不只是免费</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用尚不存在的代码"><span class="toc-number">3.5.</span> <span class="toc-text">使用尚不存在的代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元测试"><span class="toc-number">4.</span> <span class="toc-text">单元测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TDD三定律"><span class="toc-number">4.1.</span> <span class="toc-text">TDD三定律</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保持测试整洁"><span class="toc-number">4.2.</span> <span class="toc-text">保持测试整洁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#整洁的测试"><span class="toc-number">4.3.</span> <span class="toc-text">整洁的测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#面向特定领域的测试语言"><span class="toc-number">4.3.1.</span> <span class="toc-text">面向特定领域的测试语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#双重标准"><span class="toc-number">4.3.2.</span> <span class="toc-text">双重标准</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#每个测试一个断言"><span class="toc-number">4.4.</span> <span class="toc-text">每个测试一个断言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#F-I-R-S-T"><span class="toc-number">4.5.</span> <span class="toc-text">F.I.R.S.T</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类"><span class="toc-number">5.</span> <span class="toc-text">类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类的组织"><span class="toc-number">5.1.</span> <span class="toc-text">类的组织</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类应该短小"><span class="toc-number">5.2.</span> <span class="toc-text">类应该短小</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#单一权责原则"><span class="toc-number">5.2.1.</span> <span class="toc-text">单一权责原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内聚"><span class="toc-number">5.2.2.</span> <span class="toc-text">内聚</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#保持内聚性就会得到许多短小的类"><span class="toc-number">5.2.3.</span> <span class="toc-text">保持内聚性就会得到许多短小的类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为了修改而组织"><span class="toc-number">5.3.</span> <span class="toc-text">为了修改而组织</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统"><span class="toc-number">6.</span> <span class="toc-text">系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#将系统的构造与使用分开"><span class="toc-number">6.1.</span> <span class="toc-text">将系统的构造与使用分开</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分解main"><span class="toc-number">6.1.1.</span> <span class="toc-text">分解main</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#工厂"><span class="toc-number">6.1.2.</span> <span class="toc-text">工厂</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖注入"><span class="toc-number">6.1.3.</span> <span class="toc-text">依赖注入</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扩容"><span class="toc-number">6.2.</span> <span class="toc-text">扩容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-代理"><span class="toc-number">6.3.</span> <span class="toc-text">Java 代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#纯-Java-AOP-框架"><span class="toc-number">6.4.</span> <span class="toc-text">纯 Java AOP 框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AspectJ-的方面"><span class="toc-number">6.5.</span> <span class="toc-text">AspectJ 的方面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试驱动系统框架"><span class="toc-number">6.6.</span> <span class="toc-text">测试驱动系统框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优化决策"><span class="toc-number">6.7.</span> <span class="toc-text">优化决策</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#明智使用添加了可论价值的标准"><span class="toc-number">6.8.</span> <span class="toc-text">明智使用添加了可论价值的标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统需要领域特定语言"><span class="toc-number">6.9.</span> <span class="toc-text">系统需要领域特定语言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#迭进"><span class="toc-number">7.</span> <span class="toc-text">迭进</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通过跌进设计达到整洁目的"><span class="toc-number">7.1.</span> <span class="toc-text">通过跌进设计达到整洁目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行所有测试"><span class="toc-number">7.2.</span> <span class="toc-text">运行所有测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重构"><span class="toc-number">7.3.</span> <span class="toc-text">重构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不可重复"><span class="toc-number">7.4.</span> <span class="toc-text">不可重复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表达力"><span class="toc-number">7.5.</span> <span class="toc-text">表达力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#尽可能少的类和方法"><span class="toc-number">7.6.</span> <span class="toc-text">尽可能少的类和方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#并发编程"><span class="toc-number">8.</span> <span class="toc-text">并发编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要并发"><span class="toc-number">8.1.</span> <span class="toc-text">为什么要并发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#并发防御原则"><span class="toc-number">8.2.</span> <span class="toc-text">并发防御原则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#单一权责原则-1"><span class="toc-number">8.2.1.</span> <span class="toc-text">单一权责原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#推论：限制数据作用域"><span class="toc-number">8.2.2.</span> <span class="toc-text">推论：限制数据作用域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#推论：使用数据复本"><span class="toc-number">8.2.3.</span> <span class="toc-text">推论：使用数据复本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#推论：线程应尽可能地独立"><span class="toc-number">8.2.4.</span> <span class="toc-text">推论：线程应尽可能地独立</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#了解Java库"><span class="toc-number">8.3.</span> <span class="toc-text">了解Java库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#了解执行模型"><span class="toc-number">8.4.</span> <span class="toc-text">了解执行模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#生产者-消费者模型"><span class="toc-number">8.4.1.</span> <span class="toc-text">生产者-消费者模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#读者-作者模型"><span class="toc-number">8.4.2.</span> <span class="toc-text">读者-作者模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#宴席哲学家"><span class="toc-number">8.4.3.</span> <span class="toc-text">宴席哲学家</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#警惕同步方法之间的依赖"><span class="toc-number">8.5.</span> <span class="toc-text">警惕同步方法之间的依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保持同步区域微小"><span class="toc-number">8.6.</span> <span class="toc-text">保持同步区域微小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#很难编写正确的关闭代码"><span class="toc-number">8.7.</span> <span class="toc-text">很难编写正确的关闭代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试线程代码"><span class="toc-number">8.8.</span> <span class="toc-text">测试线程代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#将伪失败看作可能的线程问题"><span class="toc-number">8.8.1.</span> <span class="toc-text">将伪失败看作可能的线程问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#先使非线程代码可工作"><span class="toc-number">8.8.2.</span> <span class="toc-text">先使非线程代码可工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#编写可插拔的线程代码"><span class="toc-number">8.8.3.</span> <span class="toc-text">编写可插拔的线程代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#编写可调整的线程代码"><span class="toc-number">8.8.4.</span> <span class="toc-text">编写可调整的线程代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#运行多于处理器数量的线程"><span class="toc-number">8.8.5.</span> <span class="toc-text">运行多于处理器数量的线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在不同平台上运行"><span class="toc-number">8.8.6.</span> <span class="toc-text">在不同平台上运行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#装置试错代码"><span class="toc-number">8.8.7.</span> <span class="toc-text">装置试错代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#逐渐改进"><span class="toc-number">9.</span> <span class="toc-text">逐渐改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#味道与启发"><span class="toc-number">10.</span> <span class="toc-text">味道与启发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注释"><span class="toc-number">10.1.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境"><span class="toc-number">10.2.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数"><span class="toc-number">10.3.</span> <span class="toc-text">函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一般性问题"><span class="toc-number">10.4.</span> <span class="toc-text">一般性问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JAVA"><span class="toc-number">10.5.</span> <span class="toc-text">JAVA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#名称"><span class="toc-number">10.6.</span> <span class="toc-text">名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试"><span class="toc-number">10.7.</span> <span class="toc-text">测试</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/06/15/clean-code-note-2/';
+  this.page.identifier = '2014/06/15/clean-code-note-2/';
+  this.page.title = '代码整洁之道(二)';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

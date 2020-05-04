@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>FreeMarker-程序开发指南笔记 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="FreeMarker;Java模板引擎;程序开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeMarker-程序开发指南笔记">
+<meta property="og:url" content="http://howiefh.github.io/2015/05/02/freemarker-program-development-note/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="FreeMarker;Java模板引擎;程序开发">
+<meta property="article:published_time" content="2015-05-02T01:20:06.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.480Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="FreeMarker">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-freemarker-program-development-note" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/05/02/freemarker-program-development-note/" class="article-date">
+  <time class="dt-published" datetime="2015-05-02T01:20:06.000Z" itemprop="datePublished">2015-05-02</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Java/FreeMarker/">FreeMarker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      FreeMarker-程序开发指南笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#快速入门"><span class="toc-number">1.</span> <span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据模型"><span class="toc-number">2.</span> <span class="toc-text">数据模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标量"><span class="toc-number">2.1.</span> <span class="toc-text">标量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器"><span class="toc-number">2.2.</span> <span class="toc-text">容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#哈希表"><span class="toc-number">2.2.1.</span> <span class="toc-text">哈希表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#序列"><span class="toc-number">2.2.2.</span> <span class="toc-text">序列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#集合"><span class="toc-number">2.2.3.</span> <span class="toc-text">集合</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法"><span class="toc-number">2.3.</span> <span class="toc-text">方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指令"><span class="toc-number">2.4.</span> <span class="toc-text">指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点"><span class="toc-number">2.5.</span> <span class="toc-text">节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象包装"><span class="toc-number">2.6.</span> <span class="toc-text">对象包装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置"><span class="toc-number">3.</span> <span class="toc-text">配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#共享变量"><span class="toc-number">3.1.</span> <span class="toc-text">共享变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置信息"><span class="toc-number">3.2.</span> <span class="toc-text">配置信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板加载"><span class="toc-number">3.3.</span> <span class="toc-text">模板加载</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#内建模板加载器"><span class="toc-number">3.3.1.</span> <span class="toc-text">内建模板加载器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#从多个位置加载"><span class="toc-number">3.3.2.</span> <span class="toc-text">从多个位置加载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#从其他资源加载模板"><span class="toc-number">3.3.3.</span> <span class="toc-text">从其他资源加载模板</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模板路径"><span class="toc-number">3.3.4.</span> <span class="toc-text">模板路径</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板缓存"><span class="toc-number">3.4.</span> <span class="toc-text">模板缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#错误控制"><span class="toc-number">3.5.</span> <span class="toc-text">错误控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#可能的异常"><span class="toc-number">3.5.1.</span> <span class="toc-text">可能的异常</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#根据-TemplateException-来制定处理方式"><span class="toc-number">3.5.2.</span> <span class="toc-text">根据 TemplateException 来制定处理方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在模板中明确地处理错误"><span class="toc-number">3.5.3.</span> <span class="toc-text">在模板中明确地处理错误</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#变量"><span class="toc-number">4.1.</span> <span class="toc-text">变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码"><span class="toc-number">4.2.</span> <span class="toc-text">编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多线程"><span class="toc-number">4.3.</span> <span class="toc-text">多线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bean-的包装"><span class="toc-number">4.4.</span> <span class="toc-text">Bean 的包装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#安全性"><span class="toc-number">4.4.1.</span> <span class="toc-text">安全性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#访问静态变量"><span class="toc-number">4.4.2.</span> <span class="toc-text">访问静态变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#访问枚举类型"><span class="toc-number">4.4.3.</span> <span class="toc-text">访问枚举类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日志"><span class="toc-number">4.5.</span> <span class="toc-text">日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在-Servlet-中使用-FreeMarker"><span class="toc-number">4.6.</span> <span class="toc-text">在 Servlet 中使用 FreeMarker</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#包含其它Web应用程序资源中的内容"><span class="toc-number">4.6.1.</span> <span class="toc-text">包含其它Web应用程序资源中的内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在-FTL-中使用-JSP-客户化标签"><span class="toc-number">4.6.2.</span> <span class="toc-text">在 FTL 中使用 JSP 客户化标签</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><ul>
+<li>使用 java.lang.String 来构建字符串。</li>
+<li>使用 java.lang.Number 来派生数字类型。</li>
+<li>使用 java.lang.Boolean 来构建布尔值。</li>
+<li>使用 java.util.List 或 Java 数组来构建序列。</li>
+<li>使用 java.util.Map 来构建哈希表。</li>
+<li>使用你自己定义的 bean 类来构建哈希表， bean 中的项和 bean 的属性对应。例如product 中的 price 属性可以用 product.price 来获取。</li>
+</ul>
+<a id="more"></a>
+
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> freemarker.<span class="keyword">template</span>.*;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestFTLDemo</span> &#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws Exception </span>&#123;</span><br><span class="line">		<span class="comment">/* 在整个应用的生命周期中，这个工作你应该只做一次。 */</span></span><br><span class="line">		<span class="comment">/* 创建和调整配置。 */</span></span><br><span class="line">		Configuration cfg = <span class="keyword">new</span> Configuration();</span><br><span class="line">		cfg.setDirectoryForTemplateLoading(<span class="keyword">new</span> <span class="built_in">File</span>(</span><br><span class="line">				<span class="string">"/where/you/store/templates"</span>));</span><br><span class="line">		cfg.setObjectWrapper(<span class="keyword">new</span> DefaultObjectWrapper());</span><br><span class="line">		<span class="comment">/* 在整个应用的生命周期中，这个工作你可以执行多次 */</span></span><br><span class="line">		<span class="comment">/* 获取或创建模板 */</span></span><br><span class="line">		Template temp = cfg.getTemplate(<span class="string">"test.ftl"</span>);</span><br><span class="line">		<span class="comment">/* 创建数据模型 */</span></span><br><span class="line">		Map root = <span class="keyword">new</span> HashMap();</span><br><span class="line">		root.<span class="built_in">put</span>(<span class="string">"user"</span>, <span class="string">"Big Joe"</span>);</span><br><span class="line">		Map latest = <span class="keyword">new</span> HashMap();</span><br><span class="line">		root.<span class="built_in">put</span>(<span class="string">"latestProduct"</span>, latest);</span><br><span class="line">		latest.<span class="built_in">put</span>(<span class="string">"url"</span>, <span class="string">"products/greenmouse.html"</span>);</span><br><span class="line">		latest.<span class="built_in">put</span>(<span class="string">"name"</span>, <span class="string">"green mouse"</span>);</span><br><span class="line">		<span class="comment">/* 将模板和数据模型合并 */</span></span><br><span class="line">		Writer out = <span class="keyword">new</span> OutputStreamWriter(System.out);</span><br><span class="line">		temp.<span class="built_in">process</span>(root, out);</span><br><span class="line">		out.<span class="built_in">flush</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h2><p>在内部，模板中可用的变量都是实现了freemarker.template.TemplateModel 接口的 Java 对象。但在你自己的数据模型中，可以使用基本的 Java 集合类作为变量， 因为这些变量会在内部被替换为适当的TemplateModel 类型。这种功能特性被称作是 object wrapping 对象包装。对象包装功能可以透明地把任何类型的对象转换为实现了 TemplateModel 接口类型的实例。要注意一个类可以实现多个TemplateModel 接口，这就是为什么 FTL 变量可以有多种类型</p>
+<h3 id="标量"><a href="#标量" class="headerlink" title="标量"></a>标量</h3><p>布尔值、数字、字符串、日期这四种标量每一种标量类型都是 TemplateTypeModel 接口的实现，这里的 Type 就是类型的名称（比如Boolean,Number,Scalar,Date）。 这些接口只定义了一个方法 type getAsType()；它返回变量的 Java 类型（boolean，Number， String 和 Date 各自代表的值）的值。这些接口的有一个实现类SimpleType 类。但是没有 SimpleBooleanModel 类型；为了代表布尔值，可以使用TemplateBooleanModel.TRUE 和 TemplateBooleanModel.FALSE 来单独使用。</p>
+<p>Date有个问题，就是模板不知道它是date还是time还是datetime。TemplateDateModel 接口有两个方法：分别是java.util.Date getAsDate() 和int getDateType()。这个接口典型的实现是存储一个 java.util.Date 对象，加上一个整数来辨别“数据库存储的类型”。这个整数的值也必须是 TemplateDateModel 接口中的常量之一：DATE，TIME，DATETIME和UNKNOWN。通过内建函数date、time、datetime和string可以解决这个问题。</p>
+<h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p>哈希表是实现了 TemplateHashModel 接口的 Java 对象。TemplateHashModel 接口有两个方法：TemplateModel get(String key)，boolean isEmpty()。</p>
+<p>TemplateHashModelEx 接口扩展了 TemplateHashModel 接口。它增加了更多的方法，使得可以使用内建函数 values 和 keys 来枚举哈希表中的子变量。经常使用的实现类是 SimpleHash，该类实现了 TemplateHashModelEx 接口。 </p>
+<h4 id="序列"><a href="#序列" class="headerlink" title="序列"></a>序列</h4><p>序列是实现了 TemplateSequenceModel 接口的 Java 对象。它包含两个方法：TemplateModel get(int index)和 int size()。</p>
+<p>经常使用的实现类是 SimpleSequence， 该类内部使用一个 java.util.List 类型的对象存储它的子变量。</p>
+<h4 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h4><p>集合是实现了 TemplateCollectionModel 接口的 Java 对象。这个接口只定义了一个方法：TemplateModelIterator iterator() 。TemplateModelIterator 接口和 java.util.Iterator 相似，但是它返回 TemplateModels 而不是Object，而且它能抛出TemplateModelException 异常。通常使用的实现类是 SimpleCollection。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>方法变量在存于实现了 TemplateMethodModel 接口的模板中。这个接口仅包含一个方法： TemplateModel exec(java.util.List arguments)。当使用方法调用表达式调用方法时，exec 方法将会被调用。形参将会包含 FTL方法调用形参的值。exec 方法的返回值给出了 FTL 方法调用表达式的返回值。TemplateMethodModelEx 接口扩展了 TemplateMethodModel 接口。</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IndexOfMethod</span> <span class="keyword"><span class="keyword">implements</span> <span class="type">TemplateMethodModel</span></span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> TemplateModel exec(List args) throws TemplateModelException &#123;</span><br><span class="line">		<span class="keyword">if</span> (args.size() != <span class="number">2</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">TemplateModelException</span>(<span class="string">"Wrong arguments"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">SimpleNumber</span>(((<span class="keyword">String</span>) args.<span class="keyword">get</span>(<span class="number">1</span>)).indexOf((<span class="keyword">String</span>) args.<span class="keyword">get</span>(<span class="number">0</span>)));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">root.put(<span class="string">"indexOf"</span>, <span class="keyword">new</span> <span class="type">IndexOfMethod</span>());</span><br></pre></td></tr></table></figure>
+<p>在模板中调用</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;#<span class="keyword">assign</span> x = <span class="string">"something"</span>&gt;</span><br><span class="line"><span class="symbol">$</span>&#123;indexOf(<span class="string">"met"</span>, x)&#125;</span><br><span class="line"><span class="symbol">$</span>&#123;indexOf(<span class="string">"foo"</span>, x)&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><p>可以使用 TemplateDirectiveModel 接口在 Java 代码中实现自定义指令。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * FreeMarker 的用户自定义指令在逐步改变 它嵌套内容的输出转换为大写形式</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * &lt;b&gt;指令内容&lt;/b&gt;</span></span><br><span class="line"><span class="comment"> * &lt;/p&gt;</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * 指令参数：无</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * 循环变量：无</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * 指令嵌套内容：是</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title">UpperDirective</span> <span class="title">implements</span> <span class="title">TemplateDirectiveModel</span> &#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span>(<span class="params">Environment env, Map <span class="keyword">params</span>, TemplateModel[] loopVars,</span></span></span><br><span class="line"><span class="function"><span class="params">			TemplateDirectiveBody body</span>) throws TemplateException, IOException</span> &#123;</span><br><span class="line">		<span class="comment">// 检查参数是否传入</span></span><br><span class="line">		<span class="keyword">if</span> (!<span class="keyword">params</span>.isEmpty()) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> TemplateModelException(<span class="string">"This directive doesn't allow parameters."</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (loopVars.length != <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> TemplateModelException(<span class="string">"This directive doesn't allow loop variables."</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 是否有非空的嵌入内容</span></span><br><span class="line">		<span class="keyword">if</span> (body != <span class="literal">null</span>) &#123;</span><br><span class="line">			<span class="comment">// 执行嵌入体部分，和 FTL 中的&lt;#nested&gt;一样，除了</span></span><br><span class="line">			<span class="comment">// 我们使用我们自己的 writer 来代替当前的 output writer.</span></span><br><span class="line">			body.render(<span class="keyword">new</span> UpperCaseFilterWriter(env.getOut()));</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"missing body"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * &#123;@link Writer&#125;改变字符流到大写形式， 而且把它发送到另外一个&#123;@link Writer&#125;中。</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">UpperCaseFilterWriter</span> <span class="title">extends</span> <span class="title">Writer</span> &#123;</span><br><span class="line">		<span class="keyword">private</span> final Writer <span class="keyword">out</span>;</span><br><span class="line">		UpperCaseFilterWriter(Writer <span class="keyword">out</span>) &#123;</span><br><span class="line">			<span class="keyword">this</span>.<span class="keyword">out</span> = <span class="keyword">out</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span>(<span class="params"><span class="keyword">char</span>[] cbuf, <span class="keyword">int</span> off, <span class="keyword">int</span> len</span>) throws IOException</span> &#123;</span><br><span class="line">			<span class="keyword">char</span>[] transformedCbuf = <span class="keyword">new</span> <span class="keyword">char</span>[len];</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">				transformedCbuf[i] = Character.toUpperCase(cbuf[i + off]);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">out</span>.write(transformedCbuf);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">flush</span>(<span class="params"></span>) throws IOException</span> &#123;</span><br><span class="line">			<span class="keyword">out</span>.flush();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span>(<span class="params"></span>) throws IOException</span> &#123;</span><br><span class="line">			<span class="keyword">out</span>.close();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">root.put(<span class="string">"upper"</span>, <span class="keyword">new</span> UpperDirective());</span><br></pre></td></tr></table></figure>
+<p>然后在模板中使用</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">@upper</span>]</span><br><span class="line">hello world!</span><br><span class="line">[<span class="meta">#list [<span class="meta-string">"red"</span>,<span class="meta-string">"blue"</span>,<span class="meta-string">"white"</span>,<span class="meta-string">"black"</span></span>] <span class="keyword">as</span> color]</span><br><span class="line">$&#123;color&#125;</span><br><span class="line">[<span class="meta">/#list</span>]</span><br><span class="line">[<span class="meta">/@upper</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h3><p>节点变量有下列属性， 它们都由 TemplateNodeModel 接口的方法提供。</p>
+<ul>
+<li>基本属性：<ul>
+<li>TemplateSequenceModel getChildNodes()：一个节点的子节点序列（除非这个节点是叶子节点，这时方法返回一个空序列或者是 null）。子节点本身应该也是节点变量。</li>
+<li>TemplateNodeModel getParentNode()：一个节点只有一个父节点（除非这个节点是节点树的根节点，这时方法返回 null）。</li>
+</ul>
+</li>
+<li>可选属性。如果一个属性在具体的使用中没有意义，那对应的方法应该返回 null：<ul>
+<li>String getNodeName()：节点名称也是宏的名称，当使用 recurse和 visit 指令时，它用来控制节点。因此， 如果想通过节点使用这些指令，那么节点的名称是必须的。</li>
+<li>String getNodeType()：在 XML 技术中： “element”， “text”，”comment”等类型。 如果这些信息可用，就是通过 recurse 和 visit 指令来查找节点的默认处理宏。而且，它对其他有具体用途的应用程序也是有用的。</li>
+<li>String getNamespaceURI()：这个节点所属的命名空间（和用于库的 FTL 命名空间无关）。例如，在 XML 中，这就是元素和属性所属 XML 命名空间的 URI。 这个信息如果可用，就是通过 recurse 和 visit 指令来查找存储控制宏的 FTL 命名空间。</li>
+</ul>
+</li>
+</ul>
+<p>在 FTL 这里，节点属性的直接使用可以通过内建函数 node 完成， 还有 visit 和 recurse 宏。</p>
+<h3 id="对象包装"><a href="#对象包装" class="headerlink" title="对象包装"></a>对象包装</h3><p>Template.process()可以接收任何Java对象，不一定是TemplateModel，因为末班实现是会用合适的TemplateModel对象来替换原有对象。替换在获取自变量时必须会发生，因为getter方法返回TemplateModel，而不是Object。</p>
+<p>替换策略通过ObjectWrapper实现，</p>
+<ul>
+<li>ObjectWrapper.DEFAULT_WRAPPER：它使用 SimpleScalar 来替换String， SimpleNumber 来替换 Number， SimpleSequence 来替换 List和数组，SimpleHash 来替换Map，TemplateBooleanModel.TRUE 或 TemplateBooleanModel.FALSE 来替换 Boolean，freemarker.ext.dom.NodeModel 来替换 W3C 组织定义的 DOM 模型节点类型。对于Jython 类型的对象，包装器会调用 freemarker.ext.jython.JythonWrapper。而对于其他对象，则会调用 BEAN_WRAPPER。</li>
+<li>ObjectWrapper.BEANS_WRAPPER：它可以通过 Java 的反射机制来获取到Java Bean 的属性和其他任意对象类型的成员变量。</li>
+</ul>
+<p>如果在数据模型中放了任意的对象，那么DEFAULT_WRAPPER 就会调用BEANS_WRAPPER 来包装这个对象</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root.<span class="built_in">put</span>(<span class="string">"person"</span>, <span class="keyword">new</span> Person(<span class="number">1</span>, <span class="string">"Jack"</span>));</span><br></pre></td></tr></table></figure>
+
+<p>Person类有两个字段id和name。这里Person类必须是public的，而且字段需要提供getter方法。如果还有公开方法，那么公开方法名不能和字段名相同。否则会抛出异常。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>配置对象是freemarker.template.Configuration 的实例，可以通过构造方法来创建它。一个应用程序通常只使用一个共享的 Configuration 实例。</p>
+<h3 id="共享变量"><a href="#共享变量" class="headerlink" title="共享变量"></a>共享变量</h3><p>Shared variables 共享变量是为所有模板所定义的变量。可以使用setSharedVariable 方法向配置实例中添加共享变量。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cfg.set<span class="constructor">SharedVariable(<span class="string">"wrap"</span>, <span class="params">new</span> WrapDirective()</span>);</span><br><span class="line">cfg.set<span class="constructor">SharedVariable(<span class="string">"company"</span>, <span class="string">"Foo Inc."</span>)</span>;</span><br></pre></td></tr></table></figure>
+<p>如果配置对象在多线程环境中使用，不要使用 TemplateModel 实现类来作为共享变量，因为它是线程不安全的。这也是基于 Servlet 的 Web 站点的典型情况。</p>
+<h3 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h3><p>Settings 配置信息是影响 FreeMarker 行为的已经被命名的值。</p>
+<p>Environment中能覆盖Template中的配置信息，Template中能覆盖Configuration中的配置信息。</p>
+<p>Configuration可以通过setter方法或setSetting方法设置配置信息。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">myCfg.set<span class="constructor">Locale(<span class="params">java</span>.<span class="params">util</span>.Locale.ITALY)</span>;</span><br><span class="line">myCfg.set<span class="constructor">NumberFormat(<span class="string">"0.####"</span>)</span>;</span><br><span class="line">myCfg.set<span class="constructor">Setting(<span class="string">"locale"</span>,<span class="string">"it_IT"</span>)</span>;</span><br><span class="line">myCfg.set<span class="constructor">Setting(<span class="string">"number_format"</span>,<span class="string">"0.####"</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Template层不需要设置配置信息。</p>
+<p>Environment层这里有两种设置方法</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Environment env =</span><br><span class="line">myTemplate.create<span class="constructor">ProcessingEnvironment(<span class="params">root</span>, <span class="params">out</span>)</span>;</span><br><span class="line">env.set<span class="constructor">Locale(<span class="params">java</span>.<span class="params">util</span>.Locale.ITALY)</span>;</span><br><span class="line">env.set<span class="constructor">NumberFormat(<span class="string">"0.####"</span>)</span>;</span><br><span class="line">env.process<span class="literal">()</span>; <span class="comment">// 处理模板</span></span><br></pre></td></tr></table></figure>
+<p>或在模板中直接使用指令</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;#setting <span class="attribute">locale</span>=<span class="string">"it_IT"</span>&gt;</span><br><span class="line">&lt;#setting <span class="attribute">number_format</span>=<span class="string">"0.####"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="模板加载"><a href="#模板加载" class="headerlink" title="模板加载"></a>模板加载</h3><h4 id="内建模板加载器"><a href="#内建模板加载器" class="headerlink" title="内建模板加载器"></a>内建模板加载器</h4><p>在 Configuration 中可以使用下面的方法来方便建立三种模板加载。（每种方法都会在其内部新建一个模板加载器对象，然后创建 Configuration 实例来使用它。）</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setDirectoryForTemplateLoading</span><span class="params">(<span class="built_in">File</span> dir)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setClassForTemplateLoading</span><span class="params">(Class cl, <span class="keyword">String</span> prefix)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setServletContextForTemplateLoading</span><span class="params">(Object servletContext, <span class="keyword">String</span> path)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>上述的第一种方法在磁盘的文件系统上设置了一个明确的目录，它确定了从哪里加载模板。</p>
+<p>第二种调用方法使用了一个 Class 类型的参数和一个前缀。这是让你来指定什么时候通过相同的机制来加载模板，不过是用 Java 的 ClassLoader 来加载类。 这就意味着传入的 Class 参数会被用来调用 Class.getResource()方法来找到模板。参数 prefix是给模板的名称来加前缀的。在实际运行的环境中，类加载机制是首选用来加载模板的方法，因为通常情况下，从类路径下加载文件的这种机制， 要比从文件系统的特定目录位置加载安全而且简单。 在最终的应用程序中，所有代码都使用.jar 文件打包也是不错的，这样用户就可以直接执行包含所有资源的.jar 文件了。</p>
+<p>第三种调用方式需要 Web 应用的上下文和一个基路径作为参数，这个基路径是 Web 应用根路径（ WEB-INF 目录的上级目录）的相对路径。那么加载器将会从 Web 应用目录开始加载模板。尽管加载方法对没有打包的.war 文件起作用，因为它使用了ServletContext.getResource()方法来访问模板，注意这里我们指的是“目录”。</p>
+<h4 id="从多个位置加载"><a href="#从多个位置加载" class="headerlink" title="从多个位置加载"></a>从多个位置加载</h4><p>如果需要从多个位置加载模板，那就不得不为每个位置都实例化模板加载器对象，将它们包装到一个被成为 MultiTemplateLoader 的特殊模板加载器</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FileTemplateLoader ftl1 = <span class="keyword">new</span> <span class="constructor">FileTemplateLoader(<span class="params">new</span> File(<span class="string">"/tmp/templates"</span>)</span>);</span><br><span class="line">FileTemplateLoader ftl2 = <span class="keyword">new</span> <span class="constructor">FileTemplateLoader(<span class="params">new</span> File(<span class="string">"/usr/data/templates"</span>)</span>);</span><br><span class="line">ClassTemplateLoader ctl = <span class="keyword">new</span> <span class="constructor">ClassTemplateLoader(<span class="params">getClass</span>()</span>, <span class="string">""</span>);</span><br><span class="line">TemplateLoader<span class="literal">[]</span> loaders = <span class="keyword">new</span> TemplateLoader<span class="literal">[]</span> &#123; ftl1, ftl2, ctl &#125;;</span><br><span class="line">MultiTemplateLoader mtl = <span class="keyword">new</span> <span class="constructor">MultiTemplateLoader(<span class="params">loaders</span>)</span>;</span><br><span class="line">cfg.set<span class="constructor">TemplateLoader(<span class="params">mtl</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>FreeMarker 将会尝试从/tmp/templates 目录加载模板，如果在这个目录下没有发现请求的模板，它就会继续尝试从/usr/data/templates 目录下加载，如果还是没有发现请求的模板，那么它就会使用类加载器来加载模板。</p>
+<h4 id="从其他资源加载模板"><a href="#从其他资源加载模板" class="headerlink" title="从其他资源加载模板"></a>从其他资源加载模板</h4><p>需要自己实现加载器实现freemarker.cache.TemplateLoader 或freemarker.cache.URLTemplateLoader 接口</p>
+<h4 id="模板路径"><a href="#模板路径" class="headerlink" title="模板路径"></a>模板路径</h4><p>强烈建议模板加载器使用 URL 风格的路径</p>
+<h3 id="模板缓存"><a href="#模板缓存" class="headerlink" title="模板缓存"></a>模板缓存</h3><p>FreeMarker 是会缓存模板的（假设使用 Configuration 对象的方法来创建 Template 对象）。这就是说当调用 getTemplate 方法时， FreeMarker 不但返回了Template 对象的结果，而且还会将它存储在缓存中，当下一次再以相同（或相等）路径调用 getTemplate 方法时，那么它只返回缓存的 Template 实例， 而不会再次加载和解析模板文件了。</p>
+<p>如果更改了模板文件，当下次调用模板时， FreeMarker 将会自动重新载入和解析模板。然而，要检查模板文件是否改变内容了是需要时间的，有一个 Configuration 级别的设置被称作为“更新延迟”可以用来配置这个时间。这个时间就是从上次对某个模板检查更新后， FreeMarker 再次检查模板所要间隔的时间。 其默认值是 5 秒。如果想要看到模板立即更新的效果，那么就要把它设置为 0。要注意某些模板加载器也许在模板更新时可能会有问题。例如，典型的例子就是在基于类加载器的模板加载器就不会注意到模板文件内容的改变。</p>
+<p>当调用了 getTemplate 方法时，与此同时 FreeMarker 意识到这个模板文件已经被<br>移除了，所以这个模板也会从缓存中移除。 如果 Java 虚拟机认为会有内存溢出时，默认情况它会将任意的模板从缓存中移除。此外，你还可以使用 Configuration 对象的clearTemplateCache 方法手动清空缓存。</p>
+<p>何时将一个被缓存了的模板清除的实际应用策略是由配置的属性 cache_storage来确定的，通过这个属性可以配置任何 CacheStorage 的实现。对于大多数用户来说，使用 freemarker.cache.MruCacheStorage 就足够了。这个缓存存储实现了二级最近使用的缓存。在第一级缓存中，组件都被强烈引用到特定的最大数目（引用次数最多的组件不会被 Java 虚拟机抛弃，而引用次数很少的组件则相反）。当超过最大数量时，最近最少使用的组件将被送至二级缓存中，在那里它们被很少引用，直到达到另一个最大的数目。引用强度的大小可以由构造方法来指定。例如，设置强烈部分为 20，轻微部分为 250：</p>
+<p>或者，使用 MruCacheStorage 缓存，它是默认的缓存存储实现。当创建了一个新的 Configuration 对象时，它使用一个 maxStrongSize 值为0 的 MruCacheStorage 缓存来初始化，maxSoftSize 的值是Integer.MAX_VALUE（也就是说在实际中，是无限大 的）。 但是使用非 0 的 maxStrongSize 对于高负载的服务器来说也许是一个更好的策略，对于少量引用的组件来说，如果资源消耗已经很高的话， Java 虚拟机往往会引发更高的资源消耗，因为它不断从缓存中抛出经常使用的模板，这些模板还不得不再次加载和解析。</p>
+<h3 id="错误控制"><a href="#错误控制" class="headerlink" title="错误控制"></a>错误控制</h3><h4 id="可能的异常"><a href="#可能的异常" class="headerlink" title="可能的异常"></a>可能的异常</h4><p>当加载和解析模板时发生异常： 调用了 Configuration.getTemplate(…) 方法， FreeMarker 就要把模板文件加载到内存中然后来解析它（除非模板已经在Configuration 对象中被缓存了）。 在这期间，有两种异常可能发生：</p>
+<ul>
+<li>因模板文件没有找到而发生的 IOException 异常，或在读取文件时发生其他的 I/O 问题。比如没有读取文件的权限，或者是磁盘错误。这些错误的发出者是TemplateLoader 对象，可以将它设置到 Configuration 对象中。（为了正确起见：这里所说的”文件”，是简化形式。例如，模板也可以存储在关系型数据库的表中。这是 TemplateLoader 所要做的事。）</li>
+<li>根据FTL语言的规则，模板文件发生语法错误时会导致 freemarker.core.ParseException 异常。当获得 Template 对象（ Configuration.getTemplate(…)）时，这种错误就会发生，而不是当执行（Template.process(…) ）模板的时候。这种异常是IOException 异常的一个子类。</li>
+</ul>
+<p>当执行（处理）模板时发生的异常，也就是当调用了 Template.process(…)方法时会发生的两种异常：</p>
+<ul>
+<li>当试图写入输出对象时发生错误而导致的 IOException 异常。</li>
+<li>当执行模板时发生的其它问题而导致的freemarker.template.TemplatException 异常。比如，一个频繁发生的错误，就是当模板引用一个不存在的变量。默认情况下，当TemplatException 异常发生时， FreeMarker 会用普通文本格式在输出中打印出 FTL 的错误信息和堆栈跟踪信息。然后通过再次抛出 TemplatException异常而中止模板的执行，然后就可以捕捉到 Template.process(…)方法抛出的异常了。而这种行为是可以来定制的。FreeMarker也会经常写 TemplatException 异常的日志。</li>
+</ul>
+<h4 id="根据-TemplateException-来制定处理方式"><a href="#根据-TemplateException-来制定处理方式" class="headerlink" title="根据 TemplateException 来制定处理方式"></a>根据 TemplateException 来制定处理方式</h4><p>Configuration中通过setTemplateExceptionHandler可以制定处理方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyTemplateExceptionHandler</span> <span class="keyword">implements</span> <span class="title">TemplateExceptionHandler</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleTemplateException</span><span class="params">(TemplateException te, Environment env,</span></span></span><br><span class="line"><span class="function"><span class="params">			java.io.Writer out)</span> <span class="keyword">throws</span> TemplateException </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			out.write(<span class="string">"[ERROR: "</span> + te.getMessage() + <span class="string">"]"</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> TemplateException(<span class="string">"Failed to print error message. Cause: "</span> + e, env);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">cfg.setTemplateExceptionHandler(<span class="keyword">new</span> MyTemplateExceptionHandler());</span><br></pre></td></tr></table></figure>
+
+<p>FreeMarker 本身带有这些预先编写的错误控制器：</p>
+<ul>
+<li>TemplateExceptionHandler.DEBUG_HANDLER：打印堆栈跟踪信息（包括 FTL 错误信息和 FTL 堆栈跟踪信息）和重新抛出的异常。这是默认的异常控制器（也就是说，在所有新的 Configuration 对象中，它是初始配置的）。</li>
+<li>TemplateExceptionHandler.HTML_DEBUG_HANDLER：DEBUG_HANDLER 相同，但是它可以格式化堆栈跟踪信息，那么就可以在 Web 浏览器中来阅读错误信息。当你在制作 HTML 页面时，建议使用它而不是DEBUG_HANDLER。</li>
+<li>TemplateExceptionHandler.IGNORE_HANDLER：简单地压制所有异常（但是要记住， FreeMarker 仍然会写日志）。它对处理异常没有任何作用，也不会重新抛出异常。</li>
+<li>TemplateExceptionHandler.RETHROW_HANDLER：简单重新抛出所有异常而不会做其它的事情。这个控制器对 Web 应用程序（假设你在发生异常之后不想继续执行模板）来说非常好，因为它在生成的页面发生错误的情况下，给了你很多对 Web应用程序的控制权。</li>
+</ul>
+<h4 id="在模板中明确地处理错误"><a href="#在模板中明确地处理错误" class="headerlink" title="在模板中明确地处理错误"></a>在模板中明确地处理错误</h4><p>你可以在模板中直接控制错误。通常这不是一个好习惯（尽量保持模板简单，技术含量不要太高），但有时仍然需要：</p>
+<ul>
+<li>控制不存在/为空的变量：请阅读模板开发指南/模板/表达式/处理不存在的值部分。</li>
+<li>在发生障碍的“ porlets” 中留存下来</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>当你想要读取一个变量时， FreeMarker 将会以这种顺序来查找，直到发现了完全匹配的的变量名称才会停下来</p>
+<ol>
+<li>在 Environment 对象中：<ol>
+<li>如果在循环中，在循环变量的集合中。循环变量是由 （ 如 list 指令）来创建的。</li>
+<li>如果在宏中，在宏的局部变量集合中。局部变量可以由 local 指令创建。而且，宏的参数也是局部变量。</li>
+<li>在当前的命名空间中。可以使用 assign 指令将变量放到一个命名空间中。</li>
+<li>在由 global 指令创建的变量集合中。FTL 将它们视为数据模型的普通成员变量一样来控制它们。也就是说，它们在所有的命名空间中都可见，你也可以像访问一个数据模型中的数据一样来访问它们。</li>
+</ol>
+</li>
+<li>在传递给 process 方法的数据模型对象中。</li>
+<li>在 Configuration 对象存储的共享变量集合中。</li>
+</ol>
+<p>1.4, 2,3 共同构成了全局变量的集合</p>
+<h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p>输入编码</p>
+<p>可以使用配置对象的setEncoding(Locale locale, String encoding)方法来填充编码表；编码表初始化时是空的。默认的初始编码是系统属性 file.encoding 的值，但是可以通过 setDefaultEncoding 方法来设置一个不同的默认值。</p>
+<p>输出编码</p>
+<p>原则上， FreeMarker 不处理输出内容的字符集问题，因为 FreeMarker 将输出内容都写入了 java.io.Writer 对象中。而 Writer 对象是由封装了 FreeMarker（比如 Web应用框架）的软件生成的，那么输出内容的字符集就是由封装软件来控制的。而 FreeMarker有一个称为 output_encoding（开始于 FreeMarker 2.3.1 版本之后）的设置。封装软件应该使用这个设置（ Writer 对象使用的字符集） 来通知 FreeMarker 在输出中（ 否则 FreeMarker 不能找到它）使用哪种字符集。 </p>
+<p>为独立模板设置编码</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Writer w = <span class="keyword">new</span> <span class="constructor">OutputStreamWriter(<span class="params">out</span>, <span class="params">outputCharset</span>)</span>;</span><br><span class="line">Environment env = template.create<span class="constructor">ProcessingEnvironment(<span class="params">dataModel</span>, <span class="params">w</span>)</span>;</span><br><span class="line">env.set<span class="constructor">OutputEncoding(<span class="params">outputCharset</span>)</span>;</span><br><span class="line">env.process<span class="literal">()</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h3><p>在多线程运行环境中， Configuration 实例， Template 实例和数据模型应该是永远不能改变（只读）的对象。也就是说， 创建和初始化它们（如使用 set…方法） 之后， 就不能再修改它们了（ 比如不能再次调用 set…方法）。 </p>
+<p>不鼓励你编写修改数据模型对象或共享变量的方法。多试试使用存储在环境对象（这个对象是为独立的 Template.process 调用而创建的，用来存储模板处理的运行状态）中的变量，所以最好不要修改那些由多线程使用的数据。</p>
+<h3 id="Bean-的包装"><a href="#Bean-的包装" class="headerlink" title="Bean 的包装"></a>Bean 的包装</h3><p>当 出 现 下 面 这 些 情 况 时 ， 你 会 想 使 用 BeansWrapper 包 装 器 来 代 替 DefaultObjectWrapper：<br>在模板执行期间，数据模型中的 Collection 和 Map 应该被允许修改。（ DefaultObjectWrapper 会阻止这样做，因为当它包装对象时创建了数据集合的拷贝，而这些拷贝都是只读的。）<br>如果 array， Collection 和 Map 对象的标识符当在模板中被传递到被包装对象的方法时，必须被保留下来。 也就是说，那些方法必须得到之前包装好的同类对象。<br>如果在之前列出的 Java API 中的类（ 如 String， Map， List 等），应该在模板中可见。还有，默认情况下它们是不可见的，但是可以设置获取的可见程度</p>
+<h4 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h4><p>默认情况下，不能访问模板制作时认为是不安全的一些方法。比如，不能使用同步方法（ wait， notify， notifyAll），线程和线程组的管理方法（ stop， suspend，resume， setDaemon ， setPriority ），反射相关方法（ Field setXxx ，Method.invoke， Constructor.newInstance， Class.newInstance，Class.getClassLoader 等）， System 和 Runtime 类中各种有危险性的方法（ exec， exit， halt， load 等）。 BeansWrapper 也有一些安全级别（被称作“方法暴露的级别”）， 默认的级别被称作为 EXPOSE_SAFE，它可能对大多数应用程序来说是适用的。没有安全保证的级别称作是 EXPOSE_ALL，它允许你调用上述的不安全的方法。一个严格的级别是 EXPOSE_PROPERTIES_ONLY，它只会暴露出 bean 属性的 getters方法。最后，一个称作是 EXPOSE_NOTHING 的级别，它不会暴露任何属性和方法。这种情况下，你可以通过哈希表模型接口访问的那些数据只是 map 和资源包中的项，还有，可以从通用 get(Object) 方法和 get(String)方法调用返回的对象，所提供的受影响的对象就有这样的方法。</p>
+<h4 id="访问静态变量"><a href="#访问静态变量" class="headerlink" title="访问静态变量"></a>访问静态变量</h4><p>从 BeansWrapper.getStaticModels() 方法返回的 TemplateHashModel 对象可以用来创建哈希表模型来访问静态方法和任意类型的字段。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BeansWrapper <span class="keyword">wrapper</span> = BeansWrapper.getDefaultInstance();</span><br><span class="line">TemplateHashModel staticModels = <span class="keyword">wrapper</span>.getStaticModels();</span><br><span class="line">TemplateHashModel fileStatics = (TemplateHashModel) staticModels.<span class="keyword">get</span>("java.io.File");</span><br><span class="line">root.put("File", fileStatics);</span><br></pre></td></tr></table></figure>
+<p>模板中使用</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;#<span class="built_in">list</span> <span class="module-access"><span class="module"><span class="identifier">File</span>.</span></span><span class="built_in">list</span><span class="constructor">Roots()</span> <span class="keyword">as</span> fileSystemRoot&gt;...&lt;/#<span class="built_in">list</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果使用，将带来更多自由</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root.put(<span class="string">"statics"</span>, <span class="module-access"><span class="module"><span class="identifier">BeansWrapper</span>.</span></span>get<span class="constructor">DefaultInstance()</span>.get<span class="constructor">StaticModels()</span>);</span><br></pre></td></tr></table></figure>
+<p>可以这样使用</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;</span>statics[<span class="string">"java.lang.System"</span>].currentTimeMillis()&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，这样会有更多的安全隐患，比如，如果方法暴露级别对 EXPOSE_ALL 是很弱的，那么某些人可以使用这个模型调用 System.exit()方法。</p>
+<h4 id="访问枚举类型"><a href="#访问枚举类型" class="headerlink" title="访问枚举类型"></a>访问枚举类型</h4><p>BeansWrapper.getDefaultInstance()返回的对象可以被用作创建访问枚举类型值的哈希表模型</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BeansWrapper <span class="keyword">wrapper</span> = BeansWrapper.getDefaultInstance();</span><br><span class="line">TemplateHashModel enumModels = <span class="keyword">wrapper</span>.getEnumModels();</span><br><span class="line">TemplateHashModel roundingModeEnums = (TemplateHashModel)enumModels.<span class="keyword">get</span>("java.math.RoundingMode");</span><br><span class="line">root.put("RoundingMode", roundingModeEnums);</span><br></pre></td></tr></table></figure>
+<p>使用</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">RoundingMode</span><span class="selector-class">.UP</span></span><br></pre></td></tr></table></figure>
+
+<p>更自由的方式</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root.put(<span class="string">"enums"</span>, <span class="module-access"><span class="module"><span class="identifier">BeansWrapper</span>.</span></span>get<span class="constructor">DefaultInstance()</span>.get<span class="constructor">EnumModels()</span>);</span><br></pre></td></tr></table></figure>
+<p>使用</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">$</span><span class="template-variable">&#123;enums["java.<span class="keyword">math</span>.RoundingMode"].UP&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>默认情况下， FreeMarker 会按如下顺序来查找日志包，而且会自动使用第一个发现的包： SLF4J，Apache Commons Logging，Log4J，Avalon， java.util.logging。 然而，如果在 freemarker.log.Logger 类用合适的参数中调用静态的 selectLoggerLibrary 方法，而且在使用任何 FreeMarker 类之前记录信息，你可以明确地选择一个日志包，或者关闭日志功能。</p>
+<h3 id="在-Servlet-中使用-FreeMarker"><a href="#在-Servlet-中使用-FreeMarker" class="headerlink" title="在 Servlet 中使用 FreeMarker"></a>在 Servlet 中使用 FreeMarker</h3><ol>
+<li>复制 freemarker.jar 到（从 FreeMarker 发布包的 lib 目录中）你的 Web<br>应用程序的 WEB-INF/lib 目录下。</li>
+<li>将下面的部分添加到 Web 应用程序的 WEB-INF/web.xml 文件中（调整它是否<br>需要）。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>freemarker<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">freemarker.ext.servlet.FreemarkerServlet</span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- FreemarkerServlet 设置: --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-name</span>&gt;</span>TemplatePath<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-value</span>&gt;</span>/<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-name</span>&gt;</span>NoCache<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-name</span>&gt;</span>ContentType<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-value</span>&gt;</span>text/html; charset=UTF-8<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 强制使用 UTF-8 作为输出编码格式! --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- FreeMarker 设置: --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-name</span>&gt;</span>template_update_delay<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-value</span>&gt;</span>0<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 0 只对开发使用! 否则使用大一点的值. --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-name</span>&gt;</span>default_encoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-value</span>&gt;</span>ISO-8859-1<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 模板文件的编码方式. --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-name</span>&gt;</span>number_format<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">param-value</span>&gt;</span>0.##########<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>freemarker<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.ftl<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">&lt;!-- 为了阻止从 Servlet 容器外部访问 MVC 的视图层组件。</span></span><br><span class="line"><span class="comment">RequestDispatcher.forward/include 应该起到作用。</span></span><br><span class="line"><span class="comment">移除下面的代码可能开放安全漏洞!</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">security-constraint</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-resource-collection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-resource-name</span>&gt;</span></span><br><span class="line">FreeMarker MVC Views</span><br><span class="line"><span class="tag">&lt;/<span class="name">web-resource-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.ftl<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-resource-collection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">auth-constraint</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 不允许任何人访问这里 --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">auth-constraint</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">security-constraint</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>它是怎么工作的？让我们来看看 JSP 是怎么工作的。许多 servlet 容器处理 JSP 时使用一个映射为*.jsp 的 servlet 请求 URL 格式。 这样 servlet 就会接收所有 URL 是以.jsp结尾的请求，查找请求 URL 地址中的 JSP 文件，内部编译完后交给 Servlet，然后调用 生 成 信 息 的 serlvet 来 生 成 页 面 。 这 里 为 URL 类 型 是 *.ftl 映射的 FreemarkerServlet 也是相同功能，只是 FTL 文件不会编译给 Servlet，而是给 Template 对象，之后 Template 对象的 process 方法就会被调用来生成<br>页面。</p>
+<p>Freemarker现在页面中寻找变量，其次在 HttpServletRequest中寻找，然后在 HttpSession，最后在ServletContext中</p>
+<p>FreemarkerServlet 也会在数据模型中放置 3 个哈希表，这样你就可以直接访问 3 个对象中的属性了。这些哈希表变量是： Request， Session， Application（和ServletContext 对应）。它还会暴露另外一个名为 RequestParameters 的哈希表，这个哈希表提供访问 HTTP 请求中的参数。</p>
+<p>FreemarkerServlet 也有很多初始参数。它可以被设置从任意路径来加载模板，从类路径下，或相对于 Web 应用程序的目录。你可以设置模板使用的字符集。你还可以设置想使用的对象包装器等。</p>
+<p>通过子类别， FreemarkerServlet 易于定制特殊需要。那就是说，你需要对所有模板添加一个额外的可用变量，使用 servlet 的子类，覆盖 preTemplateProcess()方法，在模板被执行前，将你需要的额外数据放到模型中。或者在 servlet 的子类中，在Configuration 中设置这些全局的变量作为共享变量。</p>
+<h4 id="包含其它Web应用程序资源中的内容"><a href="#包含其它Web应用程序资源中的内容" class="headerlink" title="包含其它Web应用程序资源中的内容"></a>包含其它Web应用程序资源中的内容</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;@include_page <span class="attribute">path</span>=<span class="string">"path/to/some.jsp"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<p>和使用 JSP 指令是相同的：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:include <span class="attribute">page</span>=<span class="string">"path/to/some.jsp"</span>&gt;</span><br></pre></td></tr></table></figure>
+<p><code>&lt;@include_page ...&gt;</code>会开始一个独立的 HTTP 请求处理。</p>
+<p>除了参数 path 之外，你也可以用布尔值（当不指定时默认是 true）指定一个名为 inherit_params 可选的参数来指定被包含的页面对当前的请求是否可见 HTTP 请求中的参数。</p>
+<p>最后，你可以指定一个名为 params 的可选参数，来指定被包含页面可见的新请求参数。 如果也传递继承的参数，那么指定参数的值将会得到前缀名称相同的继承参数的值。params 的值必须是一个哈希表类型，它其中的每个值可以是字符串，或者是字符串序列（如果你需要多值参数）。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;@include_page <span class="attribute">path</span>=<span class="string">"path/to/some.jsp"</span> <span class="attribute">inherit_params</span>=<span class="literal">true</span> params=&#123;<span class="string">"foo"</span>: <span class="string">"99"</span>, <span class="string">"bar"</span>: [<span class="string">"a"</span>, <span class="string">"b"</span>]&#125;/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果“foo”有值“111”和“123”，那么现在它会有“99”，“111”，“123”。</p>
+<h4 id="在-FTL-中使用-JSP-客户化标签"><a href="#在-FTL-中使用-JSP-客户化标签" class="headerlink" title="在 FTL 中使用 JSP 客户化标签"></a>在 FTL 中使用 JSP 客户化标签</h4><p>FreemarkerServlet 将一个哈希表类型的 JspTaglibs 放到数据模型中，就可以使用它来访问 JSP 标签库了。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">#assign</span> <span class="attr">html</span>=<span class="string">JspTaglibs[</span>"/<span class="attr">WEB-INF</span>/<span class="attr">struts-html.tld</span>"]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">#assign</span> <span class="attr">bean</span>=<span class="string">JspTaglibs[</span>"/<span class="attr">WEB-INF</span>/<span class="attr">struts-bean.tld</span>"]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">@bean.message</span> <span class="attr">key</span>=<span class="string">"welcome.title"</span>/&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">@html.errors</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">@html.form</span> <span class="attr">action</span>=<span class="string">"/query"</span>&gt;</span></span><br><span class="line">Keyword: <span class="tag">&lt;<span class="name">@html.text</span> <span class="attr">property</span>=<span class="string">"keyword"</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">Exclude: <span class="tag">&lt;<span class="name">@html.text</span> <span class="attr">property</span>=<span class="string">"exclude"</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">@html.submit</span> <span class="attr">value</span>=<span class="string">"Send"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">@html.form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>因为 JSP 客户化标签是在 JSP 环境中来书写操作的，它们假设变量（在 JSP 中常被指代“beans”）被存储在 4 个范围中： page 范围， request 范围， session 范围和 application 范围。FTL 没有这样的表示法（ 4 种范围），但是 FreemarkerServlet 给客户化标签提供仿真的环境，这样就可以维持 JSP 范围中的“ beans”和 FTL 变量之间的对应关系。对于自定义的JSP标签，请求，会话和应用范围是和真实JSP相同的：javax.servlet.ServletContext，HttpSession 和 ServerRequest 对象中的属性。从 FTL 的角度来看，这三种范围都在数据模型中</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FreeMarker/" rel="tag">FreeMarker</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.480Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/05/03/freemarker-XML-processing-note/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          FreeMarker-XML处理笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/04/30/freemarker-template-development-note/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">FreeMarker-模板开发笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#快速入门"><span class="toc-number">1.</span> <span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据模型"><span class="toc-number">2.</span> <span class="toc-text">数据模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#标量"><span class="toc-number">2.1.</span> <span class="toc-text">标量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器"><span class="toc-number">2.2.</span> <span class="toc-text">容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#哈希表"><span class="toc-number">2.2.1.</span> <span class="toc-text">哈希表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#序列"><span class="toc-number">2.2.2.</span> <span class="toc-text">序列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#集合"><span class="toc-number">2.2.3.</span> <span class="toc-text">集合</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法"><span class="toc-number">2.3.</span> <span class="toc-text">方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指令"><span class="toc-number">2.4.</span> <span class="toc-text">指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点"><span class="toc-number">2.5.</span> <span class="toc-text">节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象包装"><span class="toc-number">2.6.</span> <span class="toc-text">对象包装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置"><span class="toc-number">3.</span> <span class="toc-text">配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#共享变量"><span class="toc-number">3.1.</span> <span class="toc-text">共享变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置信息"><span class="toc-number">3.2.</span> <span class="toc-text">配置信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板加载"><span class="toc-number">3.3.</span> <span class="toc-text">模板加载</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#内建模板加载器"><span class="toc-number">3.3.1.</span> <span class="toc-text">内建模板加载器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#从多个位置加载"><span class="toc-number">3.3.2.</span> <span class="toc-text">从多个位置加载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#从其他资源加载模板"><span class="toc-number">3.3.3.</span> <span class="toc-text">从其他资源加载模板</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模板路径"><span class="toc-number">3.3.4.</span> <span class="toc-text">模板路径</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板缓存"><span class="toc-number">3.4.</span> <span class="toc-text">模板缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#错误控制"><span class="toc-number">3.5.</span> <span class="toc-text">错误控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#可能的异常"><span class="toc-number">3.5.1.</span> <span class="toc-text">可能的异常</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#根据-TemplateException-来制定处理方式"><span class="toc-number">3.5.2.</span> <span class="toc-text">根据 TemplateException 来制定处理方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在模板中明确地处理错误"><span class="toc-number">3.5.3.</span> <span class="toc-text">在模板中明确地处理错误</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#变量"><span class="toc-number">4.1.</span> <span class="toc-text">变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码"><span class="toc-number">4.2.</span> <span class="toc-text">编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多线程"><span class="toc-number">4.3.</span> <span class="toc-text">多线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bean-的包装"><span class="toc-number">4.4.</span> <span class="toc-text">Bean 的包装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#安全性"><span class="toc-number">4.4.1.</span> <span class="toc-text">安全性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#访问静态变量"><span class="toc-number">4.4.2.</span> <span class="toc-text">访问静态变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#访问枚举类型"><span class="toc-number">4.4.3.</span> <span class="toc-text">访问枚举类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日志"><span class="toc-number">4.5.</span> <span class="toc-text">日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在-Servlet-中使用-FreeMarker"><span class="toc-number">4.6.</span> <span class="toc-text">在 Servlet 中使用 FreeMarker</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#包含其它Web应用程序资源中的内容"><span class="toc-number">4.6.1.</span> <span class="toc-text">包含其它Web应用程序资源中的内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在-FTL-中使用-JSP-客户化标签"><span class="toc-number">4.6.2.</span> <span class="toc-text">在 FTL 中使用 JSP 客户化标签</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2015/05/02/freemarker-program-development-note/';
+  this.page.identifier = '2015/05/02/freemarker-program-development-note/';
+  this.page.title = 'FreeMarker-程序开发指南笔记';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

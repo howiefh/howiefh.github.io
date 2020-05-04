@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Java Web 笔记 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Java Web; 浏览器请求过程; NIO; 字符编码; 乱码;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Web 笔记">
+<meta property="og:url" content="http://howiefh.github.io/2015/08/10/java-web/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="Java Web; 浏览器请求过程; NIO; 字符编码; 乱码;">
+<meta property="article:published_time" content="2015-08-10T02:21:47.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.482Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-java-web" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/08/10/java-web/" class="article-date">
+  <time class="dt-published" datetime="2015-08-10T02:21:47.000Z" itemprop="datePublished">2015-08-10</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Java Web 笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一次请求过程"><span class="toc-number">1.</span> <span class="toc-text">一次请求过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NIO"><span class="toc-number">2.</span> <span class="toc-text">NIO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几种访问文件的方式"><span class="toc-number">3.</span> <span class="toc-text">几种访问文件的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列化"><span class="toc-number">4.</span> <span class="toc-text">序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I-O调优"><span class="toc-number">5.</span> <span class="toc-text">I&#x2F;O调优</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#磁盘-I-O-优化"><span class="toc-number">5.1.</span> <span class="toc-text">磁盘 I&#x2F;O 优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络-I-O-优化"><span class="toc-number">5.2.</span> <span class="toc-text">网络 I&#x2F;O 优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-io包中的设计模式"><span class="toc-number">6.</span> <span class="toc-text">Java io包中的设计模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码"><span class="toc-number">7.</span> <span class="toc-text">编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unicode"><span class="toc-number">7.1.</span> <span class="toc-text">Unicode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java中String-的相关方法"><span class="toc-number">7.2.</span> <span class="toc-text">Java中String 的相关方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-Web-涉及到的编码"><span class="toc-number">7.3.</span> <span class="toc-text">Java Web 涉及到的编码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#URL中的编码"><span class="toc-number">7.3.1.</span> <span class="toc-text">URL中的编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Header中的编码"><span class="toc-number">7.3.2.</span> <span class="toc-text">Header中的编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#POST表单中的编码"><span class="toc-number">7.3.3.</span> <span class="toc-text">POST表单中的编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-BODY-的编解码"><span class="toc-number">7.3.4.</span> <span class="toc-text">HTTP BODY 的编解码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JS中的编码"><span class="toc-number">7.3.5.</span> <span class="toc-text">JS中的编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#其它需要编码的地方"><span class="toc-number">7.3.6.</span> <span class="toc-text">其它需要编码的地方</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见加载器类错误分析"><span class="toc-number">8.</span> <span class="toc-text">常见加载器类错误分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#热部署"><span class="toc-number">9.</span> <span class="toc-text">热部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行引擎"><span class="toc-number">10.</span> <span class="toc-text">执行引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Session与Cookie"><span class="toc-number">11.</span> <span class="toc-text">Session与Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Cookie"><span class="toc-number">11.1.</span> <span class="toc-text">Cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Session"><span class="toc-number">11.2.</span> <span class="toc-text">Session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表单重复提交问题"><span class="toc-number">11.3.</span> <span class="toc-text">表单重复提交问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多终端Session统一"><span class="toc-number">11.4.</span> <span class="toc-text">多终端Session统一</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#跨域资源共享（CORS）"><span class="toc-number">12.</span> <span class="toc-text">跨域资源共享（CORS）</span></a></li></ol>
+		
+		</div>
+		
+        <p>这篇记录一下浏览器的请求过程，NIO，字符编码等。</p>
+<a id="more"></a>
+<h2 id="一次请求过程"><a href="#一次请求过程" class="headerlink" title="一次请求过程"></a>一次请求过程</h2><ol>
+<li>浏览器查找域名的 IP 地址<br> 这一步包括 DNS 具体的查找过程，会依次从浏览器缓存、系统缓存、hosts中查找，如果这个过程中有一个地方有结果，查询就结束了，否则向本地域名服务器（LDNS）发送DNS请求（UDP）；如果LDNS没有命中，LDNS直接向Root Server域名服务器请求解析，根域名服务器会返回给LDNS一个所查询的主域名服务器（gTLD Server，.com,.cn,.org等）地址；本地域名服务器再向gTLD服务器发送请求，gTLD服务器会返回此域名对应的Name Server域名服务器（就是你注册的域名服务器）的地址，Name Server会查询存储的域名、IP映射表，然后返回IP和TTL值（这个值用来指定DNS缓存时间）；最后LDNS Server缓存结果并将结果返回给用户。Name Server 也可能会有多级。<br> Linux和Windows下<code>nslookup</code>，Linux下<code>dig</code>可以跟踪DNS解析过程。<br> 如果域名对应的IP地址变了，但是本地还有缓存，会造成访问不了的问题，可以清除缓存的域名，Windows下可以<code>ipconfig /flushdns</code>，Linux下<code>/etc/init.d/nscd restart</code><br> JVM也会缓存DNS解析结果，是通过InetAddress类完成的，这个类最好是使用单例模式，否则没有缓存每次都解析会很耗时。<br> 域名解析方式<ul>
+<li>A 记录，多个域名可以解析岛一个IP地址，不能将一个域名解析到多个IP。如taobao.com指定到110.75.115.70</li>
+<li>MX 记录，Mail Exchange，可将摸个域名下的邮件服务器指向自己的Mail Server。</li>
+<li>CNAME 记录，Canonical Name别名。如指定xxx.github.io的别名xxx.com</li>
+<li>NS 记录，为某域名指定DNS域名服务器。</li>
+<li>TXT 记录，为某个主机或域名设置说明，如xxx.com的TXT记录为XXX的博客</li>
+</ul>
+</li>
+<li>浏览器根据解析得到的IP地址向 web 服务器发送一个 HTTP 请求<br> 通过DNS获取到IP后，目标IP和本机IP分别与子网掩码相与的结果相同，那么它们在一个子网，那么通过ARP协议可以查到目标主机的MAC地址，否则的话，需要通过网关转发，也就是目标MAC是网关的MAC。<br> 请求需要进行编码，生成一个HTTP数据包，依次打上TCP、IP、以太网协议的头部。其中TCP头部主要信息是本机端口和目标端口号等信息，用于标识同一个主机的不同进程，对于HTTP协议，服务器端的默认端口号是80，本机浏览器的话生成一个1024到65535之间的端口号。IP头部主要包含本地IP和目标IP等信息。以太网协议头部主要是双方的MAC地址，目标MAC可以由第一条所诉方法得到。以太网数据包的数据部分，最大长度为1500字节，所以如果IP包太大的话还要拆包，比如IP包5000字节，要分为4包，每一包都包含一个IP头部。<br> 服务器接收请求就要层层解包，对于HTTP包要进行解码，解码时如果编码不对的话就有可能乱码了。</li>
+<li>服务器可能有很多，由哪台来处理请求，还需要负载均衡设备来平均分配所有用户的请求。<br> 负载均衡，即对工作任务进行平衡，分摊到多个操作单元上执行，如图片服务器，应用服务器。可分为链路负载均衡（通过DNS解析成不同IP，用户根据这个IP访问不同的服务器，由于中间没有代理，其特点是快，但是如果某台服务器挂了，可能造成用户无法访问的问题），集群负载均衡，操作系统负载均衡（通过硬中断和软中断实现）<br> 集群负载均衡又分为硬件负载均衡和软件负载均衡，前者非常贵，不嫩能够进行动态扩容，后者成本低，但需要多次代理，增加了延时。</li>
+<li>请求的数据可能存储在分布式缓存或者静态文件再或者数据库中，数据库中。如果请求的数据是静态文件，如果在CDN上，那么CDN服务器又会处理这个用户的请求。如果在数据库中需要向数据库发起查询请求。<br> CDN, Content Delivery Network，一个比喻：CDN = 镜像+缓存+整体负载均衡。用户访问离他最近节点的服务器的内容。通过DNS迭代解析，会返回公司的DNS解析服务器，它又会指定DNS负载均衡器，由其决定用户访问最近的CDN节点。<br> 如果CDN节点没有资源，会去源站请求，然后缓存并返回给用户。</li>
+<li>服务器返回一个 HTTP 响应，如果返回状态码304，浏览器可以直接使用之前缓存的资源。对于内容响应，浏览器需要进行响应解码，渲染显示。<br> 缓存机制<ul>
+<li>Expires，指定一个时间，告诉浏览器，在此之前可以直接使用缓存而不需要请求，当然F5还是会去请求</li>
+<li>Cache-control，更细致的控制缓存，比Expires优先级高。<ul>
+<li>Public指示响应可被任何缓存区缓存。</li>
+<li>Private指示对于单个用户的整个或部分响应消息，不能被共享缓存处理。这允许服务器仅仅描述当用户的部分响应消息，此响应消息对于其他用户的请求无效。</li>
+<li>no-cache指示请求或响应消息不能缓存</li>
+<li>no-store用于防止重要的信息被无意的发布。在请求消息中发送将使得请求和响应消息都不使用缓存。</li>
+<li>max-age指示客户机可以接收生存期不大于指定时间（以秒为单位）的响应。</li>
+<li>min-fresh指示客户机可以接收响应时间小于当前时间加上指定时间的响应。</li>
+<li>max-stale指示客户机可以接收超出超时期间的响应消息。如果指定max-stale消息的值，那么客户机可以接收超出超时期指定值之内的响应消息。</li>
+</ul>
+</li>
+<li>Last-Modified/If-Modified-Since，Last-Modified标示这个响应资源的最后修改时间。当资源过期时（使用Cache-Control标识的max-age），发现资源具有Last-Modified声明，则再次向web服务器请求时带上头 If-Modified-Since，web服务器收到请求后发现有头If-Modified-Since 则与被请求资源的最后修改时间进行比对，判断是否可以继续使用缓存资源。</li>
+<li>Etag/If-None-Match，Etag/If-None-Match也要配合Cache-Control使用。Apache中，ETag的值，默认是对文件的索引节（INode），大小（Size）和最后修改时间（MTime）进行Hash后得到的。当资源过期时（使用Cache-Control标识的max-age），发现资源具有Etag声明，则再次向web服务器请求时带上头If-None-Match （Etag的值）。web服务器根据If-None-Match 决定是否使用缓存。<br>Last-Modified标注的最后修改只能精确到秒级，如果一秒内资源改变了，却还是使用之前的缓存，这时就需要Etag来控制缓存了。Last-Modified与ETag是可以一起使用的，服务器会优先验证ETag，一致的情况下，才会继续比对Last-Modified，最后才决定是否返回304。<br>Ctrl+F5快捷键刷新页面，将会在头部加上<code>Pragma:no-cache</code>和<code>Cache-Control:no-cache</code>，从而获取最新的资源。</li>
+</ul>
+</li>
+</ol>
+<h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><table>
+<thead>
+<tr>
+<th>IO</th>
+<th>NIO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>面向流</td>
+<td>面向缓冲</td>
+</tr>
+<tr>
+<td>阻塞IO</td>
+<td>非阻塞IO</td>
+</tr>
+<tr>
+<td>无</td>
+<td>选择器</td>
+</tr>
+</tbody></table>
+<p>原来的 I/O 库(在 <code>java.io.*</code>中) 与 NIO 最重要的区别是数据打包和传输的方式。原来的 I/O 以流的方式处理数据，而 NIO 以块的方式处理数据。NIO快得多</p>
+<p><code>java.io.*</code> 已经以 NIO 为基础重新实现了，所以现在它可以利用 NIO 的一些特性。</p>
+<p>通道 和 缓冲区 是 NIO 中的核心对象，几乎在每一个 I/O 操作中都要使用它们。</p>
+<p>NIO中的三个概念Buffer，Channel 和 Selector，下面是一个示例</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">public</span> void <span class="keyword">selector() </span>throws IOException &#123;</span><br><span class="line">    <span class="keyword">ByteBuffer </span><span class="keyword">buffer </span>= <span class="keyword">ByteBuffer.allocate(1024);</span></span><br><span class="line"><span class="keyword"> </span>   // <span class="number">1</span>. 调用 <span class="keyword">Selector </span>的静态工厂创建一个选择器</span><br><span class="line">    <span class="keyword">Selector </span><span class="keyword">selector </span>= <span class="keyword">Selector.open();</span></span><br><span class="line"><span class="keyword"> </span>   // <span class="number">2</span>. 创建一个服务端的 Channel</span><br><span class="line">    ServerSocketChannel ssc = ServerSocketChannel.open()<span class="comment">;</span></span><br><span class="line">    // <span class="number">3</span>. 把这个通信信道设置为非阻塞模式</span><br><span class="line">    ssc.configureBlocking(false)<span class="comment">;</span></span><br><span class="line">    // <span class="number">4</span>. 绑定到一个 Socket 对象</span><br><span class="line">    ssc.socket().<span class="keyword">bind(new </span>InetSocketAddress(<span class="number">8080</span>))<span class="comment">;</span></span><br><span class="line">    // <span class="number">5</span>. 把这个通信信道注册到选择器上</span><br><span class="line">    ssc.register(<span class="keyword">selector, </span><span class="keyword">SelectionKey.OP_ACCEPT);</span></span><br><span class="line"><span class="keyword"> </span>   <span class="meta">while</span> (true) &#123;</span><br><span class="line">        // <span class="number">6</span>. 调用 <span class="keyword">Selector </span>的 <span class="keyword">selectedKeys </span>方法来检查已经注册在这个选择器上的所有通信信道是否有需要的事件发生，如果有某个事件发生时，将会返回所有的 <span class="keyword">SelectionKey</span></span><br><span class="line"><span class="keyword"> </span>       Set <span class="keyword">selectedKeys </span>= <span class="keyword">selector.selectedKeys();</span></span><br><span class="line"><span class="keyword"> </span>       <span class="keyword">Iterator </span><span class="keyword">it </span>= <span class="keyword">selectedKeys.iterator();</span></span><br><span class="line"><span class="keyword"> </span>       <span class="meta">while</span> (<span class="keyword">it.hasNext()) </span>&#123;</span><br><span class="line">            <span class="keyword">SelectionKey </span>key = (<span class="keyword">SelectionKey) </span><span class="keyword">it.next();</span></span><br><span class="line"><span class="keyword"> </span>           <span class="meta">if</span> ((key.readyOps() &amp; <span class="keyword">SelectionKey.OP_ACCEPT) </span>== <span class="keyword">SelectionKey.OP_ACCEPT) </span>&#123;</span><br><span class="line">                // <span class="number">7</span>. 通过这个对象 Channel 方法就可以取得这个通信信道对象从而可以读取通信的数据</span><br><span class="line">                ServerSocketChannel ssChannel = (ServerSocketChannel) key.channel()<span class="comment">;</span></span><br><span class="line">                SocketChannel sc = ssChannel.accept()<span class="comment">;//接受到服务端的请求</span></span><br><span class="line">                sc.configureBlocking(false)<span class="comment">;</span></span><br><span class="line">                sc.register(<span class="keyword">selector, </span><span class="keyword">SelectionKey.OP_READ);</span></span><br><span class="line"><span class="keyword"> </span>               <span class="keyword">it.remove();</span></span><br><span class="line"><span class="keyword"> </span>           &#125; <span class="meta">else</span> <span class="meta">if</span> ((key.readyOps() &amp; <span class="keyword">SelectionKey.OP_READ) </span>== <span class="keyword">SelectionKey.OP_READ) </span>&#123;</span><br><span class="line">                SocketChannel sc = (SocketChannel) key.channel()<span class="comment">;</span></span><br><span class="line">                <span class="meta">while</span> (true) &#123;</span><br><span class="line">                    <span class="keyword">buffer.clear();</span></span><br><span class="line"><span class="keyword"> </span>                   // <span class="number">8</span>. 读取的数据是 <span class="keyword">Buffer，这个 </span><span class="keyword">Buffer </span>是我们可以控制的缓冲器</span><br><span class="line">                    int n = sc.read(<span class="keyword">buffer);//读取数据到buffer中，也就是向buffer写数据</span></span><br><span class="line"><span class="keyword"> </span>                   <span class="meta">if</span> (n &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="keyword">break;</span></span><br><span class="line"><span class="keyword"> </span>                   &#125;</span><br><span class="line">                    <span class="keyword">buffer.flip();</span></span><br><span class="line"><span class="keyword"> </span>               &#125;</span><br><span class="line">                <span class="keyword">it.remove();</span></span><br><span class="line"><span class="keyword"> </span>           &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Java NIO的通道类似流，但又有些不同：</p>
+<ul>
+<li>既可以从通道中读取数据，又可以写数据到通道。但流的读写通常是单向的。</li>
+<li>通道可以异步地读写。</li>
+<li>通道中的数据总是要先读到一个Buffer，或者总是要从一个Buffer中写入。</li>
+</ul>
+<p>Buffer内部实现是一个数组，但是一个缓冲区不仅仅是一个数组。缓冲区提供了对数据的结构化访问，而且还可以跟踪系统的读/写进程。每个基本类型都有对应的Buffer类。</p>
+<p>为了理解Buffer的工作原理，需要熟悉它的几个属性：</p>
+<ul>
+<li>capacity</li>
+<li>position</li>
+<li>limit</li>
+<li>mark</li>
+</ul>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Write Mode</span><br><span class="line">+-------------------------+</span><br><span class="line">|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|</span><br><span class="line">|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|</span><br><span class="line">+-------------------------+</span><br><span class="line">           ^             ^</span><br><span class="line">           |<span class="string">             </span>|</span><br><span class="line">        position       limit,capacity</span><br><span class="line">Read Mode</span><br><span class="line">+-------------------------+</span><br><span class="line">|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|</span><br><span class="line">|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|</span><br><span class="line">+-------------------------+</span><br><span class="line"> ^         ^             ^</span><br><span class="line"> |<span class="string">         </span>|<span class="string">             </span>|</span><br><span class="line"> position  limit        capacity</span><br></pre></td></tr></table></figure>
+<p>position和limit的含义取决于Buffer处在读模式还是写模式。不管Buffer处在什么模式，capacity的含义总是一样的。</p>
+<ul>
+<li><p>capacity</p>
+<p>  作为一个内存块，Buffer有一个固定的大小值，也叫“capacity”.你只能往里写capacity个byte、long，char等类型。一旦Buffer满了，需要将其清空（通过读数据或者清除数据）才能继续写数据往里写数据。</p>
+</li>
+<li><p>position</p>
+<p>  当你写数据到Buffer中时，position表示当前的位置。初始的position值为0.当一个byte、long等数据写到Buffer后， position会向前移动到下一个可插入数据的Buffer单元。position最大可为capacity – 1.</p>
+<p>  当读取数据时，也是从某个特定位置读。当将Buffer从写模式切换到读模式，position会被重置为0. 当从Buffer的position处读取数据时，position向前移动到下一个可读的位置。</p>
+</li>
+<li><p>limit</p>
+<p>  在写模式下，Buffer的limit表示你最多能往Buffer里写多少数据。 写模式下，limit等于Buffer的capacity。</p>
+<p>  当切换Buffer到读模式时， limit表示你最多能读到多少数据。因此，当切换Buffer到读模式时，limit会被设置成写模式下的position值。换句话说，你能读到之前写入的所有数据（limit被设置成已写数据的数量，这个值在写模式下就是position）</p>
+</li>
+<li><p>mark</p>
+<p>  用于记录当前 position 的前一个位置或者默认是 0</p>
+</li>
+</ul>
+<p>写数据到Buffer有两种方式：</p>
+<ul>
+<li>从Channel写到Buffer。<code>int bytesRead = inChannel.read(buf); //read into buffer.</code></li>
+<li>通过Buffer的put()方法写到Buffer里。<code>buf.put(127);</code></li>
+</ul>
+<p>从Buffer中读取数据有两种方式：</p>
+<ul>
+<li>从Buffer读取数据到Channel。<code>int bytesWritten = inChannel.write(buf);</code></li>
+<li>使用get()方法从Buffer中读取数据。<code>byte aByte = buf.get();</code></li>
+</ul>
+<p>Buffer中的几个方法</p>
+<ul>
+<li><p>allocate方法</p>
+<p>  每一个Buffer类都有一个allocate方法。下面是一个分配48字节capacity的ByteBuffer的例子。<code>ByteBuffer buf = ByteBuffer.allocate(48);</code></p>
+</li>
+<li><p>flip()方法</p>
+<p>  flip方法将Buffer从写模式切换到读模式。调用flip()方法会将position设回0，并将limit设置成之前position的值。</p>
+</li>
+<li><p>rewind()方法</p>
+<p>  Buffer.rewind()将position设回0，所以你可以重读Buffer中的所有数据。limit保持不变，仍然表示能从Buffer中读取多少个元素（byte、char等）。</p>
+</li>
+<li><p>clear()与compact()方法</p>
+<p>  一旦读完Buffer中的数据，需要让Buffer准备好再次被写入。可以通过clear()或compact()方法来完成。</p>
+<p>  如果调用的是clear()方法，position将被设回0，limit被设置成 capacity的值。换句话说，Buffer 被清空了。Buffer中的数据并未清除，只是这些标记告诉我们可以从哪里开始往Buffer里写数据。</p>
+<p>  如果Buffer中有一些未读的数据，调用clear()方法，数据将“被遗忘”，意味着不再有任何标记会告诉你哪些数据被读过，哪些还没有。</p>
+<p>  如果Buffer中仍有未读的数据，且后续还需要这些数据，但是此时想要先先写些数据，那么使用compact()方法。</p>
+<p>  compact()方法将所有未读的数据拷贝到Buffer起始处。然后将position设到最后一个未读元素正后面。limit属性依然像clear()方法一样，设置成capacity。现在Buffer准备好写数据了，但是不会覆盖未读的数据。</p>
+</li>
+<li><p>mark()与reset()方法</p>
+<p>  通过调用Buffer.mark()方法，可以标记Buffer中的一个特定position。之后可以通过调用Buffer.reset()方法恢复到这个position。</p>
+</li>
+</ul>
+<p>参考: <a href="http://ifeve.com/java-nio-all/" target="_blank" rel="noopener">http://ifeve.com/java-nio-all/</a></p>
+<h2 id="几种访问文件的方式"><a href="#几种访问文件的方式" class="headerlink" title="几种访问文件的方式"></a>几种访问文件的方式</h2><ol>
+<li><p>标准访问文件方式 标准访问文件方式就是当应用程序调用read()接口时，操作系统检查内核的高速缓存中有没有需要的数据，如果已经缓存了，那么就直接从缓存中返回，如果没有，从磁盘中读取，然后缓存在操作系统的缓存中。</p>
+<p> 写入的方式是，用户的应用程序调用write()接口将数据从用户地址空间复制到内核地址空间的缓存中。这时对用户程序来说写操作就已经完成，至于什么时候再写到磁盘中由操作系统决定，除非显式地调用了sync同步命令。</p>
+</li>
+<li><p>直接I/O方式 所谓直接I/O方式就是应用程序直接访问磁盘数据，而不经过操作系统内核数据缓冲区，这样做的目的就是减少一次从内核缓冲区到用户程序缓存的数据复制。这种访问文件的方式通常是在对数据的缓存管理由应用程序实现的数据库管理系统中。如数据库管理系统中，系统明确地知道应该缓存哪些数据，应该失效哪些数捃，还可以对一些热点数据做预加载，提前将热点数据加载到内存，可以加速数据的访问效率。直接I/O也有负面影响，如果访问的数据不在应用程序缓存中，那么每次数据都会直接从磁盘加载，这种直接加载会非常缓慢。通常直接I/O与异步I/O结合使用，会得到比较好的性能。</p>
+</li>
+<li><p>同步访问文件方式 同步访问文件方式比较容易理解，就是数据的读取和写入都是同步操作的，它与标准访问文件方式不同的是，只有当数据被成功写到磁盘时才返回给应用程序成功标志。这种访问文件方式性能比较差，只有在一些对数据安全性要求比较高的场景中才会使用，而且通常这种操作方式的硬件都是定制的。</p>
+</li>
+<li><p>异步访问文件方式 异步访问文件方式就是当访问数据的线程发出请求之后，线程会接着去处理其他事情，而不是阻塞等待，当请求的数据返回后继续处理下面的操作。这种访问文件的方式可以明显地提高应用程序的效率，但是不会改变访问文件的效率。</p>
+</li>
+<li><p>内存映射方式 内存映射方式是指操作系统将内存中的某一块区域与磁盘中的文件关联起来，当要访问内存中一段数据时，转换为访问文件的某一段数据。这种方式的目的同样是减少数据从内核空间缓存到用户空间缓存的数据复制操作，因为这两个空间的数据是共享的。</p>
+</li>
+</ol>
+<h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><ul>
+<li>当父类继承Serializable接口，所有子类都可以被序列化。</li>
+<li>子类实现了Serializable接口，父类没有，父类中的属性不能序列化（不报错，数据会丢失），但是子类中属性仍能正确序列化。</li>
+<li>如果序列化的属性是对象，这个对象也必须实现Serializable接口，否则会报错。</li>
+<li>在反序列化时，如果对象的属性有修改或删减，修改的部分属性会丢失，但不会报错。</li>
+<li>在反序列化时，如果seriaIVersionUID被修改，那么反序列化时会失败。</li>
+</ul>
+<p>序列化后很难被其它语言反序列化，所以通常用json，xml这样的结构数据。</p>
+<h2 id="I-O调优"><a href="#I-O调优" class="headerlink" title="I/O调优"></a>I/O调优</h2><h3 id="磁盘-I-O-优化"><a href="#磁盘-I-O-优化" class="headerlink" title="磁盘 I/O 优化"></a>磁盘 I/O 优化</h3><ul>
+<li><p>性能检测</p>
+<p>  我们可以压力测试应用程序看系统的 I/O wait 指标是否正常，例如测试机器有 4 个 CPU，那么理想的 I/O wait 参数不应该超过 25%，如果超过 25% 的话，I/O 很可能成为应用程序的性能瓶颈。Linux 操作系统下可以通过 iostat 命令查看。</p>
+<p>  通常我们在判断 I/O 性能时还会看另外一个参数就是 IOPS，每个磁盘的 IOPS 通常是在一个范围内，这和存储在磁盘的数据块的大小和访问方式也有关。但是主要是由磁盘的转速决定的，磁盘的转速越高磁盘的 IOPS 也越高。</p>
+<p>  现在为了提高磁盘 I/O 的性能，通常采用一种叫 RAID 的技术，就是将不同的磁盘组合起来来提高 I/O 性能，目前有多种 RAID 技术，每种 RAID 技术对 I/O 性能提升会有不同，可以用一个 RAID 因子来代表，磁盘的读写吞吐量可以通过 iostat 命令来获取，于是我们可以计算出一个理论的 IOPS 值，计算公式如下所以：</p>
+<p>  (磁盘数 * 每块磁盘的 IOPS)/(磁盘读的吞吐量 +RAID 因子 * 磁盘写的吞吐量)=IOPS</p>
+</li>
+<li><p>提升 I/O 性能</p>
+<ul>
+<li>增加缓存，减少磁盘访问次数</li>
+<li>优化磁盘的管理系统，设计最优的磁盘访问策略，以及磁盘的寻址策略，这里是在底层操作系统层面考虑的。</li>
+<li>设计合理的磁盘存储数据块，以及访问这些数据块的策略，这里是在应用层面考虑的。如我们可以给存放的数据设计索引，通过寻址索引来加快和减少磁盘的访问，还有可以采用异步和非阻塞的方式加快磁盘的访问效率。</li>
+<li>应用合理的 RAID 策略提升磁盘 IO，每种 RAID 的区别我们可以用下表所示：</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>磁盘阵列</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RAID 0</td>
+<td>数据被平均写到多个磁盘阵列中，写数据和读数据都是并行的，所以磁盘的 IOPS 可以提高一倍。</td>
+</tr>
+<tr>
+<td>RAID 1</td>
+<td>RAID 1 的主要作用是能够提高数据的安全性，它将一份数据分别复制到多个磁盘阵列中。并不能提升 IOPS 但是相同的数据有多个备份。通常用于对数据安全性较高的场合中。</td>
+</tr>
+<tr>
+<td>RAID 5</td>
+<td>这中设计方式是前两种的折中方式，它将数据平均写到所有磁盘阵列总数减一的磁盘中，往另外一个磁盘中写入这份数据的奇偶校验信息。如果其中一个磁盘损坏，可以通过其它磁盘的数据和这个数据的奇偶校验信息来恢复这份数据。</td>
+</tr>
+<tr>
+<td>RAID 0+1</td>
+<td>如名字一样，就是根据数据的备份情况进行分组，一份数据同时写到多个备份磁盘分组中，同时多个分组也会并行读写。</td>
+</tr>
+</tbody></table>
+<h3 id="网络-I-O-优化"><a href="#网络-I-O-优化" class="headerlink" title="网络 I/O 优化"></a>网络 I/O 优化</h3><p>网络 I/O 优化通常有一些基本处理原则：</p>
+<ul>
+<li>一个是减少网络交互的次数，如静态文件合并，多次数据库查询合并为一次。</li>
+<li>减少网络传输数据量的大小，如 gzip 压缩。还有就是通过设计简单的协议，尽量通过读取协议头来获取有用的价值信息。</li>
+<li>尽量减少编码，尽量直接以字节形式发送。也就是尽量提前将字符转化为字节，或者减少字符到字节的转化过程。</li>
+<li>根据应用场景设计合适的交互方式，所谓的交互场景主要包括同步与异步阻塞与非阻塞方式，下面将详细介绍。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>组合方式</th>
+<th>性能分析</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>同步阻塞</td>
+<td>最常用的一种用法，使用也是最简单的，但是 I/O 性能一般很差，CPU 大部分在空闲状态。</td>
+</tr>
+<tr>
+<td>同步非阻塞</td>
+<td>提升 I/O 性能的常用手段，就是将 I/O 的阻塞改成非阻塞方式，尤其在网络 I/O 是长连接，同时传输数据也不是很多的情况下，提升性能非常有效。这种方式通常能提升 I/O 性能，但是会增加 CPU 消耗，要考虑增加的 I/O 性能能不能补偿 CPU 的消耗，也就是系统的瓶颈是在 I/O 还是在 CPU 上。</td>
+</tr>
+<tr>
+<td>异步阻塞</td>
+<td>这种方式在分布式数据库中经常用到，例如在网一个分布式数据库中写一条记录，通常会有一份是同步阻塞的记录，而还有两至三份是备份记录会写到其它机器上，这些备份记录通常都是采用异步阻塞的方式写 I/O。异步阻塞对网络 I/O 能够提升效率，尤其像上面这种同时写多份相同数据的情况。</td>
+</tr>
+<tr>
+<td>异步非阻塞</td>
+<td>这种组合方式用起来比较复杂，只有在一些非常复杂的分布式情况下使用，像集群之间的消息同步机制一般用这种 I/O 组合方式。如 Cassandra 的 Gossip 通信机制就是采用异步非阻塞的方式。它适合同时要传多份相同的数据到集群中不同的机器，同时数据的传输量虽然不大，但是却非常频繁。这种网络 I/O 用这个方式性能能达到最高。</td>
+</tr>
+</tbody></table>
+<h2 id="Java-io包中的设计模式"><a href="#Java-io包中的设计模式" class="headerlink" title="Java io包中的设计模式"></a>Java io包中的设计模式</h2><ul>
+<li>适配器模式。InputStreamReader。目标接口是Reader。源角色是InputStream</li>
+<li>装饰器模式。FilterInputStream及其子类。</li>
+</ul>
+<p>两者都是包装模式，区别是目的不同，前者意在转换接口，后者重在强化功能。</p>
+<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><ul>
+<li>ASSIC，单字节编码，共有128个字符，一字节可以容纳256个，所以其最高位为0，除去第[0,32]以及第127为控制字符，有效字符为94个。</li>
+<li>ISO-8859-1，单字节编码。又称Latin-1，是对ASSIC的扩展，在一些软件或协议中是默认编码，通常如果有<code>?</code>问号这样的乱码，很可能就是由于这个编码。</li>
+<li>GB2312，对于落在ASSIC范围内的编码还是使用单字节，其它双字节编码。使用二位区位编号，行为区，列为位，总计94x94个编号，区位均从1起始，一个字符用区码加位码编号，区码、位码各加32就是国标码，国标码区位各加128就是机内码，区位码区位各加0XA0就是机内码了。机内码是实际使用的编码。</li>
+<li>GBK，单字节，双字节变长编码，对于ASSIC码是单字节。是对GB2312的扩展，K即扩展。UTF-16和GB开头的编码转换需要通过查表，而Unicode的几种编码之间有相应的转换规则。</li>
+<li>GB18030，可能单字节、双字节、四字节编码，兼容GB2312，部分兼容GBK</li>
+<li>UTF-8，1到4个字节。</li>
+<li>UTF-16，两个字节或四个字节。两个字节时基本可以认为和UCS-2等同。</li>
+<li>UTF-32，四个字节定长编码。可以认为和UCS-4等同。</li>
+</ul>
+<h3 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h3><blockquote>
+<p>Unicode的核心就是为每个字符提供唯一一个数字编号。Unicode provides a unique number for every character.</p>
+</blockquote>
+<p>后三个都是Unicode字符集中的编码。字符集和编码几乎都是一对一的，但是Unicode是个例外，Unicode只是给出了个字符集，每个字符有对应的码点（code point），比如美元<code>$</code>符号对应码点是<code>U+0024</code>，至于怎么对这个码点编码这就是UTF-X（Unicode (or UCS) Transformation Format）的事情了，这个X代表了码元（code unit）是多少位的，比如UTF-8的码元是8bits也就是一个字节，一种转换格式可以有整数个码元，比如UTF-16码元是16位，两个字节，其可以包含一个或两个码元，也就是两个或四个字节。</p>
+<p>码点范围是U+0000<del>U+10FFFF（表示为4到6个16进制数，不足4位补零，超过4位，是多少位就还是多少位），最多用到21比特位，可以表示(1+2^4)x2^16个字符，可分为17个部分，每个部分称为平面，平面从0起始，第一个平面即是BMP（Basic Multilingual Plane 基本多语言平面，也叫Plane 0，它的码点范围是U+0000</del>U+FFFF），UTF-16用两个字节表示BMP平面的字符。后续的16个平面称为SP（Supplementary Planes）。显然，这些码点已经是超过U+FFFF的了，所以已经超过了16位空间的理论上限，对于这些平面内的字符，UTF-16采用了四字节编码。BMP平面从D8~DF都是空白的。其中D800–DBFF属于高代理区（High Surrogate Area），DC00–DFFF属于低代理区（Low Surrogate Area），各自的大小均为4×256=1024。2^10x2^10=2^4x2^16正好可以表示后面的16个平面，UTF-16就是使用代理对表示BMP平面外的字符的。</p>
+<p>还有一个代码页的概念，配置vim编码时碰到过一个cp936的，这个就是一个代码页（code page），可以说代码页是编码的一个别名，如cp936和GBK其实就是一个东西。cp65001和UTF-8也是一个东西。Windows命令窗口可以用<code>chcp 65001</code>改变其编码。</p>
+<p><strong>码点到UTF-8的转换</strong></p>
+<p>以<code>你</code>字为例，其码点是<code>U+4F60</code></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0100</span> <span class="number">1111</span>   <span class="number">0110</span> <span class="number">0000</span>   码点的二进制形式</span><br><span class="line"><span class="number">0100</span> <span class="number">111101</span> <span class="number">100000</span>      按<span class="number">4</span>+<span class="number">6</span>+<span class="number">6</span>分组</span><br><span class="line"><span class="number">1110</span>XXXX <span class="number">10</span>XXXXXX <span class="number">10</span>XXXXXX  UTF<span class="number">-8</span>三字节模板</span><br><span class="line"><span class="number">11100100</span> <span class="number">10111101</span> <span class="number">10100000</span>  替换有效编码位</span><br><span class="line">E4 BD A0</span><br></pre></td></tr></table></figure>
+<p>UTF-8 有以下编码规则：</p>
+<ul>
+<li>如果一个字节，最高位（第 8 位）为 0，表示这是一个 ASSIC 字符（00 - 7F）。可见，所有 ASSIC 编码已经是 UTF-8 了。</li>
+<li>如果一个字节，以 11 开头，连续的 1 的个数暗示这个字符的字节数，例如：110xxxxx 代表它是双字节 UTF-8 字符的首字节。</li>
+<li>如果一个字节，以 10 开始，表示它不是首字节，需要向前查找才能得到当前字符的首字节</li>
+</ul>
+<p><strong>码点到UTF-16的转换</strong></p>
+<ol>
+<li>BMP中直接对应，无须转换；</li>
+<li>增补平面SP中，则需要做相应的计算。<br> 拿到一个码点，先减去10000(16)，再除以400(16)（=1024(10)）就是所在行了，余数就是所在列了，再加上行与列所在的起始值，就得到了代理对了。<code>(16)</code>表示是16位。</li>
+</ol>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Lead = (码点 - <span class="number">10000</span>(<span class="number">16</span>)) ÷ <span class="number">400</span>(<span class="number">16</span>) + D800</span><br><span class="line">Trail = (码点 - <span class="number">10000</span>(<span class="number">16</span>)) % <span class="number">400</span>(<span class="number">16</span>) + DC00</span><br></pre></td></tr></table></figure>
+
+<p>下面以前面的U+1D11E具体示例了代理对的（16进制）计算：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Lead = (<span class="number">1</span>D11E - <span class="number">10000</span>) ÷ <span class="number">400</span> + DB00 = D11E ÷ <span class="number">400</span> + D800 = <span class="number">34</span> + D800 = D834</span><br><span class="line">Trail = (<span class="number">1</span>D11E - <span class="number">10000</span>) % <span class="number">400</span> + DC00 = D11E % <span class="number">400</span> + DC00 = <span class="number">11</span>E + DC00 = DD1E</span><br></pre></td></tr></table></figure>
+
+<p><strong>码点到UTF-32无需转换，补零就行了</strong></p>
+<p>记事本中可以保存Unicode编码其实就是UTF-16，默认是小端编码。另外记事本保存UTF-8默认是带BOM的。</p>
+<p>提到小端编码了，顺便说说大小端编码的问题，也就是字节序的问题，涉及到的是多字节数据存储时的字节顺序问题（对于单字节数据来说，一般不需要考虑各比特位的存储顺序问题。UTF-8以字节为编码单元，没有字节序的问题。UTF-16以两个字节为编码单元，就要考虑字节序了）。大端序是指数据的高字节保存在内存的低地址中，小端序是指数据的高字节保存在内存的高地址中。按照自左向右的顺序，以左为先，把先出现的当做低地址。对于UTF-16的一个码元来说比如<code>0x597D</code>这两个字节，大端表示的话就是<code>0x597D</code>，小端表示的话是<code>0x7D59</code>。可以看出大端表示法跟我们的书写习惯是一致的，而小端的话对我们来说有点不自然，但对于电脑存储可能就比较自然了，因为它的高低字节和内存的高低地址正好就是对应的。</p>
+<p>说完大小端再说说BOM，其全称是Byte Order Marker，从全称，我们就知道它是干嘛用的了，标识字节序的。它对应Unicode中的<code>U+FEFF</code>码点，对于UTF-16来说，如果开头是<code>FEFF</code>那就是大端序了，如果是<code>FFFE</code>那就是小端序。</p>
+<p>关于编码更详细的内容可以看这个系列博客<a href="http://my.oschina.net/goldenshaw/blog?catalog=536953" target="_blank" rel="noopener">http://my.oschina.net/goldenshaw/blog?catalog=536953</a></p>
+<h3 id="Java中String-的相关方法"><a href="#Java中String-的相关方法" class="headerlink" title="Java中String 的相关方法"></a>Java中String 的相关方法</h3><p>getBytes有四个重载方法，有一个是过时的，总的说来就是两种，指定了编码的和没有指定编码的，没有指定编码，它会使用平台的缺省编码，这个平台是指JVM，如果JVM启动时没有指定编码，那么这个缺省编码也就是操作系统的缺省编码了。这个方法的作用是把字符串按指定的编码方式编码为字节数组，其实质应该就是将内存中存储的UTF-16的编码数组转换为其它编码方式的字节数组。</p>
+<p>length方法，这个方法是常用的一个方法，它返回字符串的长度，这个长度不是字符的个数，而是码元的个数，在Java里也就是UTF-16的码元个数了。像charAt, substring这些方法，其参数实际也是基于码元的概念而不是字符。不过呢，大多的字符在BMP平面就能表示了，所以平时接触到的可能这个码元个数和字符个数都是对应的。</p>
+<p>下面看些具体的例子</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">final String interesting = <span class="string">"hi你好"</span>;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(interesting.length<span class="literal">()</span>); <span class="comment">// 4</span></span><br><span class="line"></span><br><span class="line">final byte<span class="literal">[]</span> utf8Bytes = interesting.get<span class="constructor">Bytes(<span class="string">"UTF-8"</span>)</span>;</span><br><span class="line"><span class="comment">// 输出8，每个英文字母占一个字节，每个汉字3个字节</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(utf8Bytes.length);</span><br><span class="line"><span class="comment">//68 69 E4 BD A0 E5 A5 BD</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">utf8Bytes</span>)</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(utf8Bytes.length);</span><br><span class="line">final byte<span class="literal">[]</span> utf16Bytes = interesting.get<span class="constructor">Bytes(<span class="string">"UTF-16"</span>)</span>;</span><br><span class="line"><span class="comment">// 输出10，每个字符2个字节，外加BOM两个字节</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(utf16Bytes.length);</span><br><span class="line"><span class="comment">//输出中开头的FE FF就是传说中的BOM(Byte Order Marker用来表明大端还是小端的)了，其实就是U+FEFF码点</span></span><br><span class="line"><span class="comment">//EF BB BF 是这一码点在UTF-8下的编码，UTF-8只有大端，没有大小端之分，所以不建议保存时带BOM，对于不支持BOM的软件会带来未知问题</span></span><br><span class="line"><span class="comment">//FE FF 00 68 00 69 4F 60 59 7D</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">utf16Bytes</span>)</span>);</span><br><span class="line">final byte<span class="literal">[]</span> utf16beBytes = interesting.get<span class="constructor">Bytes(<span class="string">"UTF-16BE"</span>)</span>;</span><br><span class="line"><span class="comment">// 输出8，每个字符2个字节，UTF-16大端编码，可以看到后面输出的结果除了没有BOM标记之外和UTF-16是一样的。</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(utf16beBytes.length);</span><br><span class="line"><span class="comment">//00 68 00 69 4F 60 59 7D</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">utf16beBytes</span>)</span>);</span><br><span class="line">final byte<span class="literal">[]</span> utf32Bytes = interesting.get<span class="constructor">Bytes(<span class="string">"UTF-32"</span>)</span>;</span><br><span class="line"><span class="comment">// 输出16，每个字符4个字节，UTF-32其实也是可以有大小端之分的</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(utf32Bytes.length);</span><br><span class="line"><span class="comment">//00 00 00 68 00 00 00 69 00 00 4F 60 00 00 59 7D</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">utf32Bytes</span>)</span>);</span><br><span class="line">final byte<span class="literal">[]</span> isoBytes = interesting.get<span class="constructor">Bytes(<span class="string">"ISO-8859-1"</span>)</span>;</span><br><span class="line"><span class="comment">// 输出4，两个汉字超出它的表示范围，它不认识，然后就被编程`?`了</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(isoBytes.length);</span><br><span class="line"><span class="comment">//68 69 3F 3F</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">isoBytes</span>)</span>);</span><br><span class="line">final byte<span class="literal">[]</span> gb2312Bytes = interesting.get<span class="constructor">Bytes(<span class="string">"GB2312"</span>)</span>;</span><br><span class="line"><span class="comment">// 输出6</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(gb2312Bytes.length);</span><br><span class="line"><span class="comment">//68 69 C4 E3 BA C3</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">gb2312Bytes</span>)</span>);</span><br><span class="line">final byte<span class="literal">[]</span> gbkBytes = interesting.get<span class="constructor">Bytes(<span class="string">"GBK"</span>)</span>;</span><br><span class="line"><span class="comment">// 输出6， 是对GB2312的扩展，所以这个编码一样</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(gbkBytes.length);</span><br><span class="line"><span class="comment">// 68 69 C4 E3 BA C3</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">gbkBytes</span>)</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//s是增补平面的一个字符，UTF-16需要四个字节存，这里如果给char类型赋值，会报错，char总是两个字节的，很显然它存不下</span></span><br><span class="line"><span class="comment">// char c = '?';</span></span><br><span class="line">String s = <span class="string">"?"</span>;</span><br><span class="line"><span class="comment">//Returns the length of this string. The length is equal to the number of Unicode code units in the string.</span></span><br><span class="line"><span class="comment">//上面是length方法的注释，可以看到这个字符串长度，实际是码元的个数，而Java是用UTF-16存储字符串的，所以这里就是UTF-16的码元个数了，即2</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(s.length<span class="literal">()</span>); <span class="comment">//2  输出的是码元数目，也就是UTF-16码元的数目</span></span><br><span class="line"><span class="comment">//下面的两个方法其实也是针对码元的，如果是按字符算的话，s只有一个字符，下面两个方法可就都越界了，事实上它们并没有</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(s.<span class="built_in">char</span><span class="constructor">At(1)</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(s.substring(<span class="number">1</span>));</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(s.equals(<span class="string">"\uD869\uDEA5"</span>));<span class="comment">//s的转义表示，就是UTF-16的代理对</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(s.code<span class="constructor">PointAt(0)</span><span class="operator"> == </span><span class="number">0x2A6A5</span>);<span class="comment">//s码点是U+2A6A5</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">s</span>.<span class="params">getBytes</span>(<span class="string">"utf-16be"</span>)</span>)); <span class="comment">//D8 69 DE A5</span></span><br><span class="line"><span class="comment">//下面是一个组合字符，神一样的存在</span></span><br><span class="line">s = <span class="string">"???????????????????????????????????????"</span>;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(s.length<span class="literal">()</span>); <span class="comment">//39,意味着有39个码元！但是显示的确实是一个字符</span></span><br><span class="line"><span class="comment">//0E 2A 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49 0E 49</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">s</span>.<span class="params">getBytes</span>(<span class="string">"utf-16be"</span>)</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//两个汉字变成了三个字符，因为UTF-8对汉字编码是三字节，而GBK是两个字节，其实就是六个字节的两种组合</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">new</span> <span class="constructor">String(<span class="params">interesting</span>.<span class="params">getBytes</span>(<span class="string">"UTF-8"</span>)</span>,<span class="string">"GBK"</span>));</span><br><span class="line"><span class="comment">//两个汉字变成了六个字符，因为UTF-8对汉字编码是三字节，而ISO-8859-1是单字节编码，两个三字节被当做六个单字节来解了</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">new</span> <span class="constructor">String(<span class="params">interesting</span>.<span class="params">getBytes</span>(<span class="string">"UTF-8"</span>)</span>,<span class="string">"ISO-8859-1"</span>));</span><br><span class="line"><span class="comment">//两个汉字变成了两个'?'，因为ISO-8859-1是单字节编码，不认识的都按3F也就是'?'编码，解码时GBK也就当是问号了</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">new</span> <span class="constructor">String(<span class="params">interesting</span>.<span class="params">getBytes</span>(<span class="string">"ISO-8859-1"</span>)</span>,<span class="string">"GBK"</span>));</span><br><span class="line"><span class="comment">//两个汉字变成了四个字符，因为GBK对汉字编码是两字节，而ISO-8859-1是单字节编码，两个双字节被当做四个单字节来解了</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">new</span> <span class="constructor">String(<span class="params">interesting</span>.<span class="params">getBytes</span>(<span class="string">"GBK"</span>)</span>,<span class="string">"ISO-8859-1"</span>));</span><br><span class="line"><span class="comment">// 68 69 C4 E3 BA C3 -&gt; 68 69 3F 3F 3F 3F</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">to</span><span class="constructor">Hex(<span class="params">new</span> String(<span class="params">interesting</span>.<span class="params">getBytes</span>(<span class="string">"GBK"</span>)</span>,<span class="string">"ISO-8859-1"</span>).get<span class="constructor">Bytes(<span class="string">"GBK"</span>)</span>));</span><br><span class="line"><span class="comment">//两个汉字变成了四个'?'，涉及两次编解码，这里有个疑问，第一次按GBK编码再按ISO-8859-1解码，字节数没变每个字节里存储的内容没变还是68 69 C4 E3 BA C3</span></span><br><span class="line"><span class="comment">//为什么再拿GBK编码后面就变成3F了，GBK不是按照C4E3 BAC3这么分组编码的？我觉得应该跟字符串的存储有关系，getBytes这个方法其实还是从UTF-16到其它编码的一个转换过程</span></span><br><span class="line"><span class="comment">//C4 E3 BA C3 存储可能是00C4 00E3 00BA 00C3然后00C4是什么GBK没有对应的编码，然后就又3F了</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">new</span> <span class="constructor">String(<span class="params">new</span> String(<span class="params">interesting</span>.<span class="params">getBytes</span>(<span class="string">"GBK"</span>)</span>,<span class="string">"ISO-8859-1"</span>).get<span class="constructor">Bytes(<span class="string">"GBK"</span>)</span>,<span class="string">"GBK"</span>));</span><br><span class="line"><span class="comment">//下面这个结果就是正确的了，第二次编码时，数组的内容还是68 69 C4 E3 BA C3 再按GBK解码自然能够把C4E3 BAC3转为对应的汉字</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="keyword">new</span> <span class="constructor">String(<span class="params">new</span> String(<span class="params">interesting</span>.<span class="params">getBytes</span>(<span class="string">"GBK"</span>)</span>,<span class="string">"ISO-8859-1"</span>).get<span class="constructor">Bytes(<span class="string">"ISO-8859-1"</span>)</span>,<span class="string">"GBK"</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="Java-Web-涉及到的编码"><a href="#Java-Web-涉及到的编码" class="headerlink" title="Java Web 涉及到的编码"></a>Java Web 涉及到的编码</h3><h4 id="URL中的编码"><a href="#URL中的编码" class="headerlink" title="URL中的编码"></a>URL中的编码</h4><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> +-----------------URL-------------------------+</span><br><span class="line">/                      +---------URI------------\</span><br><span class="line">                      /                          \</span><br><span class="line">http://localhost:8080/examples/servlets/servlet/你好?param=你好<span class="comment">#h1</span></span><br><span class="line"> ^       ^       ^     ^            ^            ^         ^</span><br><span class="line"> |<span class="string">       </span>|<span class="string">       </span>|<span class="string">     </span>|<span class="string">            </span>|<span class="string">            </span>|<span class="string">         </span>|</span><br><span class="line">scheme domain  port context path  servlet path path info  query string</span><br></pre></td></tr></table></figure>
+<p>Port 对应在 Tomcat 的 <code>&lt;Connector port=&quot;8080&quot;/&gt;</code> 中配置，而 Context Path 在 <code>&lt;Context path=&quot;/examples&quot;/&gt;</code> 中配置，Servlet Path 在 Web 应用的 web.xml 中的<code>&lt;url-pattern&gt;</code> 中配置，PathInfo 是我们请求的具体的 Servlet，QueryString 是要传递的参数</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>example<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/servlets/servlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>tomcat服务器对URL解码使用的编码是由 <code>&lt;Connector URIEncoding=&quot;UTF-8&quot;/&gt;</code>指定的，而对于QueryString 的解码字符集要么是 Header 中 ContentType 中定义的 Charset 要么就是默认的 ISO-8859-1，要使用 ContentType 中定义的编码就要设置 connector 的 <code>&lt;Connector URIEncoding=&quot;UTF-8&quot; useBodyEncodingForURI=&quot;true&quot;/&gt;</code> 中的 useBodyEncodingForURI 设置为 true。</p>
+<h4 id="Header中的编码"><a href="#Header中的编码" class="headerlink" title="Header中的编码"></a>Header中的编码</h4><p>对 Header 中的项进行解码是在调用 request.getHeader 是进行的，如果请求的 Header 项没有解码则调用 MessageBytes 的 toString 方法，这个方法将从 byte 到 char 的转化使用的默认编码也是 ISO-8859-1，而我们也不能设置 Header 的其它解码格式，所以如果你设置 Header 中有非 ASSIC 字符解码肯定会有乱码。</p>
+<p>我们在添加 Header 时也是同样的道理，不要在 Header 中传递非 ASSIC 字符，如果一定要传递的话，我们可以先将这些字符用 org.apache.catalina.util.URLEncoder 编码然后再添加到 Header 中。</p>
+<p>几个例子：</p>
+<p>Cookie: 如果包含了中文，而且没有编码，你可能会看到异常：java.lang.IllegalArgumentException: Control character in cookie value or attribute.</p>
+<p>Location: 这个字段一般可能不是我们直接设置，但是当重定向的时候比如在Controller里，你写了<code>return &quot;redirect:/index?cnParam=中文&quot;;</code>，这时实际会设置Location头部，如果对中文没有进行编码处理，就会有乱码的问题出现了。如果是参数中包含中文，除了对链接调用<code>URLEncoder.encode</code>进行编码，还可以<code>attributes.addAttribute(&quot;cnParam&quot;, &quot;中文&quot;);return &quot;redirect:/index&quot;;</code>，这样Spring框架会进行Url编码，具体代码可以参考<code>org.springframework.web.servlet.view.RedirectView#appendQueryProperties</code>。（Tomcat7即使不对Url编码也没有问题，但是Tomcat6.0.29就不行，所以如果有中文最好还是编码一下吧）</p>
+<p>Content-Disposition: 一般是上传下载文件时候会遇到编码的问题，可以参考<a href="https://blog.robotshell.org/2012/deal-with-http-header-encoding-for-file-download/" target="_blank" rel="noopener">正确处理下载文件时HTTP头的编码问题（Content-Disposition）</a></p>
+<h4 id="POST表单中的编码"><a href="#POST表单中的编码" class="headerlink" title="POST表单中的编码"></a>POST表单中的编码</h4><p>POST 表单提交的参数的解码是在第一次调用 request.getParameter 发生的，POST 表单参数传递方式与 QueryString 不同，它是通过 HTTP 的 BODY 传递到服务端的。当我们在页面上点击 submit 按钮时浏览器首先将根据 ContentType 的 Charset 编码格式对表单填的参数进行编码然后提交到服务器端，在服务器端同样也是用 ContentType 中字符集进行解码。所以通过 POST 表单提交的参数一般不会出现问题，而且这个字符集编码是我们自己设置的，可以通过 request.setCharacterEncoding(charset) 来设置，这个调用一定要在第一次调用 request.getParameter前调用。</p>
+<p>另外针对 multipart/form-data 类型的参数，也就是上传的文件编码同样也是使用 ContentType 定义的字符集编码，值得注意的地方是上传文件是用字节流的方式传输到服务器的本地临时目录，这个过程并没有涉及到字符编码，而真正编码是在将文件内容添加到 parameters 中，如果用这个编码不能编码时将会用默认编码 ISO-8859-1 来编码。</p>
+<h4 id="HTTP-BODY-的编解码"><a href="#HTTP-BODY-的编解码" class="headerlink" title="HTTP BODY 的编解码"></a>HTTP BODY 的编解码</h4><p>当用户请求的资源已经成功获取后，这些内容将通过 Response 返回给客户端浏览器，这个过程先要经过编码再到浏览器进行解码。这个过程的编解码字符集可以通过 response.setCharacterEncoding 来设置，它将会覆盖 request.getCharacterEncoding 的值，并且通过 Header 的 Content-Type 返回客户端，浏览器接受到返回的 socket 流时将通过 Content-Type 的 charset 来解码，如果返回的 HTTP Header 中 Content-Type 没有设置 charset，那么浏览器将根据 Html 的 <code>&lt;meta HTTP-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=GBK&quot; /&gt;</code> 中的 charset 来解码。如果也没有定义的话，那么浏览器将使用默认的编码来解码。</p>
+<h4 id="JS中的编码"><a href="#JS中的编码" class="headerlink" title="JS中的编码"></a>JS中的编码</h4><p>外部引入js文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"static/js/all.js"</span> <span class="attr">charset</span>=<span class="string">"gbk"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>对URL编码</p>
+<ul>
+<li>escape已废弃</li>
+<li>encodeURI</li>
+<li>encodeURIComponent 和encodeURI方法的区别是编码更加彻底，比如像<code>:</code>,<code>#</code>,<code>?</code>这种字符也会被编码。Java中的URLEncoder和URLDecoder与encodeURIComponent和decodeURIComponent是基本对应的。</li>
+</ul>
+<p>如果没有指定字符集，那么将使用当前页面的编码。</p>
+<h4 id="其它需要编码的地方"><a href="#其它需要编码的地方" class="headerlink" title="其它需要编码的地方"></a>其它需要编码的地方</h4><p>xml 文件可以通过设置头来制定编码格式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Velocity 模版设置编码格式：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services.VelocityService.input.encoding</span>=UTF-<span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<p>JSP 设置编码格式：</p>
+<figure class="highlight erb"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">%</span></span></span><span class="ruby">@page contentType=<span class="string">"text/html; charset=UTF-8"</span></span><span class="xml"><span class="tag">%&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>访问数据库都是通过客户端 JDBC 驱动来完成，用 JDBC 来存取数据要和数据的内置编码保持一致，可以通过设置 JDBC URL 来制定如 MySQL：url=”jdbc:mysql://localhost:3306/DB?useUnicode=true&amp;characterEncoding=GBK”。</p>
+<h2 id="常见加载器类错误分析"><a href="#常见加载器类错误分析" class="headerlink" title="常见加载器类错误分析"></a>常见加载器类错误分析</h2><ul>
+<li><p>ClassNotFoundException<br>  这个异常通常发生在<strong>显式加载类</strong>的时候，例如，用如下方式调用加载一个类时就报这个错了：</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NotFoundException</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Class.forName(<span class="string">"NotFoundException"</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  显式加载一个类通常有如下方式：</p>
+<ul>
+<li><p>通过类Class中的forName()方法。</p>
+</li>
+<li><p>通过类 ClassLoader 中的 loadClass()方法。</p>
+</li>
+<li><p>通过类 ClassLoader 中的 findSystemClass()方法。</p>
+<p>出现这类错误也很好理解，就是当JVM要加载指定文件的字节码到内存时，并没有找到这个文件对应的字节码，也就是这个文件并不存在。解决的办法就是检査在当前的classpath目录下有没有指定的文件存在。如果不知道当前的classpath路径,就可以通过如下命令来获取：<code>this.getClass().getClassLoader().getResource(&quot;&quot;).toString()</code></p>
+</li>
+</ul>
+</li>
+<li><p>NoClassDefFoundError<br>  NoClassDefFoundError是另外一个经常遇到的异常，这个异常在第一次使用命令行执行Java类时很可能会碰到，如： <code>java -cp example.jar Example</code></p>
+<p>  报错是因为你在命令行中没有加类的包名，正确的写法是这样的： <code>java -cp example.jar net.xulingbo.Example</code></p>
+<p>  而之前同时报了NoClassDefFoundError和 ClassNotFoundException异常，原因是 Java虚拟机隐式加载了exanple.jar后显式加载Example时没有找到这个类，所以是ClassNotFoundException 引发了 NoClassDefFoundError 异常。</p>
+<p>  在JVM的规范中描述了出现NoClassDefFoundError可能的情况就是使用new关键字、属性引用某个类、继承某个接口或类，以及方法的某个参数中引用了某个类，这时会触发JVM<strong>隐式加载</strong>这些类时发现这些类不存在的异常。</p>
+<p>  解决这个错误的办法就是确保每个类引用的类都在当前的classpath路径下面。</p>
+</li>
+<li><p>UnsatisfiedLinkError<br>  这个异常倒不是很常见，但是出错的话，通常是在JVM启动的时候,如果一不小心将在JVM中的某个lib删除了,可能就会报这个错误了，代码如下：</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NoLibException</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> native <span class="keyword">void</span> <span class="title">nativeMethod</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.loadLibrary(<span class="string">"NoLib"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> NoLibException().nativeMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  这个错误通常是在解析native标识的方法时JVM找不到对应的本机库文件时出现</p>
+</li>
+<li><p>ClassCastException<br>  这个错误也很常见，通常在程序出现强制类型转换时出现这个错误，如下面这段代码所示：</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CastExceptlon</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map m = <span class="keyword">new</span> HashMap()&#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">put</span> (<span class="string">"a"</span>，<span class="string">"2"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        Integer islnt =(Integer)m.<span class="built_in">get</span>(<span class="string">"a"</span>);</span><br><span class="line">        System.out.<span class="built_in">print</span>(islnt);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  当强制将本来不是Integer类型的字符串转成Integer类型时会报错</p>
+<p>  JVM在做类型转换时会按照如下规侧进行检査：</p>
+<ul>
+<li><p>对于普通对象，对象必须是目标类的实例或目标类的子类的实例。如果目标类是接口，那么会把它当作实现了该接口的一个子类。</p>
+</li>
+<li><p>对于数组类型，目标类必须是数组类型或java.lang.Object 、java.lang.Cloneable或java.io.Serializable。</p>
+<p>如果不满足上面的规则，JVM就会报这个错误。要避免这个错误有两种方式：</p>
+</li>
+<li><p>在容器类型中显式地指明这个容器所包含的对象类型，如在上面的Map中可以写为 <code>Map&lt;String，Integer&gt; m = new HashMap&lt;String，Integer&gt;()</code>。这祥上面的代码在编译阶段就会检査通过。</p>
+</li>
+<li><p>先通过instanceof检查是不是目标类型,然后再进强制类型转换。</p>
+</li>
+</ul>
+</li>
+<li><p>ExceptionInInitializerError<br>  这个错误在JVM规范中是这样定义的：</p>
+<ul>
+<li><p>如果Java虚拟机试图创建类ExceptionlnInitializerError的新实例,但是因为出现Out-Of-Memory-Error而无法创建新实倒.，那么就抛出OutOfMemoryError对象作为替代。</p>
+</li>
+<li><p>如果初始化器抛出一些Exception，而且Exception类不是Error或者它的某个子类，那么就会创建ExceptionlnlnitializeiError类的一个新实例，并用Exception作为参数，用这个实例代替Exception。</p>
+<p>将上面的代码例子稍微改了一下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CastExceptlon</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map m = <span class="keyword">new</span> HashMap()&#123;</span><br><span class="line">        &#123;</span><br><span class="line">            m.<span class="built_in">put</span> (<span class="string">"a"</span>，<span class="string">"2"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        Integer islnt =(Integer)m.<span class="built_in">get</span>(<span class="string">"a"</span>);</span><br><span class="line">        System.out.<span class="built_in">print</span>(islnt);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在初始化这个类时，给静态属性m赋值时出现了异常导致抛出错误ExceptionInInitializerError.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="热部署"><a href="#热部署" class="headerlink" title="热部署"></a>热部署</h2><p>先简单说下类加载器。</p>
+<ol>
+<li>JVM通过类加载器(ClassLoader)加载类。JVM中提供的三种类加载器：BootStrap类加载器，加载<code>JRE/lib</code>；ExtClassLoader，加载 JRE/lib/ext；AppClassLoader 加载classpath。</li>
+<li>JVM加载采用了双亲委派机制，就是当加载一个类时，当前的ClassLoader先请求父ClassLoader，依次类推，直到父ClassLoader无法加载时，才通过当前的ClassLoader加载，这就保证了像String这样的类型肯定是由BootStrap类加载器加载的。</li>
+<li>在JVM中，一个实例是通过本身的完整类名+加载它的ClassLoader实例识别的，也就是说即使同一个ClassLoader类的不同的实例加载同一个类在JVM也是不同的。</li>
+<li>同一个ClassLoader是不允许多次加载一个类的，否则会报java.lang.LinkageError。JVM在加载类之前会检査请求的类是否已经被加载过来，也就是要调用flndLoadedClass()方法查看是否能够返回类实例。如果类已经加载过来，再调用loadClass()将会导致类冲突。</li>
+</ol>
+<p>热部署是在不重启 Java 虚拟机的前提下，能自动侦测到 class 文件的变化，更新运行时 class 的行为。JVM并不支持热部署，那么要实现热部署，就必须自定义ClassLoader，当类被修改过后，可以创建不同的ClassLoader的实例对象，然后通过这个不同的实例对象来加载同名的类。</p>
+<p>不需要担心这样会使PermGen区无限增大，因为ClassLoader 也是个对象，当不再被引用时也会被回收，之后在Full GC时，由其加载的类，如果没用了，也会被收回。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ClassReloader reloader = <span class="keyword">new</span> <span class="constructor">ClassReloader(<span class="params">classpath</span>)</span>;</span><br><span class="line">Class r = reloader.find<span class="constructor">Class(<span class="string">"HelloWorld.class"</span>)</span>;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(r.<span class="keyword">new</span><span class="constructor">Instance()</span>);</span><br><span class="line"></span><br><span class="line">ClassReloader reloader2 = <span class="keyword">new</span> <span class="constructor">ClassReloader(<span class="params">classpath</span>)</span>;</span><br><span class="line">Class r2 = reloader2.find<span class="constructor">Class(<span class="string">"HelloWorld.class"</span>)</span>;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(r2.<span class="keyword">new</span><span class="constructor">Instance()</span>);</span><br></pre></td></tr></table></figure>
+<p>Class.forName()和ClassLoader.loadClass()区别</p>
+<ul>
+<li>Class.forName()：将类的.class文件加载到jvm中之外，还会对类进行解释，执行类中的static块；</li>
+<li>ClassLoader.loadClass()：只干一件事情，就是将.class文件加载到jvm中，不会执行static中的内容,只有在newInstance才会去执行static块。</li>
+</ul>
+<p>在Tomcat中JSP就是热部署的。其实现原理也是通过创建新的类加载器实例，加载修改后的类。</p>
+<p>对于WEB-INF/classes下的class文件，可以通过配置使其自动加载。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Context <span class="attribute">docBase</span>=<span class="string">"xxx"</span> <span class="attribute">path</span>=<span class="string">"/xxx"</span> <span class="attribute">reloadable</span>=<span class="string">"true"</span>/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>reloadable:如果这个属性设为true，tomcat服务器在运行状态下会监视在WEB-INF/classes和WEB-INF/lib目录下class文件的改动，如果监测到有class文件被更新的，服务器会自动重新加载Web应用。默认值是false。这个配置能干嘛，其实就是你文件变了，它重启下容器，也就重新加载类了，这个跟之前提到的热部署可能还有些出入。</p>
+<p>如果搜“tomcat 热部署“，可能会搜到autoDeploy和crossContext两个属性，前者为Host属性，指示Tomcat运行时，如有新的WEB程序加入appBase指定的目录下，是否为自动布署，默认值为true。后者为Context属性，指示是否允许跨域访问，为true时，在程序内调用ServletContext.getContext()方法将返回一个虚拟主机上其它web程序的请求调度器。默认值为false，调 径用getContext()返回为null。所以这两个配置跟热部署也没多大关系了。</p>
+<p>有一个工具可以实现这里说的热部署：<a href="http://zeroturnaround.com/software/jrebel" target="_blank" rel="noopener">JRebel</a>。这个工具需要付费使用。</p>
+<h2 id="执行引擎"><a href="#执行引擎" class="headerlink" title="执行引擎"></a>执行引擎</h2><p>每个Java线程就是一个执行引擎实例，那么一个JVM实例中就会同时存在多个执行引擎工作。</p>
+<p>执行引擎可以是基于栈的，如Hotspot，也可以是基于寄存器的，如Dalvik。前者是为了更好地支持跨平台，很难针对不同平台设计通用基于寄存器的指令，而后者主要运用于手机等智能设备，基本基于特定的芯片的寄存器设计。</p>
+<h2 id="Session与Cookie"><a href="#Session与Cookie" class="headerlink" title="Session与Cookie"></a>Session与Cookie</h2><p>为什么会使用Session和Cookie？因为HTTP是无状态的。而我们服务器端又需要知道用户状态，比如说这次请求和另一次请求是不是一个用户之类的，Session和Cookie就是用来记录状态的机制。</p>
+<p>Cookie在客户端存储，一般会受到浏览器的限制，比如大多数浏览器要求每个域名只能保存50个Cookie、Cookie大小不能超过4KB。并且还需要防止Cookie被盗，Cookie伪造等问题。如果Cookie很大，还会占用带宽，可以考虑压缩Cookie，比如使用gzip或deflate进行压缩，压缩后再使用BASE64编码。</p>
+<p>Session保存在服务器上。当访问增多，会比较占用服务器的资源，并且还需要考虑如何在服务器之间共享Session。</p>
+<p>Session和Cookie也并不是必须的，如RESTful应用在服务端不会保存状态的，它的状态由客户端去维护，像浏览器这样的客户端也可以将状态保存在本地存储中（localstorage、sessionstorage）。这样可以不用考虑像Session共享这样的问题了。</p>
+<h3 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h3><p>Cookie一般是由服务器端生成，通过在响应头添加<code>Set-Cookie</code>使浏览器保存Cookie（临时或持久化保存），下次请求同一网站时浏览器会在请求头携带Cookie给服务器（前提是浏览器设置为启用Cookie）。Cookie主要就是键值对，有一种比较特殊的Cookie，就是SeesionID，Tomcat中其name是JSESSIONID，根据SeesionID服务器可以找到对应的Session，进而获取保存的状态。</p>
+<p>当前 Cookie 有两个版本：Version 0 和 Version 1。通过它们有两种设置响应头的标识，分别是 “Set-Cookie”和“Set-Cookie2”，后者不常用。</p>
+<p>Version 0 属性项介绍</p>
+<table>
+<thead>
+<tr>
+<th>属性项</th>
+<th>属性项介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NAME=VALUE</td>
+<td>键值对，<strong>可以设置要保存的 Key/Value，注意这里的 NAME 不能和其他属性项的名字一样，否则会抛出IllegalArgumentException。Value不能是非ASSIC字符，非ASSIC字符可以使用URLEncoder进行编码</strong></td>
+</tr>
+<tr>
+<td>Expires</td>
+<td>过期时间，在设置的某个时间点后该 Cookie 就会失效，如 expires=Wednesday, 09-Nov-99 23:12:40 GMT。用Max-Age更多些</td>
+</tr>
+<tr>
+<td>Domain</td>
+<td>生成该 Cookie 的域名，<strong>Cookie不能跨域访问，如 images.google.com 不能访问 <a href="http://www.google.com的Cookie。但是对于二级域名，如果设置Domain=&quot;.google.com&quot;的话，images.google.com" target="_blank" rel="noopener">www.google.com的Cookie。但是对于二级域名，如果设置Domain=&quot;.google.com&quot;的话，images.google.com</a> 也能访问 <a href="http://www.google.com的Cookie" target="_blank" rel="noopener">www.google.com的Cookie</a></strong></td>
+</tr>
+<tr>
+<td>Path</td>
+<td>该 Cookie 是在当前的哪个路径下生成的，<strong>Cookie只能在相同path下访问。如 path=/wp-admin/ 这样/wp-content/下就无法访问该Cookie。注意，path应该以<code>/</code>结束</strong></td>
+</tr>
+<tr>
+<td>Secure</td>
+<td>如果设置了这个属性，那么只会在HTTPS和SSL等安全协议时才会回传该 Cookie</td>
+</tr>
+</tbody></table>
+<p>Version 1 属性项介绍</p>
+<table>
+<thead>
+<tr>
+<th>属性项</th>
+<th>属性项介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NAME=VALUE</td>
+<td>与 Version 0 相同</td>
+</tr>
+<tr>
+<td>Version</td>
+<td>通过 Set-Cookie2 设置的响应头创建必须符合 RFC2965 规范，如果通过 Set-Cookie 响应头设置，默认值为 0，如果要设置为 1，则该 Cookie 要遵循 RFC 2109 规范</td>
+</tr>
+<tr>
+<td>Comment</td>
+<td>注释项，用户说明该 Cookie 有何用途</td>
+</tr>
+<tr>
+<td>CommentURL</td>
+<td>服务器为此  Cookie 提供的 URI 注释</td>
+</tr>
+<tr>
+<td>Discard</td>
+<td>是否在会话结束后丢弃该 Cookie 项，默认为 fasle</td>
+</tr>
+<tr>
+<td>Domain</td>
+<td>类似于 Version 0</td>
+</tr>
+<tr>
+<td>Max-Age</td>
+<td>最大失效时间，<strong>为正数，会被持久化，即存储到文件中，指定多少秒后失效；为负数，不被持久化，关闭浏览器后失效，0表示立即失效，可以起到删除Cookie的作用，这里需要保证 name, path和domain 是相同的</strong></td>
+</tr>
+<tr>
+<td>Path</td>
+<td>类似于 Version 0</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>该 Cookie 在什么端口下可以回传服务端，如果有多个端口，以逗号隔开，如 Port=”80,81,8080”</td>
+</tr>
+<tr>
+<td>Secure</td>
+<td>类似于 Version 0</td>
+</tr>
+</tbody></table>
+<p>JavaEE中对应的类是javax.servlet.http.Cookie包含name，value，secure，path，domain，comment，version属性。通过request.getCookies()获取客户端提交的所有Cookie，通过response.addCookie(Cookie cookie)向客户端设置Cookie。</p>
+<p>如果我们通过浏览器查看当前网站的Cookie，可能会看到两种Cookie，一种是当前网站本身设置的 Cookie，另一种是来自在网页上嵌入广告或图片等其他域来源的 第三方 Cookie (网站可通过使用这些 Cookie 跟踪你的使用信息)。可以确定的是对于Cookie来说肯定是不允许垮域访问的。无论是通过JS还是Server端程序来说都是如此，但是通过一些技术可以，比如天猫如何能跨域获取淘宝的Cookie，一种办法就是淘宝提供接口可以获取到其下的Cookie</p>
+<h3 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h3><p>Session是另一种记录客户状态的机制，保存在服务器上。</p>
+<p>Session存储在服务器哪里？为了获得更高的存取速度，服务器一般把Session放在内存里。也可以将其存储在数据库、文件系统、缓存中。当Servlet容器关闭时StandardManager类会把Session对象写入<code>SESSIONS.ser</code>文件中，要想持久化保存Servlet容器中的Session对象，必须通过调用Servlet容器的start和stop方法。</p>
+<p>何时生成Session？调用request.getSession()方法时，如果不存在Session就会创建一个新的，用户第一次访问服务器时，访问JSP或Servlet等程序才会创建Session，只访问HTML、图片等静态资源并不会创建Session。服务器会更新Session最后访问时间。</p>
+<p>何时失效？服务器会把长时间内没有活跃的Session从内存删除。这个时间就是Session的超时时间 。如果超过了超时时间没访问过服务器，Session就自动失效了。Session的超时时间为maxInactiveInterval属性，可以通过对应的getMaxInactiveInterval()获取，通过setMaxInactiveInterval(long interval)修改。Session的超时时间也可以在web.xml中修改。另外，通过调用Session的invalidate()方法可以使Session失效。</p>
+<p>如何来识别特定用户？依靠Cookie，服务端会在HTTP协议中告诉客户端，需要在 Cookie 里面记录一个Session ID，以后每次请求把这个会话ID发送到服务器，我就知道你是谁了。如果客户端的浏览器禁用了 Cookie 怎么办？一般这种情况下，会使用一种叫做URL重写的技术来进行会话跟踪，即每次HTTP交互，URL后面都会被附加上一个诸如 <code>;JSESSIONID=xxxxx</code> 这样的参数，服务端据此来识别用户。</p>
+<p>通过订阅服务器（如Zookeeper集群管理服务器）统一各个服务器的Session配置项，通过分布式缓存（如MemCache）存储Session，解决Session共享问题。</p>
+<h3 id="表单重复提交问题"><a href="#表单重复提交问题" class="headerlink" title="表单重复提交问题"></a>表单重复提交问题</h3><p>每次生成表单时，都生成一个隐藏表单项，其值为一个唯一的token，并且这个token存储在Session中，表单提交到服务器后，比对表单中的token和服务器Session中的token是否一致，如果一致则没有重复提交，进行后续处理，然后重新生成Session中的token。如果不一致，说明表单已经成功提交过一次了，这是重复提交。</p>
+<h3 id="多终端Session统一"><a href="#多终端Session统一" class="headerlink" title="多终端Session统一"></a>多终端Session统一</h3><p>一种情况是在移动设备上访问无限服务端系统和PC服务端系统，这两者之间Session的共享，这个可以通过分布式Session框架解决。另一种情况是在移动端已经登陆的前提下，PC端通过扫码登录，这种情况下二维码携带一个特定标识，标识事这个客户端通过手机端登录了。当手机扫码成功后，会在服务器端设置这个二维码对应的标识为已经登录成功，PC端通过心跳请求验证是否登陆成功。</p>
+<h2 id="跨域资源共享（CORS）"><a href="#跨域资源共享（CORS）" class="headerlink" title="跨域资源共享（CORS）"></a>跨域资源共享（CORS）</h2><p>出于安全考虑，浏览器会限制脚本中发起的跨站请求。比如，使用 XMLHttpRequest 对象发起 HTTP 请求就必须遵守同源策略（same-origin policy）。</p>
+<p>简单记录下两种跨域请求</p>
+<ul>
+<li><p>简单请求<br>  这种跨站请求与以往浏览器发出的跨站请求并无异同。并且，如果服务器不给出适当的响应头，则不会有任何数据返回给请求方。因此，那些不允许跨站请求的网站无需为这一新的 HTTP 访问控制特性担心。这种请求具备以下两个条件：</p>
+<ul>
+<li>只使用 GET, HEAD 或者 POST 请求方法。如果使用 POST 向服务器端传送数据，则数据类型(Content-Type)只能是 application/x-www-form-urlencoded, multipart/form-data 或 text/plain中的一种。</li>
+<li>不会使用自定义请求头（类似于 X-Modified 这种）。</li>
+</ul>
+</li>
+<li><p>预请求（preflight request）<br>  不同于上面讨论的简单请求，“预请求”要求必须先发送一个 OPTIONS 请求给目的站点，来查明这个跨站请求对于目的站点是不是安全可接受的。这样做，是因为跨站请求可能会对目的站点的数据造成破坏。这种场景下，总比正常请求多一次请求。当请求具备以下条件，就会被当成预请求处理：</p>
+<ul>
+<li>请求以 GET, HEAD 或者 POST 以外的方法发起请求。或者，使用 POST，但请求数据为 application/x-www-form-urlencoded, multipart/form-data 或者 text/plain 以外的数据类型。比如说，用 POST 发送数据类型为 application/xml 或者 text/xml 的 XML 数据的请求。</li>
+<li>使用自定义请求头（比如添加诸如 X-PINGOTHER）</li>
+</ul>
+</li>
+</ul>
+<p>跨域请求请求头可能带有Origin、Access-Control-Request-Method、Access-Control-Request-Headers，分别用来标识发起请求的URI，请求方法，请求头</p>
+<p>响应头部可能带有Access-Control-Allow-Origin，Access-Control-Max-Age，Access-Control-Allow-Methods，Access-Control-Allow-Headers分别表示允许发起访问的URI，预请求的结果的有效期，允许的访问方法，允许的请求头</p>
+<p>Tomcat 中配置CORS过滤器</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">filter</span>&gt;</span><br><span class="line">  &lt;<span class="keyword">filter</span>-<span class="type">name</span>&gt;CorsFilter&lt;/<span class="keyword">filter</span>-<span class="type">name</span>&gt;</span><br><span class="line">  &lt;<span class="keyword">filter</span>-<span class="keyword">class</span>&gt;org.apache.catalina.filters.CorsFilter&lt;/<span class="keyword">filter</span>-<span class="keyword">class</span>&gt;</span><br><span class="line">&lt;/<span class="keyword">filter</span>&gt;</span><br><span class="line">&lt;<span class="keyword">filter</span>-<span class="keyword">mapping</span>&gt;</span><br><span class="line">  &lt;<span class="keyword">filter</span>-<span class="type">name</span>&gt;CorsFilter&lt;/<span class="keyword">filter</span>-<span class="type">name</span>&gt;</span><br><span class="line">  &lt;url-pattern&gt;<span class="comment">/*&lt;/url-pattern&gt;</span></span><br><span class="line"><span class="comment">&lt;/filter-mapping&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>跨域资源共享更详细的内容可以参考：<br><a href="http://www.w3.org/TR/cors/" target="_blank" rel="noopener">http://www.w3.org/TR/cors/</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">HTTP访问控制(CORS)</a></p>
+<p><a href="http://enable-cors.org/index.html" target="_blank" rel="noopener">不同的服务器配置CORS</a></p>
+<p>从<a href="http://www.xulingbo.net/" target="_blank" rel="noopener">君山的博客</a>中整理了一些<a href="http://pan.baidu.com/s/1kTF39XX" target="_blank" rel="noopener">资料</a>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.482Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/08/28/javascript-grammar/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          JavaScript 基本语法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/07/25/logical-delete/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">逻辑删除</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一次请求过程"><span class="toc-number">1.</span> <span class="toc-text">一次请求过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NIO"><span class="toc-number">2.</span> <span class="toc-text">NIO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几种访问文件的方式"><span class="toc-number">3.</span> <span class="toc-text">几种访问文件的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列化"><span class="toc-number">4.</span> <span class="toc-text">序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I-O调优"><span class="toc-number">5.</span> <span class="toc-text">I&#x2F;O调优</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#磁盘-I-O-优化"><span class="toc-number">5.1.</span> <span class="toc-text">磁盘 I&#x2F;O 优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络-I-O-优化"><span class="toc-number">5.2.</span> <span class="toc-text">网络 I&#x2F;O 优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-io包中的设计模式"><span class="toc-number">6.</span> <span class="toc-text">Java io包中的设计模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码"><span class="toc-number">7.</span> <span class="toc-text">编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unicode"><span class="toc-number">7.1.</span> <span class="toc-text">Unicode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java中String-的相关方法"><span class="toc-number">7.2.</span> <span class="toc-text">Java中String 的相关方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-Web-涉及到的编码"><span class="toc-number">7.3.</span> <span class="toc-text">Java Web 涉及到的编码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#URL中的编码"><span class="toc-number">7.3.1.</span> <span class="toc-text">URL中的编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Header中的编码"><span class="toc-number">7.3.2.</span> <span class="toc-text">Header中的编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#POST表单中的编码"><span class="toc-number">7.3.3.</span> <span class="toc-text">POST表单中的编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-BODY-的编解码"><span class="toc-number">7.3.4.</span> <span class="toc-text">HTTP BODY 的编解码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JS中的编码"><span class="toc-number">7.3.5.</span> <span class="toc-text">JS中的编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#其它需要编码的地方"><span class="toc-number">7.3.6.</span> <span class="toc-text">其它需要编码的地方</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见加载器类错误分析"><span class="toc-number">8.</span> <span class="toc-text">常见加载器类错误分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#热部署"><span class="toc-number">9.</span> <span class="toc-text">热部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行引擎"><span class="toc-number">10.</span> <span class="toc-text">执行引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Session与Cookie"><span class="toc-number">11.</span> <span class="toc-text">Session与Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Cookie"><span class="toc-number">11.1.</span> <span class="toc-text">Cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Session"><span class="toc-number">11.2.</span> <span class="toc-text">Session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表单重复提交问题"><span class="toc-number">11.3.</span> <span class="toc-text">表单重复提交问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多终端Session统一"><span class="toc-number">11.4.</span> <span class="toc-text">多终端Session统一</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#跨域资源共享（CORS）"><span class="toc-number">12.</span> <span class="toc-text">跨域资源共享（CORS）</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2015/08/10/java-web/';
+  this.page.identifier = '2015/08/10/java-web/';
+  this.page.title = 'Java Web 笔记';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

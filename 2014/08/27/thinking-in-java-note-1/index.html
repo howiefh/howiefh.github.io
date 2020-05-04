@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Java编程思想笔记一 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="thinking in java; java编程思想">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java编程思想笔记一">
+<meta property="og:url" content="http://howiefh.github.io/2014/08/27/thinking-in-java-note-1/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="thinking in java; java编程思想">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/java-var.png">
+<meta property="article:published_time" content="2014-08-27T13:34:52.000Z">
+<meta property="article:modified_time" content="2020-05-04T11:39:48.211Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Thinking in Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/java-var.png">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-thinking-in-java-note-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/08/27/thinking-in-java-note-1/" class="article-date">
+  <time class="dt-published" datetime="2014-08-27T13:34:52.000Z" itemprop="datePublished">2014-08-27</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Java编程思想笔记一
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象导论"><span class="toc-number">1.</span> <span class="toc-text">对象导论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一切都是对象"><span class="toc-number">2.</span> <span class="toc-text">一切都是对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#用引用操纵对象"><span class="toc-number">2.1.</span> <span class="toc-text">用引用操纵对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#必须由你创建所有对象"><span class="toc-number">2.2.</span> <span class="toc-text">必须由你创建所有对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#永远不需要销毁对象"><span class="toc-number">2.3.</span> <span class="toc-text">永远不需要销毁对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建新的数据类型：类"><span class="toc-number">2.4.</span> <span class="toc-text">创建新的数据类型：类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法、参数和返回值"><span class="toc-number">2.5.</span> <span class="toc-text">方法、参数和返回值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构建一个Java程序"><span class="toc-number">2.6.</span> <span class="toc-text">构建一个Java程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#你的第一个Java程序"><span class="toc-number">2.7.</span> <span class="toc-text">你的第一个Java程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注释和嵌入式文档"><span class="toc-number">2.8.</span> <span class="toc-text">注释和嵌入式文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码风格"><span class="toc-number">2.9.</span> <span class="toc-text">编码风格</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作符"><span class="toc-number">3.</span> <span class="toc-text">操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#静态导入"><span class="toc-number">3.1.</span> <span class="toc-text">静态导入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#赋值"><span class="toc-number">3.2.</span> <span class="toc-text">赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一元加"><span class="toc-number">3.3.</span> <span class="toc-text">一元加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关系操作符"><span class="toc-number">3.4.</span> <span class="toc-text">关系操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接常量"><span class="toc-number">3.5.</span> <span class="toc-text">直接常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#按位操作符"><span class="toc-number">3.6.</span> <span class="toc-text">按位操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#移位操作符"><span class="toc-number">3.7.</span> <span class="toc-text">移位操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类型转换"><span class="toc-number">3.8.</span> <span class="toc-text">类型转换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#控制执行流程"><span class="toc-number">4.</span> <span class="toc-text">控制执行流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#迭代"><span class="toc-number">4.1.</span> <span class="toc-text">迭代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逗号操作符"><span class="toc-number">4.2.</span> <span class="toc-text">逗号操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#break和continue"><span class="toc-number">4.3.</span> <span class="toc-text">break和continue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#switch"><span class="toc-number">4.4.</span> <span class="toc-text">switch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化和清理"><span class="toc-number">5.</span> <span class="toc-text">初始化和清理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法重载"><span class="toc-number">5.1.</span> <span class="toc-text">方法重载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#默认构造器"><span class="toc-number">5.2.</span> <span class="toc-text">默认构造器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#this关键字"><span class="toc-number">5.3.</span> <span class="toc-text">this关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#清理：终结处理和垃圾回收"><span class="toc-number">5.4.</span> <span class="toc-text">清理：终结处理和垃圾回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成员初始化"><span class="toc-number">5.5.</span> <span class="toc-text">成员初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组初始化"><span class="toc-number">5.6.</span> <span class="toc-text">数组初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可变参数列表"><span class="toc-number">5.7.</span> <span class="toc-text">可变参数列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#枚举类型"><span class="toc-number">5.8.</span> <span class="toc-text">枚举类型</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="对象导论"><a href="#对象导论" class="headerlink" title="对象导论"></a>对象导论</h2><ol>
+<li><p>对象具有<strong>状态(对象的内部数据)、行为(方法)和标识(每一个对象在内存中都有唯一的地址)</strong>。</p>
+<a id="more"></a>
+</li>
+<li><p>每个对象都有接口。</p>
+<p> 类描述了具有相同特性（数据元素）和行为（功能）的对象集合，所以一个类实际上就是一个数据类型。</p>
+<p> 必须有某种方式产生对对象的请求，使对象完成各种任务，如在屏幕上画图、打开开关等等。每个对象都只能满足某些请求，这些请求由对象的接口（interface）所定义，决定接口的便是类型。</p>
+</li>
+<li><p>每个对象都提供服务</p>
+<p> 当正在试图开发或理解一个程序设计时，最好的方法之一就是将对象想像为”服务提供者”。程序本身将向用户提供服务，它将通过调用其他对象提供的服务来实现这一目的。<strong>你的目标就是去创建（或者最好是在现有代码库中寻找）能够提供理想的服务来解决问题的一系列对象</strong>。</p>
+<p> 将对象看作是服务提供者还有一个附带的好处：<strong>它有助于提高对象的内聚性</strong>。高内聚是软件设计的基本质量要求之一：这意味着一个软件构件（例如一个对象，当然它也有可能是指一个方法或一个对象库）的各个方面”组合”得很好。在良好的面向对象设计中，每个对象都可以很好地完成一项任务，但是它并不试图做更多的事。</p>
+</li>
+<li><p>隐藏具体实现</p>
+<p> 将程序开发人员分为类创建者和客户端程序员。类创建者只向客户端程序员暴露必要的部分。隐藏其它部分，这样类创建者可以任意修改隐藏部分，不会对其他人造成影响。被隐藏的部分代表对象内部脆弱的部分，可以避免被客户端程序员随意使用，可以减少bug。</p>
+<p> 访问控制的第一个存在原因就是<strong>让客户端程序员无法触及他们不应该触及的部分-这些部分对数据类型的内部操作来说是必需的</strong>，但并不是用户解决特定问题所需的接口的一部分。这对客户端程序员来说其实是一项服务，因为他们可以很容易地看出哪些东西对他们来说很重要，而哪些东西可以忽略。</p>
+<p> 访问控制的第二个存在原因就是<strong>允许库设计者可以改变类内部的工作方式而不用担心会影响到客户端程序员</strong>。例如，你可能为了减轻开发任务而以某种简单的方式实现了某个特定类，但稍后发现你必须改写它才能使其运行得更快。如果接口和实现可以清晰地分离并得以保护，那么你就可以轻而易举地完成这项工作。</p>
+<p> java中private关键字表示除类型创建者和类型的内部方法之外的任何人都不能访问的元素。protected关键字与private作用相当，差别仅在于继承的类可以访问protected成员，但是不能访问private成员。Java还有一种默认的访问权限，当没有使用前面提到的任何访问指定词时，它将发挥作用。这种权限通常被称为包访问权限，因为在这种权限下，类可以访问在同一个包（库构件）中的其他类的成员，但是在包之外，这些成员如同指定了private一样。protected成员也可以被同一个包的其它类访问。public表示紧随其后的元素任何人都可以访问。</p>
+</li>
+<li><p>复用具体实现</p>
+<p> 新的类可以由任意数量、任意类型的其他对象以任意可以实现新的类中想要的功能的方式所组成。因为是在使用现有的类合成新的类，所以这种概念被称为<strong>组合</strong>（composition），如果组合是动态发生的，那么它通常被称为<strong>聚合</strong>（aggregation）。组合经常被视为”has-a”（拥有）关系，就像我们常说的”汽车拥有引擎”一样。</p>
+<p> 在建立新类时，<strong>应该首先考虑组合</strong>，因为它更加简单灵活。</p>
+</li>
+<li><p>继承</p>
+<p> 有两种方法可以使基类与导出类产生差异。第一种方法非常直接：直接在导出类中添加新方法。应该仔细考虑是否存在基类也需要这些额外方法的可能性。</p>
+<p> 第二种也是更重要的一种使导出类和基类之间产生差异的方法是改变现有基类的方法的行为，这被称之为<strong>覆盖（overriding）</strong>那个方法。</p>
+<p> 如果继承只覆盖基类的方法（而并不添加在基类中没有的新方法），就意味着导出类和基类是完全相同的类型，因为它们具有完全相同的接口。结果可以用一个导出类对象来完全替代一个基类对象。这可以被视为<strong>纯粹替代</strong>，通常称之为<strong>替代原则</strong>。这种情况下的基类与导出类之间的关系称为is-a（是一个）关系，因为可以说”一个圆形就是一个几何形状”。判断是否继承，就是要确定是否可以用is-a来描述类之间的关系，并使之具有实际意义。</p>
+<p> 有时必须在导出类型中添加新的接口元素，这样也就扩展了接口。这个新的类型仍然可以替代基类，但是这种替代并不完美，因为基类无法访问新添加的方法。这种情况可以描述为is-like-a（像是一个）关系。新类型具有旧类型的接口，但是它还包含其他方法，所以不能说它们完全相同。</p>
+<p> 只使用纯粹替代的方式是很好的设计,但是实际上有些时候导出类还是会需要添加新的接口。</p>
+</li>
+<li><p>伴随多态的可互换对象</p>
+<p> 面向对象程序设计语言使用了<strong>后期绑定</strong>的概念。当向对象发送消息时，被调用的代码直到运行时才能确定。</p>
+<p> 把将导出类看做是它的基类的过程称为<strong>向上转型（upcasting）</strong>。代码只与基类交互，而和具体类型信息是分离的。</p>
+</li>
+<li><p>单根继承结构</p>
+<p> 除了C++以外的所有OOP语言都是单根继承。</p>
+</li>
+<li><p>容器</p>
+<p> Java提供了List（用于存储序列），Map（也被称为关联数组，用来建立对象之间的关联），Set（每种对象类型只持有一个），以及诸如队列、树、堆栈等更多的构件。不同容器提供了不同类型的接口和外部行为；不同的容器对于某些操作具有不同的效率。例如ArrayList和LinkedList，选取元素时，LinkedList会比较低效，但是插入元素时，相对要高效。</p>
+<p> 如非确切地知道对象的类型，否则向下转型是不安全的。</p>
+<p> Java SE5中加入了参数化类型，即泛型。</p>
+</li>
+<li><p>对象的创建和生命期</p>
+<p>Java完全采用了动态内存分配方式，在被称为堆（heap）的内存池中动态地创建对象，堆带来了灵活性，但是存储分配需要更多时间。由垃圾回收器决定何时回收对象。</p>
+</li>
+<li><p>异常处理：处理错误</p>
+<p>异常处理就像是与程序正常执行路径并行的、在错误发生时执行的另一条路径。因为它是另一条完全分离的执行路径，所以它不会干扰正常的执行代码。这往往使得代码编写变得简单，因为不需要被迫定期检查错误。此外，被抛出的异常不像方法返回的错误值和方法设置的用来表示错误条件的标志位那样可以被忽略。异常不能被忽略，所以它保证一定会在某处得到处理。</p>
+</li>
+<li><p>并发编程</p>
+<p>隐患：共享资源。如果有多个并行任务都要访问同一项资源，那么就会出问题。对于共享资源，需要加锁。</p>
+</li>
+</ol>
+<h2 id="一切都是对象"><a href="#一切都是对象" class="headerlink" title="一切都是对象"></a>一切都是对象</h2><h3 id="用引用操纵对象"><a href="#用引用操纵对象" class="headerlink" title="用引用操纵对象"></a>用引用操纵对象</h3><p>尽管一切都看做对象，但是操纵的标识符实际上是对象的一个<strong>“引用”</strong>(reference)。<code>String s;</code> 这里创建的只是一个引用。</p>
+<h3 id="必须由你创建所有对象"><a href="#必须由你创建所有对象" class="headerlink" title="必须由你创建所有对象"></a>必须由你创建所有对象</h3><ol>
+<li><p>存储到什么地方</p>
+<p> <strong>程序运行时有五个地方可以存储数据：</strong></p>
+<ul>
+<li>寄存器：处理器内部，最快的存储区，数量极其有限</li>
+<li>堆栈：位于通用RAM，速度仅次于寄存器，灵活性受限制，对象的引用，基本类型存于此处</li>
+<li>堆：通用内存池，也位于RAM，灵活性大，分配与清理耗时，对象存储于此</li>
+<li>常量存储：ROM中</li>
+<li>非RAM存储：两个基本的例子是流对象和持久化对象。</li>
+</ul>
+</li>
+<li><p>特例：基本类型</p>
+<p> 基本类型的变量并非引用，直接存储“值”，并置于堆栈中。</p>
+<p> Java中，<strong>没有无符号数，基本类型占用空间的大小也不会像其它语言随机器硬件架构变化</strong>。</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/java-var.png" alt="Java基本类型"></p>
+<p> Java 每种基本类型都提供了包装器类型。同时提供了两个用于高精度计算的类：<strong>BigInteger（任意精度的整数）和BigDecimal（任意精度的定点数）</strong>。</p>
+</li>
+<li><p>数组</p>
+<p> Java中创建数组对象时，实际上就是创建引用数组（数组对象是由java虚拟机创建的），且每个引用都会自动被初始化为一个特定值（null）。编译器会把基本类型数组的内存全部置零。Java确保数组会初始化，且不能在范围外访问，但是增加了内存等开销。</p>
+</li>
+</ol>
+<h3 id="永远不需要销毁对象"><a href="#永远不需要销毁对象" class="headerlink" title="永远不需要销毁对象"></a>永远不需要销毁对象</h3><ol>
+<li><p>作用域</p>
+<p> 以花括号为界，与C、C++的区别：</p>
+ <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span> x = <span class="number">12</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> x = <span class="number">96</span>;  <span class="comment">//不合法，而在C、C++中外面花括号中的变量会被隐藏</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对象的作用域</p>
+<p> Java对象不具备基本类型一样的生命周期，<strong>可以存活于作用域之外</strong>。</p>
+ <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">String</span> s = <span class="keyword">new</span> <span class="keyword">String</span>(<span class="string">"a string"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> Java有一个垃圾回收器，用于监视new创建的所有对象，并辨别不再被引用的对象。</p>
+</li>
+</ol>
+<h3 id="创建新的数据类型：类"><a href="#创建新的数据类型：类" class="headerlink" title="创建新的数据类型：类"></a>创建新的数据类型：类</h3><p><strong>字段和方法</strong></p>
+<p>在Java中，所做的全部工作就是：定义类、产生类对象、发送消息给类对象。类中有两种类型的元素：字段（或数据成员）和方法（或成员函数）。</p>
+<p><strong>当变量成为类的字段使用时，Java确保给定其默认值（内存中填0）</strong>，以确保其得到初始化（C++无此功能），对于局部变量，不做初始化，可能是任意值。</p>
+<h3 id="方法、参数和返回值"><a href="#方法、参数和返回值" class="headerlink" title="方法、参数和返回值"></a>方法、参数和返回值</h3><p>方法名和参数列表（参数类型及参数顺序），合起来称为“方法签名”，唯一标识出某个方法。</p>
+<p>关于方法的参数传递，这是一个被争议的话题。</p>
+<ul>
+<li><p>先说说参数传递的几个术语：<br>  值调用(call by vale):表示方法接收的是调用者传递的值。<br>  引用调用(call by reference):表示方法接收的是调用者传递的变量地址。</p>
+<p>  一个方法可以修改传递引用所对应的变量值，而不能修改传递值调用所对应的变量值；<br>  <strong>JAVA语言总是采用值调用</strong>，也就是说，JAVA方法得到的是所有参数值的一个拷贝，方法不能修改传递给他的任何参数变量的内容。</p>
+</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StringAddress</span>&#123;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> s;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">StringAddress</span><span class="params">(<span class="keyword">String</span> s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.s = s;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">String</span> <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> super.toString() + <span class="string">" "</span> + s;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setS</span><span class="params">(<span class="keyword">String</span> s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.s = s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = a;</span><br><span class="line">        a = b;</span><br><span class="line">        b = tmp;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"a: "</span>+a+<span class="string">" b: "</span>+b);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(StringAddress a, StringAddress b)</span></span>&#123;</span><br><span class="line">        StringAddress tmp = a;</span><br><span class="line">        a = b;</span><br><span class="line">        b = tmp;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"a: "</span>+a+<span class="string">" b: "</span>+b);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">(StringAddress a)</span></span>&#123;</span><br><span class="line">        a.setS(<span class="string">"hi"</span>);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"a: "</span>+a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x = <span class="number">1</span>,y=<span class="number">20</span>;</span><br><span class="line">        StringAddress sax = <span class="keyword">new</span> StringAddress(<span class="string">"hello"</span>),say = <span class="keyword">new</span> StringAddress(<span class="string">"world"</span>);</span><br><span class="line">        swap(x,y);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"x: "</span>+x+<span class="string">" y: "</span>+y);</span><br><span class="line">        swap(sax,say);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"sax: "</span>+sax+<span class="string">" say: "</span>+say);</span><br><span class="line">        change(sax);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"sax: "</span>+sax);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="comment">/* output:</span></span><br><span class="line"><span class="comment">a: 20 b: 1</span></span><br><span class="line"><span class="comment">x: 1 y: 20</span></span><br><span class="line"><span class="comment">a: StringAddress@1db9742 world b: StringAddress@106d69c hello</span></span><br><span class="line"><span class="comment">sax: StringAddress@106d69c hello say: StringAddress@1db9742 world</span></span><br><span class="line"><span class="comment">a: StringAddress@106d69c hi</span></span><br><span class="line"><span class="comment">sax: StringAddress@106d69c hi</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>通过以上实例,可以看出基本类型参数传递的是变量值的拷贝，对象参数传递的是对象引用的拷贝,对象引用及其他的拷贝同时引用同一个对象。<br>很多程序语言提供两种传递方式:值传递和引用传递(C++和Pascal)。有些程序员认为java语言对对象参数传递也是用的引用调用。实际上是理解错误，这种错误具有一定的普遍性。<br>上例中swap方法并没有改变存储在变量sax和say中的对象引用。swap方法的参数a和b被初始化为两个对象引用的拷贝，这个方法交换的是这两个拷贝。在方法结束时，参数变量a和b被丢弃了。原来的变量sax和say仍然引用这个方法调用之前所引用的对象。</p>
+<p>这个过程说明：java语言对对象采用的不是引用调用，实际上对象引用进行的是值传递。</p>
+<p>最后总结一下在JAVA中，方法参数的使用情况：</p>
+<ul>
+<li><strong>一个方法不能修改一个基本数据类型的参数；</strong></li>
+<li><strong>一个方法可以改变一个对象参数的状态（属性）；</strong></li>
+<li><strong>一个方法不能实现让对象参数引用一个新对象；</strong></li>
+</ul>
+<p>C++有值调用和引用调用。引用参数标有&amp;符号。例如，void swap(int&amp; a,int&amp; b)。引用即可以当做变量的一个别名，仅此而已。而Java的引用，如果理解为像指针一样存的是对象地址，传递时都会把它拷贝一份，这样可能会好理解些。</p>
+<h3 id="构建一个Java程序"><a href="#构建一个Java程序" class="headerlink" title="构建一个Java程序"></a>构建一个Java程序</h3><p><strong>static关键字</strong></p>
+<p><strong>对于static方法，不能简单地通过调用其它非static域或方法而没有指定某个命名对象，来直接访问非static域或方法。普通方法可以直接使用static域或方法。</strong></p>
+<p>使用类名是引用static变量的首选方式。</p>
+<h3 id="你的第一个Java程序"><a href="#你的第一个Java程序" class="headerlink" title="你的第一个Java程序"></a>你的第一个Java程序</h3><p>java.lang 包会自动导入到每个Java文件中。</p>
+<p>一个独立运行的程序，文件中必须存在某个类与该文件同名，并且那个类必须包含一个名为main()的方法（事实上Java允许文件名和文件中的类不同命，但是类不能是public的）。static方法的一个重要用法是在不创建任何对象的前提下调用它，这一点对于main()方法特别重要，它是运行应用时的入口。</p>
+<h3 id="注释和嵌入式文档"><a href="#注释和嵌入式文档" class="headerlink" title="注释和嵌入式文档"></a>注释和嵌入式文档</h3><p><strong>javadoc</strong></p>
+<ol>
+<li><p>只能为public和protected成员进行文档注释。</p>
+</li>
+<li><p>不要在嵌入式html中使用标题标签<code>&lt;h1&gt;&lt;hr&gt;</code>等。因为javadoc会插入这类标签，避免冲突。</p>
+</li>
+<li><p>一些标签示例</p>
+<ul>
+<li><p>@see：引用其他类</p>
+<p>该标签允许用户引用其他类的文档 <code>@see classname</code></p>
+</li>
+<li><p>{@link package.class#member label}</p>
+<p>该标签与@see相似，只是它用于行内</p>
+</li>
+<li><p>{@docRoot}</p>
+<p>该标签产生到文档根目录的相对路径，用于文档树页面的显式超链接</p>
+</li>
+<li><p>{@inheritDoc}</p>
+<p>该标签从当前这个类的最直接的基类中继承相关文档到当前的文档注释中</p>
+</li>
+<li><p>@version</p>
+</li>
+<li><p>@author</p>
+</li>
+<li><p>@since</p>
+<p>该标签允许你指定程序代码最早的使用版本</p>
+</li>
+<li><p>@param</p>
+<p>该标签用于方法文档中</p>
+</li>
+<li><p>@return</p>
+</li>
+<li><p>@throws</p>
+</li>
+<li><p>@deprecated</p>
+<p>该标签用于指出一些旧特性已由改进的新特性所取代，建议用户不要再使用这些旧特性，因为在不久的将来它们很可能会被删除</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="编码风格"><a href="#编码风格" class="headerlink" title="编码风格"></a>编码风格</h3><p>类名的首字母大写；如果类名由几个单词构成，那么把它们并在一起，其中每个内部单词的首字母都采用大写形式。</p>
+<p>几乎其他所有内容－－方法、字段（成员变量）以及对象引用名称等，公认的风格与类的风格一样，只是标识符的第一个字母采用小写。</p>
+<h2 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h2><p>几乎所有的操作符都只能操作基本类型。例外的操作符是“=”，“==”，“!=”。另外String支持“+”和“+=”</p>
+<h3 id="静态导入"><a href="#静态导入" class="headerlink" title="静态导入"></a>静态导入</h3><p>使用静态导入可以使代码简化，如下面代码不需要写<code>Print.print(new Date());</code></p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> net.mindview.util.Print;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloDate</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[]args)</span></span>&#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="keyword">new</span> Date());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><p>基本类型赋值是直接将一个地方的内容复制到另一个地方。而“将一个对象赋值给另一个对象”实际是将“引用”从一个地方复制到另一个地方。</p>
+<h3 id="一元加"><a href="#一元加" class="headerlink" title="一元加"></a>一元加</h3><p>一元加号只是为了与一元减号相对应，唯一的作用仅仅是将较小类型的操作符提升为int。</p>
+<h3 id="关系操作符"><a href="#关系操作符" class="headerlink" title="关系操作符"></a>关系操作符</h3><p><strong>对于对象<code>==</code>，<code>!=</code>比较的是引用。要比较对象的实际内容，应该使用<code>equals()</code>方法。默认<code>equals()</code>方法是比较引用（Object类中就是返回this==obj），所以应该在自己的类中覆盖此方法。Java不允许普通数字作为布尔值使用。</strong></p>
+<h3 id="直接常量"><a href="#直接常量" class="headerlink" title="直接常量"></a>直接常量</h3><p>直接常量后面的后缀字符标志了它的类型。</p>
+<ul>
+<li>若为大写（或小写）的L，代表long。</li>
+<li>若为大写（或小写）的F，代表float。</li>
+<li>若为大写（或小写）的D，代表double。</li>
+</ul>
+<p>对于long和float必须写出后缀字符。默认整型和浮点型是int和double。</p>
+<p>Integer和Long类的静态方法toBinaryString()可以得到二进制字符串。</p>
+<h3 id="按位操作符"><a href="#按位操作符" class="headerlink" title="按位操作符"></a>按位操作符</h3><p>我们将布尔类型作为一种单比特值对待。可以进行按位与(&amp;)、或(|)、异或(^)操作，但是不能进行按位非(~)操作。<strong>对于布尔值，按位操作符与逻辑操作符有相同的效果，只是不能中途“短路”。</strong></p>
+<h3 id="移位操作符"><a href="#移位操作符" class="headerlink" title="移位操作符"></a>移位操作符</h3><ul>
+<li>左移位操作符（&lt;&lt;）：按操作符右边指定数值移位后，低位补0 。</li>
+<li>“有符号”右移位操作符（&gt;&gt;）：按操作符右边指定数值移位后，使用符号扩展，补齐高位，若符号为正，则在高位插入0，若符号为负，则插入1 。</li>
+<li>“无符号”右移位操作符（&gt;&gt;&gt;）：按操作符右边指定数值移位后，无论正负都在高位补0 。</li>
+</ul>
+<p><strong>char、byte、short类型的数值进行移位时，移位进行之前会先转为int，最后结果也是int型。只有右操作数的低5位才是有用的。这样可以防止我们移位超过int型值所具有的位数</strong>。没有任何移位操作符可以让一个数丢弃所有的位，int是32位。移位操作符只有右操作数低5位有效，实际是对右操作数对32取模后移位，<code>50&lt;&lt;33</code>相当于<code>50&lt;&lt;(33%32)</code></p>
+<p>Java数字的二进制表示形式称为<strong>有符号的二进制补码</strong></p>
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p>窄化转换可能面临信息的丢失。</p>
+<ol>
+<li><p>截尾和舍去</p>
+<p> <strong>将float和double转型为整型值时，总是对该数值执行截尾。如果想要得到舍入结果，就需要使用java.lang.Math中的round()方法</strong>。</p>
+</li>
+<li><p>提升</p>
+<p> <strong>对于基本类型执行算术运算或位运算，只要类型比int小（char、byte、short），在运算之前会自动转成int，最终结果也是int。复合赋值（+=、-=等）并不需要类型转换，尽管它们执行类型提升，但也会获得与直接算术运算相同的结果。</strong></p>
+<p> 表达式中出现的最大的类型决定了表达式最终结果的数据类型。</p>
+</li>
+</ol>
+<h2 id="控制执行流程"><a href="#控制执行流程" class="headerlink" title="控制执行流程"></a>控制执行流程</h2><h3 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h3><p>do-while和while唯一的区别就是do-while中的语句至少会执行一次，即便表达式第一次就被计算为false。while中，条件第一次为false，其中的语句根本不会执行。</p>
+<p>for第一次迭代之前要进行初始化，<strong>随后会进行条件测试</strong>，每一次迭代结束时，进行某种形式的步进。</p>
+<h3 id="逗号操作符"><a href="#逗号操作符" class="headerlink" title="逗号操作符"></a>逗号操作符</h3><p>注意是逗号操作符不是逗号分隔符（逗号用作分隔符时用来分隔函数的不同参数）。</p>
+<p>Java里唯一用到逗号操作符的地方就是for循环的控制表达式。在控制表达式的初始化和步进控制部分，可以使用一系列由逗号分隔的语句，而且那些语句均会独立顺序执行。</p>
+<p>通过使用逗号操作符，可以在for语句内定义多个变量，但是它们必须具有相同的类型。</p>
+<p>例如：<code>for(int i=1,j=i+10; i&lt;5; i++,j=i*2)</code></p>
+<h3 id="break和continue"><a href="#break和continue" class="headerlink" title="break和continue"></a>break和continue</h3><p>在java中，<strong>标签起作用的唯一的地方刚好是在迭代语句之前</strong>。“刚好之前”的意思表明，在标签和迭代之间置入任何语句都不好。在迭代之前设置标签的唯一理由：我们希望在其中嵌套另一个迭代或者一个开关。这是由于break和continue关键词通常只中断当前循环（最内层的循环），但若随同标签一起使用，它们就会中断循环，直到标签所在的地方。</p>
+<ol>
+<li>一般的continue会退回最内层循环的开头（顶部），继续执行。</li>
+<li>带标签的continue会到达标签的位置，重新进入紧接在那个标签后面的循环。</li>
+<li>一般的break会中断并跳出当前循环。</li>
+<li>带标签的break会<strong>中断并跳出标签所指的循环</strong>。</li>
+</ol>
+<h3 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h3><p>switch现在支持整数(int、short、byte)、char、字符串、枚举类型。</p>
+<h2 id="初始化和清理"><a href="#初始化和清理" class="headerlink" title="初始化和清理"></a>初始化和清理</h2><h3 id="方法重载"><a href="#方法重载" class="headerlink" title="方法重载"></a>方法重载</h3><ol>
+<li><p>区分重载方法</p>
+<p> 区分重载的规则：每个重载的方法必须有一个独一无二的参数类型列表。甚至参数顺序不同也足以区分两个方法，但是一般不要这么做，会使代码难以维护。</p>
+</li>
+<li><p>涉及基本类型的重载</p>
+<p> <strong>如果传入的数据类型（实际参数类型）小于方法中声明的形式参数类型，实际数据类型就会被提升。</strong>char型略有不同，如果无法找到恰好接受char参数的方法，就会把char直接提升至int型。如果传入的参数较大，就得通过类型转换来执行窄化转换。</p>
+</li>
+<li><p>类类型的重载</p>
+<p> <strong>调用哪个重载函数只和声明的类型相关，跟new出来的实例是哪个导出类无关。</strong><br> <code>SuperClass sub = new SubClass();</code>SubClass继承SuperClass，调用<code>sub.fun()</code>，如果<code>fun</code>被覆盖，执行子类的方法，其它情况均是匹配父类中的方法执行。</p>
+ <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> A&#123;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> <span class="type">name</span>()&#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("a");</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> <span class="type">name</span>(<span class="keyword">Object</span> o)&#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("a");</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> A&#123;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> <span class="type">name</span>()&#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("b");</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> <span class="type">name</span>(String o)&#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("b");</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> Test&#123;</span><br><span class="line">    <span class="built_in">public</span> static <span class="type">void</span> main(String[] args) &#123;</span><br><span class="line">        A a =  <span class="built_in">new</span> A();</span><br><span class="line">        A b =  <span class="built_in">new</span> B();</span><br><span class="line">        a.name();</span><br><span class="line">        b.name();</span><br><span class="line">        a.name("a");</span><br><span class="line">        b.name("b");</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="comment">/* output:</span></span><br><span class="line"><span class="comment">a</span></span><br><span class="line"><span class="comment">b</span></span><br><span class="line"><span class="comment">a</span></span><br><span class="line"><span class="comment">a*/</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="默认构造器"><a href="#默认构造器" class="headerlink" title="默认构造器"></a>默认构造器</h3><p>如果已经定义了一个构造器（无论是否有参数），编译器就不会帮你自动创建默认构造器。</p>
+<h3 id="this关键字"><a href="#this关键字" class="headerlink" title="this关键字"></a>this关键字</h3><p>编译器会暗自把“所操作对象的引用”作为第一个参数传递给方法。this关键词只能在方法内部使用，表示对“调用方法的那个对象”的引用。this的用法和其他对象引用并无不同。</p>
+<ul>
+<li><p>如果在方法内部调用同一类的另一个方法，不必使用this，直接调用即可。当方法需要返回当前对象的引用时才需要明确使用this，如需要返回当前对象时。</p>
+</li>
+<li><p>如果要将当前对象传递给外部的方法，this关键词就很有用。</p>
+</li>
+<li><p>可能为一个类写了多个构造器，想在一个构造其中调用另一个构造器，以避免重复代码。this关键字可以做到这一点。</p>
+<p>  尽管可以用this调用一个构造器，但不能调用两个。此外，必须将构造器置于最起始处，否则编译器会报错。</p>
+<p>  除了构造器外，编译器禁止在其他任何地方调用构造器。</p>
+</li>
+</ul>
+<p>static方法是属于类的，所以里面不能用this关键字。</p>
+<h3 id="清理：终结处理和垃圾回收"><a href="#清理：终结处理和垃圾回收" class="headerlink" title="清理：终结处理和垃圾回收"></a>清理：终结处理和垃圾回收</h3><ol>
+<li>对象可能不被垃圾回收</li>
+<li>垃圾回收并不等于“析构”</li>
+<li>垃圾回收只与内存有关</li>
+</ol>
+<p><strong>finalize()</strong></p>
+<p>Java中finalize()的作用一主要是清理那些对象(并非使用new，比如调用了native方法)获得了一块“特殊”的内存区域。Java有垃圾回收器负责回收无用对象占据的内存资源。但也有特殊情况：假定你的对象(并非使用new)获得了一块“特殊”的内存区域，由于垃圾回收器只知道释放那些经由new分配的内存，所以它不知道该如何释放该对象的这块“特殊”内存区域，为了应对这种情况，java允许在类中定义一个名为finalize()的方法。它的工作原理“假定”是这样的：一旦垃圾回收器准备好释放对象占用的存储空间，将首先调用其finalize()的方法。并且在下一次垃圾回收动作发生时，才会真正回收对象占用的内存。所以要是你打算用finalize()，就能在垃圾回收时刻做一些重要的清理工作。注意这里的finalize()并不是C++里的析构.在C++中，对象一定会被销毁，而在Java里的对象却并非总是被垃圾回收。</p>
+<p>垃圾回收只与内存有关。也就是说，使用垃圾回收器的唯一原因是为了回收程序不再使用的内存。所以对于与垃圾回收有关的任何行为来说(尤其是finalize()方法)，它们也必须同内存及其回收有关。</p>
+<p>finalize()还有一个有趣的用法，它并不依赖于每次都要对finalize()进行调用，这就是<strong>对象终结条件</strong>的验证（中文版P88）。</p>
+<h3 id="成员初始化"><a href="#成员初始化" class="headerlink" title="成员初始化"></a>成员初始化</h3><p>Java尽力保证：所有变量在使用前都能得到恰当的初始化。类的每个基本类型数据成员保证都会有一个初始值。在类里定义一个对象引用时，如果不将其初始化，此引用就会获得一个特殊值null。</p>
+<p>要牢记：无法阻止自动初始化的进行，它将在构造器被调用之前发生。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Counter</span>&#123;</span><br><span class="line">    <span class="built_in">int</span> i,j=<span class="number">1</span>;</span><br><span class="line">    Counter()&#123;i=<span class="number">7</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>i,j的值首先都是0，之后才变成7,1。对于所有基本类型和对象引用，包括在定义时已经指定初值的变量，这种情况都是成立的。</p>
+<p><strong>顺序</strong></p>
+<p>在类的内部，变量定义的顺序决定了初始化的顺序。即使变量定义散布于方法定义之间，它们仍旧会在任何方法（包括构造器）被调用之前得到初始化。</p>
+<p>静态初始化只有在必要的时刻才会进行。只有在第一个对象被创建（或者第一次访问静态成员，其实构造器可以看成是静态方法）的时候，它们才会被初始化。此后，静态对象不会再次被初始化。</p>
+<p>初始化的顺序是，先静态对象（如果他们尚未初始化，类加载过程中被初始化），而后是非静态对象（类实例化时被初始化）。</p>
+<p>Java允许将多个静态初始化动作组织成一个特殊的“静态子句”（有时也叫做“静态块”）。此外还有实例初始化子句，这在匿名内部类初始化中是必须的（因为匿名内部类没有构造器）。</p>
+<p><a href="http://howiefh.github.io/2014/09/04/thinking-in-java-note-2/#初始化及类的加载">涉及继承的初始化</a></p>
+<h3 id="数组初始化"><a href="#数组初始化" class="headerlink" title="数组初始化"></a>数组初始化</h3><p><code>int[] a1;</code>这只是一个数组引用。</p>
+<ol>
+<li><p>第一种初始化方法</p>
+ <figure class="highlight haxe"><figcaption><span>java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer[] a = <span class="keyword">new</span> <span class="type">Integer</span>[<span class="number">2</span>];<span class="comment">//对于非基本类型，此时只是创建了一个引用数组，必须对数组中的每个元素创建对象</span></span><br><span class="line">a[<span class="number">0</span>] = <span class="keyword">new</span> <span class="type">Integer</span>(<span class="number">1</span>);</span><br><span class="line">a[<span class="number">1</span>] = <span class="keyword">new</span> <span class="type">Integer</span>(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第二种初始化方法</p>
+ <figure class="highlight angelscript"><figcaption><span>java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer[] a = &#123;<span class="number">1</span>,<span class="number">2</span>,&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第三种初始化方法</p>
+ <figure class="highlight pgsql"><figcaption><span>java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span>[] a = <span class="built_in">new</span> <span class="type">Integer</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>第二、三种方法中<strong>最后一个逗号是可选的</strong>。在方法调用的内部都可以使用第三种方式</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="module-access"><span class="module"><span class="identifier">Other</span>.</span></span>main(<span class="keyword">new</span> String<span class="literal">[]</span>&#123;<span class="string">"abc"</span>,<span class="string">"efg"</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="可变参数列表"><a href="#可变参数列表" class="headerlink" title="可变参数列表"></a>可变参数列表</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">name</span><span class="params">(Object... args)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>当指定参数时，编译器实际上会为你去填充数组。可以直接将数组传递给可变参数列表。0个参数的可变参数列表也是可以的。</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="literal">void</span> name(<span class="built_in">Integer</span><span class="params">...</span> args)&#123;&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="literal">void</span> name(Long<span class="params">...</span> args)&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码重载了name方法，当使用<code>name()</code>编译器无法知道调用哪个方法，无法编译。<strong>你应该总是只在重载方法的一个版本上使用可变参数列表，或者根本不使用</strong></p>
+<h3 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h3><ul>
+<li>toString()：获得某个enum实例的名字</li>
+<li>ordinal()：获得某个enum实例的声明顺序</li>
+<li>静态方法values()：用来按照enum常量的声明顺序，产生由这些常量值构成的数组。</li>
+</ul>
+<p>你可以将enum当做任何类来处理，事实上enum确实是类，它具有自己的方法。</p>
+<p><a href="http://howiefh.github.io/2014/11/06/thinking-in-java-note-7/#枚举类型">第十九章 枚举类型</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-04T11:39:48.211Z" itemprop="dateModified">2020-05-04</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/09/04/thinking-in-java-note-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java编程思想笔记二
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/07/26/vsftpd-virtual-users/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">vsftpd 配置虚拟用户</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象导论"><span class="toc-number">1.</span> <span class="toc-text">对象导论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一切都是对象"><span class="toc-number">2.</span> <span class="toc-text">一切都是对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#用引用操纵对象"><span class="toc-number">2.1.</span> <span class="toc-text">用引用操纵对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#必须由你创建所有对象"><span class="toc-number">2.2.</span> <span class="toc-text">必须由你创建所有对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#永远不需要销毁对象"><span class="toc-number">2.3.</span> <span class="toc-text">永远不需要销毁对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建新的数据类型：类"><span class="toc-number">2.4.</span> <span class="toc-text">创建新的数据类型：类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法、参数和返回值"><span class="toc-number">2.5.</span> <span class="toc-text">方法、参数和返回值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构建一个Java程序"><span class="toc-number">2.6.</span> <span class="toc-text">构建一个Java程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#你的第一个Java程序"><span class="toc-number">2.7.</span> <span class="toc-text">你的第一个Java程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注释和嵌入式文档"><span class="toc-number">2.8.</span> <span class="toc-text">注释和嵌入式文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码风格"><span class="toc-number">2.9.</span> <span class="toc-text">编码风格</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作符"><span class="toc-number">3.</span> <span class="toc-text">操作符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#静态导入"><span class="toc-number">3.1.</span> <span class="toc-text">静态导入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#赋值"><span class="toc-number">3.2.</span> <span class="toc-text">赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一元加"><span class="toc-number">3.3.</span> <span class="toc-text">一元加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关系操作符"><span class="toc-number">3.4.</span> <span class="toc-text">关系操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接常量"><span class="toc-number">3.5.</span> <span class="toc-text">直接常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#按位操作符"><span class="toc-number">3.6.</span> <span class="toc-text">按位操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#移位操作符"><span class="toc-number">3.7.</span> <span class="toc-text">移位操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类型转换"><span class="toc-number">3.8.</span> <span class="toc-text">类型转换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#控制执行流程"><span class="toc-number">4.</span> <span class="toc-text">控制执行流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#迭代"><span class="toc-number">4.1.</span> <span class="toc-text">迭代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#逗号操作符"><span class="toc-number">4.2.</span> <span class="toc-text">逗号操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#break和continue"><span class="toc-number">4.3.</span> <span class="toc-text">break和continue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#switch"><span class="toc-number">4.4.</span> <span class="toc-text">switch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化和清理"><span class="toc-number">5.</span> <span class="toc-text">初始化和清理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法重载"><span class="toc-number">5.1.</span> <span class="toc-text">方法重载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#默认构造器"><span class="toc-number">5.2.</span> <span class="toc-text">默认构造器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#this关键字"><span class="toc-number">5.3.</span> <span class="toc-text">this关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#清理：终结处理和垃圾回收"><span class="toc-number">5.4.</span> <span class="toc-text">清理：终结处理和垃圾回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#成员初始化"><span class="toc-number">5.5.</span> <span class="toc-text">成员初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组初始化"><span class="toc-number">5.6.</span> <span class="toc-text">数组初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可变参数列表"><span class="toc-number">5.7.</span> <span class="toc-text">可变参数列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#枚举类型"><span class="toc-number">5.8.</span> <span class="toc-text">枚举类型</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/08/27/thinking-in-java-note-1/';
+  this.page.identifier = '2014/08/27/thinking-in-java-note-1/';
+  this.page.title = 'Java编程思想笔记一';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

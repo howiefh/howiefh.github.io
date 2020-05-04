@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Java编程思想笔记二 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="thinking in java; java编程思想">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java编程思想笔记二">
+<meta property="og:url" content="http://howiefh.github.io/2014/09/04/thinking-in-java-note-2/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="thinking in java; java编程思想">
+<meta property="article:published_time" content="2014-09-04T01:40:25.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.472Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Thinking in Java">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-thinking-in-java-note-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/09/04/thinking-in-java-note-2/" class="article-date">
+  <time class="dt-published" datetime="2014-09-04T01:40:25.000Z" itemprop="datePublished">2014-09-04</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Java编程思想笔记二
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#访问权限控制"><span class="toc-number">1.</span> <span class="toc-text">访问权限控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#包：库单元"><span class="toc-number">1.1.</span> <span class="toc-text">包：库单元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类成员访问权限"><span class="toc-number">1.2.</span> <span class="toc-text">类成员访问权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类的访问权限"><span class="toc-number">1.3.</span> <span class="toc-text">类的访问权限</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#复用类"><span class="toc-number">2.</span> <span class="toc-text">复用类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#继承"><span class="toc-number">2.1.</span> <span class="toc-text">继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化基类"><span class="toc-number">2.2.</span> <span class="toc-text">初始化基类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代理"><span class="toc-number">2.3.</span> <span class="toc-text">代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#确保正确清理"><span class="toc-number">2.4.</span> <span class="toc-text">确保正确清理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#名称屏蔽"><span class="toc-number">2.5.</span> <span class="toc-text">名称屏蔽</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在组合和继承之间选择"><span class="toc-number">2.6.</span> <span class="toc-text">在组合和继承之间选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向上转型"><span class="toc-number">2.7.</span> <span class="toc-text">向上转型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#final关键字"><span class="toc-number">2.8.</span> <span class="toc-text">final关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化及类的加载"><span class="toc-number">2.9.</span> <span class="toc-text">初始化及类的加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多态"><span class="toc-number">3.</span> <span class="toc-text">多态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法调用绑定"><span class="toc-number">3.1.</span> <span class="toc-text">方法调用绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可扩展性"><span class="toc-number">3.2.</span> <span class="toc-text">可扩展性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺陷"><span class="toc-number">3.3.</span> <span class="toc-text">缺陷</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#清理"><span class="toc-number">3.4.</span> <span class="toc-text">清理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构造器内部的多态方法的行为"><span class="toc-number">3.5.</span> <span class="toc-text">构造器内部的多态方法的行为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#协变返回类型"><span class="toc-number">3.6.</span> <span class="toc-text">协变返回类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用继承进行设计"><span class="toc-number">3.7.</span> <span class="toc-text">用继承进行设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#纯继承与扩展"><span class="toc-number">3.8.</span> <span class="toc-text">纯继承与扩展</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接口"><span class="toc-number">4.</span> <span class="toc-text">接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#抽象类"><span class="toc-number">4.1.</span> <span class="toc-text">抽象类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口-1"><span class="toc-number">4.2.</span> <span class="toc-text">接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#完全解耦"><span class="toc-number">4.3.</span> <span class="toc-text">完全解耦</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多重继承"><span class="toc-number">4.4.</span> <span class="toc-text">多重继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过继承扩展接口"><span class="toc-number">4.5.</span> <span class="toc-text">通过继承扩展接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#适配接口"><span class="toc-number">4.6.</span> <span class="toc-text">适配接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口中的域"><span class="toc-number">4.7.</span> <span class="toc-text">接口中的域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#嵌套接口"><span class="toc-number">4.8.</span> <span class="toc-text">嵌套接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口与工厂"><span class="toc-number">4.9.</span> <span class="toc-text">接口与工厂</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内部类"><span class="toc-number">5.</span> <span class="toc-text">内部类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建内部类"><span class="toc-number">5.1.</span> <span class="toc-text">创建内部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链接到外部类"><span class="toc-number">5.2.</span> <span class="toc-text">链接到外部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-this和-new"><span class="toc-number">5.3.</span> <span class="toc-text">使用.this和.new</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部类与向上转型"><span class="toc-number">5.4.</span> <span class="toc-text">内部类与向上转型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在方法和作用域内的内部类"><span class="toc-number">5.5.</span> <span class="toc-text">在方法和作用域内的内部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#匿名内部类"><span class="toc-number">5.6.</span> <span class="toc-text">匿名内部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#嵌套类"><span class="toc-number">5.7.</span> <span class="toc-text">嵌套类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么用内部类"><span class="toc-number">5.8.</span> <span class="toc-text">为什么用内部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#闭包和回调"><span class="toc-number">5.9.</span> <span class="toc-text">闭包和回调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部类与控制框架"><span class="toc-number">5.10.</span> <span class="toc-text">内部类与控制框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部类的继承"><span class="toc-number">5.11.</span> <span class="toc-text">内部类的继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部类可以被覆盖吗？"><span class="toc-number">5.12.</span> <span class="toc-text">内部类可以被覆盖吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#局部内部类"><span class="toc-number">5.13.</span> <span class="toc-text">局部内部类</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="访问权限控制"><a href="#访问权限控制" class="headerlink" title="访问权限控制"></a>访问权限控制</h2><h3 id="包：库单元"><a href="#包：库单元" class="headerlink" title="包：库单元"></a>包：库单元</h3><p>一个Java源代码文件通常称为编译单元。每个编译单元只能有一个public类，否则编译器就不会接受。如果在该编译单元之中还有额外的类的话，那么在包之外的世界是无法看见这些类的。</p>
+<a id="more"></a>
+<p>Java包的命名规则全部使用小写字母，第一部分是创建者的反顺序的域名。</p>
+<p>CLASSPATH：对于.class文件，需要写出.class文件存放路径，.jar则需要写清楚.jar文件的名称。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CLASSPATH=.;<span class="symbol">D:</span>\java\<span class="class"><span class="keyword">lib</span>;</span><span class="symbol">C:</span>\doc\grade.jar</span><br></pre></td></tr></table></figure>
+
+<p>可以用import static 语句在你的系统上使用静态的方法。</p>
+<p>用import改变行为，c中有条件编译，java中没有相同功能，可以通过导入不同版本的包，来实习那相同功能。</p>
+<h3 id="类成员访问权限"><a href="#类成员访问权限" class="headerlink" title="类成员访问权限"></a>类成员访问权限</h3><table>
+<thead>
+<tr>
+<th>修饰词</th>
+<th>本类</th>
+<th>同一个包的类</th>
+<th>继承类</th>
+<th>其它类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>private</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>无（默认）</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>protected</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>public</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3 id="类的访问权限"><a href="#类的访问权限" class="headerlink" title="类的访问权限"></a>类的访问权限</h3><ol>
+<li>每个编译单元（文件）都只能有一个public类。</li>
+<li>public类的名称必须完全与含有该编译单元的文件名相匹配，包括大小写。</li>
+<li>虽然不是很常用，但编译单元内完全不带public类也是可能的。在这种情况下可以对文件随意命名，但是这会带来阅读和维护的混乱。</li>
+</ol>
+<p>类的访问权限有两种：包访问权限和public(<strong>内部类可以是protected和private</strong>)。如果不希望其它任何人对该类拥有访问权限，可以把所有构造器都指定为private，从而阻止任何人创建该类对象，但是有一个例外，就是你在该类的static成员内部可以创建(<strong>单例模式</strong>就用到了这一点)。</p>
+<p>如果不具有package声明，都被视作该目录下默认包的一部分。然而，如果该类的某个static成员是public的话，则客户端程序员仍旧可以调用该static成员，尽管他们不能生成该类的对象。</p>
+<h2 id="复用类"><a href="#复用类" class="headerlink" title="复用类"></a>复用类</h2><p>有两种方法可以复用现有类，第一种，只需在新的类中产生现有类的对象，称为<strong>组合</strong>；第二种，按照现有类的类型来创建新类，称为<strong>继承</strong>。</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p><strong>即使一个类只具有包访问权限，其public main()仍然是可以访问的</strong></p>
+<p>为了继承，一般的规则是将所有数据成员都指定为private，将所有的方法指定为public，当然特殊情况应做出调整。</p>
+<h3 id="初始化基类"><a href="#初始化基类" class="headerlink" title="初始化基类"></a>初始化基类</h3><p><strong>当创建了一个导出类的对象时，该对象包含了一个基类的子对象</strong></p>
+<p><strong>Java会自动在导出类的构造器中插入对基类构造器的调用，可以显示地调用基类构造器，但是调用基类构造器必须是你在导出类构造器中要做的第一件事。</strong></p>
+<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><p>将一个成员对象置于所要构造的类中（就像组合），但与此同时我们在新类中暴露了该成员对象的所有方法（就像继承）。</p>
+<h3 id="确保正确清理"><a href="#确保正确清理" class="headerlink" title="确保正确清理"></a>确保正确清理</h3><p>许多情况下，清理并不是问题，交给垃圾回收器就好了。但有时有些资源必须亲自去清理，如果必须这样，最好是编写自己的清理方法，但不要使用finalize()。执行清理的顺序：首先，执行类的所有特定的清理动作，其顺序同生成顺序相反（通常这就要求基类元素仍旧存货）；然后，调用基类的清理方法。</p>
+<h3 id="名称屏蔽"><a href="#名称屏蔽" class="headerlink" title="名称屏蔽"></a>名称屏蔽</h3><p>如果想要覆写一个方法，添加@Override注解，可以防止在不想重载时而意外地进行了重载，这种情况下会有错误信息。</p>
+<h3 id="在组合和继承之间选择"><a href="#在组合和继承之间选择" class="headerlink" title="在组合和继承之间选择"></a>在组合和继承之间选择</h3><p>组合和继承都允许在新的类中放置子对象，组合是显式地这样做，而继承则是隐式地做。</p>
+<p>组合技术通常用于想在新类中使用现有类的功能而非它的接口这种情况(has-a关系)。在继承的时候，使用某个现有类，并开发一个它的特殊版本。通常，这意味着你在使用一个通用类，并为了某个特殊需要而将其特殊化(is-a关系)。</p>
+<p><strong>一个最清晰的判断方法就是问一问自己是否需要从新类向基类进行向上转型。</strong>一般优先考虑组合，只在确实必要时才使用继承。</p>
+<h3 id="向上转型"><a href="#向上转型" class="headerlink" title="向上转型"></a>向上转型</h3><p>向上转型总是很安全的。</p>
+<h3 id="final关键字"><a href="#final关键字" class="headerlink" title="final关键字"></a>final关键字</h3><ol>
+<li><p>final数据</p>
+<p> 使用场景：<strong>一个永远不改变的编译时常量；一个在运行时被初始化的值，而你不希望它被改变。</strong></p>
+<p> 对于编译常量这种情况，可以在编译时执行计算式，减轻了运行时的负担。这类常量必须是基本数据类型，在这个常量定义的时候必须对其进行赋值，也可以在构造器中初始化。</p>
+<p> 对于基本类型，final使数值恒定不变；而对于对象引用，final使引用恒定不变，一旦引用被初始化指向一个对象，就无法再把它指向另一个对象。对象自身却是可以被修改的，这一限制也适用于数组，因为它也是引用。</p>
+<p> 按照惯例，既是static又是final的域将用大写表示，并使用下划线分隔各个单词。final 字段同时有static修饰，必须在声明时就赋值，不能在构造器中才初始化，没有static的话也可以在构造器中初始化的</p>
+<p> 不能因为某数据是final的就认为在编译时就可以知道它的值。在运行时使用随机生成的数值来初始化final变量就说明这一点。</p>
+<p> <strong>final参数</strong></p>
+<p> 这意味着你无法在方法中更改参数引用所指向的对象，这一特性主要用来向匿名内部类传递数据。</p>
+</li>
+<li><p>final方法</p>
+<p> <strong>第一个原因是把方法锁定，以防止任何继承类修改它的含义。</strong>这是出于设计的考虑：想要确保在继承中使方法行为保持不变，并且不会被覆盖。</p>
+<p> <strong>第二个原因是效率。</strong>在Java SE5以上应该让编译器和JVM考虑效率问题，只有出于防止覆盖时，使用final。</p>
+<p> <strong>所有private方法都隐式指定为final的。由于无法取用private方法，因此也就无法覆盖它。</strong></p>
+<p> 但是当你试图覆盖一个private方法时似乎是有效的，“覆盖”，只有在某方法是某类接口的一部分时才会出现。如果某方法是private，它就不是基类的接口的一部分。它仅是一些隐藏于类中的程序代码，只不是具有相同名称而已。但如果导出类以相同名称生成一个public、protected或包访问权限方法的话，此时你并没有覆盖该方法，仅是生成了一个新方法。</p>
+</li>
+<li><p>final类</p>
+<p> <strong>final类不能被继承</strong>。不论类是否为final的，相同的规则都适用于定义为final的域。然而，<strong>final类中所有方法都隐式指定为final的，因为无法覆盖它们</strong>。</p>
+</li>
+</ol>
+<h3 id="初始化及类的加载"><a href="#初始化及类的加载" class="headerlink" title="初始化及类的加载"></a>初始化及类的加载</h3><p>类的代码在初次使用时才加载。这通常是指加载发生于创建类的第一个对象之时，但是当访问static域或static方法时，也会发生加载。（构造器也是static的，类是在任何static成员被访问时被加载的）。所有的static对象和static代码段都会在加载时依定义类时的书写顺序而依次初始化的。</p>
+<ol>
+<li>加载类的基类，如果基类还有基类，则继续加载，如此类推。其它任何事物发生之前，将分配给对象的存储空间初始化成二进制的零。</li>
+<li>根基类中的static初始化(static域和static块初始化)，然后下个导出类，以此类推。</li>
+<li>根基类初始化：非static显示初始化，调用构造器。</li>
+<li>导出类初始化，流程与基类类似。</li>
+</ol>
+<p>static块可以访问、修改在它之前的static 字段，只能修改出现在它后面的static字段</p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>面向对象的程序设计语言中，多态是继数据抽象和继承之后的第三种基本特性。</p>
+<p>多态通过分离做什么和怎么做，从另一个角度将接口和实现分离开来。多态不但能够改善代码的组织结构和可读性，还能创建可扩展的程序。</p>
+<p><strong>“封装”通过合并特征和行为来创建新的数据类型。“实现隐藏”则通过将细节“私有化”把接口和实现分离开来。而多态的作用则是消除类型之间的耦合关系。</strong></p>
+<h3 id="方法调用绑定"><a href="#方法调用绑定" class="headerlink" title="方法调用绑定"></a>方法调用绑定</h3><p>将一个方法调用同一个方法主体关联起来被称作绑定。若在程序执行前进行绑定，叫做前期绑定。后期绑定，在运行时根据对象的类型进行绑定，后期绑定也叫做动态绑定或运行时绑定。编译器一直不知道对象的类型，但是方法调用机制能找到正确的方法体。</p>
+<p><strong>Java中除了static方法和final方法（private方法属于final方法）之外，其它所有的方法都是后期绑定。</strong></p>
+<h3 id="可扩展性"><a href="#可扩展性" class="headerlink" title="可扩展性"></a>可扩展性</h3><p>在一个设计良好的OOP程序中，大多数或者所有方法都会只与基类接口通信。这样的程序是可扩展的，因为可以从通用的基类继承出新的数据类型，从而新添一些功能。多态是一项让程序员“将改变的事物和未变的事物分离开来”的重要技术。</p>
+<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><ol>
+<li><p>“覆盖”私有方法</p>
+<p> 只有非private方法才可以被覆盖；但是还需要密切注意覆盖private方法的现象，这时虽然编译器不会报错，但是也不会按照我们所期望的来执行。确切地说，在导出类中，对于基类中的private方法，最好采用不同的名字。</p>
+</li>
+<li><p>域和静态方法</p>
+<p> 只有普通方法调用是多态的。</p>
+<p> 任何域访问操作都在编译期进行解析，因此不是多态的(如果通常将所有域设置成为private；将基类和导出类的域赋予不同名称。这种混淆是可以避免的)。如果某个方法是静态的，它的行为就不具有多态性。</p>
+</li>
+</ol>
+<h3 id="清理"><a href="#清理" class="headerlink" title="清理"></a>清理</h3><p><a href="#确保正确清理">第七章</a>已经讲过了。然而，如果成员对象中存在于其它一个或多个对象共享的情况，问题就复杂了。这种情况下，也许就必须使用引用计数来跟踪仍旧访问着共享对象的对象数量了，当共享它的对象全部dispose，引用计数为0时，才会dispose。</p>
+<h3 id="构造器内部的多态方法的行为"><a href="#构造器内部的多态方法的行为" class="headerlink" title="构造器内部的多态方法的行为"></a>构造器内部的多态方法的行为</h3><p>构造器调用的层次结构带来了一个有趣的两难问题。如果在一个构造器的内部调用正在构造的对象的某个动态绑定方法，那会发生什么情况呢？看下面的代码。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Glyph</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>&#123;System.out.<span class="built_in">println</span>(<span class="string">"Glyph.draw()"</span>);&#125;</span><br><span class="line">    Glyph()&#123;</span><br><span class="line">        draw();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RoundGlyph</span> <span class="title">extends</span> <span class="title">Glyph</span>&#123;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> radius = <span class="number">1</span>;</span><br><span class="line">    Roundglyph(<span class="keyword">int</span> r)&#123;</span><br><span class="line">        radius = r;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Roundglyph.Roundglyph(),radius="</span> + radius);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Roundglyph.draw(),radius="</span> + radius);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PolyConstructors</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">new</span> RoundGlyph(<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="comment">/* output:</span></span><br><span class="line"><span class="comment">Roundglyph.draw(),radius=0</span></span><br><span class="line"><span class="comment">Roundglyph.RoundGlyph(),radius=5</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>基类Glyph的构造器调用draw()方法时，radius还没有被初始化，不是1，而是0。这可能导致程序无法正常运转。</p>
+<p><strong>编写构造器时有一条有效的准则：“用尽可能简单的方法使对象进入正常状态；如果可以的话，避免调用其它方法”。构造器中唯一能够安全调用的那些方法是基类中的final方法（也适用于private方法，它们自动属于final方法）</strong></p>
+<h3 id="协变返回类型"><a href="#协变返回类型" class="headerlink" title="协变返回类型"></a>协变返回类型</h3><p>Java SE5中添加了协变返回类型，它表示<strong>在导出类中的被覆盖方法可以返回基类方法的返回类型的某种导出类型</strong>。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Grain</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Wheat</span> <span class="keyword">extends</span> <span class="title">Grain</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mill</span></span>&#123;</span><br><span class="line">    <span class="type">Grain</span> process()&#123;<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">Grain</span>();&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WheatMill</span> <span class="keyword">extends</span> <span class="title">Mill</span></span>&#123;</span><br><span class="line">    <span class="type">Wheat</span> process()&#123;<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">Wheat</span>();&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="用继承进行设计"><a href="#用继承进行设计" class="headerlink" title="用继承进行设计"></a>用继承进行设计</h3><p>组合更加灵活，因为它可以动态选择类型（因此也就选择了行为）；相反，继承在编译时就需要知道确切的类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Actor</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">act</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HappyActor</span> <span class="keyword">extends</span> <span class="title">Actor</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">act</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SadActor</span> <span class="keyword">extends</span> <span class="title">Actor</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">act</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stage</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Actor actor = <span class="keyword">new</span> Happyactor();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">()</span></span>&#123;actor=<span class="keyword">new</span> SadActor();&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">performPlay</span><span class="params">()</span></span>&#123;actor.act();&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Transmogrify</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Stage stage = <span class="keyword">new</span> Stage();</span><br><span class="line">        stage.performPlay();</span><br><span class="line">        stage.change();</span><br><span class="line">        stage.performPlay();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码用到了<strong>状态模式</strong>，可以在运行时将引用与不同的对象重新绑定在一起，然后产生不同的行为。</p>
+<p>一条通用的准则是：“用继承表达行为间的差异，并用字段表达状态上的变化”</p>
+<h3 id="纯继承与扩展"><a href="#纯继承与扩展" class="headerlink" title="纯继承与扩展"></a>纯继承与扩展</h3><p>在导论6.中已经讲过。</p>
+<p>Java会在运行期间对类型进行检查，这种行为称作“运行时类型识别”(RTTI)</p>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p>接口和内部类为我们提供了一种将接口和实现分离的更加结构化的方法。</p>
+<h3 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h3><p>抽象类是接口和普通类与接口之间的一种中庸之道。 </p>
+<ol>
+<li>如果一个类包含一个或多个抽象方法，则必须被限定为抽象类。（反过来，如果一个类被定义为abstract的，不一定要有抽象方法） </li>
+<li>不能实例化抽象类。</li>
+<li>继承抽象类，如果没有实现所有的抽象方法，那么还是抽象类。 </li>
+</ol>
+<h3 id="接口-1"><a href="#接口-1" class="headerlink" title="接口"></a>接口</h3><p>interface产生一个完全抽象的类，允许创建者确定方法名、参数列表和返回类型。但只提供形式，不提供实现。（Java SE8提供了default关键字，可以定义默认的方法，该方法提供实现）。 </p>
+<p>接口可以有域，但这些域被隐式的声明为static 和final </p>
+<p>可以在接口中显示的把方法声明为public，<strong>默认就是public，而且必须是public，方法不能是static和final的</strong>。</p>
+<h3 id="完全解耦"><a href="#完全解耦" class="headerlink" title="完全解耦"></a>完全解耦</h3><p>创建一个能够根据所传递的参数对象的不同而具有不同行为的方法，被称为<strong>策略设计模式</strong>。这类方法包含所要执行的算法中固定不变的部分，而“策略”包含变化的部分。策略就是传递进去的参数对象，包含要执行的代码，可以根据传递的参数的对象产生不同的行为。 </p>
+<p>复用代码的第一种方式就是客户端程序员遵循该接口来编写他们的类；<br>第二种方式：如果无法修改使用的类，则可以使用<strong>适配器设计模式</strong>。 </p>
+<h3 id="多重继承"><a href="#多重继承" class="headerlink" title="多重继承"></a>多重继承</h3><p>接口可以实现多重继承，implements可以接多个接口，用逗号分开即可。 </p>
+<p>接口使用的核心原因：能向上转型为多个基类型（以及由此带来的灵活性）；与抽象基类相同，防止客户端程序员创建该类的对象。 </p>
+<p>应该使用接口还是抽象类：如果要创建不带任何方法定义和成员变量的基类，那么就应该选择接口而不是抽象类。事实上，如果知道某事物应该成为一个基类，那么第一选择应该是使它成为一个接口。</p>
+<h3 id="通过继承扩展接口"><a href="#通过继承扩展接口" class="headerlink" title="通过继承扩展接口"></a>通过继承扩展接口</h3><p>可以通过继承来扩展接口，并且可以多重继承。只能将extends用于单一类，但是可以引用多个基类接口。 </p>
+<p>避免不同的接口中使用相同的方法。 </p>
+<h3 id="适配接口"><a href="#适配接口" class="headerlink" title="适配接口"></a>适配接口</h3><p>让方法接受接口类型，是一种让任何类都可以对该方法进行适配的方式。这就是使用接口而不是类的强大之处。</p>
+<h3 id="接口中的域"><a href="#接口中的域" class="headerlink" title="接口中的域"></a>接口中的域</h3><p><strong>放入接口中的任何域都是static和final的</strong>，所以接口就成为了一种很便捷的创建常量组的工具（Java SE5出现了enum）。<strong>接口中的域是public的</strong>。 </p>
+<h3 id="嵌套接口"><a href="#嵌套接口" class="headerlink" title="嵌套接口"></a>嵌套接口</h3><p>接口中成员默认就是public的，接口嵌套在接口中只能是public的。类中嵌套接口或类可以是4种访问权限。</p>
+<p>当实现某个接口时，并不需要实现嵌套在其内部的任何接口。而且，private接口不能在定义它的类之外被发现，返回private接口仅可以被定义它的类的方法使用。</p>
+<h3 id="接口与工厂"><a href="#接口与工厂" class="headerlink" title="接口与工厂"></a>接口与工厂</h3><p>生成遵循某个接口的对象的典型方式就是工厂方法设计模式。通过工厂方法模式，我们的代码将完全与接口的实现分离，这就使得我们可以透明地将某个实现替换为另一个实现。</p>
+<p>优先选择类而不是接口，从类开始，如果接口的需要性变得非常明确，那么就进行重构。接口是一种重要的工具，但他们容易被滥用。 </p>
+<h2 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h2><p>内部类主要有四种：静态内部类，普通内部类，局部内部类，匿名内部类。内部类不能和外部类同名。</p>
+<p>静态内部类不依赖于外部类实例而创建，不能外部类的普通成员变量和方法，只能访问静态成员变量和方法。<br>普通内部类和外部类实例绑定，可以访问外部类的任一成员和方法，不能定义静态成员和方法，但是可以有static final 成员变量。<br>局部内部类和局部变量一样，不能被public、protected、private、static修饰，只能访问定义为final类型的局部变量，也可以访问外部类成员。</p>
+<h3 id="创建内部类"><a href="#创建内部类" class="headerlink" title="创建内部类"></a>创建内部类</h3><p>典型用法：外部类通过方法返回内部类的引用。</p>
+<p>想从外部类的非静态方法之外的任意位置创建某个内部类的对象，就得用OuterClassName.InnerClassName的形式定义内部类对象。</p>
+<p><strong>注意，非static内部类只能在外部类的非静态方法中直接生成对象；在外部类静态方法和其它类中，必须先生成外部类对象实例，然后外部类对象.new。</strong></p>
+<h3 id="链接到外部类"><a href="#链接到外部类" class="headerlink" title="链接到外部类"></a>链接到外部类</h3><p>内部类对象有一个到创建它的外部类对象的链接，因而可以直接的、没有任何限制地访问该外部类对象的成员，而且<strong>内部类可以访问外部类的所有成员（包括private）（C++的嵌套类没有这个特性）；而外部类访问内部类的成员，必须创建内部类的对象，可以访问任何成员（包括private）。</strong></p>
+<p>内部类对象中隐式包含了一个外部类对象的引用。内部类对象构建需要外部类对象的引用，如果没有，编译报错（对于非静态内部类，静态内部类可以直接被创建<code>new Outer.Inner()</code>，而不需要先创建外部类对象）。</p>
+<h3 id="使用-this和-new"><a href="#使用-this和-new" class="headerlink" title="使用.this和.new"></a>使用.this和.new</h3><p>.this用来返回外部类引用，编译期可知道和检查正确类型，无运行时开销（OuterClassName.this）；.new用来由外部类对象创建其内部类的对象，outClassObject.new InnerClassName ()（注意：在拥有外部类对象之前是不能创建内部类对象的）</p>
+<p>嵌套类，static 内部类，其对象创建不需要外部类对象引用，也可在static方法中创建。</p>
+<h3 id="内部类与向上转型"><a href="#内部类与向上转型" class="headerlink" title="内部类与向上转型"></a>内部类与向上转型</h3><p>内部类在向上转型的时候很有用处。因为内部类通常为某个接口的实现，且能够完全不可见，并且不可用。所得到的只是指向基类或接口的引用，能更好得隐藏细节。</p>
+<h3 id="在方法和作用域内的内部类"><a href="#在方法和作用域内的内部类" class="headerlink" title="在方法和作用域内的内部类"></a>在方法和作用域内的内部类</h3><p>可以在一个方法里或者任意的作用域内定义内部类，称为<strong>局部内部类</strong>。</p>
+<p>两个理由：</p>
+<ol>
+<li>实现一个接口</li>
+<li>需要一个不公开的类辅助解决复杂的问题</li>
+</ol>
+<p>内部类形式</p>
+<ol>
+<li>方法内的内部类； </li>
+<li>方法中的一个作用域内的内部类； </li>
+<li>实现接口的匿名内部类； </li>
+<li>继承的匿名内部类（基类含有带参数的构造器）； </li>
+<li>进行字段初始化的匿名内部类； </li>
+<li>使用实例初始化块进行构造的匿名内部类（匿名类没有构造器）。</li>
+</ol>
+<h3 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h3><p>匿名内部类 ：new T(){…}; {…}为匿名内部类的定义，”;”不可少（;只是该语句的结束，而不是用来表示匿名内部类的结束，所以没有什么特殊的地方）。</p>
+<p>前面是基类构造器为默认构造器的情况，当基类构造器有参数时：new T(args){…};此时会调用基类相应构造器。</p>
+<p>当需要用到外部定义的对象时，传递的引用参数必须为final，否则编译报错；</p>
+<p>匿名类没有命名的构造器（类本身就没有名字），可以通过实例初始化来完成构造器的功能。</p>
+<p>匿名内部类只能在继承类和实现接口中2选一，且只能实现一个接口。</p>
+<h3 id="嵌套类"><a href="#嵌套类" class="headerlink" title="嵌套类"></a>嵌套类</h3><p>static 内部类。有点类似C++嵌套类的概念，但Java的嵌套类可以访问外部类的所有成员（包括private，当然只能通过外部类对象访问非静态成员）。</p>
+<ol>
+<li>不需要通过外部类对象来创建嵌套类对象；</li>
+<li>不能通过嵌套类对象访问非静态外部类对象(嵌套类是静态的，没有外部类对象的引用，.this不可用)；</li>
+</ol>
+<p><strong>普通内部类的字段和方法，只能在类的外部层次上，不能有static成员、方法和嵌套类（普通内部类有static final字段，普通内部类继承的父类中有静态域，这时可以通过内部类直接访问静态域）。</strong></p>
+<p>嵌套类可以位于接口内部，位于接口内部的类自动为public static的，而且嵌套类甚至本身就可以实现该接口，好处在于可以在嵌套类内编写该接口所有实现中都要用到的代码。</p>
+<h3 id="为什么用内部类"><a href="#为什么用内部类" class="headerlink" title="为什么用内部类"></a>为什么用内部类</h3><p>内部类的使得多重继承的解决方案变得完整。接口解决了部分问题，而内部类有效地实现“多重继承”。也就是说，内部类允许继承多个非接口类型（类或抽象类）。</p>
+<p>如果拥有的是抽象的类或具体的类，而不是接口，那就只能使用内部类才能实现多重继承。</p>
+<p>特性：</p>
+<ol>
+<li>内部类可以有多个实例，每个实例可以拥有独立于外部类对象的不同信息；</li>
+<li>一个外部类可以有多个内部类，每个内部类可以以不同的方式实现同一个接口或者继承同一个类；</li>
+<li>内部类实例创建时刻并不受到外部类对象创建的限制；</li>
+<li>用内部类不会制造”is-a”关系的混乱，每个内部类都是个实体。</li>
+</ol>
+<h3 id="闭包和回调"><a href="#闭包和回调" class="headerlink" title="闭包和回调"></a>闭包和回调</h3><p><strong>闭包</strong>是一种可调用的对象，它记录了来自创建它的作用域的一些信息。内部类是一种面向对象的闭包，不仅包含了外部类的信息，而且通过包含一个指向外部类对象的引用，可以操作所有成员，包括private。</p>
+<p><strong>回调</strong>，通过其它对象携带的信息，可以在稍后的某个时刻调用初始对象。回调的价值在于灵活性，可以在运行时决定需要调用的方法。 GUI编程将体现得更明显。</p>
+<h3 id="内部类与控制框架"><a href="#内部类与控制框架" class="headerlink" title="内部类与控制框架"></a>内部类与控制框架</h3><p>一个<strong>应用程序框架</strong>是指一个用来解决一个特定类型问题的类或一组类。应用方法是，继承其中一个或多个类，覆盖某些方法。在覆盖后的方法中，编写代码定制应用程序框架提供的通用解决方案，来解决特定问题，这是设计模式中<strong>模板方法</strong>的一个例子。 模板方法包含算法的基本结构，并且会调用一个或多个可覆盖的方法，以完成算法。设计模式将不变的和变化的事情分开。在这个设计模式中，模板方法是保持不变的事物，而可覆盖的方法是变化的事物。</p>
+<p><strong>控制框架</strong>是用来响应事件的一类特殊的应用程序框架 。主要用来响应事件的系统称为事件驱动系统，如GUI。Java Swing就是一个控制框架。</p>
+<p>内部类在控制框架中两个作用：</p>
+<ol>
+<li><p>用来表示解决问题所需的各种不同的action()。</p>
+</li>
+<li><p>内部类可以直接访问外部类的所有成员，因而使得实现变得更灵活。</p>
+</li>
+</ol>
+<p>参见P209控制温室的运作例子。</p>
+<h3 id="内部类的继承"><a href="#内部类的继承" class="headerlink" title="内部类的继承"></a>内部类的继承</h3><p><strong>内部类指向外部类对象的引用必须初始化，而在它的继承类中并不存在要联接的缺省对象，必须使用特殊的语法明确指出这种关联。</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WithInner</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Inner</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">InheritInner</span> <span class="keyword">extends</span> <span class="title">WithInner</span>.<span class="title">Inner</span> </span>&#123;</span><br><span class="line">    <span class="type">InheritInner</span>(<span class="type">WithInner</span> wi)&#123;</span><br><span class="line">        wi.<span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(<span class="type">String</span>[] args)&#123;</span><br><span class="line">        <span class="type">WithInner</span> wi = <span class="keyword">new</span> <span class="type">WithInner</span>();</span><br><span class="line">        <span class="type">InheritInner</span> ii = <span class="keyword">new</span> <span class="type">InheritInner</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>继承自内部类的类构造器不能是默认构造器，要有个外部类的引用作为参数，而且必须加上enclosingClassReference.super()；语句，编译才能通过。</p>
+<h3 id="内部类可以被覆盖吗？"><a href="#内部类可以被覆盖吗？" class="headerlink" title="内部类可以被覆盖吗？"></a>内部类可以被覆盖吗？</h3><p>继承外部类，像重写方法一样重写内部类并不起作用，此时两个内部类只是两个独立的实体。</p>
+<h3 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h3><p>局部内部类不能有访问限定符；有访问局部final变量和外部类所有成员的权限；可以有命名的构造器；在方法外不能访问。</p>
+<p>绝大部分情况下，可以用匿名类来替代局部内部类，除非：</p>
+<ol>
+<li>需要命名的构造器，或者需要重载构造器</li>
+<li>需要多个内部类的对象</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.472Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/09/08/thinking-in-java-note-3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java编程思想笔记三
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/08/27/thinking-in-java-note-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Java编程思想笔记一</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#访问权限控制"><span class="toc-number">1.</span> <span class="toc-text">访问权限控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#包：库单元"><span class="toc-number">1.1.</span> <span class="toc-text">包：库单元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类成员访问权限"><span class="toc-number">1.2.</span> <span class="toc-text">类成员访问权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类的访问权限"><span class="toc-number">1.3.</span> <span class="toc-text">类的访问权限</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#复用类"><span class="toc-number">2.</span> <span class="toc-text">复用类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#继承"><span class="toc-number">2.1.</span> <span class="toc-text">继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化基类"><span class="toc-number">2.2.</span> <span class="toc-text">初始化基类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代理"><span class="toc-number">2.3.</span> <span class="toc-text">代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#确保正确清理"><span class="toc-number">2.4.</span> <span class="toc-text">确保正确清理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#名称屏蔽"><span class="toc-number">2.5.</span> <span class="toc-text">名称屏蔽</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在组合和继承之间选择"><span class="toc-number">2.6.</span> <span class="toc-text">在组合和继承之间选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向上转型"><span class="toc-number">2.7.</span> <span class="toc-text">向上转型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#final关键字"><span class="toc-number">2.8.</span> <span class="toc-text">final关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化及类的加载"><span class="toc-number">2.9.</span> <span class="toc-text">初始化及类的加载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多态"><span class="toc-number">3.</span> <span class="toc-text">多态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法调用绑定"><span class="toc-number">3.1.</span> <span class="toc-text">方法调用绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可扩展性"><span class="toc-number">3.2.</span> <span class="toc-text">可扩展性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺陷"><span class="toc-number">3.3.</span> <span class="toc-text">缺陷</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#清理"><span class="toc-number">3.4.</span> <span class="toc-text">清理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构造器内部的多态方法的行为"><span class="toc-number">3.5.</span> <span class="toc-text">构造器内部的多态方法的行为</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#协变返回类型"><span class="toc-number">3.6.</span> <span class="toc-text">协变返回类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用继承进行设计"><span class="toc-number">3.7.</span> <span class="toc-text">用继承进行设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#纯继承与扩展"><span class="toc-number">3.8.</span> <span class="toc-text">纯继承与扩展</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接口"><span class="toc-number">4.</span> <span class="toc-text">接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#抽象类"><span class="toc-number">4.1.</span> <span class="toc-text">抽象类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口-1"><span class="toc-number">4.2.</span> <span class="toc-text">接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#完全解耦"><span class="toc-number">4.3.</span> <span class="toc-text">完全解耦</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多重继承"><span class="toc-number">4.4.</span> <span class="toc-text">多重继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过继承扩展接口"><span class="toc-number">4.5.</span> <span class="toc-text">通过继承扩展接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#适配接口"><span class="toc-number">4.6.</span> <span class="toc-text">适配接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口中的域"><span class="toc-number">4.7.</span> <span class="toc-text">接口中的域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#嵌套接口"><span class="toc-number">4.8.</span> <span class="toc-text">嵌套接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口与工厂"><span class="toc-number">4.9.</span> <span class="toc-text">接口与工厂</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内部类"><span class="toc-number">5.</span> <span class="toc-text">内部类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建内部类"><span class="toc-number">5.1.</span> <span class="toc-text">创建内部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链接到外部类"><span class="toc-number">5.2.</span> <span class="toc-text">链接到外部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-this和-new"><span class="toc-number">5.3.</span> <span class="toc-text">使用.this和.new</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部类与向上转型"><span class="toc-number">5.4.</span> <span class="toc-text">内部类与向上转型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在方法和作用域内的内部类"><span class="toc-number">5.5.</span> <span class="toc-text">在方法和作用域内的内部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#匿名内部类"><span class="toc-number">5.6.</span> <span class="toc-text">匿名内部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#嵌套类"><span class="toc-number">5.7.</span> <span class="toc-text">嵌套类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么用内部类"><span class="toc-number">5.8.</span> <span class="toc-text">为什么用内部类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#闭包和回调"><span class="toc-number">5.9.</span> <span class="toc-text">闭包和回调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部类与控制框架"><span class="toc-number">5.10.</span> <span class="toc-text">内部类与控制框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部类的继承"><span class="toc-number">5.11.</span> <span class="toc-text">内部类的继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部类可以被覆盖吗？"><span class="toc-number">5.12.</span> <span class="toc-text">内部类可以被覆盖吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#局部内部类"><span class="toc-number">5.13.</span> <span class="toc-text">局部内部类</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/09/04/thinking-in-java-note-2/';
+  this.page.identifier = '2014/09/04/thinking-in-java-note-2/';
+  this.page.title = 'Java编程思想笔记二';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

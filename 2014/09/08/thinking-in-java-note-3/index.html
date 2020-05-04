@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Java编程思想笔记三 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="thinking in java; java编程思想">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java编程思想笔记三">
+<meta property="og:url" content="http://howiefh.github.io/2014/09/08/thinking-in-java-note-3/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="thinking in java; java编程思想">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/java-collection.jpg">
+<meta property="article:published_time" content="2014-09-08T14:34:23.000Z">
+<meta property="article:modified_time" content="2020-05-04T11:30:51.623Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Thinking in Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/java-collection.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-thinking-in-java-note-3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/09/08/thinking-in-java-note-3/" class="article-date">
+  <time class="dt-published" datetime="2014-09-08T14:34:23.000Z" itemprop="datePublished">2014-09-08</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Java编程思想笔记三
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#持有对象"><span class="toc-number">1.</span> <span class="toc-text">持有对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本概念"><span class="toc-number">1.1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加一组元素"><span class="toc-number">1.2.</span> <span class="toc-text">添加一组元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List"><span class="toc-number">1.3.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器的打印"><span class="toc-number">1.4.</span> <span class="toc-text">容器的打印</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#迭代器"><span class="toc-number">1.5.</span> <span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkedList"><span class="toc-number">1.6.</span> <span class="toc-text">LinkedList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack"><span class="toc-number">1.7.</span> <span class="toc-text">Stack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set"><span class="toc-number">1.8.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map"><span class="toc-number">1.9.</span> <span class="toc-text">Map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Queue"><span class="toc-number">1.10.</span> <span class="toc-text">Queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PriorityQueue"><span class="toc-number">1.11.</span> <span class="toc-text">PriorityQueue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Collection和Iterator"><span class="toc-number">1.12.</span> <span class="toc-text">Collection和Iterator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#foreach与迭代器"><span class="toc-number">1.13.</span> <span class="toc-text">foreach与迭代器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新程序中不应该使用过时的Vector、Hashtable和Stack。"><span class="toc-number">1.14.</span> <span class="toc-text">新程序中不应该使用过时的Vector、Hashtable和Stack。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过异常处理错误"><span class="toc-number">2.</span> <span class="toc-text">通过异常处理错误</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概念"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本异常"><span class="toc-number">2.2.</span> <span class="toc-text">基本异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常参数"><span class="toc-number">2.3.</span> <span class="toc-text">异常参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#捕获异常"><span class="toc-number">2.4.</span> <span class="toc-text">捕获异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常处理程序"><span class="toc-number">2.5.</span> <span class="toc-text">异常处理程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#终止与恢复"><span class="toc-number">2.6.</span> <span class="toc-text">终止与恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建自定义异常"><span class="toc-number">2.7.</span> <span class="toc-text">创建自定义异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常说明"><span class="toc-number">2.8.</span> <span class="toc-text">异常说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#捕获所有异常"><span class="toc-number">2.9.</span> <span class="toc-text">捕获所有异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#栈轨迹"><span class="toc-number">2.10.</span> <span class="toc-text">栈轨迹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重新抛出异常"><span class="toc-number">2.11.</span> <span class="toc-text">重新抛出异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常链"><span class="toc-number">2.12.</span> <span class="toc-text">异常链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java标准异常"><span class="toc-number">2.13.</span> <span class="toc-text">Java标准异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特例：RuntimeException"><span class="toc-number">2.14.</span> <span class="toc-text">特例：RuntimeException</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用finally进行清理"><span class="toc-number">2.15.</span> <span class="toc-text">使用finally进行清理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#finally用来做什么"><span class="toc-number">2.16.</span> <span class="toc-text">finally用来做什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在return中使用finally"><span class="toc-number">2.17.</span> <span class="toc-text">在return中使用finally</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺憾：异常丢失"><span class="toc-number">2.18.</span> <span class="toc-text">缺憾：异常丢失</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常的限制"><span class="toc-number">2.19.</span> <span class="toc-text">异常的限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构造器"><span class="toc-number">2.20.</span> <span class="toc-text">构造器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常匹配"><span class="toc-number">2.21.</span> <span class="toc-text">异常匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他可选方式"><span class="toc-number">2.22.</span> <span class="toc-text">其他可选方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常使用指南"><span class="toc-number">2.23.</span> <span class="toc-text">异常使用指南</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串"><span class="toc-number">3.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不可变String"><span class="toc-number">3.1.</span> <span class="toc-text">不可变String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重载“-”与StringBuilder"><span class="toc-number">3.2.</span> <span class="toc-text">重载“+”与StringBuilder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无意识的递归"><span class="toc-number">3.3.</span> <span class="toc-text">无意识的递归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String上的操作"><span class="toc-number">3.4.</span> <span class="toc-text">String上的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#格式化输出"><span class="toc-number">3.5.</span> <span class="toc-text">格式化输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正则表达式"><span class="toc-number">3.6.</span> <span class="toc-text">正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扫描输入"><span class="toc-number">3.7.</span> <span class="toc-text">扫描输入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StringTokenizer"><span class="toc-number">3.8.</span> <span class="toc-text">StringTokenizer</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="持有对象"><a href="#持有对象" class="headerlink" title="持有对象"></a>持有对象</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>容器类类库的用途是“保存对象”，可划分为两个不同概念：</p>
+<ol>
+<li><p>Collection。一个独立元素的序列，这些元素都服从一条或多条规则。</p>
+<ul>
+<li>List必须按照插入顺序保存元素。</li>
+<li>Set不能有重复元素</li>
+<li>Queue按照排队规则来确定对象产生的顺序（通常与它们被插入的顺序相同）</li>
+</ul>
+</li>
+<li><p>Map。一组成对的“键值对”对象，允许你使用键来查找值。也被称为”关联数组”或”字典”。某种意义上来说，ArrayList也是一种Map</p>
+<a id="more"></a>
+
+</li>
+</ol>
+<p>理想情况下，编写的大部分代码都是在与这些接口打交道，并且唯一需要指定所使用的精确类型的地方就是在创建的时候。可以这样创建一个List：<code>List&lt;Apple&gt; apples = new ArrayList&lt;Apple&gt;</code>好处在于修改实现时，只需要在创建处修改代码。如把ArrayList改为LinkedList。但是导出类一般具有额外的功能，如果需要使用这些功能，就不能将它们向上转型为更通用的接口。</p>
+<h3 id="添加一组元素"><a href="#添加一组元素" class="headerlink" title="添加一组元素"></a>添加一组元素</h3><ol>
+<li>Arrays.asList()。<br> <code>public static &lt;T&gt; List&lt;T&gt; asList(T... a)</code>该方法接受一个数组或是一个用逗号分割的元素列表（使用可变参数），并将其转换为一个List对象，然后将其返回。<strong>可以直接使用此方法的输出当做一个List，但是在这种情况下，其底层表示是数组，因此不能调整大小，如果试图用add()或delete()方法在这种列表中添加或删除元素，有可能会引发改变数组尺寸的尝试，获得“Unsupported Operation”错误</strong>。<br> 另一个限制：会对所产生的List的类型做出最理想的假设，而不关心对它赋予的类型。 例： <figure class="highlight scala"><figcaption><span>java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//: holding/AsListInference.java  </span></span><br><span class="line"><span class="comment">// Arrays.asList() makes its best guess about type.  </span></span><br><span class="line"><span class="keyword">import</span> java.util.*;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Snow</span> </span>&#123;&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Powder</span> <span class="keyword">extends</span> <span class="title">Snow</span> </span>&#123;&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Light</span> <span class="keyword">extends</span> <span class="title">Powder</span> </span>&#123;&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Heavy</span> <span class="keyword">extends</span> <span class="title">Powder</span> </span>&#123;&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crusty</span> <span class="keyword">extends</span> <span class="title">Snow</span> </span>&#123;&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Slush</span> <span class="keyword">extends</span> <span class="title">Snow</span> </span>&#123;&#125;  </span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">AsListInference</span> </span>&#123;  </span><br><span class="line">    public static void main(<span class="type">String</span>[] args) &#123;  </span><br><span class="line">        <span class="type">List</span>&lt;<span class="type">Snow</span>&gt; snow1 = <span class="type">Arrays</span>.asList(  </span><br><span class="line">            <span class="keyword">new</span> <span class="type">Crusty</span>(), <span class="keyword">new</span> <span class="type">Slush</span>(), <span class="keyword">new</span> <span class="type">Powder</span>());  </span><br><span class="line">        <span class="comment">// Won't compile:  </span></span><br><span class="line">        <span class="comment">// List&lt;Snow&gt; snow2 = Arrays.asList(  </span></span><br><span class="line">            <span class="comment">// new Light(), new Heavy());  </span></span><br><span class="line">        <span class="comment">// Compiler says:  </span></span><br><span class="line">        <span class="comment">// found : java.util.List&lt;Powder&gt;  </span></span><br><span class="line">        <span class="comment">// required: java.util.List&lt;Snow&gt;  </span></span><br><span class="line">        <span class="comment">// Collections.addAll() doesn't get confused:  </span></span><br><span class="line">        <span class="type">List</span>&lt;<span class="type">Snow</span>&gt; snow3 = <span class="keyword">new</span> <span class="type">ArrayList</span>&lt;<span class="type">Snow</span>&gt;();  </span><br><span class="line">        <span class="type">Collections</span>.addAll(snow3, <span class="keyword">new</span> <span class="type">Light</span>(), <span class="keyword">new</span> <span class="type">Heavy</span>());  </span><br><span class="line">        <span class="comment">// Give a hint using an  </span></span><br><span class="line">        <span class="comment">// explicit type argument specification:  </span></span><br><span class="line">        <span class="type">List</span>&lt;<span class="type">Snow</span>&gt; snow4 = <span class="type">Arrays</span>.&lt;<span class="type">Snow</span>&gt;asList(  </span><br><span class="line">            <span class="keyword">new</span> <span class="type">Light</span>(), <span class="keyword">new</span> <span class="type">Heavy</span>());  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125; <span class="comment">///:~  </span></span><br></pre></td></tr></table></figure>
+ 解决办法：使用显式类型参数说明（<code>List&lt;Snow&gt; snow4 = Arrays.&lt;Snow&gt;asList(new Light(), new Heavy());</code>） ，象上面的例子中最后所做的那样。</li>
+<li>Collections.addAll()。<br> <code>public static &lt;T&gt; boolean addAll(Collection&lt;? super T&gt; c, T... elements)</code>该方法接受一个Collection对象，以及一个数组或是一个用逗号分割的列表，将元素添加到Collection中。先构建一个不包含元素的Collection，然后调用Collections.addAll()这种方式很方便，因此是<strong>首选方式</strong>。</li>
+<li>Collection导出类构造器，可以接受另一个Collection，用它来将自身初始化。</li>
+<li>Collection的addAll()方法，将指定 collection 中的所有元素都添加到此 collection 中（可选操作）。相比使用构造函数初始化，这种方法<strong>快的多</strong>。</li>
+</ol>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><table>
+<thead>
+<tr>
+<th>类</th>
+<th>随机访问元素</th>
+<th>插入和移除元素</th>
+<th>其它</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ArrayList</td>
+<td>快</td>
+<td>慢</td>
+<td></td>
+</tr>
+<tr>
+<td>LinkedList</td>
+<td>慢</td>
+<td>快</td>
+<td>更大的特性集</td>
+</tr>
+</tbody></table>
+<p><strong>常用方法</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean add(E e)</td>
+<td>向列表的尾部添加指定的元素（可选操作）。</td>
+</tr>
+<tr>
+<td>void add(int index, E element)</td>
+<td>在列表的指定位置插入指定元素（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean addAll(Collection&lt;? extends E&gt; c)</td>
+<td>添加指定 collection 中的所有元素到此列表的结尾，顺序是指定 collection 的迭代器返回这些元素的顺序（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean addAll(int index, Collection&lt;? extends E&gt; c)</td>
+<td>将指定 collection 中的所有元素都插入到列表中的指定位置（可选操作）。</td>
+</tr>
+<tr>
+<td>void clear()</td>
+<td>从列表中移除所有元素（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean contains(Object o)</td>
+<td>如果列表包含指定的元素，则返回 true。</td>
+</tr>
+<tr>
+<td>boolean containsAll(Collection&lt;?&gt; c)</td>
+<td>如果列表包含指定 collection 的所有元素，则返回 true。</td>
+</tr>
+<tr>
+<td>boolean equals(Object o)</td>
+<td>比较指定的对象与列表是否相等。</td>
+</tr>
+<tr>
+<td>E get(int index)</td>
+<td>返回列表中指定位置的元素。</td>
+</tr>
+<tr>
+<td>int hashCode()</td>
+<td>返回列表的哈希码值。</td>
+</tr>
+<tr>
+<td>int indexOf(Object o)</td>
+<td>返回此列表中第一次出现的指定元素的索引；如果此列表不包含该元素，则返回 -1。</td>
+</tr>
+<tr>
+<td>boolean isEmpty()</td>
+<td>如果列表不包含元素，则返回 true。</td>
+</tr>
+<tr>
+<td>Iterator<E> iterator()</td>
+<td>返回按适当顺序在列表的元素上进行迭代的迭代器。</td>
+</tr>
+<tr>
+<td>int lastIndexOf(Object o)</td>
+<td>返回此列表中最后出现的指定元素的索引；如果列表不包含此元素，则返回 -1。</td>
+</tr>
+<tr>
+<td>ListIterator<E> listIterator()</td>
+<td>返回此列表元素的列表迭代器（按适当顺序）。</td>
+</tr>
+<tr>
+<td>ListIterator<E> listIterator(int index)</td>
+<td>返回列表中元素的列表迭代器（按适当顺序），从列表的指定位置开始。</td>
+</tr>
+<tr>
+<td>E remove(int index)</td>
+<td>移除列表中指定位置的元素（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean remove(Object o)</td>
+<td>从此列表中移除第一次出现的指定元素（如果存在）（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean removeAll(Collection&lt;?&gt; c)</td>
+<td>从列表中移除指定 collection 中包含的其所有元素（可选操作）。</td>
+</tr>
+<tr>
+<td>boolean retainAll(Collection&lt;?&gt; c)</td>
+<td>仅在列表中保留指定 collection 中所包含的元素（可选操作）。交集</td>
+</tr>
+<tr>
+<td>E set(int index, E element)</td>
+<td>用指定元素替换列表中指定位置的元素（可选操作）。</td>
+</tr>
+<tr>
+<td>int size()</td>
+<td>返回列表中的元素数。</td>
+</tr>
+<tr>
+<td>List<E> subList(int fromIndex, int toIndex)</td>
+<td>返回列表中指定的 fromIndex（包括 ）和 toIndex（不包括）之间的部分视图。</td>
+</tr>
+<tr>
+<td>Object[] toArray()</td>
+<td>返回按适当顺序包含列表中的所有元素的数组（从第一个元素到最后一个元素）。</td>
+</tr>
+<tr>
+<td><T> T[] toArray(T[] a)</td>
+<td>返回按适当顺序（从第一个元素到最后一个元素）包含列表中所有元素的数组；返回数组的运行时类型是指定数组的运行时类型。</td>
+</tr>
+</tbody></table>
+<ul>
+<li>contains()、remove()、retainAll()、removeAll()方法都是基于equals()方法的。不同类，equals()方法定义可能有所不同，比如String只有在内容完全一样的情况下才会是等价的。</li>
+<li>subList()返回的列表的修改都会反映到初始列表中，反之亦然。</li>
+<li>Collections.sort()，Collections.shuffle()方法，进行排序、打乱顺序。</li>
+<li>List重载了一个addAll(int, Collection)方法，可以插入一个新的列表到List中间； Collection的addAll方法追加到结尾。</li>
+<li>toArray()方法：有一个重载；无参数的返回Object[]；传递目标类型的数组，将返回指定类型的数组，传递的数组如果太小，该方法新创建一个合适尺寸的数组。</li>
+</ul>
+<h3 id="容器的打印"><a href="#容器的打印" class="headerlink" title="容器的打印"></a>容器的打印</h3><p>数组需要用Arrays.toString()，容器不需要任何其它手段 （它们的toString()方法就足够了）。</p>
+<p>Collection打印出来的内容以[]括住，逗号分隔；Map则用{}，逗号分隔，键和值用=连接。</p>
+<p><strong>HashSet(HashMap)提供最快的查找技术，存储顺序无实际意义；LinkedHashSet(LinkedHashMap)按照被插入的顺序保存元素；TreeSet(TreeMap)按照比较结果的升序保存对象。</strong></p>
+<h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><p>一种设计模式，在不知道或不关心序列底层结构的情况下，遍历序列，选择每一个元素。迭代器是一种轻量级对象：创建代价低。</p>
+<p>Java的Iterator只能单向移动，用法：</p>
+<ol>
+<li>使用iterator()方法返回Collection的迭代器；迭代器准备返回序列的第一个元素；</li>
+<li>使用next()方法获取下一个元素；<br>注意：iterator()返回的迭代器是”准备返回序列的第一个元素”，而不是已经指向了第一个元素，因此要获取第一个元素也得调用一次next()，即c.iterator().next()得到的是第一个元素。</li>
+<li>hasNext()方法检验序列是否还有元素；</li>
+<li>使用remove()方法删除迭代器返回的最后一个元素。注意，remove()是一种可选方法，依赖于具体实现，但Java标准容器类库都实现了这个方法。</li>
+</ol>
+<p>当仅仅是遍历并获取每个元素，用foreach语法更简练。调用remove()之前必须调用next()方法。注意ConcurrentModificationException异常（所谓的fail-fast iterator）。</p>
+<p>迭代器的威力：<strong>将遍历序列的操作与序列的底层结构分离，统一了对容器的访问方式</strong>。</p>
+<p><strong>ListIterator</strong>：Iterator的子类，只能用于List类的访问，可双向移动；可以返回前一个和后一个元素的索引；可以使用set()方法替换最后访问的元素；listIterator()方法返回指向List开始处的ListIterator；listIterator(n)方法返回指向索引为n的元素处的ListIterator。</p>
+<h3 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h3><p>LinkedList添加了一些可以使其用于栈、队列或双端队列的方法。</p>
+<p>某些方法只是别名，或者只存在些许差异，以使得它们在特定用法的上下文环境中更加适用（特别是在Queue中）。 </p>
+<ul>
+<li>getFirst()和element()方法完全相同，都返回列表的头，而并不移除它，如果List为空，抛出NoSuchElementException；peek()方法与他们基本相同，只是列表为空时返回null。</li>
+<li>removeFirst()与remove()方法相同，移除并返回列表的头，List为空，抛出NoSuchElementException；poll()方法只是在列表为空时返回null。</li>
+<li>offer()、add()、addLast()相同，都将某个元素插入到列表的尾端。</li>
+<li>addFirst()将元素插入到列表的头。</li>
+<li>removeLast()移除并返回列表的最后一个元素。</li>
+</ul>
+<h3 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h3><p>java.util中的Stack类采用了继承LinkedList的方式实现，实际上使用组合实现更好。</p>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>查找是Set最重要的操作，因此通常选择HashSet，因为快速查找正是它的长项。</p>
+<p>Set的接口与Collection接口完全相同，只是行为不同而已，典型的继承与多态。 </p>
+<p><strong>TreeSet使用红黑树数据结构，HashSet使用散列函数来保存对象，LinkedHashSet也使用散列来优化查找速度，但看起来使用链表来维护元素的插入顺序。</strong></p>
+<p>TreeSet默认按照字典序（lexicographically）排序，如果需要改变排序方法，可将比较器传给TreeSet构造器，如String.CASE_INSENTIVE_ORDER（按照字母表顺序alphabetically）。</p>
+<h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><p>get(key)返回key所对应的值，如果key不在Map中，返回null。</p>
+<p>containKey()和containValue()方法。</p>
+<p>多维Map：值为Map或者别的Array、Collections。</p>
+<p>Map可以返回它的键的Set（keySet()方法），它的值的Collection（values()方法），或者它的键值对的Set（entrySet()）。</p>
+<h3 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h3><p>Queue常被用来可靠、安全地传输对象， 如从程序的一个区域传输到另一个区域，或者并行编程中从一个任务传输给另一个任务。</p>
+<p>LinkedList实现了Queue接口，因此可用作Queue的一种实现（向上转型为Queue） 。</p>
+<h3 id="PriorityQueue"><a href="#PriorityQueue" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h3><p>队列规则：给定一组队列中的元素，确定下一个弹出队列的元素的规则 。FIFO是典型的一种规则，声明的是下一个元素应该是等待时间最长的元素。</p>
+<p>优先级队列：下一个元素是最需要的元素（优先级最高的元素）。 Java SE5添加了这种队列。</p>
+<p>offer()插入一个对象到PriorityQueue时，会在队列中被排序 （实际上依赖于具体实现，典型的是插入时排序，但也可以在移除时选择最重要的元素，如果对象的优先级在队列等待时可以改变，那算法的选择就很重要）。默认排序使用对象的自然顺序，但可以通过提供Comparator（如Collections.reverseOrder()，Java SE5）改变这个顺序。peek()、poll()和remove()可以获得优先级最高的元素 （对于内置类型，最小值拥有最高优先级）。</p>
+<p>如果要在PriorityQueue使用自定义类型，就需要添加额外的功能以提供自然顺序，或者提供自己的Comparator。</p>
+<h3 id="Collection和Iterator"><a href="#Collection和Iterator" class="headerlink" title="Collection和Iterator"></a>Collection和Iterator</h3><p>Collection被认为是一个“附属接口”即因为要表示其它若干个接口的共性而出现的接口。</p>
+<p>通过针对接口而非具体实现编写代码，我们的代码可以应用于更多的对象类型。</p>
+<p>实现Collection接口可以通过继承AbstractCollection，但必须实现Iterator()和size()；如果类继承自其它类，就必须实现完整的Collection，但此时实现Iterator()似乎是一种更明智的选择 ，因为生成Iterator是将队列与使用队列的方法连接在一起耦合度最小的方式，并且与实现Collection相比，在序列类上所施加的约束也少得多。</p>
+<h3 id="foreach与迭代器"><a href="#foreach与迭代器" class="headerlink" title="foreach与迭代器"></a>foreach与迭代器</h3><p>foreach可以用于数组，也可以用于Collection对象。因为Collection对象实现了Iterable接口（Java SE5引入，包含一个产生Iterator的iterator()方法）。也就是说，foreach可以用于数组和实现了Iterable接口的类（数组并不是Iterable） 。</p>
+<p>当类需要提供多种在foreach语句使用的方法时，可以采用适配器方法的惯用法。当已经拥有一个接口并需要另一个接口时，就可以编写适配器。例如，想在默认前向迭代器的基础上，添加产生反向迭代器的能力，此时不能使用覆盖，而是应该添加一个能够产生Iterable对象的方法，该对象可以用于foreach语句，像这样</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReversibleArrayList</span>&lt;T&gt; <span class="title">extends</span> <span class="title">ArrayList</span>&lt;T&gt; &#123;</span>  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ReversibleArrayList</span><span class="params">(Collection&lt;T&gt; c)</span> </span>&#123;     </span><br><span class="line">        super(c); &#125;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterable&lt;T&gt; <span class="title">reversed</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Iterable&lt;T&gt;() &#123;  </span><br><span class="line">            <span class="keyword">public</span> Iterator&lt;T&gt; iterator() &#123;  </span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Iterator&lt;T&gt;() &#123;  </span><br><span class="line">                    <span class="keyword">int</span> current = <span class="built_in">size</span>() - <span class="number">1</span>;  </span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> current &gt; <span class="number">-1</span>; &#125;  </span><br><span class="line">                    <span class="function"><span class="keyword">public</span> T <span class="title">next</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">get</span>(current--); &#125;  </span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123; <span class="comment">// Not implemented  </span></span><br><span class="line">                        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();  </span><br><span class="line">                    &#125;  </span><br><span class="line">                &#125;;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AdapterMethodIdiom</span> &#123;</span>  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;  </span><br><span class="line">        ReversibleArrayList&lt;<span class="keyword">String</span>&gt; ral =  </span><br><span class="line">            <span class="keyword">new</span> ReversibleArrayList&lt;<span class="keyword">String</span>&gt;(  </span><br><span class="line">            Arrays.asList(<span class="string">"To be or not to be"</span>.split(<span class="string">" "</span>)));  </span><br><span class="line">        <span class="comment">// Grabs the ordinary iterator via iterator():  </span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">String</span> s : ral)  </span><br><span class="line">            System.out.<span class="built_in">print</span>(s + <span class="string">" "</span>);  </span><br><span class="line">        System.out.<span class="built_in">println</span>();  </span><br><span class="line">        <span class="comment">// Hand it the Iterable of your choice  </span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">String</span> s : ral.reversed())  </span><br><span class="line">            System.out.<span class="built_in">print</span>(s + <span class="string">" "</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过这种方法，可以创建不同行为多个迭代器，如随机访问random()等。</p>
+<p>意识到Arrays.asList()产生的List对象会使用底层数组作为其物理实现是很重要的。下面的代码直接使用Arrays.asList()返回的List，Collections.shuffle(stringList);原来的数组也会改变。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> TestArrays&#123;</span><br><span class="line">    public static void main(String<span class="literal">[]</span> args)&#123;</span><br><span class="line">        String<span class="literal">[]</span> strings = &#123;<span class="string">"hello"</span>,<span class="string">"world"</span>,<span class="string">"!"</span>&#125;; </span><br><span class="line">        List&lt;String&gt; stringList = <span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span><span class="keyword">as</span><span class="constructor">List(<span class="params">strings</span>)</span>;</span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span><span class="keyword">to</span><span class="constructor">String(<span class="params">strings</span>)</span>);</span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">Collections</span>.</span></span>shuffle(stringList);</span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span><span class="keyword">to</span><span class="constructor">String(<span class="params">strings</span>)</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="新程序中不应该使用过时的Vector、Hashtable和Stack。"><a href="#新程序中不应该使用过时的Vector、Hashtable和Stack。" class="headerlink" title="新程序中不应该使用过时的Vector、Hashtable和Stack。"></a>新程序中不应该使用过时的Vector、Hashtable和Stack。</h3><p><img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/java-collection.jpg" alt="Java容器简图"></p>
+<p>点线框表示接口，实线框表示普通的（具体的）类。带有空心箭头的点线表示一个特定的类实现了一个接口，实心箭头表示某各类可以生成箭头所指向的对象。</p>
+<p>容器扩展：<a href="http://howiefh.github.io/2014/10/30/thinking-in-java-note-5/">第十七章 容器深入研究</a></p>
+<h2 id="通过异常处理错误"><a href="#通过异常处理错误" class="headerlink" title="通过异常处理错误"></a>通过异常处理错误</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>通过异常处理错误，往往可以降低错误处理代码的复杂度。可以在多处抛出异常，而只在一个地方进行处理，不仅节省代码，而且把“描述在正常执行过程中做什么事”的代码和“出了问题怎么办”的代码相分离。</p>
+<h3 id="基本异常"><a href="#基本异常" class="headerlink" title="基本异常"></a>基本异常</h3><p><strong>异常情形</strong>是指组织当前方法或作用域继续执行的问题。把异常情形与普通问题相区分很重要，所谓的普通问题是指，在当前环境下能够得到足够的信息，总能处理这个错误。而对于异常情形，就不能继续下去了，因为在当前环境下无法获得必要的信息来解决问题。你所能做的就是从当前环境跳出，并且把问题提交给上一级环境。这就是抛出异常时所发生的事情。</p>
+<p>当异常抛出时，有几件事会随之发生。首先，同Java中其他对象的创建一样，将使用new在堆上创建异常对象。然后，当前的执行路径（它不能继续执行下去了）被终止，并且从当前环境中弹出对异常对象的引用。此时，异常处理机制接管程序，并开始寻找一个恰当的地方来继续执行程序。这个恰当的地方就是异常处理程序，它的任务就是将程序从错误状态中恢复，以使程序能要么换一种方式运行，要么继续运行下去。</p>
+<p>如果程序的某部分失败了，异常将”恢复“到程序中某个已知的稳定点上。</p>
+<h3 id="异常参数"><a href="#异常参数" class="headerlink" title="异常参数"></a>异常参数</h3><p>所有标准异常类都有两个构造器；一个是默认构造器；另一个是接受字符串作为参数，以便能把相关信息放入异常对象构造器。Throwable对象，是异常类型的根类。错误信息可以保存在异常对象内部或者用异常的名称来暗示。</p>
+<h3 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h3><p>要明白异常是如何被捕获的，必须首先理解监控区域的概念。它是一段可能产生异常的代码，并且后面跟着处理这些异常的代码。</p>
+<h3 id="异常处理程序"><a href="#异常处理程序" class="headerlink" title="异常处理程序"></a>异常处理程序</h3><p>异常处理程序紧跟在try块之后，以关键字catch表示。每个catch子句看起来就像是接收一个且仅接受一个特殊类型的参数的方法。可以在处理程序内部使用标识符，这与方法参数的使用很相似。</p>
+<p>异常处理程序必须紧跟在try块之后。当异常被抛出时，异常处理机制将负责搜索寻找参数与异常类型相匹配的第一个处理程序。</p>
+<h3 id="终止与恢复"><a href="#终止与恢复" class="headerlink" title="终止与恢复"></a>终止与恢复</h3><p>异常处理理论上有两种基本模型。Java支持终止模型（它是Java和C++所支持的模型）。在这种模型中，将假设错误非常关键，一旦异常被抛出，就表明错误已经无法挽回，也不能回来继续执行。</p>
+<p>另一种称为恢复模型。意思是在异常处理程序的工作是修正错误，然后重新尝试调用出问题的方法，并认为第二次能成功。如果想要用Java实现类似的恢复行为，那么在遇见错误时就不能抛出异常，而是调用方法来修正该错误。或者，把try块放在while循环里，这样就不断地进入try快，直到得到满意的结果。</p>
+<p>虽然恢复模型开始显得很吸引人，但不是很实用。其中的主要原因可能是它所导致的耦合，恢复性的处理程序需要了解异常抛出地点，这势必要包含依赖于抛出未知的非通用性代码。这增加了代码编写和维护的困难。</p>
+<h3 id="创建自定义异常"><a href="#创建自定义异常" class="headerlink" title="创建自定义异常"></a>创建自定义异常</h3><p>要自己定义异常类，必须从已有的异常类继承，最好是选择意思相近的异常类继承（不过这样的异常并不容易找）。建立新的异常类型最简单的方法就是让编译器为你产生默认构造器，所以这几乎不用写多少代码。异常的名称应该可以望文生义。</p>
+<p><strong>异常与记录日志</strong><br>可以使用java.util.logging工具将输出记录到日志中。这是一种很好的做法。</p>
+<h3 id="异常说明"><a href="#异常说明" class="headerlink" title="异常说明"></a>异常说明</h3><p>异常说明，它属于方法声明的一部分，紧跟在形式参数列表之后。代码必须与异常说明一致。如果方法里的代码产生了异常却没有处理，编译器会发现这个问题并提醒你：要么处理异常，要么就在异常说明中表明此方法产生异常。通过这种自顶向下强制执行的异常说明机制，Java在编译时就可以保证一定水平的异常正确性。</p>
+<p>不过还是有个能”作弊“的地方：可以声明方法抛出异常，实际上却不抛出。编译器相信了这个声明，并强制此方法的用户像真的抛出异常那样使用这个方法。这样做的好处是，为异常先占个位子，以后就可以抛出这种异常而不用修改已有的代码。在定义抽象基类和接口时，这种能力很重要，这样派生类或接口实现就能够抛出这些预先声明的异常。这种在编译时被强制检查的异常称为<strong>被检查的异常</strong>。</p>
+<h3 id="捕获所有异常"><a href="#捕获所有异常" class="headerlink" title="捕获所有异常"></a>捕获所有异常</h3><p>通过捕获异常类型的基类Exception来捕获所有类型的异常，这种捕获所有异常的代码，最好把它放在处理程序列表的末尾，以防止它抢在其他处理程序之前先把异常捕获了。</p>
+<h3 id="栈轨迹"><a href="#栈轨迹" class="headerlink" title="栈轨迹"></a>栈轨迹</h3><p>printStackTrace()方法所提供的信息可以通过getStackTrace()方法来直接访问，这个方法将返回一个由栈轨迹中的元素所构成的数组，其中每一个元素都表示栈中的一帧。<strong>元素0是栈顶元素，并且是调用序列中最后一个方法调用（这个Throwable被创建和抛出之处）</strong>。</p>
+<h3 id="重新抛出异常"><a href="#重新抛出异常" class="headerlink" title="重新抛出异常"></a>重新抛出异常</h3><p>有时希望把刚捕获的异常重新抛出，<strong>尤其是在使用Exception捕获所有异常的时候</strong>。重新抛出异常会把异常抛给上一级环境中的异常处理程序，同一个try块后续catch子句将被忽略此外，异常对象的所有信息都得以保持，所以高一级环境中捕获此异常的处理程序可以从这个异常对象中得到所有信息。</p>
+<p>如果只是把当前对象重新抛出，那么printStackTrace()方法将显示原来异常抛出点的调用信息，而并非重新抛出点的信息。<strong>想要更新这个信息，可以调用fillInStackTrack()方法</strong>，这将返回一个Throwable对象，他是通过把当前调用栈信息填入原来那个异常对象而建立的。</p>
+<p>有可能在捕获异常之后抛出另一种异常。这么做的话，得到的效果类似于使用fillInStackTrace()，有关原来异常发生点的信息会丢失，剩下的是新的抛出点有关的信息。</p>
+<h3 id="异常链"><a href="#异常链" class="headerlink" title="异常链"></a>异常链</h3><p><strong>常常会想要在捕获一个异常后抛出另一个异常，并且希望把原始异常的信息保存下来，这被称为异常链</strong>。所有Throwable的子类在构造器中都可以接受一个cause对象作为参数。这个cause就用来表示原始异常，这样通过把原始异常传递给新的异常，就使得即使在当前位置创建并抛出新的异常，也能通过这个异常链追踪到异常最初发生的位置。在Throwable的子类中，只有三种基本的异常类提供了带cause参数的构造器。它们是Error，Exception和RuntimeException。如果要把其他类型的异常链接起来，应该使用initCause()方法而不是构造器。</p>
+<h3 id="Java标准异常"><a href="#Java标准异常" class="headerlink" title="Java标准异常"></a>Java标准异常</h3><p>Throwable这个Java类被用来表示任何可以作为异常被抛出的类。Throwable对象可分为两种类型（指从Throwable继承而得到的类型）：Error用来表示编译时和系统错误（除特殊情况外，一般不用你关心）；Exception是可以被抛出的基本类型，在Java类库、用户方法以及运行时故障中都可以抛出Exception型异常。</p>
+<h3 id="特例：RuntimeException"><a href="#特例：RuntimeException" class="headerlink" title="特例：RuntimeException"></a>特例：RuntimeException</h3><p><strong>RuntimeException是Java的标准运行时检测的一部分。它们会被Java虚拟机抛出，所以不必在异常说明中把它们列出来。它们被称为“不受检查异常”。这种异常属于错误，将被自动捕获。</strong></p>
+<p>注意，只能在代码中忽略RuntimeException（及其子类）类型的异常，其他类型异常的处理都是由编译器强制实施的。究其原因，RuntimeException代表的是编程错误。</p>
+<ol>
+<li>无法预料的错误</li>
+<li>作为程序员，应该在代码中进行检查的错误</li>
+</ol>
+<h3 id="使用finally进行清理"><a href="#使用finally进行清理" class="headerlink" title="使用finally进行清理"></a>使用finally进行清理</h3><p>对于一些代码，可能会希望无论try块中的异常是否抛出，它们都能得到执行。这通常适用于内存回收之外的情况（因为回收由垃圾回收器完成）。为了达到这个效果，可以在异常处理程序后面加上finally子句。</p>
+<h3 id="finally用来做什么"><a href="#finally用来做什么" class="headerlink" title="finally用来做什么"></a>finally用来做什么</h3><p><strong>当要把除内存之外的资源恢复到他们的初始状态时，就要用到finally子句。这种需要清理的资源包括：已经打开的文件或网络连接，在屏幕上画的图形，甚至可以是外部世界的某个开关。</strong></p>
+<h3 id="在return中使用finally"><a href="#在return中使用finally" class="headerlink" title="在return中使用finally"></a>在return中使用finally</h3><p><strong>因为finally子句总是会执行的，所以在一个方法中，可以从多个点返回，并且可以保证重要的清理工作仍旧会执行。无论在哪里return，finally都总是会执行。</strong></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">//这里总会执行</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="缺憾：异常丢失"><a href="#缺憾：异常丢失" class="headerlink" title="缺憾：异常丢失"></a>缺憾：异常丢失</h3><p>遗憾的是，Java的异常实现也有瑕疵。异常作为程序出错的标志，绝不应该被忽略，但它还是有可能被轻易地忽略。用某些特殊的方式使用finally子句，就会发生这种情况。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="异常的限制"><a href="#异常的限制" class="headerlink" title="异常的限制"></a>异常的限制</h3><p>当覆盖方法的时候，<strong>只能抛出在基类方法的异常说明里列出的那些异常</strong>（可以不抛出异常，但是如果抛出，必须是基类方法的声明的异常)。这个限制很有用，因为这意味着，当基类使用的代码应用到派生类对象的时候，一样能够工作（当然，这是面向对象的基本概念），异常也不例外。异常限制对构造器不起作用。<strong>派生类构造器的异常说明必须包含基类构造器的异常说明</strong>（应该是必须包含基类默认构造器的异常说明，因为基类默认构造器会被默认调用，如果显示的调用其它基类构造器，就需要声明调用的基类构造器的异常了）。<strong>派生类构造器不能捕获基类构造器的异常（不能通过try-catch捕获基类抛出的异常，必须使用异常声明）。</strong></p>
+<h3 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h3><p>有一点很重要，即你要时刻询问自己“如果异常发生了，所有东西能被正确的清理吗“？尽管大多数情况下是非常安全的，但涉及构造器时，问题就出现了。构造器会把对象设置成安全的初始状态，但还会有别的动作，比如打开一个文件，这样的动作只有在对象使用完毕并且用户调用了特殊的清理方法之后才能得以清理。如果在构造器内抛出了异常，这清理行为也许就不能正常工作。这意味着在编写构造器是要格外的小心。</p>
+<p>读者也许会认为使用finally就可以解决问题。但问题并非如此简单，因为finally会每次都执行清理代码。如果构造器在执行过程中半途而废，也许该对象的某些部分还没有被成功创建，而这些部分在finally子句中确是要被清理的。</p>
+<p><strong>对于在构造阶段可能会抛出异常，并且要求清理的类，最安全的使用方式是使用嵌套的try。这种通用的清理习惯在构造器不抛出任何异常时也应该运用，其基本规则是：在创建需要清理的对象之后，立即进入一个try-finally语句块。</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Cleanup</span> &#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      InputFile <span class="keyword">in</span> = <span class="keyword">new</span> InputFile(<span class="string">"Cleanup.java"</span>);</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        String s;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>((s = <span class="keyword">in</span>.getLine()) != <span class="literal">null</span>)</span><br><span class="line">          ; <span class="comment">// Perform line-by-line processing here...</span></span><br><span class="line">      &#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">        System.<span class="keyword">out</span>.println(<span class="string">"Caught Exception in main"</span>);</span><br><span class="line">        e.printStackTrace(System.<span class="keyword">out</span>);</span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">in</span>.dispose();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">      System.<span class="keyword">out</span>.println(<span class="string">"InputFile construction failed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="comment">/* Output:</span></span><br><span class="line"><span class="comment">dispose() successful</span></span><br><span class="line"><span class="comment">*/</span><span class="comment">//:~</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="异常匹配"><a href="#异常匹配" class="headerlink" title="异常匹配"></a>异常匹配</h3><p>抛出异常的时候，异常处理系统会按照代码的书写顺序找出”最近“的处理程序。查找的时候不要求抛出的异常同处理程序所声明的异常完全匹配。派生类的对象也可以匹配其基类的处理程序。如果把捕获基类的catch子句放在最前面，就会把派生类的异常全给”屏蔽“掉。</p>
+<h3 id="其他可选方式"><a href="#其他可选方式" class="headerlink" title="其他可选方式"></a>其他可选方式</h3><p>有时候不知道该如何处理”被检查的异常”，可以采取下面的措施</p>
+<ol>
+<li>把异常从main传给控制台</li>
+<li>把被检查的异常包装进RuntimeException里面</li>
+<li>直接创建自己RuntimeException的子类。</li>
+</ol>
+<h3 id="异常使用指南"><a href="#异常使用指南" class="headerlink" title="异常使用指南"></a>异常使用指南</h3><p>应该在下列情况下使用异常：</p>
+<ol>
+<li>在恰当的级别处理问题（在知道该如何处理的情况下才捕获异常）。</li>
+<li>解决问题并且重新调用产生异常的方法。</li>
+<li>进行少许修补，然后绕过异常发生的地方继续执行</li>
+<li>用别的数据进行计算，以代替方法预计会返回的值。</li>
+<li>把当前运行环境下能做的事情尽量做完，然后把相同的异常重抛到更高层。</li>
+<li>把当前运行环境下能做的事情尽量做完，然后把不同的异常抛到更高层。</li>
+<li>终止程序。</li>
+<li>进行简化。</li>
+<li>让类库和程序更安全。</li>
+</ol>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="不可变String"><a href="#不可变String" class="headerlink" title="不可变String"></a>不可变String</h3><p><strong>String对象是不可变的。查看JDK文档你就会发现，String类中每一个看起来会修改String值的方法，实际上都是创建了一个全新的String对象，以包含修改后的字符串内容。而最初的String对象则丝毫未动。内部有final char[] values，没有方法修改其内容</strong></p>
+<h3 id="重载“-”与StringBuilder"><a href="#重载“-”与StringBuilder" class="headerlink" title="重载“+”与StringBuilder"></a>重载“+”与StringBuilder</h3><p>不可变性会带来一定的效率问题。为String对象重载的“+”操作符就是一个例子（“+”和“+=”是Java中仅有的两个重载过的操作符，而Java并不允许程序员重载任何操作符）。通过反编译代码(<code>javap -c [类名]</code>)，我们可以发现它真正的工作情况：编译器自动引入了java.lang.StringBuilder类。虽然我们在源代码中并没有使用StringBuilder类，但是编译器却自作主张地使用了它，因为它更高效。调用StringBuilder的append()方法实现字符串的加操作，最后调用toString()生成结果。</p>
+<p>现在，也许你会觉得可以随意使用String对象，反正编译器会为你自动优化性能。可是在这之前，让我们更深入地看看编译器能为我们优化到什么程度。通过循环分别通过追加创建一个字符串，反编译源码，我们可以看到：利用String创建时，编译器通过StringBuilder优化了字符串的创建，但是由于循环的存在，导致每次循环编译器都会创建一个StringBuilder对象；相比之下，利用StringBuilder创建字符串则只创建了一个StringBuilder对象，反编译的汇编指令也比前一个简洁的多。因此，当你为一个类编写toString()方法时，若字符串操作比较简单，那就可以信赖编译器，它会为你合理地构造最终的字符串结果。但是，如果你要在toString方法中使用循环，那么最好自己创建一个StringBuilder对象，用它来构造最终结果。如果拿不准该用哪种方式，随时可以用javap来分析你的程序。</p>
+<p>StringBuilder是在Java SE5引入的，在这之前Java用的是StringBuffer。后者是线程安全的，因此开销会大些，所以在Java SE5/6中，字符串操作应该还会更快一些。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">String</span> str = <span class="string">"a"</span>  + <span class="string">"b"</span> + <span class="string">"c"</span>;<span class="comment">// 1</span></span><br><span class="line">        <span class="keyword">String</span> a = <span class="string">"a"</span>;</span><br><span class="line">        <span class="keyword">String</span> b = <span class="string">"b"</span>;</span><br><span class="line">        <span class="keyword">String</span> c = <span class="string">"c"</span>;</span><br><span class="line">        <span class="keyword">String</span> abc = a + b + c; <span class="comment">//2</span></span><br><span class="line">        <span class="keyword">String</span> abc1 = <span class="keyword">new</span> <span class="keyword">String</span>(<span class="string">"a"</span>) + <span class="keyword">new</span> <span class="keyword">String</span>(<span class="string">"b"</span>) + <span class="keyword">new</span> <span class="keyword">String</span>(<span class="string">"c"</span>); <span class="comment">//3</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于1，编译器将做优化，str直接指向常量”abc”，而2、3则会使用StringBuilder的append方法优化。</p>
+<h3 id="无意识的递归"><a href="#无意识的递归" class="headerlink" title="无意识的递归"></a>无意识的递归</h3><p>Java中的每个类从根本上都是继承自Object，标准容器类自然也不例外。因此容器类都有toString()方法，并且重写了该方法，使得它生成的String结果能够表达容器自身，以及容器所包含的对象。如果你希望toString()方法打印出对象的内存地址，也许你会考虑使用关键字this。但是，你会得到一串非常长的异常。这是因为编译器会将this转换成String，怎么转换呢，调用的就是toString()方法，发生了递归调用。<strong>因此，如果你真的想要打印出对象的内存地址，应该调用Object.toString()方法，而不是返回this</strong>。</p>
+<h3 id="String上的操作"><a href="#String上的操作" class="headerlink" title="String上的操作"></a>String上的操作</h3><p>String类有很多方法，在此不一一列举。在此，我们要注意一点，当需要改变字符串的内容时，String类的方法都会返回一个新的String对象。同时，如果内容没有发生改变，String的方法只是返回指向原对象的引用而已。</p>
+<h3 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h3><ul>
+<li><p>System.out.format();</p>
+<p>  Java SE5引入的format方法可用于PrintSteam或PrintWriter对象，其中包括System.out对象。format()方法模仿自C的printf()。如果你比较怀旧的话，也可以使用printf()；</p>
+</li>
+<li><p>Formatter类</p>
+<p>  当你创建一个formatter对象的时候，需要向其构造器传递一些信息，告诉它最终的结果将向哪里输出。</p>
+</li>
+<li><p>格式化说明符</p>
+<p>  在插入数据时，如果想要控制空格与对齐，你需要更精细复杂的更是修饰符。以下是其抽象的语法：</p>
+  <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%[<span class="string">argument_index$</span>][<span class="symbol">flags</span>][<span class="string">width</span>][<span class="symbol">.precision</span>]conversion</span><br></pre></td></tr></table></figure>
+<ol>
+<li>可选的 argument_index 是一个十进制整数，用于表明参数在参数列表中的位置。第一个参数由 “1$” 引用，第二个参数由 “2$” 引用，依此类推。 </li>
+<li>可选 flags 是修改输出格式的字符集。有效标志集取决于转换类型。在默认的情况下，数据是右对齐的，不过可以通过使用“-”编制来改变对齐方向。</li>
+<li>可选 width 是一个非负十进制整数，表明要向输出中写入的最少字符数。必要时添加空格以达到指定长度。</li>
+<li>可选 precision 是一个非负十进制整数，通常用来限制字符数。特定行为取决于转换类型。与width相对应用来指定最大尺寸。precision的意义也不同。在将precision应用于String时，它表示打印String时输出字符串的最大数量。而在将precision应用于浮点数时，它表示小数部分要显示出来的位数（默认是6位小数），如果小数位过多则舍入，太少则在尾补零。由于整数没有小数部分，所以precision无法应用于整数。 </li>
+<li>所需 conversion 是一个表明应该如何格式化参数的字符。给定参数的有效转换集取决于参数的数据类型。 </li>
+</ol>
+</li>
+<li><p>Formatter转换</p>
+<p>  类似于C语言中printf()的那些特殊的占位符，如%d，表示整数型。</p>
+</li>
+<li><p>String.format()</p>
+<p>  Java SE5也参考了C中的sprintf()方法，以生成格式化的String对象。String.format()是一个static方法，它接受与Formatter.format()方法一样的参数，但是返回一个String对象。当你只需要使用format()方法一次时，String.format()用起来很方便。其实，在String.format()内部，它也是创建了一个Formatter对象，然后将你传入的参数转给该Formatter。不过，与其自己做这些事情，不如使用便捷的String.format()方法，何况这样的代码更清晰易读。</p>
+</li>
+</ul>
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>Java中，<code>\\</code>的意思是“我要插入一个正则表达式的反斜线，以后的字符具有特殊的意义”，如果想插入普通的反斜线，则应该是<code>\\\\</code></p>
+<p><strong>字符</strong> </p>
+<table>
+<thead>
+<tr>
+<th>构造</th>
+<th>匹配</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x</td>
+<td>字符 x</td>
+</tr>
+<tr>
+<td><code>\\</code></td>
+<td>两个反斜线表示反斜线字符</td>
+</tr>
+<tr>
+<td>\xhh</td>
+<td>带有十六进制值 0x 的字符 hh</td>
+</tr>
+<tr>
+<td>\uhhhh</td>
+<td>带有十六进制值 0x 的字符 hhhh</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>制表符 (‘\u0009’)</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>新行（换行）符 (‘\u000A’)</td>
+</tr>
+<tr>
+<td>\r</td>
+<td>回车符 (‘\u000D’)</td>
+</tr>
+<tr>
+<td>\f</td>
+<td>换页符 (‘\u000C’)</td>
+</tr>
+<tr>
+<td>\a</td>
+<td>报警 (bell) 符 (‘\u0007’)</td>
+</tr>
+<tr>
+<td>\e</td>
+<td>转义符 (‘\u001B’)</td>
+</tr>
+<tr>
+<td>\cx</td>
+<td>对应于 x 的控制符</td>
+</tr>
+</tbody></table>
+<p><strong>字符类</strong></p>
+<table>
+<thead>
+<tr>
+<th>构造</th>
+<th>匹配</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[abc]</td>
+<td>a、b 或 c（简单类）</td>
+</tr>
+<tr>
+<td>[^abc]</td>
+<td>任何字符，除了 a、b 或 c（否定）</td>
+</tr>
+<tr>
+<td>[a-zA-Z]</td>
+<td>a 到 z 或 A 到 Z，两头的字母包括在内（范围）</td>
+</tr>
+<tr>
+<td>[a-d[m-p]]</td>
+<td>a 到 d 或 m 到 p：[a-dm-p]（并集）</td>
+</tr>
+<tr>
+<td>[a-z&amp;&amp;[def]]</td>
+<td>d、e 或 f（交集）</td>
+</tr>
+<tr>
+<td>[a-z&amp;&amp;[^bc]]</td>
+<td>a 到 z，除了 b 和 c：[ad-z]（减去）</td>
+</tr>
+<tr>
+<td>[a-z&amp;&amp;[^m-p]]</td>
+<td>a 到 z，而非 m 到 p：[a-lq-z]（减去）</td>
+</tr>
+</tbody></table>
+<p><strong>预定义字符类</strong></p>
+<table>
+<thead>
+<tr>
+<th>构造</th>
+<th>匹配</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.</td>
+<td>任何字符（与行结束符可能匹配也可能不匹配）</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>数字：[0-9]</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>非数字： [^0-9]</td>
+</tr>
+<tr>
+<td>\s</td>
+<td>空白字符：[ \t\n\x0B\f\r]</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>非空白字符：[^\s]</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>单词字符：[a-zA-Z_0-9]</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>非单词字符：[^\w]</td>
+</tr>
+</tbody></table>
+<p><strong>POSIX 字符类（仅 US-ASCII）</strong></p>
+<table>
+<thead>
+<tr>
+<th>构造</th>
+<th>匹配</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>\p{Lower}</td>
+<td>小写字母字符：[a-z]</td>
+</tr>
+<tr>
+<td>\p{Upper}</td>
+<td>大写字母字符：[A-Z]</td>
+</tr>
+<tr>
+<td>\p{ASCII}</td>
+<td>所有 ASCII：[\x00-\x7F]</td>
+</tr>
+<tr>
+<td>\p{Alpha}</td>
+<td>字母字符：[\p{Lower}\p{Upper}]</td>
+</tr>
+<tr>
+<td>\p{Digit}</td>
+<td>十进制数字：[0-9]</td>
+</tr>
+<tr>
+<td>\p{Alnum}</td>
+<td>字母数字字符：[\p{Alpha}\p{Digit}]</td>
+</tr>
+<tr>
+<td>\p{Punct}</td>
+<td>标点符号：!”#$%&amp;’()*+,-./:;?@[]^_`{}~以及竖线和反斜线</td>
+</tr>
+<tr>
+<td>\p{Graph}</td>
+<td>可见字符：[\p{Alnum}\p{Punct}]</td>
+</tr>
+<tr>
+<td>\p{Print}</td>
+<td>可打印字符：[\p{Graph}\x20]</td>
+</tr>
+<tr>
+<td>\p{Blank}</td>
+<td>空格或制表符：[ \t]</td>
+</tr>
+<tr>
+<td>\p{Cntrl}</td>
+<td>控制字符：[\x00-\x1F\x7F]</td>
+</tr>
+<tr>
+<td>\p{XDigit}</td>
+<td>十六进制数字：[0-9a-fA-F]</td>
+</tr>
+<tr>
+<td>\p{Space}</td>
+<td>空白字符：[ \t\n\x0B\f\r]</td>
+</tr>
+</tbody></table>
+<p><strong>边界匹配器</strong></p>
+<table>
+<thead>
+<tr>
+<th>构造</th>
+<th>匹配</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>^</td>
+<td>行的开头</td>
+</tr>
+<tr>
+<td>$</td>
+<td>行的结尾</td>
+</tr>
+<tr>
+<td>\b</td>
+<td>单词边界</td>
+</tr>
+<tr>
+<td>\B</td>
+<td>非单词边界</td>
+</tr>
+<tr>
+<td>\A</td>
+<td>输入的开头</td>
+</tr>
+<tr>
+<td>\G</td>
+<td>上一个匹配的结尾</td>
+</tr>
+<tr>
+<td>\Z</td>
+<td>输入的结尾，仅用于最后的结束符（如果有的话）</td>
+</tr>
+<tr>
+<td>\z</td>
+<td>输入的结尾</td>
+</tr>
+</tbody></table>
+<p><strong>数量词</strong></p>
+<table>
+<thead>
+<tr>
+<th>贪婪型</th>
+<th>勉强型</th>
+<th>占有型</th>
+<th>匹配</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X?</td>
+<td>X??</td>
+<td>X?+</td>
+<td>X，一次或一次也没有</td>
+</tr>
+<tr>
+<td>X*</td>
+<td>X*?</td>
+<td>X*+</td>
+<td>X，零次或多次</td>
+</tr>
+<tr>
+<td>X+</td>
+<td>X+?</td>
+<td>X++</td>
+<td>X，一次或多次</td>
+</tr>
+<tr>
+<td>X{n}</td>
+<td>X{n}?</td>
+<td>X{n}+</td>
+<td>X，恰好 n 次</td>
+</tr>
+<tr>
+<td>X{n,}</td>
+<td>X{n,}?</td>
+<td>X{n,}+</td>
+<td>X，至少 n 次</td>
+</tr>
+<tr>
+<td>X{n,m}</td>
+<td>X{n,m}?</td>
+<td>X{n,m}+</td>
+<td>X，至少 n 次，但是不超过 m 次</td>
+</tr>
+</tbody></table>
+<p>占有型只有Java中才有</p>
+<p><strong>逻辑运算符</strong></p>
+<ul>
+<li>XY  :  X 后跟 Y      </li>
+<li>X|Y :  X 或 Y        </li>
+<li>(X) :  X，作为捕获组 </li>
+</ul>
+<p>典型的调用顺序是 </p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pattern p = Pattern.compile(<span class="string">"a*b"</span>)<span class="comment">;</span></span><br><span class="line">Matcher m = p.matcher(<span class="string">"aaaaab"</span>)<span class="comment">;</span></span><br><span class="line">boolean b = m.matches()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>Pattern常用方法</p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>static Pattern compile(String regex)</td>
+<td>将给定的正则表达式编译到模式中。</td>
+</tr>
+<tr>
+<td>static Pattern compile(String regex, int flags)</td>
+<td>将给定的正则表达式编译到具有给定标志的模式中。</td>
+</tr>
+<tr>
+<td>Matcher matcher(CharSequence input)</td>
+<td>创建匹配给定输入与此模式的匹配器。</td>
+</tr>
+<tr>
+<td>static boolean matches(String regex, CharSequence input)</td>
+<td>编译给定正则表达式并尝试将给定输入与其匹配。</td>
+</tr>
+<tr>
+<td>String[] split(CharSequence input)</td>
+<td>围绕此模式的匹配拆分给定输入序列。</td>
+</tr>
+<tr>
+<td>String[] split(CharSequence input, int limit)</td>
+<td>围绕此模式的匹配拆分给定输入序列。</td>
+</tr>
+</tbody></table>
+<p>Pattern标记</p>
+<table>
+<thead>
+<tr>
+<th>标记</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>static int CANON_EQ</td>
+<td>启用规范等价。当且仅当完全规范分解相匹配时，就认为它们是匹配的，指定此标记<code>a\u030A</code>就会匹配?</td>
+</tr>
+<tr>
+<td>static int CASE_INSENSITIVE(?i)</td>
+<td>启用不区分大小写的匹配。</td>
+</tr>
+<tr>
+<td>static int COMMENTS(?x)</td>
+<td>模式中允许空白和注释。空白和以<code>#</code>开始的注释都会被忽略</td>
+</tr>
+<tr>
+<td>static int DOTALL(?s)</td>
+<td>启用 dotall 模式。<code>.</code>可以匹配任何字符，包括行结束符。默认情况下，此表达式不匹配行结束符。</td>
+</tr>
+<tr>
+<td>static int LITERAL</td>
+<td>启用模式的字面值解析。指定此标志后，输入序列中的元字符或转义序列不具有任何特殊意义。</td>
+</tr>
+<tr>
+<td>static int MULTILINE(?m)</td>
+<td>启用多行模式。仅分别在行结束符前后匹配，或者在输入序列的结尾处匹配。默认情况下，这些表达式仅在整个输入序列的开头和结尾处匹配。</td>
+</tr>
+<tr>
+<td>static int UNICODE_CASE(?u)</td>
+<td>启用 Unicode 感知的大小写折叠。</td>
+</tr>
+<tr>
+<td>static int UNIX_LINES(?d)</td>
+<td>启用 Unix 行模式。在此模式中，.、^ 和 $ 的行为中仅识别 ‘\n’ 行结束符。</td>
+</tr>
+<tr>
+<td>Pattern.CASE_INSENSITIVE、Pattern.MULTILINE、Pattern.COMMENTS这三个标记特别有用。compile(String regex, int flags) 中的标记flags还可以用或(</td>
+<td>)来组合。</td>
+</tr>
+</tbody></table>
+<p>Matcher常用方法</p>
+<table>
+<thead>
+<tr>
+<th>方法声明</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean matches()</td>
+<td>尝试将整个区域与模式匹配。</td>
+</tr>
+<tr>
+<td>boolean lookingAt()</td>
+<td>尝试将从区域开头开始的输入序列与该模式匹配。</td>
+</tr>
+<tr>
+<td>boolean find()</td>
+<td>尝试查找与该模式匹配的输入序列的下一个子序列。</td>
+</tr>
+<tr>
+<td>boolean find(int start)</td>
+<td>重置此匹配器，然后从指定索引开始的下一个子序列尝试查找匹配该模式。</td>
+</tr>
+<tr>
+<td>int groupCount()</td>
+<td>返回此匹配器模式中的捕获组数。不包括0组</td>
+</tr>
+<tr>
+<td>String group()</td>
+<td>返回由以前匹配操作所匹配的输入子序列。相当于group(0)</td>
+</tr>
+<tr>
+<td>String group(int group)</td>
+<td>返回在以前匹配操作期间由给定组捕获的输入子序列。</td>
+</tr>
+<tr>
+<td>int start()</td>
+<td>返回以前匹配的初始索引。相当于start(0)</td>
+</tr>
+<tr>
+<td>int start(int group)</td>
+<td>返回在以前的匹配操作期间，由给定组所捕获的子序列的初始索引。</td>
+</tr>
+<tr>
+<td>int end()</td>
+<td>返回最后匹配字符之后的偏移量。相当于end(0)</td>
+</tr>
+<tr>
+<td>int end(int group)</td>
+<td>返回在以前的匹配操作期间，由给定组所捕获子序列的最后字符之后的偏移量。</td>
+</tr>
+<tr>
+<td>String replaceFirst(String replacement)</td>
+<td>替换模式与给定替换字符串匹配的输入序列的第一个子序列。</td>
+</tr>
+<tr>
+<td>String replaceAll(String replacement)</td>
+<td>替换模式与给定替换字符串相匹配的输入序列的每个子序列。</td>
+</tr>
+<tr>
+<td>Matcher appendReplacement(StringBuffer sb, String replacement)</td>
+<td>从添加位置（一般为0，append开头的其它方法会改变这个值）到start()-1字符串添加到缓存；添加替换字符串到缓存区；将添加位置设置为end()</td>
+</tr>
+<tr>
+<td>StringBuffer appendTail(StringBuffer sb)</td>
+<td>从添加位置开始添加到缓冲区。可以在一次或多次调用 appendReplacement 方法后调用它来复制剩余的输入序列。</td>
+</tr>
+<tr>
+<td>Matcher reset()</td>
+<td>重置匹配器到当前字符序列的起始位置</td>
+</tr>
+<tr>
+<td>Matcher reset(CharSequence input)</td>
+<td>重置此具有新输入序列的匹配器。</td>
+</tr>
+</tbody></table>
+<p>组是用括号划分的正则表达式，可以根据组的编号来引用某个组，组号为0表示整个表达式，组号1表示第一个括号括起来的组。<code>A(B(C))D</code> 组0是ABCD，组1是BC，组2是C。groupCount() 返回的组数不包括0组。只有三种是匹配操作：matches(),lookingAt(),find()，这三个方法如果匹配成功，会改变下一次匹配的其实索引。</p>
+<h3 id="扫描输入"><a href="#扫描输入" class="headerlink" title="扫描输入"></a>扫描输入</h3><p>Java SE5新增了Scanner类。Scanner的构造器可以接受任何类型的输入对象，如File对象，InputStream，String对象。所有基本类型（除char外）包括BigDecimal和BigInteger，Scanner类都有next和hasnext方法。</p>
+<ul>
+<li><p>Scanner定界符</p>
+<p>  在默认情况下，Scanner更具空白字符对输入进行分词，但是你可以用正则表达式指定自己所需的定界符。<code>scanner.useDelimiter(&quot;\\s*,\\s*&quot;);//使用逗号作为界定符</code></p>
+</li>
+<li><p>用正则表达式扫描</p>
+<p>  除了能够扫描基本类型之外，你还可以使用自定义的正则表达式进行扫描，这在扫描复杂数据是非常有用。</p>
+</li>
+</ul>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Scanner sc = <span class="keyword">new</span> <span class="constructor">Scanner(System.<span class="params">in</span>)</span>;</span><br><span class="line"><span class="built_in">int</span> i = sc.next<span class="constructor">Int()</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="StringTokenizer"><a href="#StringTokenizer" class="headerlink" title="StringTokenizer"></a>StringTokenizer</h3><p>基本上，我们可以放心的说，StringTokenizer已经可以废弃不用了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thinking-in-Java/" rel="tag">Thinking in Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-04T11:30:51.623Z" itemprop="dateModified">2020-05-04</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/10/11/git-encoding/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          解决git在Windows下的乱码问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/09/04/thinking-in-java-note-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Java编程思想笔记二</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#持有对象"><span class="toc-number">1.</span> <span class="toc-text">持有对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本概念"><span class="toc-number">1.1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加一组元素"><span class="toc-number">1.2.</span> <span class="toc-text">添加一组元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List"><span class="toc-number">1.3.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#容器的打印"><span class="toc-number">1.4.</span> <span class="toc-text">容器的打印</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#迭代器"><span class="toc-number">1.5.</span> <span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkedList"><span class="toc-number">1.6.</span> <span class="toc-text">LinkedList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack"><span class="toc-number">1.7.</span> <span class="toc-text">Stack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set"><span class="toc-number">1.8.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map"><span class="toc-number">1.9.</span> <span class="toc-text">Map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Queue"><span class="toc-number">1.10.</span> <span class="toc-text">Queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PriorityQueue"><span class="toc-number">1.11.</span> <span class="toc-text">PriorityQueue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Collection和Iterator"><span class="toc-number">1.12.</span> <span class="toc-text">Collection和Iterator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#foreach与迭代器"><span class="toc-number">1.13.</span> <span class="toc-text">foreach与迭代器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新程序中不应该使用过时的Vector、Hashtable和Stack。"><span class="toc-number">1.14.</span> <span class="toc-text">新程序中不应该使用过时的Vector、Hashtable和Stack。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过异常处理错误"><span class="toc-number">2.</span> <span class="toc-text">通过异常处理错误</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概念"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本异常"><span class="toc-number">2.2.</span> <span class="toc-text">基本异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常参数"><span class="toc-number">2.3.</span> <span class="toc-text">异常参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#捕获异常"><span class="toc-number">2.4.</span> <span class="toc-text">捕获异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常处理程序"><span class="toc-number">2.5.</span> <span class="toc-text">异常处理程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#终止与恢复"><span class="toc-number">2.6.</span> <span class="toc-text">终止与恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建自定义异常"><span class="toc-number">2.7.</span> <span class="toc-text">创建自定义异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常说明"><span class="toc-number">2.8.</span> <span class="toc-text">异常说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#捕获所有异常"><span class="toc-number">2.9.</span> <span class="toc-text">捕获所有异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#栈轨迹"><span class="toc-number">2.10.</span> <span class="toc-text">栈轨迹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重新抛出异常"><span class="toc-number">2.11.</span> <span class="toc-text">重新抛出异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常链"><span class="toc-number">2.12.</span> <span class="toc-text">异常链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java标准异常"><span class="toc-number">2.13.</span> <span class="toc-text">Java标准异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特例：RuntimeException"><span class="toc-number">2.14.</span> <span class="toc-text">特例：RuntimeException</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用finally进行清理"><span class="toc-number">2.15.</span> <span class="toc-text">使用finally进行清理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#finally用来做什么"><span class="toc-number">2.16.</span> <span class="toc-text">finally用来做什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在return中使用finally"><span class="toc-number">2.17.</span> <span class="toc-text">在return中使用finally</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺憾：异常丢失"><span class="toc-number">2.18.</span> <span class="toc-text">缺憾：异常丢失</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常的限制"><span class="toc-number">2.19.</span> <span class="toc-text">异常的限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构造器"><span class="toc-number">2.20.</span> <span class="toc-text">构造器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常匹配"><span class="toc-number">2.21.</span> <span class="toc-text">异常匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他可选方式"><span class="toc-number">2.22.</span> <span class="toc-text">其他可选方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常使用指南"><span class="toc-number">2.23.</span> <span class="toc-text">异常使用指南</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串"><span class="toc-number">3.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不可变String"><span class="toc-number">3.1.</span> <span class="toc-text">不可变String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重载“-”与StringBuilder"><span class="toc-number">3.2.</span> <span class="toc-text">重载“+”与StringBuilder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无意识的递归"><span class="toc-number">3.3.</span> <span class="toc-text">无意识的递归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String上的操作"><span class="toc-number">3.4.</span> <span class="toc-text">String上的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#格式化输出"><span class="toc-number">3.5.</span> <span class="toc-text">格式化输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正则表达式"><span class="toc-number">3.6.</span> <span class="toc-text">正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扫描输入"><span class="toc-number">3.7.</span> <span class="toc-text">扫描输入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StringTokenizer"><span class="toc-number">3.8.</span> <span class="toc-text">StringTokenizer</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/09/08/thinking-in-java-note-3/';
+  this.page.identifier = '2014/09/08/thinking-in-java-note-3/';
+  this.page.title = 'Java编程思想笔记三';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

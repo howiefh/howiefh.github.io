@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>代码整洁之道(一) | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Clean Code, 代码整洁之道">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码整洁之道(一)">
+<meta property="og:url" content="http://howiefh.github.io/2014/06/10/clean-code-note-1/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="Clean Code, 代码整洁之道">
+<meta property="article:published_time" content="2014-06-10T09:16:24.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.470Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Clean Code">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-clean-code-note-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/06/10/clean-code-note-1/" class="article-date">
+  <time class="dt-published" datetime="2014-06-10T09:16:24.000Z" itemprop="datePublished">2014-06-10</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      代码整洁之道(一)
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#有意义的命名"><span class="toc-number">1.</span> <span class="toc-text">有意义的命名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#名副其实"><span class="toc-number">1.1.</span> <span class="toc-text">名副其实</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免误导"><span class="toc-number">1.2.</span> <span class="toc-text">避免误导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#做有意义区分"><span class="toc-number">1.3.</span> <span class="toc-text">做有意义区分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用读得出来的名称"><span class="toc-number">1.4.</span> <span class="toc-text">使用读得出来的名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用可搜索的名称"><span class="toc-number">1.5.</span> <span class="toc-text">使用可搜索的名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免使用编码"><span class="toc-number">1.6.</span> <span class="toc-text">避免使用编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免思维映射"><span class="toc-number">1.7.</span> <span class="toc-text">避免思维映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类名、方法名"><span class="toc-number">1.8.</span> <span class="toc-text">类名、方法名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#每个概念对应一个词"><span class="toc-number">1.9.</span> <span class="toc-text">每个概念对应一个词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#别用双关语"><span class="toc-number">1.10.</span> <span class="toc-text">别用双关语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加有意义的语境"><span class="toc-number">1.11.</span> <span class="toc-text">添加有意义的语境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不添加无意义的语境"><span class="toc-number">1.12.</span> <span class="toc-text">不添加无意义的语境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数"><span class="toc-number">2.</span> <span class="toc-text">函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#短小"><span class="toc-number">2.1.</span> <span class="toc-text">短小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#只做一件事"><span class="toc-number">2.2.</span> <span class="toc-text">只做一件事</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#每个函数一个抽象层级"><span class="toc-number">2.3.</span> <span class="toc-text">每个函数一个抽象层级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#switch语句"><span class="toc-number">2.4.</span> <span class="toc-text">switch语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用描述性的名称"><span class="toc-number">2.5.</span> <span class="toc-text">使用描述性的名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数参数"><span class="toc-number">2.6.</span> <span class="toc-text">函数参数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#一元函数的普遍形式"><span class="toc-number">2.6.1.</span> <span class="toc-text">一元函数的普遍形式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#标识参数"><span class="toc-number">2.6.2.</span> <span class="toc-text">标识参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二元函数"><span class="toc-number">2.6.3.</span> <span class="toc-text">二元函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参数对象"><span class="toc-number">2.6.4.</span> <span class="toc-text">参数对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参数列表"><span class="toc-number">2.6.5.</span> <span class="toc-text">参数列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#动词和关键字"><span class="toc-number">2.6.6.</span> <span class="toc-text">动词和关键字</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无副作用"><span class="toc-number">2.7.</span> <span class="toc-text">无副作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分隔指令和询问"><span class="toc-number">2.8.</span> <span class="toc-text">分隔指令和询问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用异常代替返回错误码"><span class="toc-number">2.9.</span> <span class="toc-text">使用异常代替返回错误码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#抽离try-catch代码块"><span class="toc-number">2.9.1.</span> <span class="toc-text">抽离try catch代码块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#错误处理就是一件事"><span class="toc-number">2.9.2.</span> <span class="toc-text">错误处理就是一件事</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Error-java依赖磁铁"><span class="toc-number">2.9.3.</span> <span class="toc-text">Error.java依赖磁铁</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#别重复自己"><span class="toc-number">2.10.</span> <span class="toc-text">别重复自己</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#用代码来阐述"><span class="toc-number">3.1.</span> <span class="toc-text">用代码来阐述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#好注释"><span class="toc-number">3.2.</span> <span class="toc-text">好注释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#法律信息"><span class="toc-number">3.2.1.</span> <span class="toc-text">法律信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#提供信息的注释"><span class="toc-number">3.2.2.</span> <span class="toc-text">提供信息的注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对意图的解释"><span class="toc-number">3.2.3.</span> <span class="toc-text">对意图的解释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#阐释"><span class="toc-number">3.2.4.</span> <span class="toc-text">阐释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#警告"><span class="toc-number">3.2.5.</span> <span class="toc-text">警告</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TODO注释"><span class="toc-number">3.2.6.</span> <span class="toc-text">TODO注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#放大"><span class="toc-number">3.2.7.</span> <span class="toc-text">放大</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#公共API中的Javadoc"><span class="toc-number">3.2.8.</span> <span class="toc-text">公共API中的Javadoc</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坏注释"><span class="toc-number">3.3.</span> <span class="toc-text">坏注释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#喃喃自语"><span class="toc-number">3.3.1.</span> <span class="toc-text">喃喃自语</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多余的注释"><span class="toc-number">3.3.2.</span> <span class="toc-text">多余的注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#误导性注释"><span class="toc-number">3.3.3.</span> <span class="toc-text">误导性注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#循规式注释"><span class="toc-number">3.3.4.</span> <span class="toc-text">循规式注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#日志式注释"><span class="toc-number">3.3.5.</span> <span class="toc-text">日志式注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#废话注释"><span class="toc-number">3.3.6.</span> <span class="toc-text">废话注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#能用函数或变量时就别用注释"><span class="toc-number">3.3.7.</span> <span class="toc-text">能用函数或变量时就别用注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#位置标记"><span class="toc-number">3.3.8.</span> <span class="toc-text">位置标记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#括号后面注释"><span class="toc-number">3.3.9.</span> <span class="toc-text">括号后面注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#归属与署名"><span class="toc-number">3.3.10.</span> <span class="toc-text">归属与署名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#注释掉代码"><span class="toc-number">3.3.11.</span> <span class="toc-text">注释掉代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HTML注释"><span class="toc-number">3.3.12.</span> <span class="toc-text">HTML注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#非本地信息"><span class="toc-number">3.3.13.</span> <span class="toc-text">非本地信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#信息过多"><span class="toc-number">3.3.14.</span> <span class="toc-text">信息过多</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#不明显的联系"><span class="toc-number">3.3.15.</span> <span class="toc-text">不明显的联系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数头"><span class="toc-number">3.3.16.</span> <span class="toc-text">函数头</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#非公共代码中的API"><span class="toc-number">3.3.17.</span> <span class="toc-text">非公共代码中的API</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#格式"><span class="toc-number">4.</span> <span class="toc-text">格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#垂直格式"><span class="toc-number">4.1.</span> <span class="toc-text">垂直格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#向报纸学习"><span class="toc-number">4.1.1.</span> <span class="toc-text">向报纸学习</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#概念间垂直方向上的区隔"><span class="toc-number">4.1.2.</span> <span class="toc-text">概念间垂直方向上的区隔</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#垂直方向上的靠近"><span class="toc-number">4.1.3.</span> <span class="toc-text">垂直方向上的靠近</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#垂直距离"><span class="toc-number">4.1.4.</span> <span class="toc-text">垂直距离</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#垂直顺序"><span class="toc-number">4.1.5.</span> <span class="toc-text">垂直顺序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#横向格式"><span class="toc-number">4.2.</span> <span class="toc-text">横向格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#水平方向上的区隔和靠近"><span class="toc-number">4.2.1.</span> <span class="toc-text">水平方向上的区隔和靠近</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#水平对齐"><span class="toc-number">4.2.2.</span> <span class="toc-text">水平对齐</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缩进"><span class="toc-number">4.2.3.</span> <span class="toc-text">缩进</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#空范围"><span class="toc-number">4.2.4.</span> <span class="toc-text">空范围</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#团队规则"><span class="toc-number">4.3.</span> <span class="toc-text">团队规则</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="有意义的命名"><a href="#有意义的命名" class="headerlink" title="有意义的命名"></a>有意义的命名</h2><h3 id="名副其实"><a href="#名副其实" class="headerlink" title="名副其实"></a>名副其实</h3><p>变量、函数或类名称应该告诉人们，它为什么会存在，它做什么事，应该怎么用。如以日计的消逝的时间可以命名为elapsedTimeInDays。</p>
+<a id="more"></a>
+<h3 id="避免误导"><a href="#避免误导" class="headerlink" title="避免误导"></a>避免误导</h3><ol>
+<li>避免使用专有的计算机术语缩写做变量名，如hp,aix,sco</li>
+<li>不要在名称中直接写出容器类型名，如accountList可以用accountGroup,bunchOfAccounts,accounts来代替。</li>
+<li>避免使用不同之处较小的名称， XYZControllerForEfficientHandlingOfStringsin和XYZControllerForEfficientStorageOfStrings如果出现在一起，区分需要一定的时间。</li>
+<li>避免单独使用小写字母l和大写字母O做变量名。</li>
+</ol>
+<h3 id="做有意义区分"><a href="#做有意义区分" class="headerlink" title="做有意义区分"></a>做有意义区分</h3><p>避免使用数字系列(如变量名a1,a2,a3)或废话(如Product,ProductInfo,ProductData是没有意义的区分，因为意思相近，避免废话就是避免变量名中出现冗余)。</p>
+<h3 id="使用读得出来的名称"><a href="#使用读得出来的名称" class="headerlink" title="使用读得出来的名称"></a>使用读得出来的名称</h3><p>使用读得出的名称，便于讨论，如变量genymdhms(生成日期，年月日时分秒)，可以命名为generationTimestamp</p>
+<h3 id="使用可搜索的名称"><a href="#使用可搜索的名称" class="headerlink" title="使用可搜索的名称"></a>使用可搜索的名称</h3><p>使用常变量代替数字常量，如用WORK_DAYS_PER_WEEK代替5；避免使用单字母变量名。数字常量和单字母变量都是不便于搜索的，比如e，或者5在每个程序、每个代码段都有可能出现。</p>
+<p>单字母名称仅用于短方法中的本地变量，名称长短应与其作用域大小相对应。若变量或常量可能在代码中多处使用，则应赋予便于搜索的名称。</p>
+<h3 id="避免使用编码"><a href="#避免使用编码" class="headerlink" title="避免使用编码"></a>避免使用编码</h3><p>没有必要在名称中加入类型(匈牙利命名法)或作用域(m_前缀标识成员变量)。接口没有必要加前导字母I。增加了修改变量、函数名或类名的难度。</p>
+<h3 id="避免思维映射"><a href="#避免思维映射" class="headerlink" title="避免思维映射"></a>避免思维映射</h3><p>不应该让读者在脑中把你的名称翻译成他们熟知的名称。这种问题经常出现在选择是使用问题领域术语还是解决方案领域术语时。</p>
+<p>一般只有程序员才会读你写的代码，所以尽管使用解决方案领域名称，当不能使用程序员熟悉的术语来给手头的工作命名，就采用所涉及的问题领域的名称，与所涉及问题领域更为贴近的代码，应当使用问题领域名称。</p>
+<h3 id="类名、方法名"><a href="#类名、方法名" class="headerlink" title="类名、方法名"></a>类名、方法名</h3><p>类名应该是名词或名词短语，避免使用Manager、Processor、Data或Info这样的类名。</p>
+<p>方法名应当是动词或动词短语。属性访问器，修改器和断言应根据其值命名，并加上get、set、is前缀。</p>
+<p>重载构造器时，使用描述了参数的静态工厂方法名Complex fulcrumPoint = Complex.FromRealNumber(23,0)好于Complex fulcrumPoint = new Complex(23,0)</p>
+<h3 id="每个概念对应一个词"><a href="#每个概念对应一个词" class="headerlink" title="每个概念对应一个词"></a>每个概念对应一个词</h3><p>给每个抽象概念选一个词，并一以贯之。如使用fetch、retrieve和get来给在多个类中的同种方法命名。在一堆代码中有controller，又有manager，还有driver，就会令人困惑，它们之间有什么根本区别。</p>
+<h3 id="别用双关语"><a href="#别用双关语" class="headerlink" title="别用双关语"></a>别用双关语</h3><p>避免代码中一词多义。如多个类中有add方法，该方法通过加或连接两个值返回新值，在集合类中也有add方法，是向集合中添加元素，这样add方法就有了两个语义。在集合中就应该使用insert或append之类词来命名了。</p>
+<h3 id="添加有意义的语境"><a href="#添加有意义的语境" class="headerlink" title="添加有意义的语境"></a>添加有意义的语境</h3><p>用良好命名的类、函数或命名空间来放置名称，来提供语境，否则就需要添加前缀来添加语境了。</p>
+<p>假设有名为firstName,lastName,street,houseNumber,city,state, zipcode 的变量，他们在一起很明确能够成地址，可以放在一个Address类中。如果不这样，只能通过加前缀addrFirstName、addrLastName…添加语境。</p>
+<h3 id="不添加无意义的语境"><a href="#不添加无意义的语境" class="headerlink" title="不添加无意义的语境"></a>不添加无意义的语境</h3><p>如果有一个名为”加油站豪华版”(Gas Station Deluxe)的应用，在每个类加GSD前缀就不好了。现在的IDE都有自动提示功能，输入G会出现全部类的列表。</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="短小"><a href="#短小" class="headerlink" title="短小"></a>短小</h3><p>函数的第一条规则是短小，第二条规则还是短小。每行避免超过150个字符，避免超过20行。</p>
+<p>if、else、while语句等，其中的代码块应该只有一行。该行应该是一个函数调用。</p>
+<h3 id="只做一件事"><a href="#只做一件事" class="headerlink" title="只做一件事"></a>只做一件事</h3><p>函数应该做一件事，做好一件事，只做这一件事。</p>
+<p>如果函数只是做了该函数名下同一抽象层上的步骤，则函数还是只做了一件事。</p>
+<p>要判断函数是否不止做了一件事，还有一个方法，就是看是否能再拆除一个函数，该函数不仅只是单纯地重新诠释其实现。</p>
+<p>如果函数中包含了太多区段，这个函数就需要拆开了。</p>
+<h3 id="每个函数一个抽象层级"><a href="#每个函数一个抽象层级" class="headerlink" title="每个函数一个抽象层级"></a>每个函数一个抽象层级</h3><p>要确保函数只做一件事，函数中的语句都要在同一抽象层级上。getHtml()等位于较高抽象层的概念，String pagePathName = PathParse.render(pagePath) 等位于中间抽象层的概念，.append(“\n”)等位于相当低的抽象层的概念。</p>
+<p>自顶向下读代码：向下规则</p>
+<p>每个函数后面都跟着位于下一抽象层级的函数，这样一来，在查看函数列表时，就能循抽象层级向下阅读了。</p>
+<h3 id="switch语句"><a href="#switch语句" class="headerlink" title="switch语句"></a>switch语句</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Money <span class="title">calculatePay</span><span class="params">(Employee e)</span> <span class="keyword">throws</span> InvalidEmployeeType </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (e.type) &#123;</span><br><span class="line">        <span class="keyword">case</span> COMMISSIONED:</span><br><span class="line">            <span class="keyword">return</span> calculateCommissionedPay(e);</span><br><span class="line">        <span class="keyword">case</span> HOURLY:</span><br><span class="line">            <span class="keyword">return</span> calculateHourlyPay(e);</span><br><span class="line">        <span class="keyword">case</span> SALARIED:</span><br><span class="line">            <span class="keyword">return</span> calculateSalariedPay(e);</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InvalidEmployeeType(e.type);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面函数有好几个问题。首先，太长，出现新雇员类型的话还会变的更长。其次，明显做了不止一件事。第三，违反了单一权责原则(只有一项职责，换言之，只有一个动机才会去修改已经写好的代码)，因为有好几个修改它的理由，第四，违反了开放闭合原则(软件实体应该是可扩展，而不可修改的。也就是说，对扩展是开放的，而对修改是封闭的。)，因为每当添加新类型时，就必须修改代码。</p>
+<p>该问题的解决方案是将switch语句埋到抽象工厂底下，该工厂使用switch语句为Employee的派生物创建适当的实体，而不同的函数，如calculatePay, isPayday, deliverPay等，则由Employee 接口多态的接受派遣。</p>
+<p>对于switch，如果只出现一次，用于创建多态对象，而且隐藏在继承关系中，在系统其它部分看不到。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">isPayday</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Money <span class="title">calculatePay</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">deliverPay</span><span class="params">(Money pay)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EmployeeFactory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Employee <span class="title">makeEmployee</span><span class="params">(EmployeeRecord r)</span> <span class="keyword">throws</span> InvalidEmployeeType</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EmployeeFactoryImpl</span> <span class="keyword">implements</span> <span class="title">EmployeeFactory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Employee <span class="title">makeEmployee</span><span class="params">(EmployeeRecord r)</span> <span class="keyword">throws</span> InvalidEmployeeType </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (r.type) &#123;</span><br><span class="line">            <span class="keyword">case</span> COMMISSIONED:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> CommissionedEmployee(r) ;</span><br><span class="line">            <span class="keyword">case</span> HOURLY:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> HourlyEmployee(r);</span><br><span class="line">            <span class="keyword">case</span> SALARIED:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> SalariedEmploye(r);</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> InvalidEmployeeType(r.type);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用描述性的名称"><a href="#使用描述性的名称" class="headerlink" title="使用描述性的名称"></a>使用描述性的名称</h3><p>如isTestable 或 includeSetupAndTeardownPages。长而具有描述性的名称，要比描述性的长注释好。函数名应该使用一些容易阅读的单词能描述清楚其功能。</p>
+<p>命名方式要保持一直，使用与模块名一脉相承的短语、名词和动词给函数命名。例如includeSetupAndTeardownPages、includeSetupPages、includeSuiteSetupPage和includeSetupPage等。</p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>没有参数好于一个参数，一个参数好于两个参数，连个参数好于三个参数，应尽量避免三个以上参数。</p>
+<p>参数与函数名出于不同的抽象层级，它要求你了解目前并不特别重要的细节；测试的话还需要确保参数的各种组合都有运行正常的测试用例，这很困难。</p>
+<h4 id="一元函数的普遍形式"><a href="#一元函数的普遍形式" class="headerlink" title="一元函数的普遍形式"></a>一元函数的普遍形式</h4><ul>
+<li>传入参数，将其转换为其它什么，然后输出</li>
+<li>传入参数，改变系统状态。事件。</li>
+</ul>
+<h4 id="标识参数"><a href="#标识参数" class="headerlink" title="标识参数"></a>标识参数</h4><p>向函数传入布尔值，相当于宣布本函数不止做一件事。如render(Boolean isSuite)应该把函数一分为二：renderForSuite()和renderForSingleTest()</p>
+<h4 id="二元函数"><a href="#二元函数" class="headerlink" title="二元函数"></a>二元函数</h4><p>writeField(name) 比 writeField(outputStream,name)好懂。应该尽量将二元转为一元，可以把writeFiled方法写入成outputStream的成员之一。从而能这样用：outputStream.writeField(name)。或者，也可以把outputStream写成当前类的成员变量，从而无需再传递它。还可以分离出类似FieldWriter 的新类，在其构造器中采用outputStream，并且包含write方法。</p>
+<p>一般二元函数的参数应该是自然的组合(如new Point(0,0))或自然的排序</p>
+<h4 id="参数对象"><a href="#参数对象" class="headerlink" title="参数对象"></a>参数对象</h4><p>如果函数看来需要两个、三个或三个以上参数，就说明其中一些参数应该封装成类了。<br>如:</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Circle make<span class="constructor">Circle(<span class="params">double</span> <span class="params">x</span>, <span class="params">double</span> <span class="params">y</span>, <span class="params">double</span> <span class="params">radius</span>)</span>;</span><br><span class="line">Circle make<span class="constructor">Circle(Point <span class="params">center</span>, <span class="params">double</span> <span class="params">radius</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="参数列表"><a href="#参数列表" class="headerlink" title="参数列表"></a>参数列表</h4><p>如果可变参数和类型为List的单个参数没什么区别，String.format可以当二元函数。<br>public String format(String format, Object…args)</p>
+<h4 id="动词和关键字"><a href="#动词和关键字" class="headerlink" title="动词和关键字"></a>动词和关键字</h4><p>选择合适动词\名词为函数和参数命名，如write(name)，即”write” 一个 “name”。如果改为writeField(name)，则进一步表明”name”是一个”field”</p>
+<p>assertEqual(expected,actual)比assertExpectedEqualsActual(expected,actual)要好。</p>
+<h3 id="无副作用"><a href="#无副作用" class="headerlink" title="无副作用"></a>无副作用</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> UserValidator &#123;</span><br><span class="line">    private Cryptographer cryptographer;</span><br><span class="line">    <span class="built_in">public</span> <span class="type">boolean</span> checkPassword(String userName, String <span class="keyword">password</span>) &#123;</span><br><span class="line">        <span class="keyword">User</span> <span class="keyword">user</span> = UserGateway.findByName(userName);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">user</span> != <span class="keyword">User</span>.<span class="keyword">NULL</span>) &#123;</span><br><span class="line">            String codedPhrase = <span class="keyword">user</span>.getPhraseEncodedByPassword();</span><br><span class="line">            String phrase = cryptographer.decrypt(codedPhrase, <span class="keyword">password</span>);</span><br><span class="line">            <span class="keyword">if</span> ("Valid Password".equals(phrase)) &#123;</span><br><span class="line">                <span class="keyword">Session</span>.initialize();</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码不仅验证了密码而且还初始化了会话。而函数名并没有暗示会初始化会话。只有在初始化会话安全的时候调用该函数才是安全的，可以将函数重命名为checkPasswordAndInitializeSession，虽然还是违反了只做一件事。</p>
+<p>避免使用输出参数，如果函数必须修改某种状态，就修改所属对象的状态吧。</p>
+<h3 id="分隔指令和询问"><a href="#分隔指令和询问" class="headerlink" title="分隔指令和询问"></a>分隔指令和询问</h3><p>函数要么做什么事，要么回答什么事，二者不可得兼。考虑：<br>public boolean set（String attribute, String value)<br>此函数设置一个属性值，成功返回true，否则返回false<br>if(set(“username”,”bob”))<br>如果读者不清楚，会以为是在问username属性是否之前已设置为bob。或username属性是否已成功设置为bob。<br>if(attributeExists(“username”)){<br>    setAttribute(“username”,”bob”)<br>}</p>
+<h3 id="使用异常代替返回错误码"><a href="#使用异常代替返回错误码" class="headerlink" title="使用异常代替返回错误码"></a>使用异常代替返回错误码</h3><p>使用返回错误码轻微违反了分隔指令和询问原则。使用异常，错误处理代码也能从主路径代码中分离出来。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (delete<span class="constructor">Page(<span class="params">page</span>)</span><span class="operator"> == </span>E_OK) &#123;</span><br><span class="line">    <span class="keyword">if</span> (registry.delete<span class="constructor">Reference(<span class="params">page</span>.<span class="params">name</span>)</span><span class="operator"> == </span>E_OK) &#123;</span><br><span class="line">        <span class="keyword">if</span> (configKeys.delete<span class="constructor">Key(<span class="params">page</span>.<span class="params">name</span>.<span class="params">makeKey</span>()</span>)<span class="operator"> == </span>E_OK)&#123;</span><br><span class="line">            logger.log(<span class="string">"page deleted"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            logger.log(<span class="string">"configKey not deleted"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        logger.log(<span class="string">"deleteReference from registry failed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    logger.log(<span class="string">"delete failed"</span>);</span><br><span class="line">    return E_ERROR;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//下面使用try catch</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    delete<span class="constructor">Page(<span class="params">page</span>)</span>;</span><br><span class="line">    registry.delete<span class="constructor">Reference(<span class="params">page</span>.<span class="params">name</span>)</span>;</span><br><span class="line">    configKeys.delete<span class="constructor">Key(<span class="params">page</span>.<span class="params">name</span>.<span class="params">makeKey</span>()</span>);</span><br><span class="line">&#125;</span><br><span class="line">catch (Exception e) &#123;</span><br><span class="line">    logger.log(e.get<span class="constructor">Message()</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="抽离try-catch代码块"><a href="#抽离try-catch代码块" class="headerlink" title="抽离try catch代码块"></a>抽离try catch代码块</h4><p>最好把try catch代码块的主体部分抽离出来，另外形成函数。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public void delete(Page page) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        delete<span class="constructor">PageAndAllReferences(<span class="params">page</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    catch (Exception e) &#123;</span><br><span class="line">        log<span class="constructor">Error(<span class="params">e</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span> void delete<span class="constructor">PageAndAllReferences(Page <span class="params">page</span>)</span> throws Exception &#123;</span><br><span class="line">    delete<span class="constructor">Page(<span class="params">page</span>)</span>;</span><br><span class="line">    registry.delete<span class="constructor">Reference(<span class="params">page</span>.<span class="params">name</span>)</span>;</span><br><span class="line">    configKeys.delete<span class="constructor">Key(<span class="params">page</span>.<span class="params">name</span>.<span class="params">makeKey</span>()</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span> void log<span class="constructor">Error(Exception <span class="params">e</span>)</span> &#123;</span><br><span class="line">    logger.log(e.get<span class="constructor">Message()</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>delete函数只与错误处理有关。deletePageAndAllReference函数只与完全删除一个page有关。</p>
+<h4 id="错误处理就是一件事"><a href="#错误处理就是一件事" class="headerlink" title="错误处理就是一件事"></a>错误处理就是一件事</h4><p>函数只做一件事，处理错误的函数不应该再做其他事，这就意味着如果含有try关键字，则try应该为函数的第一个单词。</p>
+<h4 id="Error-java依赖磁铁"><a href="#Error-java依赖磁铁" class="headerlink" title="Error.java依赖磁铁"></a>Error.java依赖磁铁</h4><p>返回错误码意味着某处有类或枚举定义了所有错误码。那么其它地方都要引用这个文件。如果Error.java修改，其它文件可能也要修改。</p>
+<h3 id="别重复自己"><a href="#别重复自己" class="headerlink" title="别重复自己"></a>别重复自己</h3><p>消除函数中的重复的代码。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>能用代码表达的，尽量不要用注释表达。因为代码总会变，但是有时注释并不是总随着代码改变，程序员都很懒的，更新代码但是不去更新注释，错误的注释比不加注释更加可怕。</p>
+<p>应该保证注释可维护，有关联，精确。</p>
+<h3 id="用代码来阐述"><a href="#用代码来阐述" class="headerlink" title="用代码来阐述"></a>用代码来阐述</h3><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Check to see if the employee is eligible for full benefits</span><br><span class="line">if ((<span class="name">employee</span>.flags &amp; HOURLY_FLAG) <span class="symbol">&amp;&amp;</span> (<span class="name">employee</span>.age &gt; <span class="number">65</span>))</span><br></pre></td></tr></table></figure>
+<p>尽量用代码来描述意图，而不是注释。</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (<span class="name">employee</span>.isEligibleForFullBenefits())</span><br></pre></td></tr></table></figure>
+
+<h3 id="好注释"><a href="#好注释" class="headerlink" title="好注释"></a>好注释</h3><h4 id="法律信息"><a href="#法律信息" class="headerlink" title="法律信息"></a>法律信息</h4><p>比如版权及著作权声明就要放在每个源文件开头。这类注释不应该是整个合同或者法典，而应该指向一份外部文档。</p>
+<h4 id="提供信息的注释"><a href="#提供信息的注释" class="headerlink" title="提供信息的注释"></a>提供信息的注释</h4><p>有时提供基本信息也是有用的。</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// format matched kk:mm:ss EEE, MMM dd, yyyy</span></span><br><span class="line">Pattern timeMatcher = Pattern.compile(<span class="string">"<span class="subst">\\</span>d*:<span class="subst">\\</span>d*:<span class="subst">\\</span>d* <span class="subst">\\</span>w*, <span class="subst">\\</span>w* <span class="subst">\\</span>d*, <span class="subst">\\</span>d*"</span>);</span><br></pre></td></tr></table></figure>
+<p>上述代码，解释了正则表达式的用意。但是如果把代码转移到转换日期和时间格式的类中，此处的注释可能就多此一举了。</p>
+<h4 id="对意图的解释"><a href="#对意图的解释" class="headerlink" title="对意图的解释"></a>对意图的解释</h4><p>注释不仅提供有关实现的有用价值，而且还提供了某个决定后面的意图。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">int</span> compareTo(<span class="keyword">Object</span> o)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(o <span class="keyword">instanceof</span> WikiPagePath)</span><br><span class="line">    &#123;</span><br><span class="line">        WikiPagePath p = (WikiPagePath) o;</span><br><span class="line">        <span class="keyword">String</span> compressedName = StringUtil.<span class="built_in">join</span>(names, <span class="string">""</span>);</span><br><span class="line">        <span class="keyword">String</span> compressedArgumentName = StringUtil.<span class="built_in">join</span>(p.names, <span class="string">""</span>);</span><br><span class="line">        <span class="keyword">return</span> compressedName.compareTo(compressedArgumentName);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">// we are greater because we are the right type.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作者在对比两个对象时将他的类放置在比其他类更高的位置。</p>
+<h4 id="阐释"><a href="#阐释" class="headerlink" title="阐释"></a>阐释</h4><p>有时注释把某些晦涩难懂的参数或返回值的意义翻译为某种可读形式。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span><span class="constructor">True(<span class="params">a</span>.<span class="params">compareTo</span>(<span class="params">a</span>)</span><span class="operator"> == </span><span class="number">0</span>); <span class="comment">// a == a</span></span><br><span class="line"><span class="keyword">assert</span><span class="constructor">True(<span class="params">a</span>.<span class="params">compareTo</span>(<span class="params">b</span>)</span> != <span class="number">0</span>); <span class="comment">// a != b</span></span><br><span class="line"><span class="keyword">assert</span><span class="constructor">True(<span class="params">a</span>.<span class="params">compareTo</span>(<span class="params">b</span>)</span><span class="operator"> == </span>-<span class="number">1</span>); <span class="comment">// a &lt; b</span></span><br><span class="line"><span class="keyword">assert</span><span class="constructor">True(<span class="params">b</span>.<span class="params">compareTo</span>(<span class="params">a</span>)</span><span class="operator"> == </span><span class="number">1</span>); <span class="comment">// b &gt; a</span></span><br></pre></td></tr></table></figure>
+<h4 id="警告"><a href="#警告" class="headerlink" title="警告"></a>警告</h4><p>用于警告其他程序员代码运行或代码不这样实现会出现某种后果的注释。</p>
+<h4 id="TODO注释"><a href="#TODO注释" class="headerlink" title="TODO注释"></a>TODO注释</h4><p>提醒某个删除某个不必要的特性，或要求别人注意某个问题，或提示对依赖于某个计划事件的修改。</p>
+<h4 id="放大"><a href="#放大" class="headerlink" title="放大"></a>放大</h4><p>注释可以用来放大某种看来不合理之物的重要性</p>
+<h4 id="公共API中的Javadoc"><a href="#公共API中的Javadoc" class="headerlink" title="公共API中的Javadoc"></a>公共API中的Javadoc</h4><p>编写良好的公共API</p>
+<h3 id="坏注释"><a href="#坏注释" class="headerlink" title="坏注释"></a>坏注释</h3><h4 id="喃喃自语"><a href="#喃喃自语" class="headerlink" title="喃喃自语"></a>喃喃自语</h4><p>如果只是因为自己觉得应该或因过程需要就添加注释，这类注释就是无用的。任何迫使读者查看其它模块的注释都是失败的。</p>
+<h4 id="多余的注释"><a href="#多余的注释" class="headerlink" title="多余的注释"></a>多余的注释</h4><p>如果添加代码只是叫人话更多时间去读，而没有提供有用信息，没有提供代码的意义或没有给出代码的意图或逻辑，这样的注释一般是多余。</p>
+<h4 id="误导性注释"><a href="#误导性注释" class="headerlink" title="误导性注释"></a>误导性注释</h4><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Utility method that returns when this.closed is true. Throws an exception</span></span><br><span class="line"><span class="comment">// if the timeout is reached.</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> waitForClose(<span class="keyword">final</span> <span class="keyword">long</span> timeoutMillis) <span class="keyword">throws</span> Exception</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!closed)</span><br><span class="line">    &#123;</span><br><span class="line">        wait(timeoutMillis);</span><br><span class="line">        <span class="keyword">if</span>(!closed)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"MockResponseSender could not be closed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用上述代码，在this.closed变为true时并不立即返回。方法只是在判断this.closed为true时才返回。</p>
+<h4 id="循规式注释"><a href="#循规式注释" class="headerlink" title="循规式注释"></a>循规式注释</h4><p>要求每个变量，每个方法都必须有注释是没有必要的。</p>
+<h4 id="日志式注释"><a href="#日志式注释" class="headerlink" title="日志式注释"></a>日志式注释</h4><p>现在使用版本控制系统，没有必要在代码中添加每次修改代码的记录。</p>
+<h4 id="废话注释"><a href="#废话注释" class="headerlink" title="废话注释"></a>废话注释</h4><p>下面的注释就是废话</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Returns the day of the month.</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* @return the day of the month.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getDayOfMonth</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> dayOfMonth;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="能用函数或变量时就别用注释"><a href="#能用函数或变量时就别用注释" class="headerlink" title="能用函数或变量时就别用注释"></a>能用函数或变量时就别用注释</h4><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// does <span class="keyword">the</span> module <span class="built_in">from</span> <span class="keyword">the</span> <span class="built_in">global</span> list &lt;<span class="keyword">mod</span>&gt; depend <span class="keyword">on</span> <span class="title">the</span></span><br><span class="line">// subsystem we are part <span class="keyword">of</span>?</span><br><span class="line"><span class="keyword">if</span> (smodule.getDependSubsystems().<span class="keyword">contains</span>(subSysMod.getSubSystem()))</span><br></pre></td></tr></table></figure>
+<p>可以修改成下面的代码</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ArrayList</span> moduleDependees = smodule.getDependSubsystems();</span><br><span class="line"><span class="attribute">String</span> ourSubSystem = subSysMod.getSubSystem();</span><br><span class="line"><span class="attribute">if</span> (moduleDependees.contains(ourSubSystem))</span><br></pre></td></tr></table></figure>
+
+<h4 id="位置标记"><a href="#位置标记" class="headerlink" title="位置标记"></a>位置标记</h4><p>把特定函数放在下面的标记下</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span>actions<span class="regexp">//</span><span class="regexp">//</span><span class="regexp">//</span><span class="regexp">//</span><span class="regexp">//</span><span class="regexp">//</span><span class="regexp">//</span><span class="regexp">//</span><span class="regexp">//</span><span class="regexp">/</span></span><br></pre></td></tr></table></figure>
+<p>尽量少用这种标记栏，如果使用太多，就会被读者直接忽视。</p>
+<h4 id="括号后面注释"><a href="#括号后面注释" class="headerlink" title="括号后面注释"></a>括号后面注释</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">while</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;<span class="comment">//while</span></span><br></pre></td></tr></table></figure>
+<p>如果这样做了，说明函数可能需要缩短了。</p>
+<h4 id="归属与署名"><a href="#归属与署名" class="headerlink" title="归属与署名"></a>归属与署名</h4><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//<span class="keyword">added </span><span class="keyword">bi </span>rick</span><br></pre></td></tr></table></figure>
+<p>版本控制系统可以记录是谁何时修改代码。</p>
+<h4 id="注释掉代码"><a href="#注释掉代码" class="headerlink" title="注释掉代码"></a>注释掉代码</h4><p>版本控制工具可以恢复删掉的代码。所以不要注释代码。</p>
+<h4 id="HTML注释"><a href="#HTML注释" class="headerlink" title="HTML注释"></a>HTML注释</h4><p>不要在注释中加HTML标签，影响阅读，这样的标签本应该是由抽取注释的工具生成的。</p>
+<h4 id="非本地信息"><a href="#非本地信息" class="headerlink" title="非本地信息"></a>非本地信息</h4><p>确保注释描述了离它最近的代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Port on which fitnesse would run. Defaults to &lt;b&gt;8082&lt;/b&gt;.</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* @param fitnessePort</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFitnessePort</span><span class="params">(<span class="keyword">int</span> fitnessePort)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">this</span>.fitnessePort = fitnessePort;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中并没有注释中给出的默认端口号的相关部分。</p>
+<h4 id="信息过多"><a href="#信息过多" class="headerlink" title="信息过多"></a>信息过多</h4><p>别在注释中添加有趣的历史性话题或无关的细节描述。</p>
+<h4 id="不明显的联系"><a href="#不明显的联系" class="headerlink" title="不明显的联系"></a>不明显的联系</h4><p>注释及其描述的代码之间的联系应该显而易见。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* start with an array that is big enough to hold all the pixels</span></span><br><span class="line"><span class="comment">* (plus filter bytes), and an extra 200 bytes for header info</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">this</span>.pngBytes = <span class="keyword">new</span> <span class="keyword">byte</span>[((<span class="keyword">this</span>.<span class="built_in">width</span> + <span class="number">1</span>) * <span class="keyword">this</span>.<span class="built_in">height</span> * <span class="number">3</span>) + <span class="number">200</span>];</span><br></pre></td></tr></table></figure>
+<p>过滤器字节是什么？与+1还是+3有关？为什么要用200？注释的作用是解释未能自行解释的代码，显然这里没有。</p>
+<h4 id="函数头"><a href="#函数头" class="headerlink" title="函数头"></a>函数头</h4><p>短函数不需要太多描述。为短函数选个好名字就好了。</p>
+<h4 id="非公共代码中的API"><a href="#非公共代码中的API" class="headerlink" title="非公共代码中的API"></a>非公共代码中的API</h4><p>如果没有打算做公共API代码，就没有必要使用javadoc了。</p>
+<h2 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h2><h3 id="垂直格式"><a href="#垂直格式" class="headerlink" title="垂直格式"></a>垂直格式</h3><p>尽量使用短文件，代码行数一般在200行左右，最长控制在500行。</p>
+<h4 id="向报纸学习"><a href="#向报纸学习" class="headerlink" title="向报纸学习"></a>向报纸学习</h4><p>源文件应该向报纸文章那样，名称应当简单且一目了然。名称本身应该足够告诉我们是否在正确的模块中。源文件最顶部应该给出高层次概念和算法。细节应该往下渐次展开，直至找到源文件中最底层的函数和细节。</p>
+<h4 id="概念间垂直方向上的区隔"><a href="#概念间垂直方向上的区隔" class="headerlink" title="概念间垂直方向上的区隔"></a>概念间垂直方向上的区隔</h4><p>所有代码都是从上往下读，从左往右读。每行展现一个表达式或一个句子。每组代码行展示一条完整的思路。这些思路应该使用空白行区隔开。</p>
+<p>封包声明，导入包声明和每个函数之间都应该有空白行隔开。</p>
+<h4 id="垂直方向上的靠近"><a href="#垂直方向上的靠近" class="headerlink" title="垂直方向上的靠近"></a>垂直方向上的靠近</h4><p>紧密相关的代码应该互相靠近。</p>
+<h4 id="垂直距离"><a href="#垂直距离" class="headerlink" title="垂直距离"></a>垂直距离</h4><ul>
+<li><p>变量声明</p>
+<p>  变量声明应尽可能靠近其使用位置。因为函数很短，本地变量应该在函数顶部出现。</p>
+<p>  循环中的控制变量(<code>for(Test each:tests)</code>each即控制变量)。</p>
+<p>  在较长的函数中，变量也可能在某个代码块顶部，或在循环之前声明。</p>
+</li>
+<li><p>实体变量(类的内部变量)</p>
+<p>  应该在类顶部声明。</p>
+</li>
+<li><p>相关函数</p>
+<p>  若某个函数调用了另外一个，就应该把他们放到一起，而且调用者应该尽可能放在被调用者上面。这样可以增强代码可读性。</p>
+</li>
+<li><p>概念相关</p>
+<p>  概念相关的代码应该放在一起。相关性越强，彼此之间的距离就应该越短。</p>
+</li>
+</ul>
+<h4 id="垂直顺序"><a href="#垂直顺序" class="headerlink" title="垂直顺序"></a>垂直顺序</h4><p>被调用函数应该放在执行调用的函数下面。最重要的概念应该先出来，并以包括最少细节的方式表述。底层细节应该最后出现。</p>
+<h3 id="横向格式"><a href="#横向格式" class="headerlink" title="横向格式"></a>横向格式</h3><p>一行字符应该最多不超120个</p>
+<h4 id="水平方向上的区隔和靠近"><a href="#水平方向上的区隔和靠近" class="headerlink" title="水平方向上的区隔和靠近"></a>水平方向上的区隔和靠近</h4><p>可以通过空格字符将彼此紧密相关的事物连接在一起(表强调)，也用空格字符把相关性较弱的事物分隔开</p>
+<p>赋值操作符两边加操作符，达到强调目的。不要在函数名和括号间加空格，因为函数和参数关系密切。</p>
+<p>空格的另一种用法是强调其前面的运算符。</p>
+<h4 id="水平对齐"><a href="#水平对齐" class="headerlink" title="水平对齐"></a>水平对齐</h4><p>不使用对齐。</p>
+<h4 id="缩进"><a href="#缩进" class="headerlink" title="缩进"></a>缩进</h4><p>类声明不缩进，类中方法相对类声明缩进一个层级。方法的实现相对方法声明缩进一个层级。代码块的实现相对于其容器代码块缩进一个层级。</p>
+<h4 id="空范围"><a href="#空范围" class="headerlink" title="空范围"></a>空范围</h4><p>while或for语句体为空时，确保空范围体的缩进，用括号包围起来。把分号放在循环语句后很难让人分辨。</p>
+<h3 id="团队规则"><a href="#团队规则" class="headerlink" title="团队规则"></a>团队规则</h3><p>如果在一个团队，就使用团队规则。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Clean-Code/" rel="tag">Clean Code</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.470Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/06/15/clean-code-note-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          代码整洁之道(二)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/06/06/mongodb-note-10-sharding/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">mongodb笔记(十) 分片</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#有意义的命名"><span class="toc-number">1.</span> <span class="toc-text">有意义的命名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#名副其实"><span class="toc-number">1.1.</span> <span class="toc-text">名副其实</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免误导"><span class="toc-number">1.2.</span> <span class="toc-text">避免误导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#做有意义区分"><span class="toc-number">1.3.</span> <span class="toc-text">做有意义区分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用读得出来的名称"><span class="toc-number">1.4.</span> <span class="toc-text">使用读得出来的名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用可搜索的名称"><span class="toc-number">1.5.</span> <span class="toc-text">使用可搜索的名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免使用编码"><span class="toc-number">1.6.</span> <span class="toc-text">避免使用编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#避免思维映射"><span class="toc-number">1.7.</span> <span class="toc-text">避免思维映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类名、方法名"><span class="toc-number">1.8.</span> <span class="toc-text">类名、方法名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#每个概念对应一个词"><span class="toc-number">1.9.</span> <span class="toc-text">每个概念对应一个词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#别用双关语"><span class="toc-number">1.10.</span> <span class="toc-text">别用双关语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加有意义的语境"><span class="toc-number">1.11.</span> <span class="toc-text">添加有意义的语境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不添加无意义的语境"><span class="toc-number">1.12.</span> <span class="toc-text">不添加无意义的语境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数"><span class="toc-number">2.</span> <span class="toc-text">函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#短小"><span class="toc-number">2.1.</span> <span class="toc-text">短小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#只做一件事"><span class="toc-number">2.2.</span> <span class="toc-text">只做一件事</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#每个函数一个抽象层级"><span class="toc-number">2.3.</span> <span class="toc-text">每个函数一个抽象层级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#switch语句"><span class="toc-number">2.4.</span> <span class="toc-text">switch语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用描述性的名称"><span class="toc-number">2.5.</span> <span class="toc-text">使用描述性的名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数参数"><span class="toc-number">2.6.</span> <span class="toc-text">函数参数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#一元函数的普遍形式"><span class="toc-number">2.6.1.</span> <span class="toc-text">一元函数的普遍形式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#标识参数"><span class="toc-number">2.6.2.</span> <span class="toc-text">标识参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二元函数"><span class="toc-number">2.6.3.</span> <span class="toc-text">二元函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参数对象"><span class="toc-number">2.6.4.</span> <span class="toc-text">参数对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参数列表"><span class="toc-number">2.6.5.</span> <span class="toc-text">参数列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#动词和关键字"><span class="toc-number">2.6.6.</span> <span class="toc-text">动词和关键字</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#无副作用"><span class="toc-number">2.7.</span> <span class="toc-text">无副作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分隔指令和询问"><span class="toc-number">2.8.</span> <span class="toc-text">分隔指令和询问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用异常代替返回错误码"><span class="toc-number">2.9.</span> <span class="toc-text">使用异常代替返回错误码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#抽离try-catch代码块"><span class="toc-number">2.9.1.</span> <span class="toc-text">抽离try catch代码块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#错误处理就是一件事"><span class="toc-number">2.9.2.</span> <span class="toc-text">错误处理就是一件事</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Error-java依赖磁铁"><span class="toc-number">2.9.3.</span> <span class="toc-text">Error.java依赖磁铁</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#别重复自己"><span class="toc-number">2.10.</span> <span class="toc-text">别重复自己</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">3.</span> <span class="toc-text">注释</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#用代码来阐述"><span class="toc-number">3.1.</span> <span class="toc-text">用代码来阐述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#好注释"><span class="toc-number">3.2.</span> <span class="toc-text">好注释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#法律信息"><span class="toc-number">3.2.1.</span> <span class="toc-text">法律信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#提供信息的注释"><span class="toc-number">3.2.2.</span> <span class="toc-text">提供信息的注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对意图的解释"><span class="toc-number">3.2.3.</span> <span class="toc-text">对意图的解释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#阐释"><span class="toc-number">3.2.4.</span> <span class="toc-text">阐释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#警告"><span class="toc-number">3.2.5.</span> <span class="toc-text">警告</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TODO注释"><span class="toc-number">3.2.6.</span> <span class="toc-text">TODO注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#放大"><span class="toc-number">3.2.7.</span> <span class="toc-text">放大</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#公共API中的Javadoc"><span class="toc-number">3.2.8.</span> <span class="toc-text">公共API中的Javadoc</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坏注释"><span class="toc-number">3.3.</span> <span class="toc-text">坏注释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#喃喃自语"><span class="toc-number">3.3.1.</span> <span class="toc-text">喃喃自语</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多余的注释"><span class="toc-number">3.3.2.</span> <span class="toc-text">多余的注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#误导性注释"><span class="toc-number">3.3.3.</span> <span class="toc-text">误导性注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#循规式注释"><span class="toc-number">3.3.4.</span> <span class="toc-text">循规式注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#日志式注释"><span class="toc-number">3.3.5.</span> <span class="toc-text">日志式注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#废话注释"><span class="toc-number">3.3.6.</span> <span class="toc-text">废话注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#能用函数或变量时就别用注释"><span class="toc-number">3.3.7.</span> <span class="toc-text">能用函数或变量时就别用注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#位置标记"><span class="toc-number">3.3.8.</span> <span class="toc-text">位置标记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#括号后面注释"><span class="toc-number">3.3.9.</span> <span class="toc-text">括号后面注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#归属与署名"><span class="toc-number">3.3.10.</span> <span class="toc-text">归属与署名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#注释掉代码"><span class="toc-number">3.3.11.</span> <span class="toc-text">注释掉代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HTML注释"><span class="toc-number">3.3.12.</span> <span class="toc-text">HTML注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#非本地信息"><span class="toc-number">3.3.13.</span> <span class="toc-text">非本地信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#信息过多"><span class="toc-number">3.3.14.</span> <span class="toc-text">信息过多</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#不明显的联系"><span class="toc-number">3.3.15.</span> <span class="toc-text">不明显的联系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数头"><span class="toc-number">3.3.16.</span> <span class="toc-text">函数头</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#非公共代码中的API"><span class="toc-number">3.3.17.</span> <span class="toc-text">非公共代码中的API</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#格式"><span class="toc-number">4.</span> <span class="toc-text">格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#垂直格式"><span class="toc-number">4.1.</span> <span class="toc-text">垂直格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#向报纸学习"><span class="toc-number">4.1.1.</span> <span class="toc-text">向报纸学习</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#概念间垂直方向上的区隔"><span class="toc-number">4.1.2.</span> <span class="toc-text">概念间垂直方向上的区隔</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#垂直方向上的靠近"><span class="toc-number">4.1.3.</span> <span class="toc-text">垂直方向上的靠近</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#垂直距离"><span class="toc-number">4.1.4.</span> <span class="toc-text">垂直距离</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#垂直顺序"><span class="toc-number">4.1.5.</span> <span class="toc-text">垂直顺序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#横向格式"><span class="toc-number">4.2.</span> <span class="toc-text">横向格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#水平方向上的区隔和靠近"><span class="toc-number">4.2.1.</span> <span class="toc-text">水平方向上的区隔和靠近</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#水平对齐"><span class="toc-number">4.2.2.</span> <span class="toc-text">水平对齐</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缩进"><span class="toc-number">4.2.3.</span> <span class="toc-text">缩进</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#空范围"><span class="toc-number">4.2.4.</span> <span class="toc-text">空范围</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#团队规则"><span class="toc-number">4.3.</span> <span class="toc-text">团队规则</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/06/10/clean-code-note-1/';
+  this.page.identifier = '2014/06/10/clean-code-note-1/';
+  this.page.title = '代码整洁之道(一)';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

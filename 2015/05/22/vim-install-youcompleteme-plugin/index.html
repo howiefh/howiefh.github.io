@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Vim 自动补全插件 YouCompleteMe 安装与配置 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Vim 自动补全；Vim YouCompleteMe 安装；Vim YouCompleteMe 配置；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim 自动补全插件 YouCompleteMe 安装与配置">
+<meta property="og:url" content="http://howiefh.github.io/2015/05/22/vim-install-youcompleteme-plugin/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="Vim 自动补全；Vim YouCompleteMe 安装；Vim YouCompleteMe 配置；">
+<meta property="article:published_time" content="2015-05-22T12:31:12.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.481Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Vim">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-vim-install-youcompleteme-plugin" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/05/22/vim-install-youcompleteme-plugin/" class="article-date">
+  <time class="dt-published" datetime="2015-05-22T12:31:12.000Z" itemprop="datePublished">2015-05-22</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Vim/">Vim</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Vim 自动补全插件 YouCompleteMe 安装与配置
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#完全安装"><span class="toc-number">2.1.</span> <span class="toc-text">完全安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ubuntu-Linux-X64-超快安装"><span class="toc-number">2.2.</span> <span class="toc-text">Ubuntu Linux X64 超快安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置"><span class="toc-number">3.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#YCM-amp-Eclim"><span class="toc-number">4.</span> <span class="toc-text">YCM &amp; Eclim</span></a></li></ol>
+		
+		</div>
+		
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>对于代码自动补全，之前一直使用的是Shougo/neocomplcache和Shougo/neosnippet。早就听说过YouCompleteMe的大名，一直想尝试一下YCM，但是还是拖到了现在。YCM和其它Vim插件的安装有些不同，可能需要折腾一下。之所以安装稍微会麻烦些，是因为YCM 后端调用 libclang(以获取AST,当然还有其他语言的语义分析库)、前端由 C++ 开发(以提升补全效率)、外层由 python 封装(以成为 vim 插件),它可能是安装最复杂的 vim 插件了。YCM是Client-sever架构的，Vim这部分的YCM只是很小的一个客户端，与具有大量逻辑和功能的ycmd HTTP+JSON交互。server在你开启或关闭Vim是自动开启或关闭。</p>
+<p>其它自动补全的插件基本上是基于文本的，也就是说它们基本上是使用正则去猜。区别于其它Vim的自动补全插件，YCM基于语义引擎（比如C家族的libclang）提供了语义补全，是通过分析源文件，经过语法分析之后进行补全。对于C家族的语言这种基于语义的自动补全依赖于clang/llvm，其他语言 ,会调用vim设置的omnifunc来匹配，可以查看<a href="https://github.com/Valloric/YouCompleteMe#semantic-completion-for-other-languages" target="_blank" rel="noopener">github</a></p>
+<ul>
+<li>Java/Ruby <a href="http://eclim.org/" target="_blank" rel="noopener">eclim</a></li>
+<li>Python <a href="https://github.com/davidhalter/jedi" target="_blank" rel="noopener">Jedi</a></li>
+<li>Go <a href="https://github.com/nsf/gocode" target="_blank" rel="noopener">Gocode</a></li>
+<li>C# <a href="https://github.com/nosami/OmniSharpServer" target="_blank" rel="noopener">OmniSharp</a></li>
+<li>JavaScript <a href="https://github.com/marijnh/tern_for_vim" target="_blank" rel="noopener">Tern for Vim</a></li>
+</ul>
+<p>YCM不是基于前缀补全的，而是子序列，所以输入 abc 可以补全 xaybgc，它对于大小写的补全也非常智能。对于C家族的语言和Python支持跳转到定义处。此外还可以对文件路径进行补全，和ultisnips也很好结合。</p>
+<a id="more"></a>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="完全安装"><a href="#完全安装" class="headerlink" title="完全安装"></a>完全安装</h3><p><strong>如果用Vundle更新YCM，yum_support_lib库API改变了，YCM会提醒你重新编译它。</strong></p>
+<ol>
+<li><p>确保Vim版本至少是7.3.584，并且支持python2脚本。</p>
+<p> 在Vim中输入<code>:version</code>可以查看版本。如果版本已经高于7.4了，那么OK。版本是7.3。那么继续往下看，看到<code>包含版本:1-Z</code>，如果Z小于584就需要重装了。Ubuntu的话可以通过<a href="http://linuxg.net/how-to-install-vim-7-4-on-ubuntu-13-10-13-04-12-04-linux-mint-16-15-13-and-debian-sid/" target="_blank" rel="noopener">PPA</a>安装高版本的。否则就要从源码编译安装了。<br> 查看是否支持python2：进入vim,命令:echo has(‘python’)，输出为1,则表示支持。如果为0,则需要重新编译安装vim，在编译时添加python支持。</p>
+</li>
+<li><p>通过Vundle安装YCM，在你的vimrc中添加<code>Plugin &#39;Valloric/YouCompleteMe&#39;</code>，然后执行<code>:PluginInstall</code></p>
+</li>
+<li><p>如果不需要对C家族的语言进行语义补全支持，则跳过这一步。</p>
+<p> 下载最新版的libclang。Clang是一个开源编译器，能够编译C/C++/Objective-C/Objective-C++。Clang提供的libclang库是用于驱动YCM对这些语言的语义补全支持。YCM需要版本至少为3.6的libclang，但是理论上3.2+版本也行。也可以使用系统libclang，如果确定是3.3版本或者更高。推荐下载&lt;llvm.org&gt;官网的<a href="http://llvm.org/releases/download.html" target="_blank" rel="noopener">二进制文件</a>。确保选对适合自己系统的包。</p>
+</li>
+<li><p>编译YCM需要的ycm_support_libs库。YCM的C++引擎通过这些库来获取更快的补全速度。<br> 需要cmake，如果未安装，安装之：<code>sudo apt-get install build-essential cmake</code>（也可以下载安装<a href="http://www.cmake.org/cmake/resources/software.html" target="_blank" rel="noopener">http://www.cmake.org/cmake/resources/software.html</a>）。确保python头文件已安装：<code>sudo apt-get install python-dev</code>。假设你已经通过Vundle装好YCM了，那么它应该位于<code>~/.vim/bundle/YouCompleteMe</code>。我们新建一个目录用来放置编译文件，并切换到此目录下<code>cd ~;mkdir ycm_build;cd ycm_build;</code><br> 下一步生成makefile，这一步很重要，有点复杂。</p>
+<ul>
+<li>如果不需要C族语言的语义支持，在ycm_build目录下执行：<code>cmake -G &quot;Unix Makefiles&quot; . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp</code></li>
+<li>如果需要C族语言的语义支持，还得分几种情况：<ul>
+<li>假如你从llvm的官网下载了LLVM+Clang，然后解压到：<del>/ycm_temp/llvm_root_dir （该目录下有 bin, lib, include 等文件夹），然后执行：`cmake -G “Unix Makefiles” -DPATH_TO_LLVM_ROOT=</del>/ycm_temp/llvm_root_dir . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp`</li>
+<li>如果想用系统的libclang：<code>cmake -G &quot;Unix Makefiles&quot; -DUSE_SYSTEM_LIBCLANG=ON . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp</code></li>
+<li>如果想用自定义的libclang：<code>cmake -G &quot;Unix Makefiles&quot; -DEXTERNAL_LIBCLANG_PATH=/path/to/libclang.so . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp</code>。/path/to/libclang.so这部分填入你自己的路径。<br>makefiles生成后执行：<code>make ycm_support_libs</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>我是从llvm网站下载的二进制文件，安装的，安装过程中也没遇到什么问题。</p>
+<h3 id="Ubuntu-Linux-X64-超快安装"><a href="#Ubuntu-Linux-X64-超快安装" class="headerlink" title="Ubuntu Linux X64 超快安装"></a>Ubuntu Linux X64 超快安装</h3><p>最好还是完整安装，这种快速安装未必适合所有人。安装之前，同样也要确定满足以上所述的vim版本、python支持等条件。和上面一样使用Vundle安装YCM，安装CMake和python头文件。</p>
+<p>编译YCM，如果需要对C-family的语义支持：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> ~<span class="string">/.vim/bundle/YouCompleteMe</span></span><br><span class="line"><span class="string">./install.sh</span> <span class="params">--clang-completer</span></span><br></pre></td></tr></table></figure>
+<p>如果不需要对C-family的语义支持：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> ~<span class="string">/.vim/bundle/YouCompleteMe</span></span><br><span class="line"><span class="string">./install.sh</span></span><br></pre></td></tr></table></figure>
+<p>如果需要支持C#，添加 <code>--omnisharp-complete</code>。如果需要支持Go添加<code>--gocode-completer</code></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>YCM使用TAB键接受补全，一直按TAB则会循环所有的匹配补全项。shift+TAB则会反向循环。注意：如果使用控制台Vim（非GVim或MacVim等），控制台不会将shift+Tab传递给Vim，因此会无反应，需要重新映射按键。此外，如果同时使用ultisnaps，可能会有冲突，需要进行一些设置。可以使用Ctrl+Space来触发补全，不过会和输入法冲突，也需要设置。</p>
+<p>YCM会寻找当前打开的文件的同级目录下或上级目录中的<code>ycm_extra_conf.py</code>这个文件，找到后会加载为Python模块，且只加载一次。YCM调用该模块中的FlagsForFile方法。该模块必须提供带有编译当前文件的必要信息的这个方法。需要修改<code>.ycm_extra_conf.py</code>文件中的flags部分，使用-isystem添加系统的头文件进行解析，使用-I添加第三方的头文件进行解析，在flags部分后添加如下内容：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">'-isystem',</span><br><span class="line">'/usr/include',</span><br></pre></td></tr></table></figure>
+
+<p>使用命令<code>:YcmDiags</code>可以打开location-list查看警告和错误信息。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> completeopt=longest,<span class="keyword">menu</span>	<span class="comment">"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)</span></span><br><span class="line"><span class="keyword">autocmd</span> InsertLeave * <span class="keyword">if</span> <span class="built_in">pumvisible</span>() == <span class="number">0</span>|<span class="keyword">pclose</span>|<span class="keyword">endif</span>	<span class="comment">"离开插入模式后自动关闭预览窗口</span></span><br><span class="line"><span class="keyword">inoremap</span> <span class="symbol">&lt;expr&gt;</span> <span class="symbol">&lt;CR&gt;</span>       <span class="built_in">pumvisible</span>() ? <span class="string">"\&lt;C-y&gt;"</span> : <span class="string">"\&lt;CR&gt;"</span>	<span class="comment">"回车即选中当前项</span></span><br><span class="line"><span class="comment">"上下左右键的行为 会显示其他信息</span></span><br><span class="line"><span class="keyword">inoremap</span> <span class="symbol">&lt;expr&gt;</span> <span class="symbol">&lt;Down&gt;</span>     <span class="built_in">pumvisible</span>() ? <span class="string">"\&lt;C-n&gt;"</span> : <span class="string">"\&lt;Down&gt;"</span></span><br><span class="line"><span class="keyword">inoremap</span> <span class="symbol">&lt;expr&gt;</span> <span class="symbol">&lt;Up&gt;</span>       <span class="built_in">pumvisible</span>() ? <span class="string">"\&lt;C-p&gt;"</span> : <span class="string">"\&lt;Up&gt;"</span></span><br><span class="line"><span class="keyword">inoremap</span> <span class="symbol">&lt;expr&gt;</span> <span class="symbol">&lt;PageDown&gt;</span> <span class="built_in">pumvisible</span>() ? <span class="string">"\&lt;PageDown&gt;\&lt;C-p&gt;\&lt;C-n&gt;"</span> : <span class="string">"\&lt;PageDown&gt;"</span></span><br><span class="line"><span class="keyword">inoremap</span> <span class="symbol">&lt;expr&gt;</span> <span class="symbol">&lt;PageUp&gt;</span>   <span class="built_in">pumvisible</span>() ? <span class="string">"\&lt;PageUp&gt;\&lt;C-p&gt;\&lt;C-n&gt;"</span> : <span class="string">"\&lt;PageUp&gt;"</span></span><br><span class="line"><span class="comment">" 跳转到定义处</span></span><br><span class="line"><span class="keyword">nnoremap</span> <span class="symbol">&lt;leader&gt;</span>jd :YcmCompleter GoToDefinitionElseDeclaration<span class="symbol">&lt;CR&gt;</span></span><br><span class="line"><span class="keyword">nnoremap</span> <span class="symbol">&lt;F6&gt;</span> :YcmForceCompileAndDiagnostics<span class="symbol">&lt;CR&gt;</span>	<span class="comment">"force recomile with syntastic</span></span><br><span class="line"><span class="string">" nnoremap &lt;leader&gt;lo :lopen&lt;CR&gt;	"</span><span class="keyword">open</span> locationlist</span><br><span class="line"><span class="string">" nnoremap &lt;leader&gt;lc :lclose&lt;CR&gt;	"</span><span class="keyword">close</span> locationlist</span><br><span class="line"><span class="keyword">inoremap</span> <span class="symbol">&lt;leader&gt;</span><span class="symbol">&lt;leader&gt;</span> <span class="symbol">&lt;C-x&gt;</span><span class="symbol">&lt;C-o&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_global_ycm_extra_conf</span> = <span class="string">'~/.vim/data/ycm/.ycm_extra_conf.py'</span></span><br><span class="line"><span class="comment">" 不显示开启vim时检查ycm_extra_conf文件的信息  </span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_confirm_extra_conf</span>=<span class="number">0</span></span><br><span class="line"><span class="comment">" 开启基于tag的补全，可以在这之后添加需要的标签路径  </span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_collect_identifiers_from_tags_files</span>=<span class="number">1</span></span><br><span class="line"><span class="comment">"注释和字符串中的文字也会被收入补全</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_collect_identifiers_from_comments_and_strings</span> = <span class="number">0</span></span><br><span class="line"><span class="comment">" 输入第2个字符开始补全</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_min_num_of_chars_for_completion</span>=<span class="number">2</span></span><br><span class="line"><span class="comment">" 禁止缓存匹配项,每次都重新生成匹配项</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_cache_omnifunc</span>=<span class="number">0</span></span><br><span class="line"><span class="comment">" 开启语义补全</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_seed_identifiers_with_syntax</span>=<span class="number">1</span>	</span><br><span class="line"><span class="comment">"在注释输入中也能补全</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_complete_in_comments</span> = <span class="number">1</span></span><br><span class="line"><span class="comment">"在字符串输入中也能补全</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_complete_in_strings</span> = <span class="number">1</span></span><br><span class="line"><span class="comment">" 设置在下面几种格式的文件上屏蔽ycm</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_filetype_blacklist</span> = &#123;</span><br><span class="line">      \ <span class="string">'tagbar'</span> : <span class="number">1</span>,</span><br><span class="line">      \ <span class="string">'nerdtree'</span> : <span class="number">1</span>,</span><br><span class="line">      \&#125;</span><br><span class="line"><span class="comment">"youcompleteme  默认tab  s-tab 和 ultisnips 冲突</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_key_list_select_completion</span> = [<span class="string">'&lt;Down&gt;'</span>]</span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_key_list_previous_completion</span> = [<span class="string">'&lt;Up&gt;'</span>]</span><br><span class="line"><span class="comment">" 修改对C函数的补全快捷键，默认是CTRL + space，修改为ALT + ;</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ycm_key_invoke_completion</span> = <span class="string">'&lt;M-;&gt;'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">" SirVer/ultisnips 代码片断</span></span><br><span class="line"><span class="comment">" Trigger configuration. Do not use &lt;tab&gt; if you use https://github.com/Valloric/YouCompleteMe.</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:UltiSnipsExpandTrigger</span>=<span class="string">"&lt;tab&gt;"</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:UltiSnipsJumpForwardTrigger</span>=<span class="string">"&lt;tab&gt;"</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:UltiSnipsJumpBackwardTrigger</span>=<span class="string">"&lt;s-tab&gt;"</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:UltiSnipsListSnippets</span>=<span class="string">"&lt;c-e&gt;"</span></span><br><span class="line"><span class="comment">"定义存放代码片段的文件夹，使用自定义和默认的，将会的到全局，有冲突的会提示</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:UltiSnipsSnippetDirectories</span>=[<span class="string">"bundle/vim-snippets/UltiSnips"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">" 参考https://github.com/Valloric/YouCompleteMe/issues/36#issuecomment-62941322</span></span><br><span class="line"><span class="comment">" 解决ultisnips和ycm tab冲突，如果不使用下面的办法解决可以参考</span></span><br><span class="line"><span class="comment">" https://github.com/Valloric/YouCompleteMe/issues/36#issuecomment-63205056的配置</span></span><br><span class="line"><span class="comment">" begin</span></span><br><span class="line"><span class="comment">" let g:ycm_key_list_select_completion=['&lt;C-n&gt;', '&lt;Down&gt;']</span></span><br><span class="line"><span class="comment">" let g:ycm_key_list_previous_completion=['&lt;C-p&gt;', '&lt;Up&gt;']</span></span><br><span class="line"><span class="string">" let g:UltiSnipsExpandTrigger="</span><span class="symbol">&lt;Tab&gt;</span><span class="comment">"</span></span><br><span class="line"><span class="string">" let g:UltiSnipsJumpForwardTrigger="</span><span class="symbol">&lt;Tab&gt;</span><span class="comment">"                                           </span></span><br><span class="line"><span class="string">" let g:UltiSnipsJumpBackwardTrigger="</span><span class="symbol">&lt;S-Tab&gt;</span><span class="comment">"</span></span><br><span class="line"><span class="comment">" end</span></span><br><span class="line"><span class="comment">" UltiSnips completion function that tries to expand a snippet. If there's no</span></span><br><span class="line"><span class="comment">" snippet for expanding, it checks for completion window and if it's</span></span><br><span class="line"><span class="comment">" shown, selects first element. If there's no completion window it tries to</span></span><br><span class="line"><span class="comment">" jump to next placeholder. If there's no placeholder it just returns TAB key </span></span><br><span class="line"><span class="function"><span class="keyword">function</span>! <span class="title">g</span>:<span class="title">UltiSnips_Complete</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">call</span> UltiSnips#ExpandSnippet()</span><br><span class="line">    <span class="keyword">if</span> <span class="variable">g:ulti_expand_res</span> == <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">pumvisible</span>()</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"\&lt;C-n&gt;"</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">call</span> UltiSnips#JumpForwards()</span><br><span class="line">            <span class="keyword">if</span> <span class="variable">g:ulti_jump_forwards_res</span> == <span class="number">0</span></span><br><span class="line">               <span class="keyword">return</span> <span class="string">"\&lt;TAB&gt;"</span></span><br><span class="line">            <span class="keyword">endif</span></span><br><span class="line">        <span class="keyword">endif</span></span><br><span class="line">    <span class="keyword">endif</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">""</span></span><br><span class="line"><span class="keyword">endfunction</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">au</span> BufEnter * exec <span class="string">"inoremap &lt;silent&gt; "</span> . <span class="variable">g:UltiSnipsExpandTrigger</span> . <span class="string">" &lt;C-R&gt;=g:UltiSnips_Complete()&lt;cr&gt;"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">" Expand snippet or return</span></span><br><span class="line"><span class="keyword">let</span> <span class="variable">g:ulti_expand_res</span> = <span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>! <span class="title">Ulti_ExpandOrEnter</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">call</span> UltiSnips#ExpandSnippet()</span><br><span class="line">    <span class="keyword">if</span> <span class="variable">g:ulti_expand_res</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"\&lt;return&gt;"</span></span><br><span class="line"><span class="keyword">endfunction</span></span><br><span class="line"></span><br><span class="line"><span class="comment">" Set &lt;space&gt; as primary trigger</span></span><br><span class="line"><span class="keyword">inoremap</span> <span class="symbol">&lt;return&gt;</span> <span class="symbol">&lt;C-R&gt;</span>=Ulti_ExpandOrEnter()<span class="symbol">&lt;CR&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="YCM-amp-Eclim"><a href="#YCM-amp-Eclim" class="headerlink" title="YCM &amp; Eclim"></a>YCM &amp; Eclim</h2><p>YCM配合Eclim可以实现对Java代码的自动提示，首先需要下载<a href="http://eclim.org/install.html" target="_blank" rel="noopener">Eclim</a>，下载好后执行<code>java -jar eclim_2.4.1.jar</code>，卸载的话，后面再加个参数<code>uninstaller</code>就行。按提示一步步安装就好了，安装好后首先要启动eclimd，它存放在eclipse的根目录下。</p>
+<p>对不同的自动补全插件eclim都提供了<a href="http://eclim.org/vim/code_completion.html" target="_blank" rel="noopener">配置方法</a>，对于YCM我们只需要在vimrc中添加一行<code>let g:EclimCompletionMethod = &#39;omnifunc&#39;</code>就可以了。</p>
+<p>打开vim执行<code>:ProjectCreate /path/to/project -n java</code>创建一个新的工程。这个工程的结构和eclipse类似。<code>:ProjectList</code>命令可以查看工程列表。</p>
+<p>这个插件很有意思，可以在eclipse中嵌入vim，又可以在vim中享受eclipse一样的自动补全。对于Java来说，提供了一些以<code>Java</code>，<code>Project</code>，<code>New</code>，<code>Mvn</code>为前缀的命名。可以输入<code>:Java</code>按Tab键尝试一下。不过，我觉得还是使用eclipse配合viPlugin插件更方便些。</p>
+<p>参考：</p>
+<ol>
+<li><a href="http://www.cnblogs.com/zhongcq/p/3630047.html" target="_blank" rel="noopener">Vim自动补全插件—-YouCompleteMe安装与配置</a></li>
+<li><a href="http://blog.csdn.net/leaf5022/article/details/21290509" target="_blank" rel="noopener">Vim智能补全插件YouCompleteMe安装</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vim/" rel="tag">Vim</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.481Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/07/25/logical-delete/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          逻辑删除
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/19/shiro-cas-single-sign-on/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Shiro &amp; CAS 实现单点登录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#完全安装"><span class="toc-number">2.1.</span> <span class="toc-text">完全安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ubuntu-Linux-X64-超快安装"><span class="toc-number">2.2.</span> <span class="toc-text">Ubuntu Linux X64 超快安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置"><span class="toc-number">3.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#YCM-amp-Eclim"><span class="toc-number">4.</span> <span class="toc-text">YCM &amp; Eclim</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2015/05/22/vim-install-youcompleteme-plugin/';
+  this.page.identifier = '2015/05/22/vim-install-youcompleteme-plugin/';
+  this.page.title = 'Vim 自动补全插件 YouCompleteMe 安装与配置';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

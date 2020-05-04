@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Android应用结构分析 | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A blog of howiefh.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android应用结构分析">
+<meta property="og:url" content="http://howiefh.github.io/2014/03/03/android-note-1---application-fundamentals/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="A blog of howiefh.">
+<meta property="article:published_time" content="2014-03-03T03:26:29.000Z">
+<meta property="article:modified_time" content="2020-05-02T14:28:14.467Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-android-note-1---application-fundamentals" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2014/03/03/android-note-1---application-fundamentals/" class="article-date">
+  <time class="dt-published" datetime="2014-03-03T03:26:29.000Z" itemprop="datePublished">2014-03-03</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Android应用结构分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Android项目命令"><span class="toc-number">1.</span> <span class="toc-text">创建Android项目命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android项目结构"><span class="toc-number">2.</span> <span class="toc-text">Android项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#R-java文件"><span class="toc-number">3.</span> <span class="toc-text">R.java文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#res目录"><span class="toc-number">4.</span> <span class="toc-text">res目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AndroidManifest-xml清单文件"><span class="toc-number">5.</span> <span class="toc-text">AndroidManifest.xml清单文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用程序权限说明"><span class="toc-number">6.</span> <span class="toc-text">应用程序权限说明</span></a></li></ol>
+		
+		</div>
+		
+        <h2 id="创建Android项目命令"><a href="#创建Android项目命令" class="headerlink" title="创建Android项目命令"></a>创建Android项目命令</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android create project -n HelloWorld -t <span class="number">8</span> -<span class="selector-tag">p</span> HelloWorld -k org<span class="selector-class">.crazyit</span><span class="selector-class">.helloworld</span> -<span class="selector-tag">a</span> HelloWorld</span><br></pre></td></tr></table></figure>
+<p>create project：手动创建一个Android应用子命令</p>
+<ul>
+<li>-n：指定创建项目名称；</li>
+<li>-t：指定项目针对的Android平台；</li>
+<li>-p：指定项目的保存路径；</li>
+<li>-k：指定该项目的包名；</li>
+<li>-a：指定Activity的名称；</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="Android项目结构"><a href="#Android项目结构" class="headerlink" title="Android项目结构"></a>Android项目结构</h2><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Hello World</span><br><span class="line">|<span class="string">—libs</span></span><br><span class="line">|<span class="string">—res</span></span><br><span class="line">|<span class="string">     </span>|<span class="string">—drawable-ldpi、drawable-mdpi、drawable-hdpi、drawable-xhdpi</span></span><br><span class="line">|<span class="string">     </span>|<span class="string">—layout</span></span><br><span class="line">|<span class="string">     </span>|<span class="string">—values</span></span><br><span class="line">|<span class="string">—src</span></span><br><span class="line">|<span class="string">     </span>|<span class="string">—org</span></span><br><span class="line"><span class="string">            </span>|<span class="string">—crazyit</span></span><br><span class="line"><span class="string">                  </span>|<span class="string">—helloworld</span></span><br><span class="line">|<span class="string">—AndroidManifest.xml</span></span><br></pre></td></tr></table></figure>
+<p>上面的结构目录中res目录、src目录、AndroidManifest.xml文件是Android项目必需的。其它文件都是可选的。</p>
+<ul>
+<li>res目录：存放Android项目中的各种资源文件；<ul>
+<li>layout：存放界面布局文件；</li>
+<li>values：存放各种XML格式的资源文件，如Strings.xml，colors.xml，dimens.xml等；</li>
+<li>drawable-ldpi、drawable-mdpi、drawable-hdpi和drawable-xhdpi：分别存放低分辨率、中分辨率、高分辨率和超高分辨率的4种图片文件；</li>
+</ul>
+</li>
+<li>src目录：保存Java源文件；</li>
+<li>AndroidManifest.xml文件：Android项目的清单文件，控制Android应用的名称、图标、访问权限等属性，配置Activity，Service，ContentProvider，BroadcastReceiver 四大组件；</li>
+<li>bin目录：存放生成的目标文件，如Java二进制文件、资源打包文件（<code>.ap_后缀</code>）等；</li>
+<li>gen目录：保存自动生成的、位于Andorid项目包下的R.java文件；</li>
+</ul>
+<p>注意：除此之外，还有build.xml文件，这是Android为该项目提供的一个Ant生成文件。通过该文件，开发者可以通过Ant来生成、安装Android项目。</p>
+<h2 id="R-java文件"><a href="#R-java文件" class="headerlink" title="R.java文件"></a>R.java文件</h2><p>R.java文件是由aapt工具根据应用中的资源文件来自动生成的，理解成Android应用的资源字典。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="symbol">R</span>&#123;</span><br><span class="line">        <span class="keyword">public</span> static <span class="keyword">final</span> <span class="keyword">class</span> <span class="symbol">attr</span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">public</span> static <span class="keyword">final</span> <span class="keyword">class</span> <span class="symbol">drawable</span>&#123;</span><br><span class="line">                <span class="keyword">public</span> static <span class="keyword">final</span> <span class="built_in">int</span> ic_launcher = <span class="number">0x7f020000</span>;</span><br><span class="line">        &#125;</span><br><span class="line">       <span class="keyword">public</span> static <span class="keyword">final</span> <span class="keyword">class</span> <span class="symbol">id</span>&#123;</span><br><span class="line">                <span class="keyword">public</span> static <span class="keyword">final</span> <span class="built_in">int</span> ok = <span class="number">0x7f05001</span>;</span><br><span class="line">                <span class="keyword">public</span> static <span class="keyword">final</span> <span class="built_in">int</span> show = <span class="number">0x7f05000</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">public</span> static <span class="keyword">final</span> <span class="keyword">class</span> <span class="symbol">layout</span>&#123;</span><br><span class="line">                <span class="keyword">public</span> static finla <span class="built_in">int</span> main=<span class="number">0x7f03000</span>;</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每类资源对应R类中的一个内部类，如所有布局文件对应layout内部类；<br>每个具体的资源对应内部类的一个public static final int类型的Field；</p>
+<h2 id="res目录"><a href="#res目录" class="headerlink" title="res目录"></a>res目录</h2><p>Android项目允许分别在Java代码、XML代码中使用资源文件中的资源：</p>
+<ul>
+<li>在Java代码中使用资源：R.&lt;资源类型&gt;.&lt;资源名称&gt;；<code>R.string.app_name</code>；</li>
+<li>在XML文件中使用资源：@&lt;资源对应的内部类的类名&gt;/&lt;资源项的名称&gt;；<code>@string/app_name</code>；</li>
+</ul>
+<p>例外：按如下方式分配标识符：@+id/&lt;标示符代号&gt;。android:id=”@+id/ok”为一个组件分配标示符，接下来在应用程序中引用该标示符：</p>
+<ul>
+<li>在Java代码中获取该组件：通过findViewById()方法</li>
+<li>在XML文件中获取该组件：@id/&lt;标示符代号&gt;</li>
+</ul>
+<h2 id="AndroidManifest-xml清单文件"><a href="#AndroidManifest-xml清单文件" class="headerlink" title="AndroidManifest.xml清单文件"></a>AndroidManifest.xml清单文件</h2><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="meta">&lt;?xml version="1.0" encoding="GBK"?&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span></span><br><span class="line"><span class="xml">              package="org.crazyit.helloworld"<span class="comment">&lt;!--包名--&gt;</span></span></span><br><span class="line"><span class="xml">              android:versionCode="1"</span></span><br><span class="line"><span class="xml">              android:versionName="1.0"&gt;</span></span><br><span class="line"><span class="xml">              <span class="comment">&lt;!--应用程序标签，图标--&gt;</span></span></span><br><span class="line"><span class="xml">              <span class="tag">&lt;<span class="name">application</span> <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span></span></span></span><br><span class="line"><span class="xml">                      android:ico="@drawable/ic_launcher"&gt;</span></span><br><span class="line"><span class="xml">                      <span class="comment">&lt;!--应用程序组件--&gt;</span></span></span><br><span class="line"><span class="xml">                      <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">"HelloWorld"</span></span></span></span><br><span class="line"><span class="xml">                              android:label="@string/app_name"&gt;</span></span><br><span class="line"><span class="xml">                              <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span></span><br><span class="line"><span class="xml">                                       <span class="comment">&lt;!--指定程序入口--&gt;</span></span></span><br><span class="line"><span class="xml">                                       <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">                                       <span class="comment">&lt;!--指定加载该应用时运行该Activity--&gt;</span></span></span><br><span class="line"><span class="xml">                                       <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span>/&gt;</span></span></span><br><span class="line"><span class="xml">                              <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span></span><br><span class="line"><span class="xml">                      <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span></span><br><span class="line"><span class="xml">                <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>AndroidManifext.xml文件包含如下信息：</p>
+<ul>
+<li>应用程序包名，该包名也会作为该应用的唯一标识；</li>
+<li>应用程序所包含的组件，如Activity、Service、BroadcastReceiver和ContentProvider等；</li>
+<li>应用程序兼容的最低版本；</li>
+<li>应用程序使用系统所需的权限声明；</li>
+<li>其他程序访问该程序所需要的权限；</li>
+</ul>
+<h2 id="应用程序权限说明"><a href="#应用程序权限说明" class="headerlink" title="应用程序权限说明"></a>应用程序权限说明</h2><p>声明应用程序本身需要的权限：为&lt;manifest…/&gt;元素添加&lt;uses-permission…/&gt;子元素可维程序本身声明权限；</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--声明该应用本身印有打电话的权限--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.CALL_PHONE"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>声明调用该应用所需要的权限：通过为应用程序各组件元素，如&lt;activity…/&gt;元素添加&lt;uses-permission…/&gt;子元素即可声明调用该程序所需要的权限</p>
+<p>android权限</p>
+<table>
+<thead>
+<tr>
+<th>访问登记属性</th>
+<th>android.permission.ACCESS_CHECKIN_PROPERTIES ，读取或写入登记check-in数据库属性表的权限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>获取错略位置</td>
+<td>android.permission.ACCESS_COARSE_LOCATION，通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米</td>
+</tr>
+<tr>
+<td>获取精确位置</td>
+<td>android.permission.ACCESS_FINE_LOCATION，通过GPS芯片接收卫星的定位信息，定位精度达10米以内</td>
+</tr>
+<tr>
+<td>访问定位额外命令</td>
+<td>android.permission.ACCESS_LOCATION_EXTRA_COMMANDS，允许程序访问额外的定位提供者指令</td>
+</tr>
+<tr>
+<td>获取模拟定位信息</td>
+<td>android.permission.ACCESS_MOCK_LOCATION，获取模拟定位信息，一般用于帮助开发者调试应用</td>
+</tr>
+<tr>
+<td>获取网络状态</td>
+<td>android.permission.ACCESS_NETWORK_STATE，获取网络信息状态，如当前的网络连接是否有效</td>
+</tr>
+<tr>
+<td>访问Surface Flinger</td>
+<td>android.permission.ACCESS_SURFACE_FLINGER，Android平台上底层的图形显示支持，一般用于游戏或照相机预览界面和底层模式的屏幕截图</td>
+</tr>
+<tr>
+<td>获取WiFi状态</td>
+<td>android.permission.ACCESS_WIFI_STATE，获取当前WiFi接入的状态以及WLAN热点的信息</td>
+</tr>
+<tr>
+<td>账户管理</td>
+<td>android.permission.ACCOUNT_MANAGER，获取账户验证信息，主要为GMail账户信息，只有系统级进程才能访问的权限</td>
+</tr>
+<tr>
+<td>验证账户</td>
+<td>android.permission.AUTHENTICATE_ACCOUNTS，允许一个程序通过账户验证方式访问账户管理ACCOUNT_MANAGER相关信息</td>
+</tr>
+<tr>
+<td>电量统计</td>
+<td>android.permission.BATTERY_STATS，获取电池电量统计信息</td>
+</tr>
+<tr>
+<td>绑定小插件</td>
+<td>android.permission.BIND_APPWIDGET，允许一个程序告诉appWidget服务需要访问小插件的数据库，只有非常少的应用才用到此权限</td>
+</tr>
+<tr>
+<td>绑定设备管理</td>
+<td>android.permission.BIND_DEVICE_ADMIN，请求系统管理员接收者receiver，只有系统才能使用</td>
+</tr>
+<tr>
+<td>绑定输入法</td>
+<td>android.permission.BIND_INPUT_METHOD ，请求InputMethodService服务，只有系统才能使用</td>
+</tr>
+<tr>
+<td>绑定RemoteView</td>
+<td>android.permission.BIND_REMOTEVIEWS，必须通过RemoteViewsService服务来请求，只有系统才能用</td>
+</tr>
+<tr>
+<td>绑定壁纸</td>
+<td>android.permission.BIND_WALLPAPER，必须通过WallpaperService服务来请求，只有系统才能用</td>
+</tr>
+<tr>
+<td>使用蓝牙</td>
+<td>android.permission.BLUETOOTH，允许程序连接配对过的蓝牙设备</td>
+</tr>
+<tr>
+<td>蓝牙管理</td>
+<td>android.permission.BLUETOOTH_ADMIN，允许程序进行发现和配对新的蓝牙设备</td>
+</tr>
+<tr>
+<td>变成砖头</td>
+<td>android.permission.BRICK，能够禁用手机，非常危险，顾名思义就是让手机变成砖头</td>
+</tr>
+<tr>
+<td>应用删除时广播</td>
+<td>android.permission.BROADCAST_PACKAGE_REMOVED，当一个应用在删除时触发一个广播</td>
+</tr>
+<tr>
+<td>收到短信时广播</td>
+<td>android.permission.BROADCAST_SMS，当收到短信时触发一个广播</td>
+</tr>
+<tr>
+<td>连续广播</td>
+<td>android.permission.BROADCAST_STICKY，允许一个程序收到广播后快速收到下一个广播</td>
+</tr>
+<tr>
+<td>WAP PUSH广播</td>
+<td>android.permission.BROADCAST_WAP_PUSH，WAP PUSH服务收到后触发一个广播</td>
+</tr>
+<tr>
+<td>拨打电话</td>
+<td>android.permission.CALL_PHONE，允许程序从非系统拨号器里输入电话号码</td>
+</tr>
+<tr>
+<td>通话权限</td>
+<td>android.permission.CALL_PRIVILEGED，允许程序拨打电话，替换系统的拨号器界面</td>
+</tr>
+<tr>
+<td>拍照权限</td>
+<td>android.permission.CAMERA，允许访问摄像头进行拍照</td>
+</tr>
+<tr>
+<td>改变组件状态</td>
+<td>android.permission.CHANGE_COMPONENT_ENABLED_STATE，改变组件是否启用状态</td>
+</tr>
+<tr>
+<td>改变配置</td>
+<td>android.permission.CHANGE_CONFIGURATION，允许当前应用改变配置，如定位</td>
+</tr>
+<tr>
+<td>改变网络状态</td>
+<td>android.permission.CHANGE_NETWORK_STATE，改变网络状态如是否能联网</td>
+</tr>
+<tr>
+<td>改变WiFi多播状态</td>
+<td>android.permission.CHANGE_WIFI_MULTICAST_STATE，改变WiFi多播状态</td>
+</tr>
+<tr>
+<td>改变WiFi状态</td>
+<td>android.permission.CHANGE_WIFI_STATE，改变WiFi状态</td>
+</tr>
+<tr>
+<td>清除应用缓存</td>
+<td>android.permission.CLEAR_APP_CACHE，清除应用缓存</td>
+</tr>
+<tr>
+<td>清除用户数据</td>
+<td>android.permission.CLEAR_APP_USER_DATA，清除应用的用户数据</td>
+</tr>
+<tr>
+<td>底层访问权限</td>
+<td>android.permission.CWJ_GROUP，允许CWJ账户组访问底层信息</td>
+</tr>
+<tr>
+<td>手机优化大师扩展权限</td>
+<td>android.permission.CELL_PHONE_MASTER_EX，手机优化大师扩展权限</td>
+</tr>
+<tr>
+<td>控制定位更新</td>
+<td>android.permission.CONTROL_LOCATION_UPDATES，允许获得移动网络定位信息改变</td>
+</tr>
+<tr>
+<td>删除缓存文件</td>
+<td>android.permission.DELETE_CACHE_FILES，允许应用删除缓存文件</td>
+</tr>
+<tr>
+<td>删除应用</td>
+<td>android.permission.DELETE_PACKAGES，允许程序删除应用</td>
+</tr>
+<tr>
+<td>电源管理</td>
+<td>android.permission.DEVICE_POWER，允许访问底层电源管理</td>
+</tr>
+<tr>
+<td>应用诊断</td>
+<td>android.permission.DIAGNOSTIC，允许程序到RW到诊断资源</td>
+</tr>
+<tr>
+<td>禁用键盘锁</td>
+<td>android.permission.DISABLE_KEYGUARD，允许程序禁用键盘锁</td>
+</tr>
+<tr>
+<td>转存系统信息</td>
+<td>android.permission.DUMP，允许程序获取系统dump信息从系统服务</td>
+</tr>
+<tr>
+<td>状态栏控制</td>
+<td>android.permission.EXPAND_STATUS_BAR，允许程序扩展或收缩状态栏</td>
+</tr>
+<tr>
+<td>工厂测试模式</td>
+<td>android.permission.FACTORY_TEST，允许程序运行工厂测试模式</td>
+</tr>
+<tr>
+<td>使用闪光灯</td>
+<td>android.permission.FLASHLIGHT，允许访问闪光灯</td>
+</tr>
+<tr>
+<td>强制后退</td>
+<td>android.permission.FORCE_BACK，允许程序强制使用back后退按键，无论Activity是否在顶层</td>
+</tr>
+<tr>
+<td>访问账户Gmail列表</td>
+<td>android.permission.GET_ACCOUNTS，访问GMail账户列表</td>
+</tr>
+<tr>
+<td>获取应用大小</td>
+<td>android.permission.GET_PACKAGE_SIZE，获取应用的文件大小</td>
+</tr>
+<tr>
+<td>获取任务信息</td>
+<td>android.permission.GET_TASKS，允许程序获取当前或最近运行的应用</td>
+</tr>
+<tr>
+<td>允许全局搜索</td>
+<td>android.permission.GLOBAL_SEARCH，允许程序使用全局搜索功能</td>
+</tr>
+<tr>
+<td>硬件测试</td>
+<td>android.permission.HARDWARE_TEST，访问硬件辅助设备，用于硬件测试</td>
+</tr>
+<tr>
+<td>注射事件</td>
+<td>android.permission.INJECT_EVENTS，允许访问本程序的底层事件，获取按键、轨迹球的事件流</td>
+</tr>
+<tr>
+<td>安装定位提供</td>
+<td>android.permission.INSTALL_LOCATION_PROVIDER，安装定位提供</td>
+</tr>
+<tr>
+<td>安装应用程序</td>
+<td>android.permission.INSTALL_PACKAGES，允许程序安装应用</td>
+</tr>
+<tr>
+<td>内部系统窗口</td>
+<td>android.permission.INTERNAL_SYSTEM_WINDOW，允许程序打开内部窗口，不对第三方应用程序开放此权限</td>
+</tr>
+<tr>
+<td>访问网络</td>
+<td>android.permission.INTERNET，访问网络连接，可能产生GPRS流量</td>
+</tr>
+<tr>
+<td>结束后台进程</td>
+<td>android.permission.KILL_BACKGROUND_PROCESSES，允许程序调用killBackgroundProcesses(String).方法结束后台进程</td>
+</tr>
+<tr>
+<td>管理账户</td>
+<td>android.permission.MANAGE_ACCOUNTS，允许程序管理AccountManager中的账户列表</td>
+</tr>
+<tr>
+<td>管理程序引用</td>
+<td>android.permission.MANAGE_APP_TOKENS，管理创建、摧毁、Z轴顺序，仅用于系统</td>
+</tr>
+<tr>
+<td>高级权限</td>
+<td>android.permission.MTWEAK_USER，允许mTweak用户访问高级系统权限</td>
+</tr>
+<tr>
+<td>社区权限</td>
+<td>android.permission.MTWEAK_FORUM，允许使用mTweak社区权限</td>
+</tr>
+<tr>
+<td>软格式化</td>
+<td>android.permission.MASTER_CLEAR，允许程序执行软格式化，删除系统配置信息</td>
+</tr>
+<tr>
+<td>修改声音设置</td>
+<td>android.permission.MODIFY_AUDIO_SETTINGS，修改声音设置信息</td>
+</tr>
+<tr>
+<td>修改电话状态</td>
+<td>android.permission.MODIFY_PHONE_STATE，修改电话状态，如飞行模式，但不包含替换系统拨号器界面</td>
+</tr>
+<tr>
+<td>格式化文件系统</td>
+<td>android.permission.MOUNT_FORMAT_FILESYSTEMS，格式化可移动文件系统，比如格式化清空SD卡</td>
+</tr>
+<tr>
+<td>挂载文件系统</td>
+<td>android.permission.MOUNT_UNMOUNT_FILESYSTEMS，挂载、反挂载外部文件系统</td>
+</tr>
+<tr>
+<td>允许NFC通讯</td>
+<td>android.permission.NFC，允许程序执行NFC近距离通讯操作，用于移动支持</td>
+</tr>
+<tr>
+<td>永久Activity</td>
+<td>android.permission.PERSISTENT_ACTIVITY，创建一个永久的Activity，该功能标记为将来将被移除</td>
+</tr>
+<tr>
+<td>处理拨出电话</td>
+<td>android.permission.PROCESS_OUTGOING_CALLS，允许程序监视，修改或放弃播出电话</td>
+</tr>
+<tr>
+<td>读取日程提醒</td>
+<td>android.permission.READ_CALENDAR，允许程序读取用户的日程信息</td>
+</tr>
+<tr>
+<td>读取联系人</td>
+<td>android.permission.READ_CONTACTS，允许应用访问联系人通讯录信息</td>
+</tr>
+<tr>
+<td>屏幕截图</td>
+<td>android.permission.READ_FRAME_BUFFER，读取帧缓存用于屏幕截图</td>
+</tr>
+<tr>
+<td>读取收藏夹和历史记录</td>
+<td>com.android.browser.permission.READ_HISTORY_BOOKMARKS，读取浏览器收藏夹和历史记录</td>
+</tr>
+<tr>
+<td>读取输入状态</td>
+<td>android.permission.READ_INPUT_STATE，读取当前键的输入状态，仅用于系统</td>
+</tr>
+<tr>
+<td>读取系统日志</td>
+<td>android.permission.READ_LOGS，读取系统底层日志</td>
+</tr>
+<tr>
+<td>读取电话状态</td>
+<td>android.permission.READ_PHONE_STATE，访问电话状态</td>
+</tr>
+<tr>
+<td>读取短信内容</td>
+<td>android.permission.READ_SMS，读取短信内容</td>
+</tr>
+<tr>
+<td>读取同步设置</td>
+<td>android.permission.READ_SYNC_SETTINGS，读取同步设置，读取Google在线同步设置</td>
+</tr>
+<tr>
+<td>读取同步状态</td>
+<td>android.permission.READ_SYNC_STATS，读取同步状态，获得Google在线同步状态</td>
+</tr>
+<tr>
+<td>重启设备</td>
+<td>android.permission.REBOOT，允许程序重新启动设备</td>
+</tr>
+<tr>
+<td>开机自动允许</td>
+<td>android.permission.RECEIVE_BOOT_COMPLETED，允许程序开机自动运行</td>
+</tr>
+<tr>
+<td>接收彩信</td>
+<td>android.permission.RECEIVE_MMS，接收彩信</td>
+</tr>
+<tr>
+<td>接收短信</td>
+<td>android.permission.RECEIVE_SMS，接收短信</td>
+</tr>
+<tr>
+<td>接收Wap Push</td>
+<td>android.permission.RECEIVE_WAP_PUSH，接收WAP PUSH信息</td>
+</tr>
+<tr>
+<td>录音</td>
+<td>android.permission.RECORD_AUDIO，录制声音通过手机或耳机的麦克</td>
+</tr>
+<tr>
+<td>排序系统任务</td>
+<td>android.permission.REORDER_TASKS，重新排序系统Z轴运行中的任务</td>
+</tr>
+<tr>
+<td>结束系统任务</td>
+<td>android.permission.RESTART_PACKAGES，结束任务通过restartPackage(String)方法，该方式将在外来放弃</td>
+</tr>
+<tr>
+<td>发送短信</td>
+<td>android.permission.SEND_SMS，发送短信</td>
+</tr>
+<tr>
+<td>设置Activity观察其</td>
+<td>android.permission.SET_ACTIVITY_WATCHER，设置Activity观察器一般用于monkey测试</td>
+</tr>
+<tr>
+<td>设置闹铃提醒</td>
+<td>com.android.alarm.permission.SET_ALARM，设置闹铃提醒</td>
+</tr>
+<tr>
+<td>设置总是退出</td>
+<td>android.permission.SET_ALWAYS_FINISH，设置程序在后台是否总是退出</td>
+</tr>
+<tr>
+<td>设置动画缩放</td>
+<td>android.permission.SET_ANIMATION_SCALE，设置全局动画缩放</td>
+</tr>
+<tr>
+<td>设置调试程序</td>
+<td>android.permission.SET_DEBUG_APP，设置调试程序，一般用于开发</td>
+</tr>
+<tr>
+<td>设置屏幕方向</td>
+<td>android.permission.SET_ORIENTATION，设置屏幕方向为横屏或标准方式显示，不用于普通应用</td>
+</tr>
+<tr>
+<td>设置应用参数</td>
+<td>android.permission.SET_PREFERRED_APPLICATIONS，设置应用的参数，已不再工作具体查看addPackageToPreferred(String) 介绍</td>
+</tr>
+<tr>
+<td>设置进程限制</td>
+<td>android.permission.SET_PROCESS_LIMIT，允许程序设置最大的进程数量的限制</td>
+</tr>
+<tr>
+<td>设置系统时间</td>
+<td>android.permission.SET_TIME，设置系统时间</td>
+</tr>
+<tr>
+<td>设置系统时区</td>
+<td>android.permission.SET_TIME_ZONE，设置系统时区</td>
+</tr>
+<tr>
+<td>设置桌面壁纸</td>
+<td>android.permission.SET_WALLPAPER，设置桌面壁纸</td>
+</tr>
+<tr>
+<td>设置壁纸建议</td>
+<td>android.permission.SET_WALLPAPER_HINTS，设置壁纸建议</td>
+</tr>
+<tr>
+<td>发送永久进程信号</td>
+<td>android.permission.SIGNAL_PERSISTENT_PROCESSES，发送一个永久的进程信号</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.467Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/03/03/android-note-2---android-basic-components/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android应用的基本组件介绍
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/02/09/connot-open-software/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">解决应用程序打不开</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Android项目命令"><span class="toc-number">1.</span> <span class="toc-text">创建Android项目命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android项目结构"><span class="toc-number">2.</span> <span class="toc-text">Android项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#R-java文件"><span class="toc-number">3.</span> <span class="toc-text">R.java文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#res目录"><span class="toc-number">4.</span> <span class="toc-text">res目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AndroidManifest-xml清单文件"><span class="toc-number">5.</span> <span class="toc-text">AndroidManifest.xml清单文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用程序权限说明"><span class="toc-number">6.</span> <span class="toc-text">应用程序权限说明</span></a></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2014/03/03/android-note-1---application-fundamentals/';
+  this.page.identifier = '2014/03/03/android-note-1---application-fundamentals/';
+  this.page.title = 'Android应用结构分析';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>

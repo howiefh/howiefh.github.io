@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>深入理解Java虚拟机笔记一（Java内存区域与内存溢出异常） | 净土</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="深入理解Java虚拟机;Java内存区域与内存溢出异常;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Java虚拟机笔记一（Java内存区域与内存溢出异常）">
+<meta property="og:url" content="http://howiefh.github.io/2015/04/07/jvm-note-1/index.html">
+<meta property="og:site_name" content="净土">
+<meta property="og:description" content="深入理解Java虚拟机;Java内存区域与内存溢出异常;">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/jvm-model.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/jvm-reference-handler.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/jvm-direct-reference.jpg">
+<meta property="article:published_time" content="2015-04-07T15:31:59.000Z">
+<meta property="article:modified_time" content="2020-05-04T11:32:41.976Z">
+<meta property="article:author" content="howiefh">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/howiefh/assets/img/jvm-model.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="净土" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?56d2899c5e919fbf4a7b00de5d1c31dd";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">净土</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">乐不在外而在心，心以为乐，则是境皆乐；心以为苦，则无境不苦。</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-github-link" class="nav-icon" href="https://github.com/howiefh" title="Github" target="_blank"></a>
+        
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://howiefh.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-jvm-note-1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/04/07/jvm-note-1/" class="article-date">
+  <time class="dt-published" datetime="2015-04-07T15:31:59.000Z" itemprop="datePublished">2015-04-07</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      深入理解Java虚拟机笔记一（Java内存区域与内存溢出异常）
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#运行时数据区域"><span class="toc-number">1.</span> <span class="toc-text">运行时数据区域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#程序计数器"><span class="toc-number">1.1.</span> <span class="toc-text">程序计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java虚拟机栈"><span class="toc-number">1.2.</span> <span class="toc-text">Java虚拟机栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本地方法栈"><span class="toc-number">1.3.</span> <span class="toc-text">本地方法栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java堆"><span class="toc-number">1.4.</span> <span class="toc-text">Java堆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法区"><span class="toc-number">1.5.</span> <span class="toc-text">方法区</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#运行时常量池"><span class="toc-number">1.5.1.</span> <span class="toc-text">运行时常量池</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接内存"><span class="toc-number">1.6.</span> <span class="toc-text">直接内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">1.7.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HotSpot虚拟机对象探秘"><span class="toc-number">2.</span> <span class="toc-text">HotSpot虚拟机对象探秘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象的创建"><span class="toc-number">2.1.</span> <span class="toc-text">对象的创建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象的内存布局"><span class="toc-number">2.2.</span> <span class="toc-text">对象的内存布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象的访问定位"><span class="toc-number">2.3.</span> <span class="toc-text">对象的访问定位</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">3.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java堆溢出"><span class="toc-number">3.1.</span> <span class="toc-text">Java堆溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟机栈和本地方法栈溢出"><span class="toc-number">3.2.</span> <span class="toc-text">虚拟机栈和本地方法栈溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法区和运行时常量池溢出"><span class="toc-number">3.3.</span> <span class="toc-text">方法区和运行时常量池溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本机直接内存溢出"><span class="toc-number">3.4.</span> <span class="toc-text">本机直接内存溢出</span></a></li></ol></li></ol>
+		
+		</div>
+		
+        <h2 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h2><p>Java虚拟机在执行Java程序的过程中，会把内存分为不同的数据区域。如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/jvm-model.jpg" alt="Java虚拟机运行时数据区"></p>
+<a id="more"></a>
+
+<h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p>它是一块较小的内存空间，作用可以当做是<strong>当前线程所执行的字节码的行号指示器</strong>。在虚拟机的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选取下一跳需要执行的字节码指令，<strong>分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器</strong>（字节码行号记录器）。</p>
+<p>因为java虚拟机的多线程是通过时间片轮转占用cpu，所以一个处理器只会执行一条线程的指令。为了线程切换后能恢复到正确的位置，每个线程都需要一个独立的程序计数器，这样能使各个线程之间的计数器互不影响，独立存储。这类区域为<strong>线程私有内存</strong>。</p>
+<ul>
+<li>如果线程正在执行一个 Java 方法，这个计数器记录的是正在执行的虚拟机字节码指令地址</li>
+<li>如果线程正在执行的是 Native 方法，这个计数器值为空（Undefined）</li>
+</ul>
+<p><strong>此内存区域是唯一一个在 Java 虚拟机规范中没有规定任何 OOM 情况的区域</strong>。</p>
+<h3 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h3><p>Java虚拟机栈也是<strong>线程私有</strong>的，它的生命周期和线程相同。</p>
+<p>Java虚拟机栈描述的是<strong>Java方法执行的内存模型</strong>：每个方法被执行的时候都会创建一个栈帧，用于存储局部变量表、操作栈、动态链接、方法出口等信息。每一个方法被调用直至执行完成的过程就对应着一个栈帧在虚拟机中从入栈到出栈的过程。调用一个方法时创建新的栈帧并压入栈顶部，方法执行完后，这个栈帧就会弹出栈帧的元素作为这个方法的返回值，并清除这个栈帧，Java栈的栈顶就是当前正在执行的活动栈，也就是当前正在执行的方法，PC寄存器也会指向这个地址。</p>
+<p>局部变量表存放了基本数据类型、对象引用和returnAddress类型（指向一条字节码指令的地址）。其中64位长度的long和double类型的数据会占用2个局部变量空间（slot），其余数据类型只占用1个。局部变量表所需的内存空间在编译期间完成分配。</p>
+<p>在Java虚拟机规范中，对这个区域规定了两种异常情况：</p>
+<ul>
+<li><strong>如果线程请求的栈深度太深，超出了虚拟机所允许的深度，就会出现StackOverFlowError（比如无限递归。因为每一层栈帧都占用一定空间，而 Xss 规定了栈的最大空间，超出这个值就会报错）</strong></li>
+<li><strong>虚拟机栈可以动态扩展，如果扩展到无法申请足够的内存空间，会出现OOM</strong></li>
+</ul>
+<h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><p>本地方法栈与虚拟机栈的作用是非常类似的，区别是<strong>虚拟机栈为虚拟机执行Java方法（也就是字节码）服务，而本地方法栈则是为虚拟机使用到的Native方法服务</strong>。因为虚拟机规范没有对这块有太多规定，所以不同的虚拟机可以自由实现它。有的虚拟机（Sun的HotSpot虚拟机）直接就把<strong>本地方法栈和虚拟机栈合二为一</strong>了。</p>
+<h3 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h3><p>对于大多数应用来说，Java堆是Java虚拟机所管理的内存中最大的一块，它是<strong>所有线程共享的，在虚拟机启动时候创建</strong>。Java堆唯一的目的就是<strong>存放对象实例（当然还有数组）</strong>，Java堆是垃圾收集器管理的主要区域。堆可分为老年代和新生代，再细分还可以分为Eden空间、From Survivor空间、To Survivor空间等。主流虚拟机都可扩展（-Xmx和-Xms）</p>
+<p><strong>如果堆上没有内存可以完成对象实例的分配，并且堆已经达到了最大容量，无法向OS继续申请的时候，就会抛出OOM异常</strong>。</p>
+<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>方法区与Java堆一样，是<strong>所有线程共享</strong>的内存区域，它用于存储<strong>已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码</strong>等数据。</p>
+<p>对于习惯在 HotSpot虚拟机上开发部署程序的开发者来说，很多人倾向于把方法区成为“永久代（Perm Generation）”，但<strong>本质上两者并不等价，仅仅是因为 HotSpot 团队选择把 GC 分代收集扩展到方法区，或者说使用永久代来实现方法区而已</strong>，目的是为了让 HotSpot 的垃圾回收器可以像管理 Java 堆一样管理这部分内存，不能再编写这部分内存的内存管理代码。对于其他虚拟机（比如 JRockit、IMB J9）来说，是不存在永久代的概念的。</p>
+<p>其实 JVM 规范并没有规定如何实现方法区，但是从目前状况来看：<strong>使用永久代来实现方法区不是一个好的做法。因为这样更容易遇到内存溢出问题（永久代有-XX:MaxPermSize 的上限，而 J9和 Jrockit 只要没有触碰到进程可用内存的上限，例如32位的4GB，就不会出现问题）</strong>，同时有极少数方法（比如 String.intern()，这个函数能直接操纵方法区中的常量池）会因为这个原因在不同虚拟机有不同的表现。因此，HotSpot 团队有了<em>放弃永久代并逐步改为采用 Native Memory 来实现方法区的规划</em>，在目前已经发布的 JDK1.7 的 HotSpot 中，已经把放在永久代的字符串常量池移出。</p>
+<p><strong>当方法区无法满足分寸分配需求时，就会抛出OOM异常</strong>。</p>
+<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><p><strong>方法区的一部分</strong>。class文件中除了有类的版本、字段、方法、接口等描述信息外，还有一项信息是常量池(class文件中)，用于存放编译期生成的各种字面量和符号引用，这部分内容将在<strong>类加载后存放到方法区的运行时常量池中</strong>。除了保存Class文件中描述的符号引用外，还会把翻译出来的直接引用也存储在运行时常量池中。</p>
+<p>运行时常量池相对于class文件常量池的另外一个重要特性是具备动态性，Java语言并不要求常量一定是在编译期产生，也就是说，并非是预置入class文件中常量池的内容内能进入方法区的运行时常量池，<strong>运行期间也可以将新的常量放入池中，用的比较多是有String.intern()</strong>，可以去看下文档。说的很清楚：</p>
+<h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p><strong>直接内存并不是虚拟机运行时数据区的一部分</strong>，也不是Java虚拟机规范中定义的内存区域，但是这部分内存也被频繁地使用，而且也可能导致OutOfMemoryError异常出现。</p>
+<p>JDK 1.4中新加入了NIO(NEW Input/Output)类，引入了一种基于通道与缓冲区的I/O方式，可以使用Native函数库直接分配堆外内存，然后通过一个存储在Java堆里面的DirectByteBuffer对象作为这块内存的引用进行操作。这样能在一些场景中显著提高性能，<strong>因为避免了在Java堆和Native堆中来回复制数据</strong>。</p>
+<p>服务器管理员在配置虚拟机参数时，会根据实际内存设置-Xmx等参数信息，但经常忽略直接内存，使得各个内存区域总和大于物理内存限制（包括物理的和操作系统级的限制），从而导致动态扩展时出现OOM。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>程序计数器：行号指示器；空间小，最快；线程私有；不会有OOM</li>
+<li>Java虚拟机栈：Java方法执行的内存模型,用于存储局部变量表、操作栈、动态链接、方法出口等信息；线程私有；StackOverFlowError,OOM</li>
+<li>本地方法栈：和Java虚拟机栈发挥的作用非常相似，但是市委Native方法服务。</li>
+<li>Java堆：存放对象实例；线程共享；OOM</li>
+<li>方法区：存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据；线程共享；OOM</li>
+<li>运行时常量池：方法区的一部分；线程共享；存放编译期生成的各种字面量和符号引用；OOM</li>
+<li>直接内存：直接内存并不是虚拟机运行时数据区的一部分，但是这部分内存也被频繁地使用，而且也可能导致OutOfMemoryError异常出现；新NIO利用了直接内存，效率高</li>
+</ul>
+<h2 id="HotSpot虚拟机对象探秘"><a href="#HotSpot虚拟机对象探秘" class="headerlink" title="HotSpot虚拟机对象探秘"></a>HotSpot虚拟机对象探秘</h2><p>探讨Java堆中对象分配、布局和访问的全过程。</p>
+<h3 id="对象的创建"><a href="#对象的创建" class="headerlink" title="对象的创建"></a>对象的创建</h3><ol>
+<li><p>虚拟机遇到一条 new 指令时，首先将去检查这个指令的参数是否能在常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已经被加载、解析和初始化过。如果没有，就得执行类的加载过程，这个过程在第七章讲了。TODO 添加第七章链接</p>
+</li>
+<li><p>类加载检查过之后，虚拟机就为这个新生对象分配内存。目前有两种做法，使用哪种方式是由 GC 回收器是否带有压缩整理功能决定的：</p>
+<ul>
+<li>指针碰撞（Bump the Pointer）：假设Java堆中内存是绝对规整的 ，没用过的内存和用过的内存用一个指针划分（<em>需要保证 java 堆中的内存是规整的，一般情况是使用的 GC 回收器有压缩整理功能</em>），分配内存仅仅是将指针向空闲空间那边挪动一段与对象大小相等的距离。假如需要分配8个字节，指针就往后挪8个字节</li>
+<li>空闲列表（Free List）：假设Java堆中内存是不规整的，已使用内存和空闲内存交错，虚拟机维护一个列表，记录哪些内存是可用的，分配的时候从列表中遍历，找到合适的内存分配，然后更新列表</li>
+</ul>
+</li>
+<li><p>分配内存过程中还需要解决线程安全问题。 就刚才的一个修改指针操作，就会带来隐患：对象 A 正分配内存呢，突然对象 B 又同时使用了原来的指针来分配 B 的内存。解决方案也有两种：</p>
+<ul>
+<li>同步处理——实际上虚拟机采用 CAS 配上失败重试来保证更新操作的原子性</li>
+<li>把内存分配的动作按照线程划分在不同的空间之中进行，即每个线程在 Java 堆中预先分配一小块内存，成为本地线程分配缓存（Thread Local Allocation Buffer，TLAB）。哪个线程要分配内存，就在哪个线程的 TLAB 上分配，用完并分配新的TLAB时，才需要同步锁定（虚拟机是否使用 TLAB，可以通过<code>-XX:+/-UseTLAB</code> 参数来设置）</li>
+</ul>
+</li>
+<li><p>给内存分配了空间之后，虚拟机需要将分配到的内存空间都初始化为零值（不包括对象头）。如果使用TLAB，这一工作过程也可以提前至TLAB分配时进行。</p>
+</li>
+<li><p>接下来要对对象进行必要的设置，比如这个对象是哪个类的实例、如何才能找到类的元数据信息、对象的 hashcode 值是多少、对象的 GC 分代年龄等信息，这些信息都放在对象头中。</p>
+</li>
+<li><p>上面的步骤都完成后，从虚拟机角度来看，一个新的对象已经产生了，但是从 Java 程序的视角来看，对象创建才刚刚开始——<code>&lt;init&gt;</code> 方法还没有执行，所有的字段都还为零。把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完全产生出来。</p>
+</li>
+</ol>
+<h3 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h3><p>首先我们要知道的是：<strong>在 HotSpot 虚拟机中，对象在内存中存储的布局可以分为3块区域：对象头（Header）、实例数据（Instantce Data）、对齐补充（Padding）。</strong></p>
+<ol>
+<li>对象头（Header）：包含两部分信息。第一部分用于存储对象自身的运行时数据，如 hashcode 值、GC 分代的年龄、锁状态标志、线程持有的锁等，官方称为“Mark Word”。第二部分是类型指针，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例</li>
+<li>实例数据（Instance Data）：就是程序代码中所定义的各种类型的字段内容。无论是从父类继承下来的，还是在子类中定义的，都需要记录起来。</li>
+<li>内存对齐，对象的大小必须是8字节的整数倍</li>
+</ol>
+<h3 id="对象的访问定位"><a href="#对象的访问定位" class="headerlink" title="对象的访问定位"></a>对象的访问定位</h3><ol>
+<li><p>假如代码出现在方法体中，那么Object obj就会存在在<strong>Java虚拟机栈的本地变量表</strong>中，作为一个引用类型数据。</p>
+</li>
+<li><p>new Object()则存在在<strong>Java堆</strong>上。另外，在Java堆上还必须包含能查找到该对象类型数据（如对象类型、父类、实现的接口、方法等）的地址信息，这些类型数据则存储在<strong>方法区</strong>中。</p>
+</li>
+<li><p>由于引用类型在Java虚拟机规范里面只规定了一个指向对象的引用，并没有定义这个引用应该通过哪种方式去定位，以及访问到Java堆中的对象的具体位置，因此不同虚拟机实现的对象访问方式可能不同，主流的有：</p>
+<ol>
+<li>使用句柄：Java堆中划分一块区域作为句柄池，引用存储的是对象的句柄地址，而句柄中含有对象实例数据和类型数据各自的数据信息</li>
+<li>直接指针：引用中直接存储的就是对象的地址，同时还必须包括方法区类型信息的指针</li>
+</ol>
+</li>
+</ol>
+<p>下面是对应的图片：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/jvm-reference-handler.jpg" alt="通过句柄访问对象"><br><img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/jvm-direct-reference.jpg" alt="通过直接指针访问对象"></p>
+<p>对于引用类型的实现，不同的实现方法有不同的特点：</p>
+<ol>
+<li>使用句柄：Java堆会划出一块区域作为句柄池，引用中存储的是稳定的句柄地址，而句柄中包含了<strong>对象实例数据（也在Java堆）和类型数据（方法区中）</strong>各自的地址信息。在对象被移动（垃圾回收时移动对象是非常普遍的行为）时只需要改变句柄中的实例数据指针，而引用本身核方法区的类型数据指针都不需要修改</li>
+<li>直接指针：速度更快，因为不需要间接寻址。对于效率而言是更好的，Sun HotSpot就是使用这种方式实现对象访问的。但在其他虚拟机中，使用句柄方式也非常常见。</li>
+</ol>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>下面我们会演示几个小程序，目的有两个：</p>
+<ol>
+<li>通过代码验证Java虚拟机规范中描述的各个运行时区域存储的内容</li>
+<li>希望以后遇到类似问题时，能根据异常的信息快速判断是哪个区域的内存溢出，知道怎样的代码可能会导致这些区域的内存溢出，以及出现这些异常后改如何处理</li>
+</ol>
+<h3 id="Java堆溢出"><a href="#Java堆溢出" class="headerlink" title="Java堆溢出"></a>Java堆溢出</h3><p>这个顾名思义，是最常见的。因为Java堆上存储的是对象实例，所以只要保证GC roots到该对象有路径可达，就会在不断创建对象的过程中达到Java堆的最大容量而导致溢出。下面是实例代码：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeapOOM</span>&#123;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">OOMObject</span>&#123;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span> <span class="params">(<span class="keyword">String</span>[] args)</span></span>&#123;</span><br><span class="line">        List&lt;OOMObject&gt; <span class="built_in">list</span> = <span class="keyword">new</span> ArrayList&lt;OOMObject&gt;();</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="built_in">list</span>.add(<span class="keyword">new</span> OOMObject());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面的结果可以看到，发生了OOM异常。要解决这个异常，一般是把内存快照dump（通过-XX:+HeapDumpOnOutOfMemoryError）下来用工具（Eclipse Memmory Analyzer）分析，确认<strong>内存中的对象是否是必要的</strong>，也就是要先分清到底是出现了内存泄露（Memory Leak）还是内存溢出（Memory overflow）。</p>
+<ul>
+<li>如果是内存泄露：使用工具查看泄露对象到GC Roots的引用链。于是就可以顺藤摸瓜找到泄漏对象是通过怎样的路径关联GC Roots的，从而准确定位泄露代码的位置</li>
+<li>如果是内存溢出：就应当检查虚拟机的堆参数（-Xmx和-Xms），与机器物理内存对比看是否可以调大，从代码上检查是否存在某些对象生命周期过长、持有状态时间过长等情况，尝试减少程序运行期间的内存消耗</li>
+</ul>
+<h3 id="虚拟机栈和本地方法栈溢出"><a href="#虚拟机栈和本地方法栈溢出" class="headerlink" title="虚拟机栈和本地方法栈溢出"></a>虚拟机栈和本地方法栈溢出</h3><p>-Xss可以设置栈容量。</p>
+<ul>
+<li>如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出StackOverFlowError异常</li>
+<li>如果虚拟机在扩展栈时无法申请到足够的内存空间，将抛出OutOfMemoryError异常</li>
+</ul>
+<p>通过调用无限递归调用，单线程下，无论由于栈帧太大还是虚拟机栈容量太小，当内存无法分配的时候，虚拟机抛出的都是StackOverflowError。通过不断创建线程倒是可以产生内存溢出异常，不过和栈空间是否足够大并不存在任何联系。</p>
+<h3 id="方法区和运行时常量池溢出"><a href="#方法区和运行时常量池溢出" class="headerlink" title="方法区和运行时常量池溢出"></a>方法区和运行时常量池溢出</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RuntimeConstantPoolOOM</span>&#123;</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main（<span class="keyword">String</span>[]args）&#123;</span><br><span class="line">        <span class="keyword">String</span> str1=<span class="keyword">new</span> StringBuilder（<span class="string">"计算机"</span>）.append（<span class="string">"软件"</span>）.toString（）；</span><br><span class="line">        System.out.<span class="built_in">println</span>（str1.intern（）==str1）；</span><br><span class="line">        <span class="keyword">String</span> str2=<span class="keyword">new</span> StringBuilder（<span class="string">"ja"</span>）.append（<span class="string">"va"</span>）.toString（）；</span><br><span class="line">        System.out.<span class="built_in">println</span>（str2.intern（）==str2）；</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码在JDK 1.6中运行，会得到两个false，而在JDK 1.7中运行，会得到一个true和一个false。产生差异的原因是：在JDK 1.6中，intern（）方法会把首次遇到的字符串实例复制到永久代中，返回的也是永久代中这个字符串实例的引用，而由StringBuilder创建的字符串实例在Java堆上，所以必然不是同一个引用，将返回false。<strong>而JDK 1.7（以及部分其他虚拟机，例如JRockit）的intern（）实现不会再复制实例，只是在常量池中记录首次出现的实例引用，因此intern（）返回的引用和由StringBuilder创建的那个字符串实例是同一个</strong>。对str2比较返回false是因为“java”这个字符串在执行StringBuilder.toString（）之前已经出现过，字符串常量池中已经有它的引用了，不符合“首次出现”的原则，而“计算机软件”这个字符串则是首次出现的，因此返回true。</p>
+<p>方法区溢出也是一种常见的内存溢出异常，一个类要被垃圾收集器回收掉，判定条件是比较苛刻的。在经常动态生成大量Class的应用中，需要特别注意类的回收状况。这类场景除了使用了CGLib字节码增强和动态语言之外，常见的还有：大量JSP或动态产生JSP文件的应用（JSP第一次运行时需要编译为Java类）、基于OSGi的应用（即使是同一个类文件，被不同的加载器加载也会视为不同的类）等。</p>
+<h3 id="本机直接内存溢出"><a href="#本机直接内存溢出" class="headerlink" title="本机直接内存溢出"></a>本机直接内存溢出</h3><p>由DirectMemory导致的内存溢出，一个明显的特征是在Heap Dump文件中不会看见明显的异常，如果读者发现OOM之后Dump文件很小，而程序中又直接或间接使用了NIO，那就可以考虑检查一下是不是这方面的原因。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+	  
+	  <!-- 百度分享 Start -->
+	  <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	  <!-- 百度分享 End -->
+    
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-04T11:32:41.976Z" itemprop="dateModified">2020-05-04</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/04/08/jvm-note-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          深入理解Java虚拟机笔记二（垃圾收集器与内存分配策略）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/03/13/jsp-servlet-note/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JSP/Servlet及相关技术笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</section>
+        
+          
+  <div id="toc" class="toc-aside">
+  <h2 class="toc-title">Contents</h2>
+    
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#运行时数据区域"><span class="toc-number">1.</span> <span class="toc-text">运行时数据区域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#程序计数器"><span class="toc-number">1.1.</span> <span class="toc-text">程序计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java虚拟机栈"><span class="toc-number">1.2.</span> <span class="toc-text">Java虚拟机栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本地方法栈"><span class="toc-number">1.3.</span> <span class="toc-text">本地方法栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java堆"><span class="toc-number">1.4.</span> <span class="toc-text">Java堆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法区"><span class="toc-number">1.5.</span> <span class="toc-text">方法区</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#运行时常量池"><span class="toc-number">1.5.1.</span> <span class="toc-text">运行时常量池</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接内存"><span class="toc-number">1.6.</span> <span class="toc-text">直接内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">1.7.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HotSpot虚拟机对象探秘"><span class="toc-number">2.</span> <span class="toc-text">HotSpot虚拟机对象探秘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象的创建"><span class="toc-number">2.1.</span> <span class="toc-text">对象的创建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象的内存布局"><span class="toc-number">2.2.</span> <span class="toc-text">对象的内存布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象的访问定位"><span class="toc-number">2.3.</span> <span class="toc-text">对象的访问定位</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实战"><span class="toc-number">3.</span> <span class="toc-text">实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java堆溢出"><span class="toc-number">3.1.</span> <span class="toc-text">Java堆溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟机栈和本地方法栈溢出"><span class="toc-number">3.2.</span> <span class="toc-text">虚拟机栈和本地方法栈溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法区和运行时常量池溢出"><span class="toc-number">3.3.</span> <span class="toc-text">方法区和运行时常量池溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本机直接内存溢出"><span class="toc-number">3.4.</span> <span class="toc-text">本机直接内存溢出</span></a></li></ol></li></ol>
+    
+  </div>
+
+<aside id="sidebar">
+
+  
+    
+<div class="widget-wrap">
+  <h3 class="widget-title">ABOUT ME</h3>
+  <ul class="widget about-me">
+    
+    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
+    
+    
+    <li>Hi,I'm FengHao.</li>
+    
+    <li>I'll share something interesting and my learning experience with you at this blog.</li>
+    
+  </ul>
+</div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Calendar</h3>
+  <div class="widget" id="calendar">
+  </div>
+</div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/29/maven/">Maven 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/16/git-internals/">Git 内幕</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+
+</aside>
+
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 howiefh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    
+      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      <br>
+      <span id="busuanzi_container_site_pv">
+        Total <span id="busuanzi_value_site_pv"></span> views.
+      </span>
+    
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+var disqus_shortname = 'fenghao-1';
+
+var disqus_config = function () {
+  this.page.url = 'http://howiefh.github.io/2015/04/07/jvm-note-1/';
+  this.page.identifier = '2015/04/07/jvm-note-1/';
+  this.page.title = '深入理解Java虚拟机笔记一（Java内存区域与内存溢出异常）';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//fenghao-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
+<!-- 百度分享 start -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","douban","bdysc","sqq","qq","hi","baidu","huaban","youdao","sdo","mail","xg","diandian","fx","copy","print"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 end -->
+
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+<div class="bottom-btn">
+
+	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
+	
+<script src="/js/gotop.js"></script>
+
+
+
+	<a class="icon-toc-toggle" href="javascript:void(0)" title="文章目录"></a>
+	
+<script src="/js/toc_aside_toggle.js"></script>
+
+
+</div>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-40492061-1');
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+
+
+  
+<script src="/js/languages.js"></script>
+
+  
+<script src="/js/calendar.js"></script>
+
+
+  <script type="text/javascript">
+  $(function() {
+    
+    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    
+  });
+  </script>
+
+
+
+  </div>
+</body>
+</html>
