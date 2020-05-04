@@ -11,7 +11,7 @@ description: Shiro; Java安全框架; 认证、授权、加密和会话管理
 
 Apache Shiro是一个强大易用的Java安全框架，可以帮助我们完成：认证、授权、加密、会话管理、与Web集成、缓存等。
 
-![Shiro基本功能](http://fh-1.qiniudn.com/shiro/shiro-func.png)
+![Shiro基本功能](https://cdn.jsdelivr.net/gh/howiefh/assets/img/shiro-func.png)
 
 * Authentication：身份认证/登录，验证用户是不是拥有相应的身份；
 * Authorization：授权，即权限验证，验证某个已认证的用户是否拥有某个权限；即判断用户是否能做事情，常见的如：验证某个用户是否拥有某个角色。或者细粒度的验证某个用户对某个资源是否具有某个权限；
@@ -30,7 +30,7 @@ Apache Shiro是一个强大易用的Java安全框架，可以帮助我们完成�
 
 Shiro的三个核心组件：Subject, SecurityManager 和 Realms. 如下图： 
 
-![Shiro框架图](http://fh-1.qiniudn.com/shiro/shiro-core.png)
+![Shiro框架图](https://cdn.jsdelivr.net/gh/howiefh/assets/img/shiro-core.png)
  
 Subject：即“当前操作用户”。但是，在Shiro中，Subject这一概念并不仅仅指人，也可以是第三方进程、后台帐户（Daemon Account）或其他类似事物。它仅仅意味着“当前跟软件交互的东西”。但考虑到大多数目的和用途，你可以把它认为是Shiro的“用户”概念。Subject代表了当前用户的安全操作，SecurityManager则管理所有用户的安全操作。与Subject的所有交互都会委托给SecurityManager。 
 
@@ -40,7 +40,7 @@ Realm： Realm充当了Shiro与应用安全数据间的“桥梁”或者“连�
 
 Shiro完整架构图： 
 
-![Shiro框架图](http://fh-1.qiniudn.com/shiro/shiro-frame.png)
+![Shiro框架图](https://cdn.jsdelivr.net/gh/howiefh/assets/img/shiro-frame.png)
  
 * Subject (org.apache.shiro.subject.Subject)
     正在与软件交互的一个特定的实体“view”（用户、第三方服务、时钟守护任务等）。
@@ -180,7 +180,7 @@ UsernamePasswordToken支持最常见的用户名/密码的认证机制。同时�
 
 以上，是Shiro认证在应用程序中的处理过程，下面将详细解说Shiro认证的内部处理机制。 
  
-![身份认证流程](http://fh-1.qiniudn.com/shiro/shiro-authentication.png)
+![身份认证流程](https://cdn.jsdelivr.net/gh/howiefh/assets/img/shiro-authentication.png)
 
 如上图，我们通过Shiro架构图的认证部分，来说明Shiro认证内部的处理顺序： 
 1. 应用程序构建了一个终端用户认证信息的AuthenticationToken 实例后，调用Subject.login方法。 
@@ -195,7 +195,7 @@ String getName(); //返回一个唯一的 Realm 名字
 boolean supports(AuthenticationToken token); //判断此 Realm 是否支持此 Token
 AuthenticationInfo getAuthenticationInfo(AuthenticationToken token) throws AuthenticationException; //根据 Token 获取认证信息
 
-![Realm](http://fh-1.qiniudn.com/shiro/shiro-realm.png)
+![Realm](https://cdn.jsdelivr.net/gh/howiefh/assets/img/shiro-realm.png)
 
 一般继承AuthorizingRealm即可，需要实现getAuthenticationInfo(AuthenticationToken token)和doGetAuthenticationInfo(PrincipalCollection principals)两个方法
 
@@ -585,7 +585,7 @@ lacksPermission标签:与hasPermission标签逻辑相反，当前用户没有制
 
 ### 授权流程
  
-![授权流程](http://fh-1.qiniudn.com/shiro/Shiro-AuthorizationSequence.png)
+![授权流程](https://cdn.jsdelivr.net/gh/howiefh/assets/img/Shiro-AuthorizationSequence.png)
 
 1. 程序或框架代码调用一个 Subject 的`hasRole*`、`checkRole*`、`isPermitted*`或者`checkPermission*`方法，传递所需的权限或角色。
 2. Subject实例，通常是一个 DelegatingSubject（或子类），通过调用securityManager 与各 `hasRole*`、`checkRole*`、`isPermitted*`或`checkPermission*` 基本一致的方法将权限或角色传递给程序的 SecurityManager(实现了 org.apache.shiro.authz.Authorizer 接口)。 

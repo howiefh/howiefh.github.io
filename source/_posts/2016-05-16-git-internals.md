@@ -52,7 +52,7 @@ HEAD和index这两棵树高效但不直观，工作目录就相当直观了，�
 2. 暂存文件，**将文件的快照放入暂存区域**。（对应`git add`命令，生成blob对象，添加索引）
 3. 提交更新，找到暂存区域的文件，将快照永久性存储到 Git 仓库目录。（对应`git commit`命令，生成树对象、提交对象）
 
-![三棵树](http://fh-1.qiniudn.com/git-tree.jpg)
+![三棵树](https://cdn.jsdelivr.net/gh/howiefh/assets/img/git-tree.jpg)
 
 * 图中左侧为工作区，右侧为版本库。在版本库中标记为index的区域是暂存区（stage，亦称index），标记为master的是master分支所代表的目录树。
 * 图中可以看出此时HEAD实际是指向master分支的一个“游标”。所以图示的命令中出现HEAD的地方可以用master来替换。

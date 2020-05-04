@@ -676,7 +676,7 @@ public class ValidUserQueryDBAuthenticationHandler extends AbstractJdbcUsernameP
 
 CAS最基本的协议过程：
 
-![CAS 最基本的协议过程](http://fh-1.qiniudn.com/cas-clip.jpg)
+![CAS 最基本的协议过程](https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-clip.jpg)
 
 如上图： CAS Client 与受保护的客户端应用部署在一起，以 Filter 方式保护 Web 应用的受保护资源，过滤从客户端过来的每一个 Web 请求，同时， CAS Client 会分析 HTTP 请求中是否包含请求 Service Ticket( ST 上图中的 Ticket) ，如果没有，则说明该用户是没有经过认证的；于是 CAS Client 会重定向用户请求到 CAS Server （ Step 2 ），并传递 Service （要访问的目的资源地址）。 Step 3 是用户认证过程，如果用户提供了正确的 Credentials ， CAS Server 随机产生一个相当长度、唯一、不可伪造的 Service Ticket ，并缓存以待将来验证，并且重定向用户到 Service 所在地址（附带刚才产生的 Service Ticket ） , 并为客户端浏览器设置一个 Ticket Granted Cookie （ TGC ） ； CAS Client 在拿到 Service 和新产生的 Ticket 过后，在 Step 5 和 Step6 中与 CAS Server 进行身份核实，以确保 Service Ticket 的合法性。
 
@@ -696,13 +696,13 @@ CAS为用户签发登录票据，CAS认证成功后，将TGT对象放入自己�
 
 CAS 基本流程图（没有使用PROXY代理）
 
-![CAS 基本流程图（没有使用PROXY代理）](http://fh-1.qiniudn.com/cas-noproxy.png)
+![CAS 基本流程图（没有使用PROXY代理）](https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-noproxy.png)
 
 对于客户端来说会通过客户端session判断用户是否已认证，没有的话跳转到服务器认证，对于服务器，通过SSO session判断用户是否认证，没有的话跳到登录页面。
 
 CAS 基本流程图（使用PROXY代理）
 
-![CAS 基本流程图（使用PROXY代理）](http://fh-1.qiniudn.com/cas-proxy.png)
+![CAS 基本流程图（使用PROXY代理）](https://cdn.jsdelivr.net/gh/howiefh/assets/img/cas-proxy.png)
 
 这一节参考：
 

@@ -1265,7 +1265,7 @@ JavaScript 不包含传统的类继承模型，而是使用 prototype 原型模�
 ### 原型链
 其基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。简单回顾一下构造函数、原型和实例的关系：每个构造函数都有一个原型对象，原型对象都包含一个指向构造函数的指针，而实例都包含一个指向原型对象的内部指针。那么，假如我们让原型对象等于另一个类型的实例，结果会怎么样呢？显然，此时的原型对象将包含一个指向另一个原型的指针，相应地，另一个原型中也包含着一个指向另一个构造函数的指针。假如另一个原型又是另一个类型的实例，那么上述关系依然成立，如此层层递进，就构成了实例与原型的链条。这就是所谓原型链的基本概念。
 
-![JavaScript Object Layout](http://fh-1.qiniudn.com/jsobj.jpg "JavaScript Object Layout")
+![JavaScript Object Layout](https://cdn.jsdelivr.net/gh/howiefh/assets/img/js-obj.jpg "JavaScript Object Layout")
 
 上面这张图将原型链关系描绘地非常清晰
 

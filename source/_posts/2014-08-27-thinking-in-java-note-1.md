@@ -104,7 +104,7 @@ description: thinking in java; java编程思想
 
     Java中，**没有无符号数，基本类型占用空间的大小也不会像其它语言随机器硬件架构变化**。
 
-    ![Java基本类型](http://fh-1.qiniudn.com/java_var.png)
+    ![Java基本类型](https://cdn.jsdelivr.net/gh/howiefh/assets/img/java-var.png)
 
     Java 每种基本类型都提供了包装器类型。同时提供了两个用于高精度计算的类：**BigInteger（任意精度的整数）和BigDecimal（任意精度的定点数）**。
 

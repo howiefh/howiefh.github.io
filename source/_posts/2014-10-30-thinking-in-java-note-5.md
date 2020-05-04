@@ -163,7 +163,7 @@ Java标准库中的排序算法针对正排序的特殊类型进行了优化： 
 
 ### 完整的容器分类法
 
-![完整的容器分类法](http://fh-1.qiniudn.com/full_container_taxonomy.png)
+![完整的容器分类法](https://cdn.jsdelivr.net/gh/howiefh/assets/img/java-full-container-taxonomy.png)
 虚线框表示abstract类，Abstract开头的类是部分实现了特定接口的工具。
 
 ### 填充容器

@@ -250,7 +250,7 @@ class TestArrays{
 
 ### 新程序中不应该使用过时的Vector、Hashtable和Stack。
 
-![Java容器简图](http://fh-1.qiniudn.com/collection.jpg)
+![Java容器简图](https://cdn.jsdelivr.net/gh/howiefh/assets/img/java-collection.jpg)
 
 点线框表示接口，实线框表示普通的（具体的）类。带有空心箭头的点线表示一个特定的类实现了一个接口，实心箭头表示某各类可以生成箭头所指向的对象。
 

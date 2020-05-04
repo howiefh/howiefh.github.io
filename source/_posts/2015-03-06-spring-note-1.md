@@ -12,7 +12,7 @@ description: Spring
 
 <!-- more -->
 
-![Spring组成结构](http://fh-1.qiniudn.com/spring3-modules.png "Spring组成结构")
+![Spring组成结构](https://cdn.jsdelivr.net/gh/howiefh/assets/img/spring-modules.png "Spring组成结构")
 
 ## Spring核心机制：依赖注入
 

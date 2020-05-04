@@ -127,7 +127,7 @@ public class Test {
 
 容器中一旦注册了Bean后处理器，Bean后处理器就会自动启动，在容器中每个Bean创建时自动工作。从上面程序的运行结果可以看出，Bean后处理器两个方法的回调时机如下所示：
 
-![Bean后处理器两个方法的毁掉时机](http://fh-1.qiniudn.com/Bean后处理器两个方法的毁掉时机.png)
+![Bean后处理器两个方法的毁掉时机](https://cdn.jsdelivr.net/gh/howiefh/assets/img/spring-bean-post-processor.png)
 
 采用ApplicationContext作为Spring容器时，无须手动注册BeanPostProcessor。但是如果采用BeanFactory作为Spring容器时，就必须手动注册BeanPostProcess，如下：
 ```
@@ -954,7 +954,7 @@ pointcut xxxPointcut()
 由前面的介绍知道：AOP代理其实是由AOP框架动态生成的一个对象，该对象可作为目标对象使用。AOP代理包含了目标对象的全部方法，但AOP代理中的方法与目标对象的方法存在差异：AOP方法在特定切入点添加了增强处理，并且回调了目标对象的方法。
 AOP代理所包含的方法与目标对象的方法示意图如下：
 
-![AOP代理的方法和目标对象代理的方法](http://fh-1.qiniudn.com/AOP代理的方法和目标对象代理的方法.jpg)
+![AOP代理的方法和目标对象代理的方法](https://cdn.jsdelivr.net/gh/howiefh/assets/img/spring-aop.jpg)
 
 ### Spring 的AOP支持
 

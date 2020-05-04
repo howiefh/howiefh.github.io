@@ -148,7 +148,7 @@ PO只有在Session的管理下才可完成数据库访问。为了使用Hibernat
 * 持久化：PO实例与Session关联起来，且该实例对应到数据库记录。
 * 脱管：PO实例曾经与Session关联，但因为Session关闭等原因，PO实例脱离Session的管理。
 
-![持久化对象的生命周期](http://fh-1.qiniudn.com/PO_lifecycle.jpg)
+![持久化对象的生命周期](https://cdn.jsdelivr.net/gh/howiefh/assets/img/hibernate-PO-lifecycle.jpg)
 
 对PO的操作必须在Session管理下才能同步到数据库。Session由SessionFactory工厂产生，SessionFactory是数据库编译后的内存镜像，通常一个应用对应一个SessionFactory对象。SessionFactory对象由Configuration对象产生，Configuration对象负责加载Hibernate配置文件。
 
@@ -162,8 +162,8 @@ hibernate.cfg.xml文件通常在src目录下。
 
 ## Hibernate体系结构
 
-![Hibernate简要体系结构](http://fh-1.qiniudn.com/hibernate_simple_struct.gif)
-![Hibernate全面解决方案体系结构](http://fh-1.qiniudn.com/hibernate_struct.gif)
+![Hibernate简要体系结构](https://cdn.jsdelivr.net/gh/howiefh/assets/img/hibernate-simple-struct.gif)
+![Hibernate全面解决方案体系结构](https://cdn.jsdelivr.net/gh/howiefh/assets/img/hibernate-struct.gif)
 
 * SessionFactory：这是Hibernate的关键对象，它是单个数据库映射关系经过编译后的内存镜像，它也是线程安全的。它是生成Session的工厂，本身要应用到ConnectionProvider，该对象可以在进程和集群的级别上，为那些事务之间可以重用的数据提供可选的二级缓存。
 * Session：它是应用程序和持久存储层之间交互操作的一个单线程对象。它也是Hibernate持久化操作的关键对象，所有的持久化对象必须在Session的管理下才能够进行持久化操作。此对象的生存周期很短，其隐藏了JDBC连接，也是Transaction 的工厂。Session对象有一个一级缓存，现实执行Flush之前，所有的持久化操作的数据都在缓存中Session对象处。
@@ -294,7 +294,7 @@ JNDI: Java Naming Directory Interface,Java命名目录接口。
 * 持久化：实例对应到数据库记录，并拥有一个持久化标识。持久化对象可以是刚刚保存的也可以是刚加载的，必须与指定的Hibernate Session关联。Hibernate会检测到处于持久化状态对象的改动，在当前操作执行完成时将对象数据写会数据库，不需要手动update。
 * 脱管：某个实例曾经处于持久化状态，但随着与之关联的Session关闭，该对象处于脱管状态。
 
-![持久化对象的状态演化图](http://fh-1.qiniudn.com/PO_lifecycle.jpg)
+![持久化对象的状态演化图](https://cdn.jsdelivr.net/gh/howiefh/assets/img/hibernate-PO-lifecycle.jpg)
 
 ### 改变持久化对象状态的方法
 

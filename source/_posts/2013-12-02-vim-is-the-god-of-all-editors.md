@@ -55,9 +55,9 @@ tags: Vim
 | n<cmd>   | 重复执行n次命令             |
 
 Vim 命令图表：
-![](/img/vim-shortcuts.png)
+![](https://cdn.jsdelivr.net/gh/howiefh/assets/img/vim-shortcuts.png)
 
-![](/img/vim_cheat_sheet_for_programmers_print.png)
+![](https://cdn.jsdelivr.net/gh/howiefh/assets/img/vim-cheat-sheet-for-programmers-print.png)
 
 ## 配置
 ```
@@ -115,9 +115,9 @@ set autochdir               " 自动切换当前目录为当前文件所在的�
 
 现在你所看到的这篇文章即在vim中编写。
 
-![](/img/godvim.png)
+![](https://cdn.jsdelivr.net/gh/howiefh/assets/img/vim-godvim.png)
 
-![](/img/success_vim.jpg)
+![](https://cdn.jsdelivr.net/gh/howiefh/assets/img/vim-success.jpg)
 
 by FengHao
 2013.12.02
