@@ -57,7 +57,11 @@ color-calendar-hover-bg = #686868
 
   <script type="text/javascript">
   $(function() {
-    $('#calendar').aCalendar('<%= theme.calendar.language || config.language %>', $.extend(<%- JSON.stringify(theme.calendar.options ) %>, {single:<%= config.calendar.single %>, root:'<%= config.calendar.root %>'}));
+    <% if (typeof theme.calendar.options === 'object') { %>
+    $('#calendar').aCalendar('<%= theme.calendar.language || config.language %>', $.extend(<%- JSON.stringify(theme.calendar.options) %>, {root:'<%= config.root %>', calendarSingle:<%= config.calendar.single %>, calendarRoot:'<%= config.calendar.root %>'}));
+    <% } else { %>
+    $('#calendar').aCalendar('<%= theme.calendar.language || config.language %>', {root:'<%= config.root %>', calendarSingle:<%= config.calendar.single %>, calendarRoot:'<%= config.calendar.root %>'});
+    <% } %>
   });
   </script>
 <% } %>
@@ -96,13 +100,13 @@ calendar:
     dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     postsMonthTip: 'Posts published in LMM yyyy'
     titleFormat: 'yyyy LMM'
-    titleLinkFormat: '/archives/yyyy/MM/'
+    titleLinkFormat: 'archives/yyyy/MM/'
     headArrows: {previous: '<span class="cal-prev"></span>', next: '<span class="cal-next"></span>'}
     footArrows: {previous: ' ', next: ' '}
     weekOffset: 0
-    single: false
-    root: '/calendar/'
-    url: '/calendar.json'
+    calendarSingle: false
+    calendarRoot: 'calendar/'
+    calendarUrl: 'calendar.json'
 ```
 
 当然，关于配置，你还可以直接修改 [after-footer.ejs] 或者 [calendar.js]。事实上不做任何配置也是可以使用的，最多你可能只需要设置一下语言。
