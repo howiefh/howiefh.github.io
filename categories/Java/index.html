@@ -16,12 +16,12 @@
 
 
   
-  <title>Category: java | 净土</title>
+  <title>Category: Java | 净土</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="A blog of howiefh.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="净土">
-<meta property="og:url" content="http://howiefh.github.io/categories/java/index.html">
+<meta property="og:url" content="http://howiefh.github.io/categories/Java/index.html">
 <meta property="og:site_name" content="净土">
 <meta property="og:description" content="A blog of howiefh.">
 <meta property="article:author" content="howiefh">
@@ -116,17 +116,17 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
-    <article id="post-maven" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-mybatis-enum-handler" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     
-<a href="/2017/09/29/maven/" class="article-date">
-  <time class="dt-published" datetime="2017-09-29T14:06:33.000Z" itemprop="datePublished">2017-09-29</time>
+<a href="/2017/09/30/mybatis-enum-handler/" class="article-date">
+  <time class="dt-published" datetime="2017-09-30T09:44:42.000Z" itemprop="datePublished">2017-09-30</time>
 </a>
 
 
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/java/">java</a>
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Java/MyBatis/">MyBatis</a>
   </div>
 
   </div>
@@ -137,7 +137,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/09/29/maven/">Maven 总结</a>
+      <a class="p-name article-title" href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
     </h1>
   
 
@@ -145,27 +145,28 @@ var _hmt = _hmt || [];
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><p>Apache Maven 是一个项目构建、管理工具。基于项目对象模型（POM）的概念，Maven可以用来管理项目的依赖、编译、文档等信息。</p>
-<p>Maven 提倡的是“约定优于配置”，基于这种理念，很多事情会变的简单起来，比如看到 <code>src/main/java</code> 你就知道这目录下是 Java 源文件，你也不必为了构建项目过多地配置插件。Maven 中的 Super POM 中指定了项目默认的目录结构、输出目录、常用插件版本配置等，所有的 POM 都会隐式地继承它（Super POM 有点像是 Java 中的 Object）。下面是一个简单的 POM 文件:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">  	<span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0</span></span></span><br><span class="line"><span class="tag"><span class="string">		http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- POM对象模型版本 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- 项目坐标 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.github.howiefh<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>demo<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- 项目坐标 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>Maven Project<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.apache.org<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>Demo project<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- 项目依赖 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.8.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>最近测试将 MyBatis 从 3.1.1 升级到 3.2.3 时遇到一个问题。原来可以正常工作的枚举类型处理器，抛异常了。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Caused <span class="symbol">by:</span> org.apache.ibatis.executor.result.<span class="symbol">ResultMapException:</span> Error attempting to get column <span class="string">'member_type'</span> from result set.  <span class="symbol">Cause:</span> java.lang.<span class="symbol">IllegalArgumentException:</span> No <span class="class"><span class="keyword">enum</span> <span class="title">code</span> '<span class="title">MERCHANT</span>'. <span class="title">class</span> <span class="title">com</span>...<span class="title">ChangeSceneType</span></span></span><br></pre></td></tr></table></figure>
+
+<p>涉及的代码及配置信息如下：</p>
         
           <p class="article-more-link">
-            <a href="/2017/09/29/maven/#more">Read More</a>
+            <a href="/2017/09/30/mybatis-enum-handler/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
 	  
-    <a data-url="http://howiefh.github.io/2017/09/29/maven/" data-id="ck9sl6g7d003277fyfhzpd7jg" data-title="Maven 总结" data-summary="概览Apache Maven 是一个项目构建、管理工具..." class="article-share-link">Share</a>
+    <a data-url="http://howiefh.github.io/2017/09/30/mybatis-enum-handler/" data-id="ck9sl6g8e007077fydqlugqfc" data-title="MyBatis 类型处理器" data-summary="问题描述最近测试将 MyBatis 从 3.1.1 升..." class="article-share-link">Share</a>
       
-        <a href="http://howiefh.github.io/2017/09/29/maven/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://howiefh.github.io/2017/09/30/mybatis-enum-handler/#disqus_thread" class="article-comment-link">Comments</a>
       
       
 
 	  
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/" rel="tag">maven</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MyBatis/" rel="tag">MyBatis</a></li></ul>
 
 	  
 <span>
@@ -181,207 +182,453 @@ Updated:<time datetime="2020-05-02T14:28:14.486Z" itemprop="dateModified">2020-0
 
 
   
+    <article id="post-java-security-illegal-key-size" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2016/04/21/java-security-illegal-key-size/" class="article-date">
+  <time class="dt-published" datetime="2016-04-21T06:41:09.000Z" itemprop="datePublished">2016-04-21</time>
+</a>
 
 
-</section>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-          
-<aside id="sidebar">
-
   
-    
-<div class="widget-wrap">
-  <h3 class="widget-title">ABOUT ME</h3>
-  <ul class="widget about-me">
-    
-    <li><img class="author" title="About me" src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/okal-eltocat.jpg" /></li>
-    
-    
-    <li>Hi,I'm FengHao.</li>
-    
-    <li>I'll share something interesting and my learning experience with you at this blog.</li>
-    
-  </ul>
-</div>
-
-
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+    </h1>
   
+
+      </header>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+		
+		<div id="toc" class="toc-article">
+			<h2 class="toc-title"><span>Contents</span></h2>
+		
+			
+		
+		</div>
+		
+        <p>使用 AES 加密时，密钥大于128bit的话会抛出java.security.InvalidKeyException异常。因为密钥长度是受限的，根据网上一些博客中说的，这种限制是因为<a href="http://book.2cto.com/201311/37620.html" target="_blank" rel="noopener">美国对软件出口的控制</a>。解决办法很简单，下载对应版本的jce包，解压并覆盖 ${JAVA_HOME}/jre/lib/security/ 下的同名文件即可。</p>
+<p><a href="http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html" target="_blank" rel="noopener">Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files 6</a></p>
+<p><a href="http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html" target="_blank" rel="noopener">Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files 7 Download</a></p>
+<p><a href="http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html" target="_blank" rel="noopener">Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files 8 Download</a></p>
+
+      
     </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2016/04/21/java-security-illegal-key-size/" data-id="ck9sl6g7d003077fy006pe6m8" data-title="AES加密时报java.security.InvalidKeyException Illegal key size" data-summary="使用 AES 加密时，密钥大于128bit的话会抛出j..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2016/04/21/java-security-illegal-key-size/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.486Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
   </div>
+  
+</article>
+
 
 
   
+    <article id="post-java-web" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+<a href="/2015/08/10/java-web/" class="article-date">
+  <time class="dt-published" datetime="2015-08-10T02:21:47.000Z" itemprop="datePublished">2015-08-10</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/08/10/java-web/">Java Web 笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这篇记录一下浏览器的请求过程，NIO，字符编码等。</p>
+        
+          <p class="article-more-link">
+            <a href="/2015/08/10/java-web/#more">Read More</a>
+          </p>
+        
+      
     </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2015/08/10/java-web/" data-id="ck9sl6g9m009r77fy97yq435o" data-title="Java Web 笔记" data-summary="这篇记录一下浏览器的请求过程，NIO，字符编码等。
+
+..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2015/08/10/java-web/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.482Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
   </div>
+  
+</article>
+
 
 
   
+    <article id="post-shiro-cas-single-sign-on" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+<a href="/2015/05/19/shiro-cas-single-sign-on/" class="article-date">
+  <time class="dt-published" datetime="2015-05-18T16:11:12.000Z" itemprop="datePublished">2015-05-19</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Java/Shiro/">Shiro</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/05/19/shiro-cas-single-sign-on/">Shiro &amp; CAS 实现单点登录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>单点登录主要用于多系统集成，即在多个系统中，用户只需要到一个中央服务器登录一次即可访问这些系统中的任何一个，无须多次登录。</p>
+<p>本文使用开源框架<a href="https://github.com/Jasig/cas/releases" target="_blank" rel="noopener">Jasig CAS</a>来完成单点登录。下载地址：<a href="https://www.apereo.org/cas/download" target="_blank" rel="noopener">https://www.apereo.org/cas/download</a>。在写本文时，使用的cas server版本为4.0.1</p>
+        
+          <p class="article-more-link">
+            <a href="/2015/05/19/shiro-cas-single-sign-on/#more">Read More</a>
+          </p>
+        
+      
     </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2015/05/19/shiro-cas-single-sign-on/" data-id="ck9sl6g9b008y77fy1xvd4xd4" data-title="Shiro &amp; CAS 实现单点登录" data-summary="概览单点登录主要用于多系统集成，即在多个系统中，用户只..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2015/05/19/shiro-cas-single-sign-on/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CAS/" rel="tag">CAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSO/" rel="tag">SSO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-04T11:15:02.139Z" itemprop="dateModified">2020-05-04</time>
+</span>
+
+
+    </footer>
   </div>
+  
+</article>
+
 
 
   
-    <div class="widget-wrap">
-  <h3 class="widget-title">Calendar</h3>
-  <div class="widget" id="calendar">
-  </div>
-</div>
-
-  
+    <article id="post-shiro-note" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
+<a href="/2015/05/12/shiro-note/" class="article-date">
+  <time class="dt-published" datetime="2015-05-12T02:03:26.000Z" itemprop="datePublished">2015-05-12</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Java/Shiro/">Shiro</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-          <li>
-            <a href="/2017/09/30/mybatis-enum-handler/">MyBatis 类型处理器</a>
-          </li>
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/05/12/shiro-note/">Shiro笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Apache Shiro是一个强大易用的Java安全框架，可以帮助我们完成：认证、授权、加密、会话管理、与Web集成、缓存等。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/howiefh/assets/img/shiro-func.png" alt="Shiro基本功能"></p>
+<ul>
+<li>Authentication：身份认证/登录，验证用户是不是拥有相应的身份；</li>
+<li>Authorization：授权，即权限验证，验证某个已认证的用户是否拥有某个权限；即判断用户是否能做事情，常见的如：验证某个用户是否拥有某个角色。或者细粒度的验证某个用户对某个资源是否具有某个权限；</li>
+<li>Session Manager：会话管理，即用户登录后就是一次会话，在没有退出之前，它的所有信息都在会话中；会话可以是普通JavaSE环境的，也可以是如Web环境的；</li>
+<li>Cryptography：加密，保护数据的安全性，如密码加密存储到数据库，而不是明文存储；</li>
+<li>Web Support：Web支持，可以非常容易的集成到Web环境；</li>
+<li>Caching：缓存，比如用户登录后，其用户信息、拥有的角色/权限不必每次去查，这样可以提高效率；</li>
+<li>Concurrency：shiro支持多线程应用的并发验证，即如在一个线程中开启另一个线程，能把权限自动传播过去；</li>
+<li>Testing：提供测试支持；</li>
+<li>Run As：允许一个用户假装为另一个用户（如果他们允许）的身份进行访问；</li>
+<li>Remember Me：记住我，这个是非常常见的功能，即一次登录后，下次再来的话不用登录了。</li>
+</ul>
         
-          <li>
-            <a href="/2017/09/29/maven/">Maven 总结</a>
-          </li>
+          <p class="article-more-link">
+            <a href="/2015/05/12/shiro-note/#more">Read More</a>
+          </p>
         
-          <li>
-            <a href="/2016/05/16/git-internals/">Git 内幕</a>
-          </li>
-        
-          <li>
-            <a href="/2016/04/29/hexo-s-calendar-plugin/">Hexo日历插件</a>
-          </li>
-        
-          <li>
-            <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
-          </li>
-        
-      </ul>
+      
     </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2015/05/12/shiro-note/" data-id="ck9sl6g9p009x77fy59s0eyf9" data-title="Shiro笔记" data-summary="简介Apache Shiro是一个强大易用的Java安..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2015/05/12/shiro-note/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shiro/" rel="tag">Shiro</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-04T11:16:57.518Z" itemprop="dateModified">2020-05-04</time>
+</span>
+
+
+    </footer>
   </div>
+  
+</article>
+
 
 
   
+    <article id="post-freemarker-XML-processing-note" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/05/03/freemarker-XML-processing-note/" class="article-date">
+  <time class="dt-published" datetime="2015-05-03T01:20:51.000Z" itemprop="datePublished">2015-05-03</time>
+</a>
 
-</aside>
 
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Java/FreeMarker/">FreeMarker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-      </div>
-      <footer id="footer">
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2020 howiefh<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and Theme by <a href="https://github.com/howiefh/hexo-theme-landscape-f" target="_blank" title="Landscape-F">Landscape-F</a>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/05/03/freemarker-XML-processing-note/">FreeMarker-XML处理笔记</a>
+    </h1>
+  
+
+      </header>
     
-      <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-      <br>
-      <span id="busuanzi_container_site_pv">
-        Total <span id="busuanzi_value_site_pv"></span> views.
-      </span>
-    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="揭示XML文档"><a href="#揭示XML文档" class="headerlink" title="揭示XML文档"></a>揭示XML文档</h2><p>test.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">book</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Test Book<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">chapter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Ch1<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">para</span>&gt;</span>p1.1<span class="tag">&lt;/<span class="name">para</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">para</span>&gt;</span>p1.2<span class="tag">&lt;/<span class="name">para</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">para</span>&gt;</span>p1.3<span class="tag">&lt;/<span class="name">para</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">chapter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">chapter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Ch2<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">para</span>&gt;</span>p2.1<span class="tag">&lt;/<span class="name">para</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">para</span>&gt;</span>p2.2<span class="tag">&lt;/<span class="name">para</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">chapter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>根节点是“文档”而不是book</li>
+<li>如果 B 是 A 的直接后继，我们说 B 节点是 A 节点的 child 子节点，A节点是B节点的parent父节点。</li>
+<li>元素，文本，注释，处理指令都是DOM树的节点</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2015/05/03/freemarker-XML-processing-note/#more">Read More</a>
+          </p>
+        
+      
     </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2015/05/03/freemarker-XML-processing-note/" data-id="ck9sl6g8c006u77fyhk4zcofo" data-title="FreeMarker-XML处理笔记" data-summary="揭示XML文档test.xml
+12345678910..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2015/05/03/freemarker-XML-processing-note/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FreeMarker/" rel="tag">FreeMarker</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.480Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
   </div>
-</footer>
+  
+</article>
 
-    </div>
-    <nav id="mobile-nav">
+
+
   
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+    <article id="post-freemarker-program-development-note" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
     
-<script>
-var disqus_shortname = 'fenghao-1';
-
-(function() {
-var d = document, s = d.createElement('script');
-s.src = '//fenghao-1.disqus.com/count.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
+<a href="/2015/05/02/freemarker-program-development-note/" class="article-date">
+  <time class="dt-published" datetime="2015-05-02T01:20:06.000Z" itemprop="datePublished">2015-05-02</time>
+</a>
 
 
-
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-<div class="bottom-btn">
-
-	<a class="icon-gotop" href="javascript:void(0)" title="返回顶部"></a>
-	
-<script src="/js/gotop.js"></script>
-
-
-
-</div>
-
-
-
-<script src="/js/script.js"></script>
-
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-40492061-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-40492061-1');
-</script>
-<!-- End Google Analytics -->
-
-
-
-
-
-
-  
-<script src="/js/languages.js"></script>
-
-  
-<script src="/js/calendar.js"></script>
-
-
-  <script type="text/javascript">
-  $(function() {
     
-    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
-    
-  });
-  </script>
-
-
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Java/FreeMarker/">FreeMarker</a>
+  </div>
 
   </div>
-</body>
-</html>
-<span class="tag">&lt;<span class="name">#if</span> <span class="attr">user</span> == <span class="string">"Big Joe"</span>&gt;</span>, our beloved leader<span class="tag">&lt;/<span class="name">#if</span>&gt;</span>!</span></span><br></pre></td></tr></table></figure>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/05/02/freemarker-program-development-note/">FreeMarker-程序开发指南笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><ul>
+<li>使用 java.lang.String 来构建字符串。</li>
+<li>使用 java.lang.Number 来派生数字类型。</li>
+<li>使用 java.lang.Boolean 来构建布尔值。</li>
+<li>使用 java.util.List 或 Java 数组来构建序列。</li>
+<li>使用 java.util.Map 来构建哈希表。</li>
+<li>使用你自己定义的 bean 类来构建哈希表， bean 中的项和 bean 的属性对应。例如product 中的 price 属性可以用 product.price 来获取。</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2015/05/02/freemarker-program-development-note/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+	  
+    <a data-url="http://howiefh.github.io/2015/05/02/freemarker-program-development-note/" data-id="ck9sl6g9a008v77fyac2n661j" data-title="FreeMarker-程序开发指南笔记" data-summary="快速入门
+使用 java.lang.String 来构..." class="article-share-link">Share</a>
+      
+        <a href="http://howiefh.github.io/2015/05/02/freemarker-program-development-note/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+
+	  
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FreeMarker/" rel="tag">FreeMarker</a></li></ul>
+
+	  
+<span>
+Updated:<time datetime="2020-05-02T14:28:14.480Z" itemprop="dateModified">2020-05-02</time>
+</span>
+
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-freemarker-template-development-note" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    
+<a href="/2015/04/30/freemarker-template-development-note/" class="article-date">
+  <time class="dt-published" datetime="2015-04-30T01:19:31.000Z" itemprop="datePublished">2015-04-30</time>
+</a>
+
+
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>►<a class="article-category-link" href="/categories/Java/FreeMarker/">FreeMarker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/04/30/freemarker-template-development-note/">FreeMarker-模板开发笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><h3 id="if"><a href="#if" class="headerlink" title="if"></a>if</h3><figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">Welcome $</span><span class="template-variable">&#123;user&#125;</span><span class="xml"><span class="tag">&lt;<span class="name">#if</span> <span class="attr">user</span> == <span class="string">"Big Joe"</span>&gt;</span>, our beloved leader<span class="tag">&lt;/<span class="name">#if</span>&gt;</span>!</span></span><br></pre></td></tr></table></figure>
 <h3 id="list"><a href="#list" class="headerlink" title="list"></a>list</h3><figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">#list</span> <span class="attr">animals</span> <span class="attr">as</span> <span class="attr">being</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span>$</span><span class="template-variable">&#123;being.name&#125;</span><span class="xml"><span class="tag">&lt;<span class="name">td</span>&gt;</span>$</span><span class="template-variable">&#123;being.price&#125;</span><span class="xml"> Euros</span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">#list</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 <h3 id="include"><a href="#include" class="headerlink" title="include"></a>include</h3><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="meta">#<span class="meta-keyword">include</span> <span class="string">"/copyright_footer.html"</span>&gt;</span></span><br></pre></td></tr></table></figure>
         
@@ -590,7 +837,7 @@ Updated:<time datetime="2020-05-04T11:33:41.580Z" itemprop="dateModified">2020-0
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MongoDB/">MongoDB</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Eclipse/">Eclipse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/FTP/">FTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Java/FreeMarker/">FreeMarker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/MyBatis/">MyBatis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/Shiro/">Shiro</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/">JavaEE</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Hibernate/">Hibernate</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/JSP/">JSP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEE/Spring/">Spring</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/jQuery/">jQuery</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP/">PHP</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Suse/">Suse</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ubuntu/">Ubuntu</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vim/">Vim</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/">软件</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -600,7 +847,7 @@ Updated:<time datetime="2020-05-04T11:33:41.580Z" itemprop="dateModified">2020-0
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/java/" style="font-size: 13px; color: #7dc3de">java</a> <a href="/tags/maven/" style="font-size: 13px; color: #7dc3de">maven</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
+      <a href="/tags/Android/" style="font-size: 14.75px; color: #65bfa7">Android</a> <a href="/tags/C/" style="font-size: 13.88px; color: #71c1c2">C</a> <a href="/tags/CAS/" style="font-size: 13px; color: #7dc3de">CAS</a> <a href="/tags/Chrome/" style="font-size: 13px; color: #7dc3de">Chrome</a> <a href="/tags/Clean-Code/" style="font-size: 13.88px; color: #71c1c2">Clean Code</a> <a href="/tags/Database/" style="font-size: 13px; color: #7dc3de">Database</a> <a href="/tags/Eclipse/" style="font-size: 13px; color: #7dc3de">Eclipse</a> <a href="/tags/FTP/" style="font-size: 13.88px; color: #71c1c2">FTP</a> <a href="/tags/FreeMarker/" style="font-size: 14.75px; color: #65bfa7">FreeMarker</a> <a href="/tags/Gcc/" style="font-size: 13px; color: #7dc3de">Gcc</a> <a href="/tags/Git/" style="font-size: 15.63px; color: #59bd8b">Git</a> <a href="/tags/Github-Pages/" style="font-size: 13px; color: #7dc3de">Github Pages</a> <a href="/tags/Hexo/" style="font-size: 15.63px; color: #59bd8b">Hexo</a> <a href="/tags/Hibernate/" style="font-size: 13px; color: #7dc3de">Hibernate</a> <a href="/tags/JSP/" style="font-size: 13px; color: #7dc3de">JSP</a> <a href="/tags/JVM/" style="font-size: 14.75px; color: #65bfa7">JVM</a> <a href="/tags/Java/" style="font-size: 16.5px; color: #4dbc6f">Java</a> <a href="/tags/JavaMail/" style="font-size: 13px; color: #7dc3de">JavaMail</a> <a href="/tags/JavaScript/" style="font-size: 16.5px; color: #4dbc6f">JavaScript</a> <a href="/tags/Linux/" style="font-size: 13.88px; color: #71c1c2">Linux</a> <a href="/tags/Log/" style="font-size: 13px; color: #7dc3de">Log</a> <a href="/tags/Markdown/" style="font-size: 13.88px; color: #71c1c2">Markdown</a> <a href="/tags/MongoDB/" style="font-size: 20px; color: #1db400">MongoDB</a> <a href="/tags/MyBatis/" style="font-size: 13px; color: #7dc3de">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 13.88px; color: #71c1c2">MySQL</a> <a href="/tags/PHP/" style="font-size: 16.5px; color: #4dbc6f">PHP</a> <a href="/tags/Rhythmbox/" style="font-size: 13px; color: #7dc3de">Rhythmbox</a> <a href="/tags/SSO/" style="font-size: 13px; color: #7dc3de">SSO</a> <a href="/tags/Servlet/" style="font-size: 13px; color: #7dc3de">Servlet</a> <a href="/tags/Shiro/" style="font-size: 13.88px; color: #71c1c2">Shiro</a> <a href="/tags/Spring/" style="font-size: 13.88px; color: #71c1c2">Spring</a> <a href="/tags/Suse/" style="font-size: 13px; color: #7dc3de">Suse</a> <a href="/tags/Thinking-in-Java/" style="font-size: 19.13px; color: #29b61c">Thinking in Java</a> <a href="/tags/Ubuntu/" style="font-size: 17.38px; color: #41ba53">Ubuntu</a> <a href="/tags/Vim/" style="font-size: 18.25px; color: #35b838">Vim</a> <a href="/tags/VirtualBox/" style="font-size: 13px; color: #7dc3de">VirtualBox</a> <a href="/tags/Vsftpd/" style="font-size: 13px; color: #7dc3de">Vsftpd</a> <a href="/tags/jQuery/" style="font-size: 13px; color: #7dc3de">jQuery</a> <a href="/tags/pam-mysql/" style="font-size: 13px; color: #7dc3de">pam_mysql</a> <a href="/tags/%E5%B0%8F%E7%B1%B3/" style="font-size: 13px; color: #7dc3de">小米</a> <a href="/tags/%E8%BD%AF%E4%BB%B6/" style="font-size: 15.63px; color: #59bd8b">软件</a>
     </div>
   </div>
 
@@ -610,7 +857,7 @@ Updated:<time datetime="2020-05-04T11:33:41.580Z" itemprop="dateModified">2020-0
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">September 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">July 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">November 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/05/">May 2013</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -634,10 +881,6 @@ Updated:<time datetime="2020-05-04T11:33:41.580Z" itemprop="dateModified">2020-0
           </li>
         
           <li>
-            <a href="/2017/09/29/maven/">Maven 总结</a>
-          </li>
-        
-          <li>
             <a href="/2016/05/16/git-internals/">Git 内幕</a>
           </li>
         
@@ -647,6 +890,10 @@ Updated:<time datetime="2020-05-04T11:33:41.580Z" itemprop="dateModified">2020-0
         
           <li>
             <a href="/2016/04/21/java-security-illegal-key-size/">AES加密时报java.security.InvalidKeyException Illegal key size</a>
+          </li>
+        
+          <li>
+            <a href="/2015/09/01/javascript-summary/">JavaScript 总结</a>
           </li>
         
       </ul>
@@ -751,10 +998,11 @@ s.setAttribute('data-timestamp', +new Date());
   <script type="text/javascript">
   $(function() {
     
-    $('#calendar').aCalendar('zh-CN', {single:true, root:'calendar'});
+    $('#calendar').aCalendar('zh-CN', {root:'/', calendarSingle:true, calendarRoot:'calendar'});
     
   });
   </script>
+
 
 
 

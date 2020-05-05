@@ -128,13 +128,6 @@
   </url>
   
   <url>
-    <loc>http://howiefh.github.io/2017/09/29/maven/</loc>
-    
-    <lastmod>2020-05-02T14:28:14.486Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://howiefh.github.io/2015/08/28/javascript-reference-type/</loc>
     
     <lastmod>2020-05-02T14:28:14.485Z</lastmod>
@@ -191,14 +184,14 @@
   </url>
   
   <url>
-    <loc>http://howiefh.github.io/2015/04/30/freemarker-template-development-note/</loc>
+    <loc>http://howiefh.github.io/2015/04/09/jvm-note-3/</loc>
     
     <lastmod>2020-05-02T14:28:14.479Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://howiefh.github.io/2015/04/09/jvm-note-3/</loc>
+    <loc>http://howiefh.github.io/2015/04/30/freemarker-template-development-note/</loc>
     
     <lastmod>2020-05-02T14:28:14.479Z</lastmod>
     
@@ -289,6 +282,13 @@
   </url>
   
   <url>
+    <loc>http://howiefh.github.io/2014/06/15/clean-code-note-2/</loc>
+    
+    <lastmod>2020-05-02T14:28:14.470Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://howiefh.github.io/2014/06/10/clean-code-note-1/</loc>
     
     <lastmod>2020-05-02T14:28:14.470Z</lastmod>
@@ -297,13 +297,6 @@
   
   <url>
     <loc>http://howiefh.github.io/2014/06/06/mongodb-note-10-sharding/</loc>
-    
-    <lastmod>2020-05-02T14:28:14.470Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://howiefh.github.io/2014/06/15/clean-code-note-2/</loc>
     
     <lastmod>2020-05-02T14:28:14.470Z</lastmod>
     
@@ -352,7 +345,7 @@
   </url>
   
   <url>
-    <loc>http://howiefh.github.io/2014/05/04/mongodb-note-3-creating-updating-and-deleting-documents/</loc>
+    <loc>http://howiefh.github.io/2014/04/29/vim-table-mode/</loc>
     
     <lastmod>2020-05-02T14:28:14.468Z</lastmod>
     
@@ -373,7 +366,7 @@
   </url>
   
   <url>
-    <loc>http://howiefh.github.io/2014/04/29/vim-table-mode/</loc>
+    <loc>http://howiefh.github.io/2014/05/04/mongodb-note-3-creating-updating-and-deleting-documents/</loc>
     
     <lastmod>2020-05-02T14:28:14.468Z</lastmod>
     

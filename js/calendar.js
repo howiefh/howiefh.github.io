@@ -27,14 +27,24 @@
 
     var settings = $.extend({}, $.fn.aCalendar.defaults, typeof calLanguages === 'undefined' ? {} : calLanguages[currentLanguage], options);
 
-    if (settings.root[0] !== '/') {
-      settings.root = '/' + settings.root;
+    fillRoot(settings, 'titleLinkFormat');
+    fillRoot(settings, 'calendarRoot');
+    fillRoot(settings, 'calendarUrl');
+
+    if (settings.calendarRoot[0] !== '/') {
+      settings.calendarRoot = '/' + settings.calendarRoot;
     }
 
-    if (settings.root[settings.root.length - 1] !== '/') {
-      settings.root += '/';
+    if (settings.calendarRoot[settings.calendarRoot.length - 1] !== '/') {
+      settings.calendarRoot += '/';
     }
 
+    function fillRoot(settings, propName) {
+      var prop = settings[propName];
+      if (prop && !prop.startsWith(settings.root)) {
+        settings[propName] = settings.root + prop;
+      }
+    }
     /**
      * Initial language.
      */
@@ -87,7 +97,7 @@
      * Load current month's posts.
      */
     function loadPosts() {
-      if (settings.single) {
+      if (settings.calendarSingle) {
         loadAllPosts();
       } else {
         loadPostsByMonth();
@@ -98,10 +108,10 @@
      * Load all month's posts.
      */
     function loadAllPosts() {
-      if (settings.url != null && settings.url != '') {
+      if (settings.calendarUrl != null && settings.calendarUrl != '') {
         if (allPosts === null) {
           $.ajax({
-            url: settings.url,
+            url: settings.calendarUrl,
             async: false,
             success: function(data) {
               allPosts = data;
@@ -124,7 +134,7 @@
     function loadPostsByMonth() {
       if (months === null) {
         $.ajax({
-          url: settings.root + 'list.json',
+          url: settings.calendarRoot + 'list.json',
           async: false,
           success: function(data) {
             initMonths(data);
@@ -134,7 +144,7 @@
 
       if (parse()) {
         $.ajax({
-          url: settings.root + dYear + '-' + (dMonth + 1) + '.json',
+          url: settings.calendarRoot + dYear + '-' + (dMonth + 1) + '.json',
           async: false,
           success: function(data) {
             current.posts = data;
@@ -272,7 +282,12 @@
       var cFoot = $('<tfoot/>');
       var cFootRow = $('<tr/>');
       var cPrevPosts = $('<td/>').attr('colspan', 3);
-      var cPad = $('<td/>').html('&nbsp;');
+      var cPad = $('<td/>');
+      if (dYear !== nYear || dMonth !== nMonth) {
+        cPad.addClass('cal-foot').html('●');
+      } else {
+        cPad.html('&nbsp;')
+      }
       var cNextPosts = $('<td/>').attr('colspan', 3);
       if (current.prev) {
         cPrevPosts.html(settings.footArrows.previous + settings.months[current.prev.getMonth()])
@@ -292,6 +307,12 @@
 
       cNextPosts.on('click', function() {
         toPostsMonth(current.next);
+      });
+
+      cPad.on('click', function() {
+        if (dYear !== nYear || dMonth !== nMonth) {
+          toPostsMonth(now);
+        }
       });
 
       cFootRow.append(cPrevPosts);
@@ -367,13 +388,14 @@
     dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     postsMonthTip: 'Posts published in LMM yyyy',
     titleFormat: 'yyyy LMM',
-    titleLinkFormat: '/archives/yyyy/MM/',
+    titleLinkFormat: 'archives/yyyy/MM/',
     headArrows: {previous: '<span class="cal-prev"></span>', next: '<span class="cal-next"></span>'},
     footArrows: {previous: '« ', next: ' »'},
     weekOffset: 0,
-    single: true,
-    root: '/calendar/',
-    url: '/calendar.json'
+    root: '/',
+    calendarSingle: true,
+    calendarRoot: 'calendar/',
+    calendarUrl: 'calendar.json'
   };
 
 }(jQuery));
