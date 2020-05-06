@@ -1,5 +1,11 @@
 #! /bin/bash
+if  [ ! -n "$1" ] ;then
+  echo "ERROR: Not Found message args! Usage: ./git.sh \"some message\""
+  exit 1
+fi
+
 echo "start"
+MESSAGE=$1
 SHELL=$(readlink -f $0)
 SHELL_FOLDER=$(dirname "$SHELL")
 WORK_FOLDER=`pwd`
@@ -7,9 +13,8 @@ echo "SHELL_FOLDER: $SHELL_FOLDER"
 echo "WORK_FOLDER: $WORK_FOLDER"
 echo "$ cd \"$SHELL_FOLDER\""
 cd "$SHELL_FOLDER"
-MESSAGE=$1
-cd themes/landscape-f
 echo "$ cd themes/landscape-f"
+cd themes/landscape-f
 BRANCH=`git rev-parse --abbrev-ref HEAD`
 if [ $BRANCH != "master" ]; then
   echo "$ git checkout master"
